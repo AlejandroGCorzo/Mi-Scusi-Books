@@ -1,0 +1,8 @@
+.outerDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.bookImage{
+    width: 11%;
+}
