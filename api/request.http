@@ -19,3 +19,13 @@ Content-Type: application/json
     "state" : "active",
     "type" : "admin"
 }
+
+###
+GET http://localhost:9000/user HTTP/1.1
+
+###
+GET http://localhost:9000/user/63446a16b254cf3483572574 HTTP/1.1
+###
+DELETE http://localhost:9000/user/63446a16b256cf3483572574
+
+

@@ -79,3 +79,9 @@ export const getUser = () => (dispatch) => {
     ])
   );
 };
+
+export const getDetail = (id) => (dispatch) => {
+  dispatch(
+    getBookById(Number(id))
+  );
+};

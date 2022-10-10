@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const booksSlice = createSlice({
-  name: 'books',
+  name: "books",
   initialState: {
     books: [],
     detail: {},
@@ -12,7 +12,10 @@ export const booksSlice = createSlice({
       state.books = action.payload;
     },
     getBookById: (state, action) => {
-      state.detail = action.payload;
+      state.detail = state.books.find((e) => e._id === action.payload);
+    },
+    setEmptyDetail: (state) => {
+      state.detail = {};
     },
     getAllUsers: (state, action) => {
       state.users = action.payload
@@ -20,6 +23,6 @@ export const booksSlice = createSlice({
   },
 });
 
-export const { getAllBooks, getBookById, getAllUsers } = booksSlice.actions;
+export const { getAllBooks, getBookById, setEmptyDetail, getAllUsers } = booksSlice.actions;
 
 export default booksSlice.reducer;
