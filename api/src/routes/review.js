@@ -33,4 +33,16 @@ reviewRouter.get('/', async(req,res) => {
   }
 })
 
+reviewRouter.delete('/:id', async(req, res) => {
+  const { id } = req.params
+  
+  try{
+    const deleted = await Review.deleteOne({_id : id});
+    res.status(200).json({msg: 'Review deleted'})
+  } catch(e){
+    res.status(400).json({msg: "something went wrong"})
+  }
+})
+
+
 module.exports = reviewRouter;
