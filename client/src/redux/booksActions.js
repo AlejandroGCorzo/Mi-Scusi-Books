@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllBooks, getBookById } from "./booksSlice.js";
+import { getAllBooks, getBookById, getAllUsers } from "./booksSlice.js";
 
 /* https://rickandmortyapi.com/api/character */
 
@@ -40,6 +40,41 @@ export const getChars = () => (dispatch) => {
         ],
         image:
           "https://m.media-amazon.com/images/I/51erHMLhIzL._SX334_BO1,204,203,200_.jpg",
+      },
+    ])
+  );
+};
+
+export const getUser = () => (dispatch) => {
+  dispatch(
+    getAllUsers([
+      {
+        email: "juanfledesma18@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "janonanzer@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "alejandrogcorzo@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "cassiram15@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "mgutierrezxred@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "agustinnicolas12340@gmail.com",
+        password: 12345,
+      },
+      {
+        email: "ricaudjuan11@gmail.com",
+        password: 12345,
       },
     ])
   );
