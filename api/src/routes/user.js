@@ -73,6 +73,18 @@ userRouter.delete("/:id", async (req, res) => {
   }
 });
 
+userRouter.put("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).send({ msg: "Not id found!" });
+  try {
+    const deletedUser = await User.updateOne({ _id: id }, { $set: {state : "Inactive"} });
+    if(!deletedUser.matchedCount) return res.send("User not found!");
+    res.send("User deleted successfully!");
+  } catch (e) {
+    res.status(400).send({ msg: e });
+  }
+});
+
 userRouter.put("/update/:id", async (req, res) => {
   const { id } = req.params;
   const update = req.body;
