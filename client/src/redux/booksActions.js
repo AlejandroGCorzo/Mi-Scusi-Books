@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAllBooks, getBookById } from './characterSlice.js';
+import { getAllBooks, getBookById } from './booksSlice.js';
 
 /* https://rickandmortyapi.com/api/character */
 

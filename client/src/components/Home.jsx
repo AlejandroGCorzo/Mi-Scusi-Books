@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChars } from '../redux/characterActions.js';
+import { getChars } from '../redux/booksActions.js';
 
-export const Characters = () => {
+const Home = () => {
   const dispatch = useDispatch();
   const { books } = useSelector((state) => state.books);
   useEffect(() => {
@@ -20,3 +20,5 @@ export const Characters = () => {
     </div>
   );
 };
+
+export default Home;
