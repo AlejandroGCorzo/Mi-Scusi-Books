@@ -5,6 +5,7 @@ export const booksSlice = createSlice({
   initialState: {
     books: [],
     detail: {},
+    users: []
   },
   reducers: {
     getAllBooks: (state, action) => {
@@ -13,9 +14,12 @@ export const booksSlice = createSlice({
     getBookById: (state, action) => {
       state.detail = action.payload;
     },
+    getAllUsers: (state, action) => {
+      state.users = action.payload
+    }
   },
 });
 
-export const { getAllBooks, getBookById } = booksSlice.actions;
+export const { getAllBooks, getBookById, getAllUsers } = booksSlice.actions;
 
 export default booksSlice.reducer;
