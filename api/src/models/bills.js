@@ -6,15 +6,27 @@ const userShema = mongoose.Schema({
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Books" 
     },
-    amountBooks:[Number],
-    price:[Number],
-    total:Number,
+    amountBooks:{
+        type:[Number],
+        require:true
+    },
+    price:{
+       type:[Number],
+       require: true
+    },
+    total:{
+       type:Number,
+       require:true
+    },
     user:{
         type:[mongoose.Schema.Types.ObjectId],
         ref: "User"
     }
     ,
-    date:Date
+    date:{
+        type:Date,
+        require:true
+    }
 })
 
 module.exports = mongoose.model('Bills', userShema)
