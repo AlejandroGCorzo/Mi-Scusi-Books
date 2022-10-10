@@ -9,7 +9,7 @@ userRouter.post("/", (req, res) => {
   const newUser = userSchema(req.body);
   newUser
     .save()
-    .then((response) => res.json(response))
+    .then((response) => res.json({ message:response}))
     .catch((error) => res.json({ message: error }));
 });
 
