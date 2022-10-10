@@ -2,8 +2,8 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Home from './components/Home.jsx';
-import Details from './components/Details.jsx';
+import Home from './components/Home/Home.jsx';
+import Details from './components/Details/Details.jsx';
 
 function App() {
   return (
