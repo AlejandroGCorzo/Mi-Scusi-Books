@@ -1,31 +1,19 @@
 ###
-POST http://localhost:9000/user HTTP/1.1
+POST http://localhost:9000/books HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName" : "MisterTiene",
-    "firstName" : "Franco",
-    "lastName" : "Ledesma",
-    "email" : "juanfledesma18@gmail.com",
-    "dni" : 48523695,
-    "phone" : 3547582365,
-    "address": {
-        "street" : "FuegoTiene",
-        "number" : 496,
-        "floor" : 2
-    },
-    "birthdate" : "07/01/1998",
-    "loyaltyPoint" : 10,
-    "state" : "active",
-    "type" : "admin"
+  "name":"El Silencio de los corderos",
+  "author": ["Thomas Harris"],
+  "editorial":" Editorial Martin's Press",
+  "price":299.15,
+  "category":["6344638497cc65387427785c"],
+  "synopsis":"A Clarice Starling, joven y ambiciosa estudiante de la academia del FBI, le encomiendan que entreviste a Hannibal Lecter, brillante psiquiatra y despiadado asesino, para conseguir su colaboración en la resolución de un caso de asesinatos en serie.",
+   "format": "paperback",
+   "edition":1,
+   "language":"ES",
+   "ISBN":20,
+   "stock":20,
+    "image":"data.jpg"
+
 }
-
-###
-GET http://localhost:9000/user HTTP/1.1
-
-###
-GET http://localhost:9000/user/63446a16b254cf3483572574 HTTP/1.1
-###
-DELETE http://localhost:9000/user/63446a16b256cf3483572574
-
-
