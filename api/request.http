@@ -17,29 +17,3 @@ Content-Type: application/json
     "image":"data.jpg"
 
 }
-
-
-# {
-#   "name":"yoyo",
-#   "author": ["fernando", "yoyo"],
-#   "editorial":"fran",
-#   "price":255,
-#   "category":["6344638497cc65387427785c","6344638497cc65387427785a"],
-#   "synopsis":"blablabla",
-#    "format": "cover",
-#    "edition":45,
-#    "language":"ES-IN",
-#    "ISBN":2525,
-#    "rating":0,
-#    "stock":10,
-#    "reviews":[],
-#     "image":"bblbla.jpg"
-
-# }
-
-###
-PUT  http://localhost:9000/books/update/6344ac235c59544ca8bf76ac HTTP/1.1
-
-{
-  "name":"EL Silencio de Merlin"
-}
