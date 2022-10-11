@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home/Home.jsx';
 import Details from './components/Details/Details.jsx';
-import UserLogin from './components/UserLogin/UserLogin';
+import UserLogin from './components/UserLogin/UserLogin.jsx';
 
 function App() {
   return (
