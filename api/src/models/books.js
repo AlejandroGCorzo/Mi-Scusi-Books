@@ -19,7 +19,7 @@ const booksSchema = mongoose.Schema({
   },
   categroy: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: Category,
+    ref: "Category",
     required: true
   },
   synopsis: {
@@ -52,7 +52,7 @@ const booksSchema = mongoose.Schema({
   },
   reviews: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: Reviews
+    ref: "Reviews"
   },
   image: {
     type: String,
