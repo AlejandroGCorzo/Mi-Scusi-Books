@@ -17,9 +17,9 @@ const booksSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  categroy: {
+  category: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: Category,
+    ref: "Category",
     required: true
   },
   synopsis: {
@@ -30,7 +30,7 @@ const booksSchema = mongoose.Schema({
     type: String,  //posibles valores -> digital, hard cover, paperback
     required: true
   },       
-  edition: {
+  edition:{
     type: Number,
     required: true
   },
@@ -52,7 +52,7 @@ const booksSchema = mongoose.Schema({
   },
   reviews: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: Reviews
+    ref: "Reviews"
   },
   image: {
     type: String,

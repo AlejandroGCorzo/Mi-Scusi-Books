@@ -97,4 +97,27 @@ userRouter.put("/update/:id", async (req, res) => {
   }
 });
 
+
+//log-in
+userRouter.get('/login', async(req, res) => {
+  const { userName, password } = req.body
+
+  if(!userName || !password) {
+    res.status(400).json({msg: "Missing user name and/or password"})
+  }
+
+  const user = await User.findOne({userName}) 
+  console.log(user)
+  console.log(user.password)
+   if(!user) {
+    res.status(404).json({msg: "User does not exist"})
+  }
+  if(user.password === password) {
+    return res.status(200).json({msg: "Logueo exitoso"})
+  } else {
+    return res.status(400).json({msg: "password or user name invalid"})
+  }
+})
+
+
 module.exports = userRouter;
