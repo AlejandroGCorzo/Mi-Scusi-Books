@@ -109,6 +109,9 @@ userRouter.get('/login', async(req, res) => {
   const user = await User.findOne({userName}) 
   console.log(user)
   console.log(user.password)
+   if(!user) {
+    res.status(404).json({msg: "User does not exist"})
+  }
   if(user.password === password) {
     return res.status(200).json({msg: "Logueo exitoso"})
   } else {
