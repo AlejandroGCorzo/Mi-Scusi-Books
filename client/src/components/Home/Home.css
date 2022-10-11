@@ -1,0 +1,64 @@
+.homePage{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.promotions{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction:row;
+    height: auto;
+    width: 100%;
+    background-image: url("../../sourceImg/banner.jpg");
+    background-position: center center;
+    background-size: cover;
+}
+
+.textoPromotions{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 45%;
+}
+
+.textoPromotions h3{
+    font-size: 2.5rem;
+}
+
+.textoPromotions p{
+    font-size: 1rem;
+}
+
+.detailBook p{
+    width: 250px;
+}
+
+.detailBook{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.detailBook img{
+    width: 250px;
+}
+
+.stand{
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.buttonView{
+    background-color: rgb(58, 199, 58);
+    border: 1px solid rgb(58, 199, 58);
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    color: white;
+}
