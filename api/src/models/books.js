@@ -17,7 +17,7 @@ const booksSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  categroy: {
+  category: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Category",
     required: true
@@ -30,7 +30,7 @@ const booksSchema = mongoose.Schema({
     type: String,  //posibles valores -> digital, hard cover, paperback
     required: true
   },       
-  edition: {
+  edition:{
     type: Number,
     required: true
   },
