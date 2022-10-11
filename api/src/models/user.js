@@ -6,6 +6,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    password: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -24,7 +28,6 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: Number,
-      required: true,
     },
     address: {
       street: String,
@@ -32,7 +35,7 @@ const userSchema = mongoose.Schema(
       floor: Number,
     },
     birthdate: {
-      type: Date,
+      type: String,
       required: true,
     },
     loyaltyPoint: {
@@ -40,17 +43,18 @@ const userSchema = mongoose.Schema(
     },
     state: {
       type: String,
-      required: true,
+      default: "Pending"
     },
     type: {
       type: String,
-      required: true,
+      default: "Normal"
     },
     bills: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bills",
+
     },
-  }, { timestamps: true }
+  }, { timestamps: false }
 );
 
 module.exports = mongoose.model("User", userSchema);
