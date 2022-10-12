@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const User = require("../models/user");
+const axios = require("axios");
+
 
 const userRouter = Router();
 
@@ -8,16 +10,17 @@ const userRouter = Router();
 userRouter.get("/protected", async (req,res) => {
   try{
     const accesToken = req.headers.authorization.split(' ')[1]
+    console.log(accesToken)
     const response = await axios.get('https://miscusibooks.us.auth0.com/userinfo', {
-      header: {
+      headers: {
         authorization: `Bearer ${accesToken}`
       }
     })
-    const userInfo = response.datagit
+    const userInfo = response.data
     console.log(userInfo);
     res.send(userInfo)
   } catch(e){
-    res.send(error.message)
+    res.send(e.message)
   }
 })
 
