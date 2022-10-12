@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { getDetail, getChars } from "../../redux/booksActions.js";
-import { setEmptyDetail } from "../../redux/booksSlice.js";
+import { getDetail, getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 import "./Details.css";
 
 const Details = (props) => {
@@ -11,7 +11,7 @@ const Details = (props) => {
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
-    dispatch(getChars())
+    dispatch(getBooks())
     dispatch(getDetail(props.match.params.id));
     return () => {
       dispatch(setEmptyDetail());
