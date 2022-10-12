@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { getUser } from "../../redux/booksActions";
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 export default function UserLogin() {
   const dispatch = useDispatch();
@@ -12,6 +14,34 @@ export default function UserLogin() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+
+  const {
+    loginWithPopup,
+    loginWithRedirect,
+    logout,
+    user,
+    isAuthenticated,
+    getAccessTokenSilently,
+  } = useAuth0();
+
+  const callProtectedApi = async () => {
+    try {
+      
+      const token = await getAccessTokenSilently();
+      const response = await axios.get("http://localhost:9000/protected", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.message) 
+    }
+    // axios
+    //   .get("http://localhost:9000/protected")
+    //   .then((response) => console.log(response.data))
+    //   .catch((error) => console.log(response.data));
+  };
 
   useEffect(() => {
     dispatch(getUser());
@@ -36,7 +66,7 @@ export default function UserLogin() {
       ...input,
       [e.target.name]: e.target.value,
     });
-    history.push('/home')
+    history.push("/home");
   };
 
   function validate(input) {
@@ -50,7 +80,11 @@ export default function UserLogin() {
 
     if (!input.password) {
       errors.password = "Password is required";
-    } else if (!/^(?=(.*[0-9]))(?=.*[a-z])(?=(.*[A-Z]))(?=.*\d)(?=(.*)).{8,15}$/.test(input.password)) {
+    } else if (
+      !/^(?=(.*[0-9]))(?=.*[a-z])(?=(.*[A-Z]))(?=.*\d)(?=(.*)).{8,15}$/.test(
+        input.password
+      )
+    ) {
       errors.password = "Password is invalid ";
     }
     return errors;
@@ -78,9 +112,7 @@ export default function UserLogin() {
             onChange={handleInputChange}
             required
           />
-          <span>
-            {errors.email && <p>{errors.email}</p>}
-          </span>
+          <span>{errors.email && <p>{errors.email}</p>}</span>
         </div>
         <div>
           <label>Password: </label>
@@ -94,18 +126,38 @@ export default function UserLogin() {
             onChange={handleInputChange}
             required
           />
-          <span>
-            {errors.password && <p>{errors.password}</p>}
-          </span>
+          <span>{errors.password && <p>{errors.password}</p>}</span>
           <p>Forgot password?</p>
         </div>
-        <button type="submit">SIGN IN</button>
+        <button type="submit">LOG IN</button>
       </form>
       <div>
         <h3>Don't have an account?</h3>
         <Link to={"/signup"}>
-          <button>SIGN UP</button>
+          <button>REGISTER</button>
         </Link>
+        <ul>
+          <li>
+            <button onClick={loginWithPopup}>Login with Popup</button>
+          </li>
+          <li>
+            <button onClick={loginWithRedirect}>Login with Redirect</button>
+          </li>
+          <li>
+            <button onClick={logout}>Logout</button>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <button onClick={callProtectedApi}>Call Protect Api</button>
+          </li>
+        </ul>
+        <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
+        {isAuthenticated && (
+          <pre style={{ textAlign: "start" }}>
+            {JSON.stringify(user, null, 2)}
+          </pre>
+        )}
       </div>
     </>
   );
