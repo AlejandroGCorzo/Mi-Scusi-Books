@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { getUser } from "../../redux/booksActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { getUser } from "../../redux/booksActions";
 
 export default function UserLogin() {
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { users } = useSelector((state) => state.books);
+  const usersEmail = users.map((u) => u.email);
   const [input, setInput] = useState({
     email: "",
     password: "",
+    disabled: true,
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   const {
     loginWithPopup,
@@ -26,27 +32,19 @@ export default function UserLogin() {
 
   const callProtectedApi = async () => {
     try {
-      
       const token = await getAccessTokenSilently();
-      console.log(token)
       const response = await axios.get("http://localhost:9000/user/protected", {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(response)
-      console.log('hola')
-      console.log(response.data);
     } catch (error) {
-      console.log(error.message) 
+      console.log(error.message);
     }
   };
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
-
-  const handleInputChange = (e) => {
+  function handleInputChange(e) {
+    e.preventDefault();
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -58,106 +56,134 @@ export default function UserLogin() {
         [e.target.name]: e.target.value,
       })
     );
-  };
+  }
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
+    e.preventDefault();
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
-    history.push("/home");
-  };
+    history.push("/");
+  }
 
   function validate(input) {
     let errors = {};
 
     if (!input.email) {
       errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(input.email)) {
+    } else if (input.email.length < 6) {
+      errors.email = "Email must contain at least 6 characters";
+    } else if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(input.email)) {
+      errors.email = "Email can contain only letters, numbers, -, _, or .";
+    } else if (!/^\S+@\S+\.\S+$/.test(input.email)) {
       errors.email = "Email is invalid";
+    } else if (!usersEmail.includes(input.email)) {
+      errors.email = "That email doesn't exist";
     }
 
     if (!input.password) {
       errors.password = "Password is required";
+    } else if (input.password.length < 8 || input.password.length >= 16) {
+      errors.password = "Password must be min 8 characters and max 16 characters";
     } else if (
-      !/^(?=(.*[0-9]))(?=.*[a-z])(?=(.*[A-Z]))(?=.*\d)(?=(.*)).{8,15}$/.test(
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(
         input.password
       )
     ) {
-      errors.password = "Password is invalid ";
+      errors.password = "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
     }
     return errors;
-  } //desglosar validaciones
-  //verificar existencia
+  }
 
   return (
-    <>
-      <div>
-        <img
-          src="http://cdn.onlinewebfonts.com/svg/img_568656.png"
-          width="110px"
-          height="110px"
-        />
-        <h1>LOGIN</h1>
-      </div>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <section>
         <div>
-          <label>Email: </label>
-          <input
-            type="text"
-            name="email"
-            placeholder="you@example.com"
-            value={input.email}
-            onChange={handleInputChange}
-            required
+          <img
+            src="http://cdn.onlinewebfonts.com/svg/img_568656.png"
+            width="110px"
+            height="110px"
           />
-          <span>{errors.email && <p>{errors.email}</p>}</span>
+          <h1>LOGIN</h1>
         </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Email: </label>
+            <input
+              type="text"
+              name="email"
+              placeholder="you@example.com"
+              value={input.email}
+              onChange={handleInputChange}
+              required
+            />
+            <span>
+              {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+            </span>
+          </div>
+          <div>
+            <label>Password: </label>
+            <input
+              type="password"
+              name="password"
+              minLength={8}
+              maxLength={16}
+              placeholder="123456Aa"
+              value={input.password}
+              onChange={handleInputChange}
+              required
+            />
+            <span>
+              {errors.password && (
+                <p style={{ color: "red" }}>{errors.password}</p>
+              )}
+            </span>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" id="cb1" value="cb" />
+              Remember me
+            </label>
+            <Link
+              to={"/login/password_reset"}
+              style={{ textDecoration: "none" }}
+            >
+              <span>Forgot password?</span>
+            </Link>
+          </div>
+          <input disabled={input.disabled} type="submit" value="LOGIN" />
+          {/* falta configurar el disabled */}
+        </form>
         <div>
-          <label>Password: </label>
-          <input
-            type="password"
-            name="password"
-            minLength={8}
-            maxLength={15}
-            placeholder="123456Aa"
-            value={input.password}
-            onChange={handleInputChange}
-            required
-          />
-          <span>{errors.password && <p>{errors.password}</p>}</span>
-          <p>Forgot password?</p>
+          <h3>Don't have an account?</h3>
+          <Link to={"/signup"}>
+            <button>SIGN UP</button>
+          </Link>
+          <ul>
+            <li>
+              <button onClick={loginWithPopup}>Login with Popup</button>
+            </li>
+            <li>
+              <button onClick={loginWithRedirect}>Login with Redirect</button>
+            </li>
+            <li>
+              <button onClick={logout}>Logout</button>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <button onClick={callProtectedApi}>Call Protect Api</button>
+            </li>
+          </ul>
+          <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
+          {isAuthenticated && (
+            <pre style={{ textAlign: "start" }}>
+              {JSON.stringify(user, null, 2)}
+            </pre>
+          )}
         </div>
-        <button type="submit">LOG IN</button>
-      </form>
-      <div>
-        <h3>Don't have an account?</h3>
-        <Link to={"/signup"}>
-          <button>REGISTER</button>
-        </Link>
-        <ul>
-          <li>
-            <button onClick={loginWithPopup}>Login with Popup</button>
-          </li>
-          <li>
-            <button onClick={loginWithRedirect}>Login with Redirect</button>
-          </li>
-          <li>
-            <button onClick={logout}>Logout</button>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <button onClick={callProtectedApi}>Call Protect Api</button>
-          </li>
-        </ul>
-        <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
-        {isAuthenticated && (
-          <pre style={{ textAlign: "start" }}>
-            {JSON.stringify(user, null, 2)}
-          </pre>
-        )}
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
