@@ -19,7 +19,7 @@ categoryRouter.post('/', async(req, res) => {
 
 categoryRouter.get('/', async(req, res) => {
   try{
-    const categories = await Category.find()
+    const categories = await Category.find().select("-_id")
 
     res.status(200).json(categories)
   } catch(e) {
