@@ -5,6 +5,22 @@ const userRouter = Router();
 
 //create user
 
+userRouter.get("/protected", async (req,res) => {
+  try{
+    const accesToken = req.headers.authorization.split(' ')[1]
+    const response = await axios.get('https://miscusibooks.us.auth0.com/userinfo', {
+      header: {
+        authorization: `Bearer ${accesToken}`
+      }
+    })
+    const userInfo = response.datagit
+    console.log(userInfo);
+    res.send(userInfo)
+  } catch(e){
+    res.send(error.message)
+  }
+})
+
 userRouter.post("/", async (req, res) => {
   try {
     const {
