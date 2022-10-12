@@ -51,15 +51,15 @@ export default function SliderImg({ books }) {
                     <div className="card">
 
                         <div className="card-top">
-                            <img src={el} alt=""/>
+                            <img src={el.image} alt=""/>
                         </div>
 
                         {/* <Link to={`/books/${el._id}`} key={el._id}> */}
-                        <Link to={`/books/485926152`} key={"1234"} style={{ textDecoration: 'none'}}>
-                            <span>The Lion, the Witch and the Wardrobe (The Chronicles of Narnia)</span>
+                        <Link to={`/books/${el._id}`} key={el._id} style={{ textDecoration: 'none'}}>
+                            <span>{el.name}</span>
                             <div className='buyBook'>
                             <button className='buttonBuy'>Buy</button>
-                                <p>$2.99</p>
+                                <p>${el.price}</p>
                             </div>
                         </Link>
 

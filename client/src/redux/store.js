@@ -5,6 +5,6 @@ import userReducer  from './StoreUsers/usersSlice';
 export default configureStore({
   reducer: {
     books: booksReducer,
-    user: userReducer
+    users: userReducer
   },
 });

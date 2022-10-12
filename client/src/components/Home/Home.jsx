@@ -60,7 +60,7 @@ export default function Home() {
 
       </div>
 
-      <Slider books={mockImagenes} />
+      <Slider books={books} />
       {/* <div className='detailBook'>
 
         {books?.map((el) => (
