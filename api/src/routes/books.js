@@ -43,7 +43,8 @@ bookRouter.post('/', async (req, res) => {
           stock,
           "reviews":[],
           image,
-          unitSold:0
+          unitSold:0,
+          deleted: false
         }
       }else res.status(400).send("the required fields do not meet the requirements")
       const addBook =  bookSchema(book);
