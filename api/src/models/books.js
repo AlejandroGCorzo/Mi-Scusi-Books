@@ -56,6 +56,9 @@ const booksSchema = mongoose.Schema({
   image: {
     type: String,
     required: true
+  },
+  unitSold:{
+    type: Number,
   }
 })
 
