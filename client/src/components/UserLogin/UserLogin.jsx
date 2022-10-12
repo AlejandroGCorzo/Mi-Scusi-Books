@@ -28,19 +28,18 @@ export default function UserLogin() {
     try {
       
       const token = await getAccessTokenSilently();
-      const response = await axios.get("http://localhost:9000/protected", {
+      console.log(token)
+      const response = await axios.get("http://localhost:9000/user/protected", {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
+      console.log(response)
+      console.log('hola')
       console.log(response.data);
     } catch (error) {
       console.log(error.message) 
     }
-    // axios
-    //   .get("http://localhost:9000/protected")
-    //   .then((response) => console.log(response.data))
-    //   .catch((error) => console.log(response.data));
   };
 
   useEffect(() => {
