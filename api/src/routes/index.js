@@ -25,7 +25,7 @@ const verifyJwt = jwt({
   algorithms: ["RS256"],
 }).unless({ path: ['/','/user', "/books/allBooks"]})
 
-router.use(verifyJwt)
+// router.use(verifyJwt)
 
 router.use(Router.json());
 
