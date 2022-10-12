@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const bookSchema= require("../models/books");
+const Category= require("../models/category")
 const bookRouter = Router();
 const filterTypeOne = ["name", "editorial", "price", "format", "language", "ISBN", "rating", "stock"];
 const filterTypeTwo = ["author","category", "rating","reviews" ];
@@ -11,9 +12,22 @@ bookRouter.post('/', async (req, res) => {
     let book = {};
     try{
     const {name, author, editorial, price, category, synopsis, format, edition, language, ISBN, stock, image } = req.body;
+    let theme = await Category.find()
+    const id = theme[0]._id
+    console.log(id)
+    
+    //Check if it has 3 cats
+    if(category.length === 3){
+      theme[0].theme[category[0]][category[1]][category[2]]++
+    }
+    if(category.length === 2) {
+      theme[0].theme[category[0]][category[1]]++
+    } 
+    if(category.length === 1) {
+      theme[0].theme[category[0]]++
+    }
 
-
-     if (name.length > 4 && author && editorial && price && category && synopsis.length > 30 && format && edition &&  language && ISBN && stock && image) {
+    if (name.length > 4 && author && editorial && price && category && synopsis.length > 30 && format && edition &&  language && ISBN && stock && image) {
         book = {
           name,
           author,
@@ -29,13 +43,14 @@ bookRouter.post('/', async (req, res) => {
           stock,
           "reviews":[],
           image,
-          "unitSold":0
+          unitSold:0
         }
       }else res.status(400).send("the required fields do not meet the requirements")
-
       const addBook =  bookSchema(book);
       await addBook.save()
-     res.status(200).json(addBook)
+      await Category.where({_id : id}).update({$set: {theme: theme[0].theme}})
+      res.status(200).json(addBook)
+   
     } catch(e){
       res.status(400).json({msg:  e + ""})
     } 
