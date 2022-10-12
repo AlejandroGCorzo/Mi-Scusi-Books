@@ -1,9 +1,28 @@
 const { Router } = require("express");
 const User = require("../models/user");
+const axios = require("axios");
+
 
 const userRouter = Router();
 
 //create user
+
+userRouter.get("/protected", async (req,res) => {
+  try{
+    const accesToken = req.headers.authorization.split(' ')[1]
+    console.log(accesToken)
+    const response = await axios.get('https://miscusibooks.us.auth0.com/userinfo', {
+      headers: {
+        authorization: `Bearer ${accesToken}`
+      }
+    })
+    const userInfo = response.data
+    console.log(userInfo);
+    res.send(userInfo)
+  } catch(e){
+    res.send(e.message)
+  }
+})
 
 userRouter.post("/", async (req, res) => {
   try {
@@ -67,7 +86,7 @@ userRouter.delete("/:id", async (req, res) => {
   try {
     const userDeleted = await User.deleteOne({ _id: id });
     if (!userDeleted.deletedCount) return res.send("User not found!");
-    res.send("User deleted successfully!");
+    res.send({msg:"User deleted successfully!"});
   } catch (e) {
     res.status(400).send({ msg: e });
   }
@@ -79,7 +98,7 @@ userRouter.put("/delete/:id", async (req, res) => {
   try {
     const deletedUser = await User.updateOne({ _id: id }, { $set: {state : "Inactive"} });
     if(!deletedUser.matchedCount) return res.send("User not found!");
-    res.send("User deleted successfully!");
+    res.send({msg:"User deleted successfully!"});
   } catch (e) {
     res.status(400).send({ msg: e });
   }
@@ -91,33 +110,13 @@ userRouter.put("/update/:id", async (req, res) => {
   if (!id) return res.status(400).send({ msg: "Not id found!" });
   try {
     const updatedUser = await User.updateOne({ _id: id }, { $set: update });
-    res.send("User updated successfully!");
+    res.send({msg : "User updated successfully!"});
   } catch (e) {
     res.status(400).send({ msg: e });
   }
 });
 
 
-//log-in
-userRouter.get('/login', async(req, res) => {
-  const { userName, password } = req.body
-
-  if(!userName || !password) {
-    res.status(400).json({msg: "Missing user name and/or password"})
-  }
-
-  const user = await User.findOne({userName}) 
-  console.log(user)
-  console.log(user.password)
-   if(!user) {
-    res.status(404).json({msg: "User does not exist"})
-  }
-  if(user.password === password) {
-    return res.status(200).json({msg: "Logueo exitoso"})
-  } else {
-    return res.status(400).json({msg: "password or user name invalid"})
-  }
-})
 
 
 module.exports = userRouter;

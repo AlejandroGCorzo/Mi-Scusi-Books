@@ -18,8 +18,7 @@ const booksSchema = mongoose.Schema({
     required: true
   },
   category: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "Category",
+    type: [String],
     required: true
   },
   synopsis: {
@@ -43,7 +42,7 @@ const booksSchema = mongoose.Schema({
     required: true
   },
   rating: {
-    type: Number,
+    type: [Number],
     required: true
   },
   stock: {
@@ -58,6 +57,13 @@ const booksSchema = mongoose.Schema({
     type: String,
     required: true
   }
+})
+
+//remove __v from books
+booksSchema.set('toJSON', {
+   transform: (document, returnedObject)=>{
+     delete returnedObject.__v
+   }
 })
 
 module.exports = mongoose.model("Books", booksSchema)

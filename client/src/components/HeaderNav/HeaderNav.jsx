@@ -22,7 +22,7 @@ export default function headerNav(onSearch) {
         <div>
             {userLogueado ? 
             <div className='iconsContainer'>
-                <Link to="/detailsUser"><img src={userIcon} alt=''/></Link>
+                <Link to="/user/id"><img src={userIcon} alt=''/></Link>
                 <Link to="/store"><img src={userShopping} alt=''/></Link>
             </div>
             :

@@ -4,27 +4,21 @@ const userSchema = mongoose.Schema(
   {
     userName: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
-      required: true,
     },
     firstName: {
       type: String,
-      required: true,
     },
     lastName: {
       type: String,
-      required: true
     },
     email: {
       type: String,
-      required: true,
     },
     dni: {
       type: Number,
-      required: true,
     },
     phone: {
       type: Number,
@@ -36,7 +30,6 @@ const userSchema = mongoose.Schema(
     },
     birthdate: {
       type: String,
-      required: true,
     },
     loyaltyPoint: {
       type: Number,
