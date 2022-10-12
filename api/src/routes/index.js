@@ -23,11 +23,7 @@ const verifyJwt = jwt({
   audience: "MiScusiBooks",
   issuer: "https://miscusibooks.us.auth0.com/",
   algorithms: ["RS256"],
-<<<<<<< HEAD
 }).unless({ path: ['/','/user', "/books/allBooks", "/books"]})
-=======
-}).unless({ path: ['/','/user', "/books/allBooks", '/books']})
->>>>>>> d082336 (commented middleware protection)
 
 // router.use(verifyJwt)
 
