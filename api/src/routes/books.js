@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const bookSchema= require("../models/books");
-
 const bookRouter = Router();
-
+const filterTypeOne = ["name", "editorial", "price", "format", "language", "ISBN", "rating", "stock"];
+const filterTypeTwo = ["author","category", "rating","reviews" ];
   //post book 
 bookRouter.post('/', async (req, res) => {
     let book = {};
@@ -37,23 +37,25 @@ bookRouter.post('/', async (req, res) => {
     } 
   })
 
-     //get filter
-    // valid filter types name || editorial || price || format || language || ISBN || rating || stock
-
+   //get filter
+  // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock 
+// valid filter type Two author || category || rating || reviews 
   bookRouter.get('/filter', async (req, res)=>{
     const { type ,value } = req.query;
-    let filtro = [type, value];
-   
+    let filtro = [type, value.split("%20").join(" ")];
+ 
     try {
-    if(type == "name" || type == "price" || type == "editorial" || type == "format" || type == "edition" || type == "languaje" || type == "ISBN" || type ==  "rating" || type == "stock"){
+    if(filterTypeOne.includes(type)){
     let data = await bookSchema.find({[filtro[0]]:filtro[1]});
 
     if (data.length === 0 ){
       res.status(404).json({msg:`No books were found with this ${type}`})
     } else res.json(data);
-
-   } else res.status(400).send({msg: `filter ${type} type does not exist`})
-  
+      
+   } else if (filterTypeTwo.includes(type)) {
+        let data = await bookSchema.find({[filtro[0]]:{$all:[filtro[1]]}}, {name:1, author: 1 , editorial: 1, price:1, category:1, synopsis:1, format:1, edition:1, language:1, ISBN:1, rating:1, stock:1, review:1, image: 1})
+        res.json(data)
+      } else  res.status(400).send({msg: `filter ${type} type does not exist`})
   }catch (e) {
    res.status(400).send({ msg: e.message});
    }
