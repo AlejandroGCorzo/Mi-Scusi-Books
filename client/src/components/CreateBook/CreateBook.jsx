@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { getDetail, getChars } from '../../redux/booksActions.js';
+import { getCategories } from '../../redux/StoreBooks/booksActions';
 import './createBook.css';
 
 export default function CreateBook() {
   const [newBook, setNewBook] = useState({});
   const [author, setAuthor] = useState('');
+  const { categories } = useSelector((state) => state.books);
+  const dispatch = useDispatch();
+
   function onChange(e) {
     if (e.target.name === 'author') {
       setNewBook({
@@ -20,10 +23,12 @@ export default function CreateBook() {
     }
     setNewBook({ ...newBook, [e.target.name]: e.target.value });
   }
-
+  useEffect(() => {
+    if (!Object.keys(categories).length) dispatch(getCategories());
+  }, [dispatch]);
   return (
     <div className="bookCreationForm">
-      <div className='bookCreationFormInput'>
+      <div className="bookCreationFormInput">
         <div>
           <span>Title:</span>
           <input
@@ -47,16 +52,58 @@ export default function CreateBook() {
             add
           </button>
         </div>
+        <div>
+          <span>Editorial:</span>
+          <input
+            type="text"
+            placeholder="Write here"
+            name="editorial"
+            onChange={onChange}
+          />
+        </div>
       </div>
+      {/*  */}
       <div className="bookCreationFormPreview">
-        {newBook.title ? <div>Title: {newBook.title}.</div> : null}
+        {newBook.title ? <span>Title: {newBook.title}.</span> : null}
         {newBook.author?.length > 0 ? (
           newBook.author.length > 1 ? (
-            <span>Authors: {newBook.author.join(', ')}.</span>
-            
+            <div>
+              <span>Authors: {newBook.author.join(', ')}.</span>
+              <button
+                onClick={() => {
+                  setNewBook({
+                    ...newBook,
+                    author: newBook.author.slice(0, newBook.author.length - 1),
+                  });
+                }}
+              >
+                Delete last
+              </button>
+            </div>
           ) : (
-            newBook.author.map((el) => <span key={el}>Author: {el}.</span>)
+            newBook.author.map((el) => (
+              <div>
+                {' '}
+                <span key={el}>Author: {el}.</span>
+                <button
+                  onClick={() => {
+                    setNewBook({
+                      ...newBook,
+                      author: newBook.author.slice(
+                        0,
+                        newBook.author.length - 1
+                      ),
+                    });
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
           )
+        ) : null}
+        {newBook.editorial ? (
+          <span>Editorial: {newBook.editorial}.</span>
         ) : null}
       </div>
     </div>
