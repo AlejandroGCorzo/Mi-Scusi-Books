@@ -5,15 +5,33 @@ import { Link } from 'react-router-dom';
 import book1 from "../../sourceImg/book-4.png"
 import book2 from "../../sourceImg/book-5.png"
 import book3 from "../../sourceImg/book-6.png"
+import book4 from "../../sourceImg/book-1.png"
+import book5 from "../../sourceImg/book-2.png"
+import book6 from "../../sourceImg/book-3.png"
+import shipping from "../../sourceImg/shipping.svg";
+import payment from "../../sourceImg/payment.svg";
+import protecte from "../../sourceImg/protected.svg";
 import stand from "../../sourceImg/stand.png"
+import Slider from './Slider/Slider.jsx';
+import HeaderBottom from '../HeaderBottom/HeaderBottom.jsx';
 import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { books } = useSelector((state) => state.books); //Libros más vendidos
+  const { books } = useSelector((state) => state.books); //Libros más vendidos, no se usa por ahora
+
   useEffect(() => {
     dispatch(getChars());
   }, [dispatch]);
+
+	const mockImagenes = [  //Temporal hasta que tengamos los libros
+		book1,
+		book2,
+		book3,
+    book4,
+		book5,
+		book6
+	];
 
   return (
     <div className='homePage'>
@@ -42,9 +60,8 @@ export default function Home() {
 
       </div>
 
-
-      <h3>Top 10 Best Selling Books</h3>
-      <div className='detailBook'>
+      <Slider books={mockImagenes} />
+      {/* <div className='detailBook'>
 
         {books?.map((el) => (
           <Link to={`/books/${el._id}`} key={el._id}>
@@ -52,12 +69,25 @@ export default function Home() {
               <p>{el.name}</p>
           </Link>
         ))}
-      </div>
-      
-      <Link to="/about">
-        <p>About</p>
-      </Link>
+       
+      </div> */}
+      <div className='advertisements'>
+          <div>
+            <img src={payment} alt=''/>
+            <p>You can pay with card, debit, cash or up to 12 credit card installments.</p>
+          </div>
 
+          <div>
+            <img src={shipping} alt=''/>
+            <p>Buying more than 5 books at Scusi Book's you get one totally free.</p>
+          </div>
+
+          <div className='imageFail'>
+            <img src={protecte} alt=''/>
+            <p>At Scusi Book's you are always protected with our payment system.</p>
+          </div>
+        </div>
+      <HeaderBottom />
     </div>
   );
 }
