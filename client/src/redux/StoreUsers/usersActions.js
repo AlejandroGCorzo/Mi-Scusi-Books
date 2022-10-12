@@ -1,6 +1,9 @@
 import axios from "axios";
 import { getAllUsers, getLoggedUserData } from "./usersSlice.js";
 
+// import { useAuth0 } from "@auth0/auth0-react";
+// const { getAccessTokenSilently } = useAuth0();
+
 export const getUser = () => (dispatch) => {
   dispatch(
     getAllUsers([
@@ -36,28 +39,8 @@ export const getUser = () => (dispatch) => {
   );
 };
 
-// export const getLogUser = () => async (dispatch) => {
-//   try {
-//     const token = await getAccessTokenSilently();
-//     const response = await axios.get("http://localhost:9000/user/protected", {
-//       headers: {
-//         authorization: `Bearer ${token}`,
-//       },
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
-
-// const callProtectedApi = async () => {
-//   try {
-//     const token = await getAccessTokenSilently();
-//     const response = await axios.get("http://localhost:9000/user/protected", {
-//       headers: {
-//         authorization: `Bearer ${token}`,
-//       },
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
+export const getUserDetail = (data) => {
+  return (dispatch) => {
+    return dispatch(getLoggedUserData(data));
+  };
+};

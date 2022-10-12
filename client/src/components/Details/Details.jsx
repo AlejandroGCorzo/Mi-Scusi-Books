@@ -11,7 +11,7 @@ const Details = (props) => {
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
-    dispatch(getBooks())
+    dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     return () => {
       dispatch(setEmptyDetail());

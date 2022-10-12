@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import "./HeaderNav.css";
 import userIcon from "../../sourceImg/user.svg";
 import userShopping from "../../sourceImg/shopping-cart.svg";
-
+import { getUserDetail } from "../../redux/StoreUsers/usersActions.js";
+import { setEmptyLoggedUser } from "../../redux/StoreUsers/usersSlice.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 export default function HeaderNav(onSearch) {
-  const {
-    loginWithPopup,
-    logout,
-    user,
-    isAuthenticated,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { loggedUser } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+
+  const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
+    useAuth0();
 
   const callProtectedApi = async () => {
     try {
@@ -25,12 +25,25 @@ export default function HeaderNav(onSearch) {
           authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const userLogueado = false; //Hasta que no tenga para ver si tengo el usuario logueado uso esta variable
+  const handleLoggin = async (e) => {
+    e.preventDefault();
+    await loginWithPopup();
+    dispatch(getUserDetail(await callProtectedApi()));
+  };
+
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    logout();
+    dispatch(setEmptyLoggedUser());
+  };
+
   return (
     <div className="header">
       <Link to="/" style={{ textDecoration: "none" }}>
@@ -42,26 +55,26 @@ export default function HeaderNav(onSearch) {
       <SearchBar onSearch={onSearch} />
 
       <div>
-        {userLogueado ? (
+        {Object.keys(loggedUser).length !== 0 ? (
           <div className="iconsContainer">
+            <span onClick={handleLogOut}>Logout</span>
             <Link to="/user/id">
-              <img src={userIcon} alt="" />
+              <p>Profile</p>
             </Link>
-            <Link to="/store">
+
+            {/* <Link to="/store">
               <img src={userShopping} alt="" />
-            </Link>
+            </Link> */}
           </div>
         ) : (
           <div className="iconsContainer">
-            <span onClick={logout}>Logout</span>
-
-            <span onClick={loginWithPopup}>Login</span>
+            <span onClick={handleLoggin}>Login</span>
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}
-            <Link to="/create" style={{ textDecoration: "none" }}>
+            {/* <Link to="/create" style={{ textDecoration: "none" }}>
               <p>Sign Up</p>
-            </Link>
+            </Link> */}
           </div>
         )}
       </div>
