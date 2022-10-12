@@ -28,7 +28,7 @@ export default function headerNav(onSearch) {
             :
             <div className='iconsContainer'>
                 <Link to="/login" style={{ textDecoration: 'none'}}><p>Login</p></Link>
-                <Link to="/create" style={{ textDecoration: 'none'}}><p>Sign In</p></Link>
+                <Link to="/create" style={{ textDecoration: 'none'}}><p>Sign Up</p></Link>
             </div>
             }
         </div>
