@@ -3,6 +3,9 @@ const bookSchema= require("../models/books");
 const bookRouter = Router();
 const filterTypeOne = ["name", "editorial", "price", "format", "language", "ISBN", "rating", "stock"];
 const filterTypeTwo = ["author","category", "rating","reviews" ];
+
+
+
   //post book 
 bookRouter.post('/', async (req, res) => {
     let book = {};
@@ -10,7 +13,7 @@ bookRouter.post('/', async (req, res) => {
     const {name, author, editorial, price, category, synopsis, format, edition, language, ISBN, stock, image } = req.body;
 
 
-     if (name.length > 5 && author && editorial && price && category && synopsis.length > 30 && format && edition &&  language && ISBN && stock && image) {
+     if (name.length > 4 && author && editorial && price && category && synopsis.length > 30 && format && edition &&  language && ISBN && stock && image) {
         book = {
           name,
           author,
@@ -25,7 +28,8 @@ bookRouter.post('/', async (req, res) => {
           "rating":0,
           stock,
           "reviews":[],
-          image
+          image,
+          "unitSold":0
         }
       }else res.status(400).send("the required fields do not meet the requirements")
 
@@ -36,6 +40,18 @@ bookRouter.post('/', async (req, res) => {
       res.status(400).json({msg:  e + ""})
     } 
   })
+
+ //get top 10 best selling books
+bookRouter.get('/', async(req, res)=>{
+      try {
+         let data = await bookSchema.find().sort({"unitSold":-1}).limit(10)
+         res.json(data);
+      }
+      catch (e) {
+        res.status(400).send({ msg: e.message});
+      }
+})
+
 
    //get filter
   // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock 

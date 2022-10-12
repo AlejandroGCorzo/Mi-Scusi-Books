@@ -23,7 +23,7 @@ const verifyJwt = jwt({
   audience: "MiScusiBooks",
   issuer: "https://miscusibooks.us.auth0.com/",
   algorithms: ["RS256"],
-}).unless({ path: ['/','/user', "/books/allBooks"]})
+}).unless({ path: ['/','/user', "/books/allBooks", "/books"]})
 
 router.use(verifyJwt)
 
