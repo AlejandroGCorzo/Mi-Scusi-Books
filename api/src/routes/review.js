@@ -22,7 +22,6 @@ reviewRouter.post('/', async (req, res) => {
 reviewRouter.get('/', async(req,res) => {
   try{
     const rev = await Review.find().populate("user")
-    console.log(rev)
     const reviews = rev.map(el => {
       return {_id: el._id, votes: el.votes, text: el.text, user : el.user.name}
     })

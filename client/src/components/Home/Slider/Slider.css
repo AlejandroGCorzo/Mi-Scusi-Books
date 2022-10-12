@@ -1,0 +1,74 @@
+.containerx{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.containerSlider {
+  width: 80%;
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+.slick-list {
+  margin: 0 -10px;
+}
+
+.slick-prev{
+  margin-left: -10px;
+}
+
+.slick-prev:before {
+  color: rgb(58, 199, 58);
+  font-size: 28px;
+}
+
+.slick-next:before {
+  color: rgb(58, 199, 58);
+  font-size: 28px;
+}
+
+.card {
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #f3f3f3;
+}
+
+.card span{
+    color: black;
+}
+.card-top > img {
+  width: 100%;
+  height: auto;
+}
+
+.buyBook{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.buttonBuy{
+    background-color: rgb(58, 199, 58);
+    border: 1px solid rgb(58, 199, 58);
+    height: 35px;
+    width: 75px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 10px;
+    margin-right: 100px;
+}
+
+.buyBook p{
+    color: black;
+}
+
+.titleTop h3{
+  display: flex;
+  justify-content:flex-start;
+  font-size: 1.5rem;
+}

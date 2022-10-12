@@ -50,6 +50,9 @@
     .stand{
         display: none;
     }
+    .titleTop h3{
+        justify-content:center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -62,8 +65,10 @@
     .header{
         width: 336px;
     }
+    .headerBottom{
+        width: 336px;
+    }
     .homePage{
         width: 336px;
     }
 }
-

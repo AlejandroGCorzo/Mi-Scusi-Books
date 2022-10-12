@@ -21,6 +21,7 @@ const Details = (props) => {
   return (
     <div className="outerDiv">
       <Link to={"/"}>Home</Link>
+      <Link to={"/login"}>Login</Link>
 
       <span>{detail.name}</span>
       <img src={detail.image} className="bookImage" />

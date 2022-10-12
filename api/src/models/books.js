@@ -18,8 +18,7 @@ const booksSchema = mongoose.Schema({
     required: true
   },
   category: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "Category",
+    type: [String],
     required: true
   },
   synopsis: {
@@ -43,7 +42,7 @@ const booksSchema = mongoose.Schema({
     required: true
   },
   rating: {
-    type: Number,
+    type: [Number],
     required: true
   },
   stock: {
