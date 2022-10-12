@@ -3,7 +3,7 @@ import { getAllBooks, getBookById, getAllUsers } from "./booksSlice.js";
 
 /* https://rickandmortyapi.com/api/character */
 
-export const getChars = () => (dispatch) => {
+export const getBooks = () => (dispatch) => {
   //   axios('https://rickandmortyapi.com/api/character')
   //     .then((resolve) => dispatch(getAllCharacters(resolve.data.results)))
   //     .catch((error) => console.log(error));
@@ -45,43 +45,6 @@ export const getChars = () => (dispatch) => {
   );
 };
 
-export const getUser = () => (dispatch) => {
-  dispatch(
-    getAllUsers([
-      {
-        email: "juanfledesma18@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "janonanzer@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "alejandrogcorzo@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "cassiram15@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "mgutierrezxred@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "agustinnicolas12340@gmail.com",
-        password: 12345,
-      },
-      {
-        email: "ricaudjuan11@gmail.com",
-        password: 12345,
-      },
-    ])
-  );
-};
-
 export const getDetail = (id) => (dispatch) => {
-  dispatch(
-    getBookById(Number(id))
-  );
+  dispatch(getBookById(Number(id)));
 };

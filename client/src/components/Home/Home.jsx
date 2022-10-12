@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChars } from '../../redux/booksActions.js';
+import { getBooks } from '../../redux/StoreBooks/booksActions.js';
 import { Link } from 'react-router-dom';
 import book1 from "../../sourceImg/book-4.png"
 import book2 from "../../sourceImg/book-5.png"
@@ -21,7 +21,7 @@ export default function Home() {
   const { books } = useSelector((state) => state.books); //Libros más vendidos, no se usa por ahora
 
   useEffect(() => {
-    dispatch(getChars());
+    dispatch(getBooks());
   }, [dispatch]);
 
 	const mockImagenes = [  //Temporal hasta que tengamos los libros
