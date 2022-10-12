@@ -90,12 +90,14 @@ bookRouter.post('/', async (req, res) => {
 bookRouter.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const data = req.body; 
-   
+  const value = Object.values(data);
+
+ if(value.some(val => val.length == 0)) res.json({error: "they can't send empty comps"})
  if (!id) return res.status(400).send({ error: "id is required" });
  if (!data) return res.status(400).send({error : "information per body required to update "});
 
  try {
-    await bookSchema.updateOne({ _id: id }, { $set: data });
+    await bookSchema.updateOne({ _id: id }, { $set: data } );
     res.send("Books updated successfully!");
   } catch (e) {
     next(e)
