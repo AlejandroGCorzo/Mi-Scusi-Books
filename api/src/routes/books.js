@@ -78,14 +78,14 @@ bookRouter.get('/', async(req, res)=>{
  
     try {
     if(filterTypeOne.includes(type)){
-    let data = await bookSchema.find({[filtro[0]]:filtro[1]});
+    let data = await bookSchema.find({[filtro[0]]:filtro[1]}).select("-deleted");
 
     if (data.length === 0 ){
       res.status(404).json({msg:`No books were found with this ${type}`})
     } else res.json(data);
       
    } else if (filterTypeTwo.includes(type)) {
-        let data = await bookSchema.find({[filtro[0]]:{$all:[filtro[1]]}}, {name:1, author: 1 , editorial: 1, price:1, category:1, synopsis:1, format:1, edition:1, language:1, ISBN:1, rating:1, stock:1, review:1, image: 1})
+        let data = await bookSchema.find({[filtro[0]]:{$all:[filtro[1]]}}).select("-deleted")
         res.json(data)
       } else  res.status(400).send({msg: `filter ${type} type does not exist`})
   }catch (e) {
