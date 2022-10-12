@@ -59,4 +59,11 @@ const booksSchema = mongoose.Schema({
   }
 })
 
+//remove __v from books
+booksSchema.set('toJSON', {
+   transform: (document, returnedObject)=>{
+     delete returnedObject.__v
+   }
+})
+
 module.exports = mongoose.model("Books", booksSchema)
