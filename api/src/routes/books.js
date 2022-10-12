@@ -89,7 +89,8 @@ bookRouter.post('/', async (req, res) => {
   //  update book 
 bookRouter.put("/:id", async (req, res, next) => {
   const { id } = req.params;
-  const data = req.body;  
+  const data = req.body; 
+   
  if (!id) return res.status(400).send({ error: "id is required" });
  if (!data) return res.status(400).send({error : "information per body required to update "});
 
@@ -103,7 +104,6 @@ bookRouter.put("/:id", async (req, res, next) => {
 
 //midleware error handling
 bookRouter.use((error, req, res, next)=>{
-    // console.error(error)
    if (error.name === "CastError") {
     res.status(400).send({error:"the data sent is malformed "});
    }else res.status(500).end();
