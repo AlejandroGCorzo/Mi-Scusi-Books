@@ -31,11 +31,7 @@ userRouter.post("/", async (req, res) => {
       password,
       firstName,
       lastName,
-      email,
-      dni,
-      phone,
-      address,
-      birthdate,
+      email
     } = req.body;
 
     if (
@@ -43,15 +39,13 @@ userRouter.post("/", async (req, res) => {
       !password ||
       !firstName ||
       !lastName ||
-      !email ||
-      !dni ||
-      !birthdate
+      !email 
     )
       return res.status(400).send("necessary data missing!");
 
     const repeatedUsername = await User.findOne({ userName: userName });
     if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-
+    
     const newUser = await User.create(req.body);
     res.send("User created successfully!");
   } catch (e) {
