@@ -1,0 +1,17 @@
+.bookCreationForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bookCreationFormInput {
+  width: 50vw;
+  height: 90vh;
+}
+
+.bookCreationFormPreview {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  height: 90vh;
+}

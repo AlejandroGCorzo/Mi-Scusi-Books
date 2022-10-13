@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllBooks, getBookById } from "./booksSlice.js";
+import { getAllBooks, getBookById, allCategories } from "./booksSlice.js";
 
 export const getBooks = () => {
   return async (dispatch) => {
@@ -13,4 +13,10 @@ export const getDetail = (id) => {
     let json = await axios.get(`http://localhost:9000/books/${id}`);
     return dispatch(getBookById(json.data));
   };
+};
+
+export const getCategories = () => (dispatch) => {
+  axios.get('http://localhost:9000/category').then((el) => {
+    dispatch(allCategories(el.data[0].theme));
+  });
 };

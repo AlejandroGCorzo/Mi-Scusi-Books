@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const booksSlice = createSlice({
-  name: "books",
+  name: 'books',
   initialState: {
     books: [],
     detail: {},
+    categories: {},
   },
   reducers: {
     getAllBooks: (state, action) => {
@@ -16,10 +17,14 @@ export const booksSlice = createSlice({
     setEmptyDetail: (state) => {
       state.detail = {};
     },
+    allCategories: (state, action) => {
+      state.categories = action.payload;
+    },
   },
 });
 
-export const { getAllBooks, getBookById, setEmptyDetail, getAllUsers } =
+export const { getAllBooks, getBookById, setEmptyDetail, allCategories } =
+
   booksSlice.actions;
 
 export default booksSlice.reducer;
