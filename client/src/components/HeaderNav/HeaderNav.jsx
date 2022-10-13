@@ -20,7 +20,7 @@ export default function HeaderNav(onSearch) {
   const callProtectedApi = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get("http://localhost:9000/user/protected", {
+      const response = await axios.get("http://localhost:9000/user/detail", {
         headers: {
           authorization: `Bearer ${token}`,
         },
