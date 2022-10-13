@@ -23,6 +23,13 @@ export default function CreateBook() {
     reviews: [],
     image: '',
   });
+  const [errorHandler, setErrorHandler] = useState({
+    edition: '',
+    price: '', 
+    synopsis: '',
+    ISBN: '',
+    stock: ''
+  })
   const [author, setAuthor] = useState('');
   const [catSel, setCatSel] = useState('Select theme');
   const [imgSelected, setImgSelected] = useState({ file: {}, url: '' });
@@ -34,7 +41,7 @@ export default function CreateBook() {
   const dispatch = useDispatch();
   // // // // // //
   function onChange(e) {
-    console.log(JSON.stringify(categories));
+    // console.log(JSON.stringify(categories));
     if (e.target.name === 'author') {
       setNewBook({
         ...newBook,
@@ -59,6 +66,39 @@ export default function CreateBook() {
     if (newBook.categories.length === 3) setCatSel('Select subcategory');
   }
   // // // // // //
+  function handleErrors(e){
+    const onlyNumber = new RegExp(/^[0-9]*$/)
+    const allowDecimal = new RegExp(/^\d*\.{0,1}\d{0,2}$/);
+    const toBeNumber = ["edition", "ISBN", "stock"]
+    if(toBeNumber.includes(e.target.name)){
+      if (!onlyNumber.test(e.target.value)){
+        setErrorHandler({...errorHandler, [e.target.name]:"Only numbers allowed"})
+      } else {
+        setErrorHandler({...errorHandler, [e.target.name]:""})
+      }
+    }
+
+    if(e.target.name === "price")
+    if(!allowDecimal.test(e.target.value)){
+      setErrorHandler({...errorHandler, [e.target.name]: "Only numbers and one dot followed by two decimals allowed"})
+    } else {
+      setErrorHandler({...errorHandler, [e.target.name]: ""})
+    }
+   
+    if(e.target.name === "synopsis"){
+      if(e.target.value.length > 300){
+        setErrorHandler({...errorHandler, [e.target.name]: "300 characters allowed"})
+      } else {
+        setErrorHandler({...errorHandler, [e.target.name]: ""})
+      }
+    }
+  }
+
+  function handleChange(e){
+    onChange(e);
+    handleErrors(e)
+  }
+  // // // // // //
   useEffect(() => {
     if (!Object.keys(categories).length) dispatch(getCategories());
   }, [dispatch]);
@@ -79,6 +119,7 @@ export default function CreateBook() {
             onChange={onChange}
           />
         </div>
+        <span></span>
         <div>
           <span>Author: </span>
           <input
@@ -95,6 +136,7 @@ export default function CreateBook() {
             add
           </button>
         </div>
+        <span></span>
         <div>
           <span>Editorial: </span>
           <input
@@ -104,24 +146,27 @@ export default function CreateBook() {
             onChange={onChange}
           />
         </div>
+        <span></span>
         <div>
           <span>Edition: </span>
           <input
             type="text"
             placeholder="Year edition"
             name="edition"
-            onChange={onChange}
+            onChange={handleChange}
           />
         </div>
+        <span>{errorHandler.edition}</span>
         <div>
           <span>Price: </span>
           <input
             type="text"
             placeholder="Numbers only"
             name="price"
-            onChange={onChange}
+            onChange={handleChange}
           />
         </div>
+        <span>{errorHandler.price}</span>
         <CategoriesSelector
           newBook={newBook}
           setNewBook={setNewBook}
@@ -131,8 +176,10 @@ export default function CreateBook() {
         />
         <div>
           <span>Synopsis: </span>
-          <textarea name="synopsis" onChange={onChange} />
+          <textarea name="synopsis" onChange={handleChange} />
         </div>
+        <span>{errorHandler.synopsis}</span>
+        <span></span>
         <div>
           <span>Format: </span>
           <select
@@ -148,6 +195,7 @@ export default function CreateBook() {
             <option>Paperback</option>
           </select>
         </div>
+        <span></span>
         <div>
           <span>Language: </span>
           <select
@@ -162,24 +210,27 @@ export default function CreateBook() {
             <option>Spanish</option>
           </select>
         </div>
+        <span></span>
         <div>
           <span>ISBN: </span>
           <input
             type="text"
             placeholder="Numbers only"
             name="ISBN"
-            onChange={onChange}
+            onChange={handleErrors}
           />
         </div>
+        <span>{errorHandler.ISBN}</span>
         <div>
           <span>Stock: </span>
           <input
             type="text"
             placeholder="Numbers only"
             name="stock"
-            onChange={onChange}
+            onChange={handleErrors}
           />
         </div>
+        <span>{errorHandler.stock}</span>
       </div>
 
       {/*  */}
