@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const User = require("../models/user");
 const axios = require("axios");
+const {transporter} = require('../mailer/mailer')
 
 const userRouter = Router();
 
@@ -132,5 +133,31 @@ userRouter.put("/update/:id", async (req, res) => {
     res.status(400).send({ msg: e });
   }
 });
+
+let img = 'https://res.cloudinary.com/teepublic/image/private/s--2KjTvJ90--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_000000,e_outline:48/co_000000,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/t_watermark_lock/c_limit,f_auto,h_630,q_90,w_630/v1633396296/production/designs/24735146_0.jpg'
+
+userRouter.put("/sanction/:id", async(req,res)=>{
+  const {id} = req.params
+  const {state} = req.body
+  try {
+    const user = await User.findByIdAndUpdate(id, { $set: { state: state }})
+    await transporter.sendMail({
+      from: `"Status changed" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Status changed",
+      html: `
+      <h2>Your user status has been changed.</h2>
+      <p>New status: ${state}</p>
+      <br>
+      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `
+    })
+    res.send({msg: "State updated successfully!"})
+  } catch (error) {
+    res.status(400).send({ msg: error, otherMsg: 'algo fallo en sanction' });
+  }
+})
 
 module.exports = userRouter;
