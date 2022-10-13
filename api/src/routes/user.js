@@ -142,7 +142,7 @@ userRouter.put("/sanction/:id", async(req,res)=>{
   try {
     const user = await User.findByIdAndUpdate(id, { $set: { state: state }})
     await transporter.sendMail({
-      from: '"Status changed" <miscusibooks@gmail.com>',
+      from: `"Status changed" <${process.env.GMAIL_USER}>`,
       to: user.email,
       subject: "Status changed",
       html: `
