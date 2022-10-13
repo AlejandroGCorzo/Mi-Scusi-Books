@@ -11,18 +11,17 @@ const Details = (props) => {
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
-    dispatch(getBooks())
+    dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     return () => {
       dispatch(setEmptyDetail());
     };
   }, [dispatch]);
 
+  console.log(detail);
+
   return (
     <div className="outerDiv">
-      <Link to={"/"}>Home</Link>
-      <Link to={"/login"}>Login</Link>
-
       <span>{detail.name}</span>
       <img src={detail.image} className="bookImage" />
       {detail.author?.map((el) => (

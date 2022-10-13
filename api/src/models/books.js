@@ -58,7 +58,10 @@ const booksSchema = mongoose.Schema({
     required: true
   },
   unitSold:{
-    type: Number,
+    type: Number
+  },
+  deleted: {
+    type: Boolean
   }
 })
 

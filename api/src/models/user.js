@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
-    userName: {
+    username: {
       type: String,
     },
     password: {
@@ -10,29 +10,44 @@ const userSchema = mongoose.Schema(
     },
     firstName: {
       type: String,
+      default: 'empty'
     },
     lastName: {
       type: String,
+      default: 'empty'
     },
     email: {
       type: String,
     },
     dni: {
       type: Number,
+      default: 0
     },
     phone: {
       type: Number,
+      default: 0
     },
     address: {
-      street: String,
-      number: Number,
-      floor: Number,
+      street: {
+        type: String,
+        default: 'empty'
+      },
+      number: {
+        type: Number,
+        default: 0
+      },
+      floor: {
+        type: Number,
+        default: 0
+      }
     },
     birthdate: {
       type: String,
+      default: 'empty'
     },
     loyaltyPoint: {
       type: Number,
+      default: 0
     },
     state: {
       type: String,
@@ -45,7 +60,7 @@ const userSchema = mongoose.Schema(
     bills: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bills",
-
+      default: {}
     },
   }, { timestamps: false }
 );

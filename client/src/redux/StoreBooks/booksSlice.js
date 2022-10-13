@@ -12,7 +12,7 @@ export const booksSlice = createSlice({
       state.books = action.payload;
     },
     getBookById: (state, action) => {
-      state.detail = state.books.find((e) => e._id === action.payload);
+      state.detail = action.payload;
     },
     setEmptyDetail: (state) => {
       state.detail = {};
@@ -24,6 +24,7 @@ export const booksSlice = createSlice({
 });
 
 export const { getAllBooks, getBookById, setEmptyDetail, allCategories } =
+
   booksSlice.actions;
 
 export default booksSlice.reducer;
