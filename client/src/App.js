@@ -7,8 +7,10 @@ import Details from './components/Details/Details.jsx';
 import UserLogin from './components/UserLogin/UserLogin.jsx';
 import Nav from './components/HeaderNav/HeaderNav.jsx';
 import CreateBook from './components/CreateBook/CreateBook.jsx';
-import Category from './components/Category/Category.jsx';
 import Results from "./components/Results/Results";
+import Category from './components/Category/Category.jsx';
+import UserDetails from "./components/UserDetails/UserDetails";
+
 
 function App() {
   return (
@@ -19,8 +21,9 @@ function App() {
         <Route path="/books/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
+        <Route path="/results/:type/:value" component={Results} />
         <Route path="/category" component={Category} />
-        <Route path="/results/:type/:value" component={Results} /> 
+        <Route path="/userDetails" component={UserDetails} />
       </React.Fragment>
     </div>
   );

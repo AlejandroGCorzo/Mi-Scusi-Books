@@ -5,4 +5,6 @@
 
 .bookImage{
     width: 11%;
+    display: flex;
+    align-self: center;
 }

@@ -56,7 +56,7 @@ export default function Results() {
             <p>Author</p>
             {results?.map((b) => (
               <label>
-                <input type="checkbox" id={b._id} value={`${b.author}cb`} />{" "}
+                <input type="checkbox" id={b._id} value={`${b.author}cb`}/>
                 {b.author}
               </label>
             ))}
@@ -65,7 +65,7 @@ export default function Results() {
             <p>Editorial</p>
             {results?.map((b) => (
               <label>
-                <input type="checkbox" id={b._id} value={`${b.editorial}cb`} />{" "}
+                <input type="checkbox" id={b._id} value={`${b.editorial}cb`}/>
                 {b.editorial}
               </label>
             ))}
@@ -74,7 +74,8 @@ export default function Results() {
             <p>Language</p>
             {results?.map((b) => (
               <label>
-                <input type="checkbox" id={b._id} value={`${b.language}cb`} /> {b.language}
+                <input type="checkbox" id={b._id} value={`${b.language}cb`}/>
+                {b.language}
               </label>
             ))}
           </div>
