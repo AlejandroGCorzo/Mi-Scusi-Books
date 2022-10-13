@@ -151,8 +151,8 @@ bookRouter.get("/:id", async (req, res, next) => {
   if (!id) res.status(400).json({ error: "id is required" });
   try {
     const book = await bookSchema.findById(id).where({deleted: false}).select("-deleted");
-    if (!book) res.status(404).json({ msg: "no found books" });
-    if (book.deleted) res.status(404).json({ error: "Book doesn't exist" });
+    if (!book) res.status(404).json({ error: "Book doesn't exist" });
+    // if (book.deleted) res.status(404).json();
 
     res.status(200).json(book);
   } catch (e) {
