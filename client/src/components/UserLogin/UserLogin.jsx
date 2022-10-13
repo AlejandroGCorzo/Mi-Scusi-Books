@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { getUser } from "../../redux/StoreUsers/usersActions.js"
+import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 export default function UserLogin() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.books);
+  const { users } = useSelector((state) => state.users);
   const usersEmail = users.map((u) => u.email);
   const [input, setInput] = useState({
     email: "",
@@ -85,13 +85,13 @@ export default function UserLogin() {
     if (!input.password) {
       errors.password = "Password is required";
     } else if (input.password.length < 8 || input.password.length >= 16) {
-      errors.password = "Password must be min 8 characters and max 16 characters";
+      errors.password =
+        "Password must be min 8 characters and max 16 characters";
     } else if (
-      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(
-        input.password
-      )
+      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(input.password)
     ) {
-      errors.password = "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
+      errors.password =
+        "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
     }
     return errors;
   }
