@@ -55,7 +55,7 @@ export default function HeaderNav(onSearch) {
       <SearchBar onSearch={onSearch} />
 
       <div>
-        {Object.keys(loggedUser).length !== 0 ? (
+        {isAuthenticated ? (
           <div className="iconsContainer">
             <span onClick={handleLogOut}>Logout</span>
             <Link to="/user/id">

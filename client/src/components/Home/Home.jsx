@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { Link } from "react-router-dom";
 import book1 from "../../sourceImg/book-4.png";
 import book2 from "../../sourceImg/book-5.png";
@@ -22,6 +23,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getBooks());
+    dispatch(getUser())
   }, [dispatch]);
 
   const mockImagenes = [
