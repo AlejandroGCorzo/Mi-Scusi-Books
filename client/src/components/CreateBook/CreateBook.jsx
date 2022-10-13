@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { getCategories } from '../../redux/StoreBooks/booksActions';
 import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
 import ImgSelector from './ImgSelector/ImgSelector.jsx';
+import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
 import './CreateBook.css';
 
 export default function CreateBook() {
@@ -41,7 +42,6 @@ export default function CreateBook() {
   const dispatch = useDispatch();
   // // // // // //
   function onChange(e) {
-    // console.log(JSON.stringify(categories));
     if (e.target.name === 'author') {
       setNewBook({
         ...newBook,
@@ -106,10 +106,6 @@ export default function CreateBook() {
   return (
     <div className="bookCreationForm">
       <div className="bookCreationFormInput">
-        <ImgSelector
-          imgSelected={imgSelected}
-          setImgSelected={setImgSelected}
-        />
         <div>
           <span>Title: </span>
           <input
@@ -235,69 +231,11 @@ export default function CreateBook() {
 
       {/*  */}
       <div className="bookCreationFormPreview">
-        {newBook.title ? <span>Title: {newBook.title}.</span> : null}
-        {newBook.author?.length > 0 ? (
-          newBook.author.length > 1 ? (
-            <div>
-              <span>Authors: {newBook.author.join(', ')}.</span>
-              <button
-                onClick={() => {
-                  setNewBook({
-                    ...newBook,
-                    author: newBook.author.slice(0, newBook.author.length - 1),
-                  });
-                }}
-              >
-                Delete last
-              </button>
-            </div>
-          ) : (
-            newBook.author.map((el) => (
-              <div key={el}>
-                {' '}
-                <span key={el}>Author: {el}.</span>
-                <button
-                  onClick={() => {
-                    setNewBook({
-                      ...newBook,
-                      author: newBook.author.slice(
-                        0,
-                        newBook.author.length - 1
-                      ),
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            ))
-          )
-        ) : null}
-        {newBook.editorial ? (
-          <span>Editorial: {newBook.editorial}.</span>
-        ) : null}
-        {newBook.edition ? <span>Edition: Year {newBook.edition}.</span> : null}
-        {newBook.price ? <span>Price: U$D {newBook.price}.</span> : null}
-        {newBook.categories.length > 0 && (
-          <span>Theme: {newBook.categories[0]}.</span>
-        )}
-        {newBook.categories.length > 1 && (
-          <span>Categoy: {newBook.categories[1]}.</span>
-        )}
-        {newBook.categories.length > 2 && (
-          <span>SubCategory: {newBook.categories[2]}.</span>
-        )}
-        {newBook.categories.length > 0 && (
-          <button onClick={deleteCategory}>Delete last category</button>
-        )}
-        {newBook.format ? <span>Format: {newBook.format}.</span> : null}
-        {newBook.language ? <span>Language: {newBook.language}.</span> : null}
-        {newBook.ISBN ? <span>ISBN: {newBook.ISBN}.</span> : null}
-        {newBook.stock > 1 ? (
-          <span>Stock: {newBook.stock} units.</span>
-        ) : newBook.stock ? (
-          <span>Stock: {newBook.stock} unit.</span>
-        ) : null}
+        <NewBookPreview
+          newBook={newBook}
+          setNewBook={setNewBook}
+          deleteCategory={deleteCategory}
+        />
       </div>
     </div>
   );
