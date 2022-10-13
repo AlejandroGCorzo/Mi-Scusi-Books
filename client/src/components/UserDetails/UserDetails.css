@@ -1,0 +1,24 @@
+.userOuterDiv {
+  /* height: 80%; */
+  /* background-color: #e7e7e7; */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.userInnerDiv{
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+    align-items: center;
+    /* background-color: white; */
+    background-color: #00d480;
+    width: 50%;
+    margin: 5vh 0vh;
+    justify-content: space-between;
+}
+
+.userImage{
+    width: 10%;
+    border-radius: 50px;
+}

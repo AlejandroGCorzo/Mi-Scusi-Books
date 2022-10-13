@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import "./HeaderNav.css";
 import userIcon from "../../sourceImg/user.svg";
@@ -13,6 +13,7 @@ import axios from "axios";
 export default function HeaderNav(onSearch) {
   const { loggedUser } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
@@ -36,6 +37,7 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     await loginWithPopup();
     dispatch(getUserDetail(await callProtectedApi()));
+    history.push('/userDetails')
   };
 
   const handleLogOut = (e) => {
