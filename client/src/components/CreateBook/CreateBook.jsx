@@ -217,7 +217,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Numbers only"
             name="ISBN"
-            onChange={handleErrors}
+            onChange={handleChange}
           />
         </div>
         <span>{errorHandler.ISBN}</span>
@@ -227,7 +227,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Numbers only"
             name="stock"
-            onChange={handleErrors}
+            onChange={handleChange}
           />
         </div>
         <span>{errorHandler.stock}</span>
