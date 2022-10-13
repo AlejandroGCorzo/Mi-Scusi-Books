@@ -1,5 +1,10 @@
 import axios from "axios";
-import { getAllBooks, getBookById, allCategories } from "./booksSlice.js";
+import {
+  getAllBooks,
+  getBookById,
+  allCategories,
+  getCategoryResults,
+} from "./booksSlice.js";
 
 export const getBooks = () => {
   return async (dispatch) => {
@@ -16,7 +21,16 @@ export const getDetail = (id) => {
 };
 
 export const getCategories = () => (dispatch) => {
-  axios.get('http://localhost:9000/category').then((el) => {
+  axios.get("http://localhost:9000/category").then((el) => {
     dispatch(allCategories(el.data[0].theme));
   });
+};
+
+export const getResults = (category) => {
+  return async (dispatch) => {
+    let json = await axios.get(
+      `http://localhost:9000/books/filter?category=${category}`
+    );
+    return dispatch(getCategoryResults(json.data));
+  };
 };
