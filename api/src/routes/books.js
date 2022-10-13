@@ -112,20 +112,24 @@ bookRouter.get("/", async (req, res) => {
 // valid filter type Two author || category || rating || reviews
 bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type, value.split("%20").join(" ")];
+  let filtro = [type.toLowerCase(), value.split("%20").join(" ")];
 
   try {
     if (filterTypeOne.includes(type)) {
-      let data = await bookSchema.find({ [filtro[0]]: filtro[1] }).select("-deleted");
-
-      if (data.length === 0) {
-        res.status(404).json({ msg: `No books were found with this ${type}` });
-      } else res.json(data);
-    } else if (filterTypeTwo.includes(type)) {
-      let data = await bookSchema.find({[filtro[0]]:{$all:[filtro[1]]}}).select("-deleted")
-      res.json(data);
-    } else res.status(400).send({ msg: `filter ${type} type does not exist` });
-  } catch (e) {
+   
+      let data = await bookSchema.find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } }).where({deleted: false}).select("-deleted");
+      data.length === 0 ? res.status(404).json({ msg: `No books were found with this ${type}` }) : res.json(data);
+   
+    }
+    else if (filterTypeTwo.includes(type)) {
+   
+      let data = await bookSchema.find({ [filtro[0]]: { $all: [filtro[1]] } }).where({deleted:false}).select("-deleted");
+      data.length === 0 ? res.status(404).json({ msg: `No books were found with this ${type}` }) : res.json(data);
+   
+    }
+    else res.status(400).send({ msg: `filter ${type} type does not exist` });
+  
+  }catch (e) {
     res.status(400).send({ msg: e.message });
   }
 });
@@ -134,12 +138,9 @@ bookRouter.get("/filter", async (req, res) => {
 //get allBooks
 bookRouter.get("/allBooks", async (req, res) => {
   try {
-    const books = await bookSchema
-      .find()
-      .where({ deleted: false })
-      .select("-deleted");
+    const books = await bookSchema.find().where({ deleted: false }).select("-deleted");
     res.status(200).json(books);
-  } catch (e) {
+  }catch (e) {
     res.status(400).json({ msg: e });
   }
 });
@@ -149,11 +150,9 @@ bookRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   if (!id) res.status(400).json({ error: "id is required" });
   try {
-    const book = await bookSchema.findById(id).select("-deleted");
-    if (book.deleted) {
-      return res.status(404).json({ error: "Book doesn't exist" });
-    }
+    const book = await bookSchema.findById(id).where({deleted: false}).select("-deleted");
     if (!book) res.status(404).json({ msg: "no found books" });
+    if (book.deleted) res.status(404).json({ error: "Book doesn't exist" });
 
     res.status(200).json(book);
   } catch (e) {
@@ -208,7 +207,10 @@ bookRouter.put("/:id", async (req, res, next) => {
 bookRouter.use((error, req, res, next) => {
   if (error.name === "CastError") {
     res.status(400).send({ error: "the data sent is malformed " });
-  } else res.status(500).end();
+  }else if (error.name === "TypeError"){
+      res.status(400).json({error: error + ""})
+  } 
+  else res.status(500).end()
 });
 
 module.exports = bookRouter;
