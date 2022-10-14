@@ -1,0 +1,81 @@
+.contentCategory{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.contentCategoryDiv{
+    background-color: white;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: row;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 450px;
+    border-bottom: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.categoryDiv{
+    width: 336px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.categoryDiv span{
+    font-weight: bold;
+}
+
+.subCategoryDiv li{
+    margin-left: 5px;
+    color: #414141;
+}
+
+.titleForm{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #00cc77;
+    background-color: white;
+    border-radius: 8px 8px 0px 0px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.titleForm p{
+    margin-left: 20px;
+}
+
+.formBack{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    color: #00cc77;
+    background-color: white;
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.formBack button{
+    margin-right: 15px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.buttonBack{
+    color: white;
+    background-color: #00cc77;
+    border: 1px solid #00cc77;
+    border-radius: 8px;
+    height: 45px;
+    width: 250px;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+}
