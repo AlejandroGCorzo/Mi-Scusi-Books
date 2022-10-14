@@ -54,7 +54,7 @@ bookRouter.post('/', async (req, res) => {
       editorial &&
       price &&
       category &&
-      synopsis.length > 30 &&
+      synopsis &&
       format &&
       edition &&
       language &&
