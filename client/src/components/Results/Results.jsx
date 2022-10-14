@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getResults } from "../../redux/StoreBooks/booksActions";
+import { getResults, getCategories } from "../../redux/StoreBooks/booksActions";
 import Book from "../Book/Book";
 import "./Results.css";
 
@@ -9,11 +9,14 @@ export default function Results() {
   const dispatch = useDispatch();
   const { type, value } = useParams(); //type=category, value=medicine
   const { results } = useSelector((state) => state.books);
+  const { categories } = useSelector((state) => state.books);
   const currentBooks = results.slice(0, 8);
 
   useEffect(() => {
     dispatch(getResults(type, value));
+    dispatch(getCategories());
   }, [dispatch]);
+  console.log(categories);
 
   return (
     <div className="containerResults">
@@ -42,8 +45,12 @@ export default function Results() {
         <article className="filtersResults">
           <div className="divCategoriesFilter">
             <p>Subcategories</p>
-            <label></label>
-            <input type="checkbox" id="cb1" value="checkbox1" />
+            {/* {results?.map((b) => (
+              <label>
+                <input type="checkbox" id={b._id} value={`${b.author}cb`} />{" "}
+                {b.category}
+              </label>
+            ))} */}
           </div>
           <div className="divAuthorFilter">
             <p>Author</p>
