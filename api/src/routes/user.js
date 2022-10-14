@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const User = require("../models/user");
 const axios = require("axios");
-const {transporter} = require('../mailer/mailer')
+const {transporter} = require('../mailer/mailer');
+const { protect } = require("../middleware/protect");
 
 const userRouter = Router();
 
@@ -14,6 +15,10 @@ const userRouter = Router();
 //   updated_at: '2022-10-13T12:57:47.498Z',
 //   email: 'nanzerjano@hotmail.com'
 // }
+
+userRouter.get("/test", protect, async(req, res) => {
+  console.log(req)
+})
 
 
 userRouter.get("/detail", async (req, res) => {

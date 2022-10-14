@@ -2,6 +2,7 @@ const { Router } = require("express");
 const bookSchema = require("../models/books");
 const Category = require("../models/category");
 const bookRouter = Router();
+const { protect } = require("../middleware/protect");
 const filterTypeOne = [
   "name",
   "editorial",
@@ -159,6 +160,23 @@ bookRouter.get("/:id", async (req, res, next) => {
     next(e);
   }
 });
+
+
+bookRouter.delete("/destroy/:id", async(req, res) => {
+  const { id } = req.params;
+  if(!id){
+    return res.status(400).json({ msg: "An id is needed" });
+  }
+  try{
+    const deleted = await bookSchema.deleteOne({_id : id});
+    if (deleted) {
+      return res.status(200).json({msg: "Book fully deleted"})
+    }
+  } catch(e){
+    return res.status(400).json({ msg: "Something went wrong" });
+  }
+})
+
 
 //soft-delete books
 bookRouter.put("/delete/:id", async (req, res) => {
