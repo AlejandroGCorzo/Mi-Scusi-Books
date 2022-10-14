@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getResults, getCategories } from "../../redux/StoreBooks/booksActions";
+import {
+  getResults,
+  getCategories,
+  getBooks,
+} from "../../redux/StoreBooks/booksActions";
 import Book from "../Book/Book";
 import "./Results.css";
 
@@ -12,39 +16,37 @@ export default function Results() {
   const { categories } = useSelector((state) => state.books);
   const currentBooks = results.slice(0, 8);
 
+  // console.log("cat", categories)
+
   useEffect(() => {
     dispatch(getResults(type, value));
     dispatch(getCategories());
   }, [dispatch]);
-  console.log(categories);
+
+  function handleClick(e, type, value) {
+    e.preventDefault();
+    dispatch(getResults(type, value));
+  }
 
   return (
-    <div className="containerResults">
-      <nav className="navResults">
-        <p>{`There's ${results.length} results in ${value}`}</p>
-      </nav>
-      <section className="linkCategories">
-        <p>
-          <Link to={"/categories"} style={{ textDecoration: "none" }}>
+    <div className="contentResults">
+      <div className="divLinkCategories">
+        <p className="linkCategories">
+          <Link to={"/category"} style={{ textDecoration: "none" }}>
             Categories
           </Link>
-          /{value ? value : ""}
+          /<b>{value ? value : ""}</b>
         </p>
-        <p>
-          <label>Order by </label>
-          <select className="selectResults">
-            <option value="all">All</option>
-            <option value="lowprice">Low to high price</option>
-            <option value="highprice">High to low price</option>
-            <option value="news">Newest arrivals</option>
-            <option value="rating">Rating</option>
-          </select>
-        </p>
-      </section>
+      </div>
       <div className="resultsMain">
-        <article className="filtersResults">
-          <div className="divCategoriesFilter">
-            <p>Subcategories</p>
+        <div className="filtersResults">
+          <div className="titleResults">
+            <p>FILTERS</p>
+          </div>
+          <div className="divFilters">
+            <b>
+              <p className="titlesFilters">Subcategories</p>
+            </b>
             {/* {results?.map((b) => (
               <label>
                 <input type="checkbox" id={b._id} value={`${b.author}cb`} />{" "}
@@ -52,49 +54,65 @@ export default function Results() {
               </label>
             ))} */}
           </div>
-          <div className="divAuthorFilter">
-            <p>Author</p>
+          <div className="divFilters">
+            <b>
+              <p className="titlesFilters">Author</p>
+            </b>
             {results?.map((b) => (
-              <label>
-                <input type="checkbox" id={b._id} value={`${b.author}cb`}/>
-                {b.author}
-              </label>
+              <p onClick={(e) => handleClick(e, "author", b.author)}>
+              {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
+            </p>
             ))}
           </div>
-          <div className="divEditorialFilter">
-            <p>Editorial</p>
+          <div className="divFilters">
+            <b>
+              <p className="titlesFilters">
+                Editorial
+              </p>
+            </b>
             {results?.map((b) => (
-              <label>
-                <input type="checkbox" id={b._id} value={`${b.editorial}cb`}/>
-                {b.editorial}
-              </label>
+              <p onClick={(e) => handleClick(e, "editorial", b.editorial)}>
+                {b.editorial[0].toLocaleUpperCase() + b.editorial.slice(1)}
+              </p>
             ))}
           </div>
-          <div className="divLanguageFilter">
-            <p>Language</p>
-            {results?.map((b) => (
-              <label>
-                <input type="checkbox" id={b._id} value={`${b.language}cb`}/>
-                {b.language}
-              </label>
-            ))}
+          <div className="divFilters">
+            <b>
+              <p className="titlesFilters">Language</p>
+            </b>
+            <p onClick={(e) => handleClick(e, "language", "spanish")}>Spanish</p>
+            <p onClick={(e) => handleClick(e, "language", "english")}>English</p>
           </div>
-          <section className="sectionBooksResults">
-            {currentBooks.length > 0 &&
-              currentBooks.map((b) => {
-                return (
-                  <div className="cardBookResults" key={b._id}>
-                    <Book
-                      image={b.image}
-                      name={b.name}
-                      author={b.author}
-                      price={b.price}
-                    />
-                  </div>
-                );
-              })}
-          </section>
-        </article>
+        </div>
+        <div className="sectionBooksResults">
+          <div className="titleResults">
+            <p>{`There's ${results.length} results in ${value}`}</p>
+          </div>
+          <p>
+            <label>Order by </label>
+            <select className="selectResults">
+              <option value="all">All</option>
+              <option value="lowprice">Low to high price</option>
+              <option value="highprice">High to low price</option>
+              <option value="news">Newest arrivals</option>
+              <option value="rating">Rating</option>
+            </select>
+          </p>
+          {currentBooks.length > 0 &&
+            currentBooks.map((b) => {
+              return (
+                <div className="cardBookResults" key={b._id}>
+                  <Book
+                    image={b.image}
+                    name={b.name}
+                    author={b.author}
+                    price={b.price}
+                    _id={b._id}
+                  />
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );
