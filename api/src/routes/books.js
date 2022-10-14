@@ -66,7 +66,7 @@ bookRouter.post('/', async (req, res) => {
         author,
         editorial,
         price,
-        categories,
+        category: categories,
         synopsis,
         format,
         edition,
@@ -174,6 +174,24 @@ bookRouter.delete('/destroy/:id', async (req, res) => {
     return res.status(400).json({ msg: 'An id is needed' });
   }
   try {
+    const book = await bookSchema.findById(id);
+    const bookCategory = book.category;
+    let theme = await Category.find();
+    const themeId = theme[0]._id;
+    book.deleted = true;
+
+    if (bookCategory.length === 3) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]][bookCategory[2]]--;
+    }
+    if (bookCategory.length === 2) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]]--;
+    }
+    if (bookCategory.length === 1) {
+      theme[0].theme[bookCategory[0]]--;
+    }
+    await Category.where({ _id: themeId }).update({
+      $set: { theme: theme[0].theme },
+    });
     const deleted = await bookSchema.deleteOne({ _id: id });
     if (deleted) {
       return res.status(200).json({ msg: 'Book fully deleted' });
