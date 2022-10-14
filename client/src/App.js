@@ -18,12 +18,12 @@ function App() {
       <React.Fragment>
         <Nav onSearch="" />
         <Route exact path="/" component={Home} />
-        <Route path="/books/:id" component={Details} />
+        <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
         <Route path="/results/:type/:value" component={Results} />
         <Route path="/categories" component={Category} />
-        <Route path="/userDetails" component={UserDetails} />
+        <Route path="/user_details" component={UserDetails} />
       </React.Fragment>
     </div>
   );

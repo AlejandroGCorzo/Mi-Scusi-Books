@@ -49,22 +49,22 @@ export default function SliderImg({ books }) {
         <Slider {...settings}>
           {books.map((el) => (
             <div className="card">
+              <div className="card-top">
+                <img src={el.image} alt="" />
+              </div>
+
               <Link
-                to={`/books/${el._id}`}
+                to={`/book_details/${el._id}`}
                 key={el._id}
                 style={{ textDecoration: "none" }}
               >
-                <div className="card-top">
-                  <img src={el.image} alt="" />
-                </div>
-
                 <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
-                
-                <div className="buyBook">
-                  <button className="buttonBuy">Buy</button>
-                  <p>${el.price}</p>
-                </div>
               </Link>
+
+              <div className="buyBook">
+                <button className="buttonBuy">Buy</button>
+                <p>${el.price}</p>
+              </div>
             </div>
           ))}
         </Slider>
