@@ -59,7 +59,7 @@ export default function Results() {
               <p className="titlesFilters">Author</p>
             </b>
             {results?.map((b) => (
-              <p onClick={(e) => handleClick(e, "author", b.author)}>
+              <p style={{ cursor: "pointer" }}  onClick={(e) => handleClick(e, "author", b.author)}>
               {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
             </p>
             ))}
@@ -71,7 +71,7 @@ export default function Results() {
               </p>
             </b>
             {results?.map((b) => (
-              <p onClick={(e) => handleClick(e, "editorial", b.editorial)}>
+              <p style={{ cursor: "pointer" }} onClick={(e) => handleClick(e, "editorial", b.editorial)}>
                 {b.editorial[0].toLocaleUpperCase() + b.editorial.slice(1)}
               </p>
             ))}
@@ -80,15 +80,18 @@ export default function Results() {
             <b>
               <p className="titlesFilters">Language</p>
             </b>
-            <p onClick={(e) => handleClick(e, "language", "spanish")}>Spanish</p>
-            <p onClick={(e) => handleClick(e, "language", "english")}>English</p>
+            {results?.map((b) => (
+              <p style={{ cursor: "pointer" }} onClick={(e) => handleClick(e, "language", b.language)}>
+                {b.language[0].toLocaleUpperCase() + b.language.slice(1)}
+              </p>
+            ))}
           </div>
         </div>
         <div className="sectionBooksResults">
           <div className="titleResults">
             <p>{`There's ${results.length} results in ${value}`}</p>
           </div>
-          <p>
+          {/* <p>
             <label>Order by </label>
             <select className="selectResults">
               <option value="all">All</option>
@@ -97,7 +100,7 @@ export default function Results() {
               <option value="news">Newest arrivals</option>
               <option value="rating">Rating</option>
             </select>
-          </p>
+          </p> */}
           {currentBooks.length > 0 &&
             currentBooks.map((b) => {
               return (
