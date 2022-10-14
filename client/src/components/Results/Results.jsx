@@ -32,7 +32,7 @@ export default function Results() {
     <div className="contentResults">
       <div className="divLinkCategories">
         <p className="linkCategories">
-          <Link to={"/category"} style={{ textDecoration: "none" }}>
+          <Link to={"/categories"} style={{ textDecoration: "none" }}>
             Categories
           </Link>
           /<b>{value ? value : ""}</b>
