@@ -40,6 +40,9 @@ const UserDetails = () => {
           <span>Verify: {loggedUser.state}</span>
           <span>Bills: {loggedUser.bills}</span>
         </div>
+        <div className="saveProfile">
+          <button>save</button>
+        </div>
       </div>
     </div>
   );
