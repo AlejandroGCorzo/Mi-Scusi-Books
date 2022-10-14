@@ -20,7 +20,7 @@ export default function SearchBar() {
   function handleSubmit(i) {
     i.preventDefault();
     dispatch(getBookByName(name));
-    history.push(`/books/${books.find(b=>b.name === name)._id}`);
+    history.push(`/book_details/${books.find(b=>b.name === name)._id}`);
     setName("");
   }
 

@@ -60,7 +60,7 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     await loginWithPopup();
     const user = dispatch(getUserDetail(await callProtectedApi()));
-    if (user.payload.id) history.push("/userDetails");
+    if (user.payload.id) history.push("/user_details");
   };
 
   const handleLogOut = (e) => {
@@ -71,7 +71,6 @@ export default function HeaderNav(onSearch) {
 
   return (
     <div className="header">
-
       <Link to="/" style={{ textDecoration: "none" }}>
         <div className="logo">
           <p>Scusi Book's</p>
@@ -87,6 +86,9 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
+            <Link to="/categories" style={{ textDecoration: "none" }}>
+              <p>Categories</p>
+            </Link>
             <Box
               sx={{
                 display: "flex",
@@ -146,7 +148,7 @@ export default function HeaderNav(onSearch) {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <Link
-                to="/userDetails"
+                to="/user_details"
                 style={{ "text-decoration": "none", color: "#5b5b5b" }}
               >
                 <MenuItem>
@@ -174,7 +176,7 @@ export default function HeaderNav(onSearch) {
         ) : (
           <div className="iconsContainer">
             <Link to="/categories" style={{ textDecoration: "none" }}>
-                <p>Categories</p>
+              <p>Categories</p>
             </Link>
             <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Login
