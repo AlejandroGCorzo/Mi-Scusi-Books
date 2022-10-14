@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background-color: #00cc77;
     width: 100%;
     height: auto;
     color: white;
@@ -21,7 +21,7 @@
     flex-direction: row;
 }
 
-.iconsContainer img{
+.iconsContainer span{
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -43,6 +43,12 @@
     .textoPromotions{
         margin-top: 0px;
         width: 80%;
+    }
+    .formBack{
+        flex-direction: column;
+    }
+    .formBack button{
+        margin-left: 15px;
     }
 }
 
@@ -70,5 +76,10 @@
     }
     .homePage{
         width: 336px;
+    }
+    .contentCategory{
+        position: absolute;
+        margin-top: -25px;
+        left: -50px;
     }
 }

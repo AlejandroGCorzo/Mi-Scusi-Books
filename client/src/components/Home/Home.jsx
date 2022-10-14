@@ -6,9 +6,6 @@ import { Link } from "react-router-dom";
 import book1 from "../../sourceImg/book-4.png";
 import book2 from "../../sourceImg/book-5.png";
 import book3 from "../../sourceImg/book-6.png";
-import book4 from "../../sourceImg/book-1.png";
-import book5 from "../../sourceImg/book-2.png";
-import book6 from "../../sourceImg/book-3.png";
 import shipping from "../../sourceImg/shipping.svg";
 import payment from "../../sourceImg/payment.svg";
 import protecte from "../../sourceImg/protected.svg";
@@ -25,16 +22,6 @@ export default function Home() {
     dispatch(getBooks());
     dispatch(getUser())
   }, [dispatch]);
-
-  const mockImagenes = [
-    //Temporal hasta que tengamos los libros
-    book1,
-    book2,
-    book3,
-    book4,
-    book5,
-    book6,
-  ];
 
   return (
     <div className="homePage">
@@ -63,16 +50,7 @@ export default function Home() {
       </div>
 
       <Slider books={books} />
-      {/* <div className='detailBook'>
 
-        {books?.map((el) => (
-          <Link to={`/books/${el._id}`} key={el._id}>
-              <img src={el.image} alt=""/>
-              <p>{el.name}</p>
-          </Link>
-        ))}
-       
-      </div> */}
       <div className="advertisements">
         <div>
           <img src={payment} alt="" />
