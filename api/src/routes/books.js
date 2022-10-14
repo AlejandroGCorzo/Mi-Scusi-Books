@@ -147,7 +147,7 @@ bookRouter.get("/allBooks", async (req, res) => {
 });
 
 //get book especifict
-bookRouter.get("/:id", protect, async (req, res, next) => {
+bookRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   if (!id) res.status(400).json({ error: "id is required" });
   try {
@@ -160,6 +160,23 @@ bookRouter.get("/:id", protect, async (req, res, next) => {
     next(e);
   }
 });
+
+
+bookRouter.delete("/destroy/:id", async(req, res) => {
+  const { id } = req.params;
+  if(!id){
+    return res.status(400).json({ msg: "An id is needed" });
+  }
+  try{
+    const deleted = await bookSchema.deleteOne({_id : id});
+    if (deleted) {
+      return res.status(200).json({msg: "Book fully deleted"})
+    }
+  } catch(e){
+    return res.status(400).json({ msg: "Something went wrong" });
+  }
+})
+
 
 //soft-delete books
 bookRouter.put("/delete/:id", async (req, res) => {
