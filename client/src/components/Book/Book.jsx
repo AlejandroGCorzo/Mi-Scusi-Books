@@ -1,31 +1,31 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-import "./Book.css";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux"
+import { Link } from "react-router-dom";
+import "./Book.css"; 
 
 export default function Book({ _id, image, name, author, price }) {
-  console.log("id", _id)
 
   return (
     <div className="containerBook" key={_id}>
       <div className="contentCard">
         <div className="divImg">
-          <img className="imgBook" src={image} alt={`book-${name}`} width="130px" />
+          <img className="imgBook" src={image} alt={`book-${name}`}/>
         </div>
         <div className="infoBook">
           <Link to={`/books/${_id}`} style={{ textDecoration: "none" }}>
-            <p className="nameBook">{name}</p>
+            <b><p className="nameBook">{name}</p></b>
           </Link>
           <p className="authorBook">{author}</p>
         </div>
         <div className="priceBook">
           <Link to={`/shoppingcart`} style={{ textDecoration: "none" }}>
             <span>
-              <button className="buttonBuy">BUY</button>
+              <button className="btnBuy"><b>BUY</b></button>
             </span>
           </Link>
-          <span>
+          <b><span className="priceNumber">
             ${price}
-          </span>
+          </span></b>
         </div>
       </div>
     </div>
