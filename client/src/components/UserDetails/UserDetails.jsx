@@ -10,12 +10,18 @@ const UserDetails = () => {
 
   return (
     <div className="userOuterDiv">
+      <div className="shopingDiv">
+        <h1>Shoping</h1>
+      </div>
       <div className="userInnerDiv">
         <div className="titlePencilContainer">
+          <span></span>
           <h1 style={{ margin: "0" }}>Profile</h1>
-          {/* <p className="pencilIcon">✎</p> */}
+          <button>✎</button>
         </div>
-        <img src={loggedUser.picture} className="userImage" />
+        <div className="userImage">
+          <img src={loggedUser.picture} />
+        </div>
         <div className="userInfoContainer">
           <span>Username: {loggedUser.nickname}</span>
           <span>First Name: {loggedUser.firstName}</span>
@@ -30,6 +36,9 @@ const UserDetails = () => {
           <span>Birthday: {loggedUser.birthdate}</span>
           <span>Verify: {loggedUser.state}</span>
           <span>Bills: {loggedUser.bills}</span>
+        </div>
+        <div className="saveProfile">
+          <button>save</button>
         </div>
       </div>
     </div>
