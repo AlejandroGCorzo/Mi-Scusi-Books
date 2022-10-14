@@ -83,6 +83,7 @@ userRouter.get("/detail", async (req, res) => {
         type: user.type,
         bills: user.bills ? user.bills : "empty",
         state: user.state,
+        loyaltyPoint: user.loyaltyPoint
       };
       return res.send(formatUser)
     }
@@ -106,6 +107,7 @@ userRouter.get("/detail", async (req, res) => {
       type: user.type,
       bills: user.bills ? user.bills : "empty",
       state: user.state,
+      loyaltyPoint: user.loyaltyPoint
     };
     // console.log(formatUser);
     res.send(formatUser);
