@@ -6,6 +6,7 @@ export const booksSlice = createSlice({
     books: [],
     detail: {},
     categories: {},
+    results: []
   },
   reducers: {
     getAllBooks: (state, action) => {
@@ -20,10 +21,13 @@ export const booksSlice = createSlice({
     allCategories: (state, action) => {
       state.categories = action.payload;
     },
+    getCategoryResults: (state, action) => {
+      state.results = action.payload
+    }
   },
 });
 
-export const { getAllBooks, getBookById, setEmptyDetail, allCategories } =
+export const { getAllBooks, getBookById, setEmptyDetail, allCategories, getCategoryResults } =
 
   booksSlice.actions;
 

@@ -8,6 +8,7 @@ import UserLogin from './components/UserLogin/UserLogin.jsx';
 import Nav from './components/HeaderNav/HeaderNav.jsx';
 import CreateBook from './components/CreateBook/CreateBook.jsx';
 import Category from './components/Category/Category.jsx';
+import Results from "./components/Results/Results";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
         <Route path="/category" component={Category} />
+        <Route path="/results/:type/:value" component={Results} /> 
       </React.Fragment>
     </div>
   );
