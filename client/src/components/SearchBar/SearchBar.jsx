@@ -6,6 +6,8 @@ import { getBookByName } from "../../redux/StoreBooks/booksSlice";
 import { getBookName } from "../../redux/StoreBooks/booksActions";
 import { useHistory } from "react-router-dom";
 
+// import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
+
 export default function SearchBar() {
   const [name, setName] = useState("");
   const dispatch = useDispatch();
@@ -14,14 +16,17 @@ export default function SearchBar() {
   const { bookByName } = useSelector((state) => state.books);
   const { books } = useSelector((state) => state.books);
 
+  // const { detail } = useSelector((state) => state.books);
+
   function handleInputChange(i) {
     setName(i.target.value);
   }
 
-  function handleSubmit(i) {
+  async function handleSubmit(i) {
     i.preventDefault();
-    dispatch(getBookByName(name));
-    history.push(`/book_details/${books.find(b=>b.name === name)._id}`);
+    // dispatch(setEmptyDetail());
+    dispatch(getBookName("name", name));
+    history.push(`/book_details/${books.find((b) => b.name === name)._id}`);
     setName("");
   }
 
