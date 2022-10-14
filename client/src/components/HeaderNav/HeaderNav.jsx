@@ -59,8 +59,8 @@ export default function HeaderNav(onSearch) {
   const handleLoggin = async (e) => {
     e.preventDefault();
     await loginWithPopup();
-    dispatch(getUserDetail(await callProtectedApi()));
-    if (isAuthenticated) history.push("/userDetails");
+    const user = dispatch(getUserDetail(await callProtectedApi()));
+    if (user.payload.id) history.push("/userDetails");
   };
 
   const handleLogOut = (e) => {
