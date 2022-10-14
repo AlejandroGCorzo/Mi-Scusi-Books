@@ -47,7 +47,8 @@ export default function CreateBook() {
   // // // // // //
   function handleChange(e) {
     onChange(e, newBook, setNewBook, author, setAuthor);
-    handleErrors(e, errorHandler, setErrorHandler);
+    if (['stock', 'ISBN', 'edition', 'price'].includes(e.target.name))
+      handleErrors(e, errorHandler, setErrorHandler);
   }
   // // // // // //
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Write here"
             name="title"
-            onChange={onChange}
+            onChange={handleChange}
           />
         </div>
         <span></span>
@@ -82,7 +83,11 @@ export default function CreateBook() {
                 return onChange(e, newBook, setNewBook, author, setAuthor);
             }}
           />
-          <button name="author" disabled={!author.length} onClick={onChange}>
+          <button
+            name="author"
+            disabled={!author.length}
+            onClick={handleChange}
+          >
             add
           </button>
         </div>
@@ -93,7 +98,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Write here"
             name="editorial"
-            onChange={onChange}
+            onChange={handleChange}
           />
         </div>
         <span></span>
@@ -195,6 +200,7 @@ export default function CreateBook() {
             setNewBook={setNewBook}
           />
         </div>
+        <button type="submit">Create</button>
       </div>
       {/*  */}
       <div>
