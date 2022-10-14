@@ -13,8 +13,8 @@ export default function Category (){
             {JSON.stringify(categories[index]) !=='{}' && Object.keys(categories[index]).sort()
                 .map((el) => 
                 <div className="subCategoryDiv" key={el}>
-                    <Link to ="/category" style={{ textDecoration: "none" }}>
-                        <li>{index[0].toLocaleUpperCase() + el.slice(1)}</li>
+                    <Link to ={`/results/${index}/${el}`} style={{ textDecoration: "none" }}>
+                        <li>{el[0].toLocaleUpperCase() + el.slice(1)}</li>
                     </Link>
                 </div>
             )}

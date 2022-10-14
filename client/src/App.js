@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
         <Route path="/results/:type/:value" component={Results} />
-        <Route path="/category" component={Category} />
+        <Route path="/categories" component={Category} />
         <Route path="/userDetails" component={UserDetails} />
       </React.Fragment>
     </div>

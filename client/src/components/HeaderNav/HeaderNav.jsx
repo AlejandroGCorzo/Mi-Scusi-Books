@@ -71,15 +71,10 @@ export default function HeaderNav(onSearch) {
 
   return (
     <div className="header">
+
       <Link to="/" style={{ textDecoration: "none" }}>
         <div className="logo">
           <p>Scusi Book's</p>
-        </div>
-      </Link>
-
-      <Link to="/category" style={{ textDecoration: "none" }}>
-        <div className="iconsContainer">
-          <p>Categories</p>
         </div>
       </Link>
 
@@ -178,9 +173,13 @@ export default function HeaderNav(onSearch) {
           </div>
         ) : (
           <div className="iconsContainer">
-            <span onClick={handleLoggin} style={{ cursor: "pointer" }}>
+            <Link to="/categories" style={{ textDecoration: "none" }}>
+                <p>Categories</p>
+            </Link>
+            <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Login
-            </span>
+            </p>
+
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}

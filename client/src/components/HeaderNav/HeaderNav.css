@@ -21,24 +21,16 @@
     flex-direction: row;
 }
 
-.iconsContainer span{
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 .iconsContainer p{
     margin-left: 10px;
     margin-right: 10px;
     color: white;
 }
 
+
 @media (max-width: 914px) {
     .header {
         flex-direction: column;
-    }
-    .iconsContainer img{
-        margin-top: 10px;
-        margin-bottom: 10px;
     }
     .textoPromotions{
         margin-top: 0px;
@@ -82,4 +74,17 @@
         margin-top: -25px;
         left: -50px;
     }
+}
+
+.routesHeader{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.routesHeader p{
+    color:white;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
 }
