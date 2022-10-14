@@ -5,16 +5,10 @@ import { getCategories } from '../../redux/StoreBooks/booksActions';
 import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
 import ImgSelector from './ImgSelector/ImgSelector.jsx';
 import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
+import DialogAction from './DialogActions/DialogActions.jsx';
+import SubmitButtonStack from './SubmitButtonsStack/SubmitButtonStack';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import {
   deleteCategory,
   handleErrors,
@@ -148,6 +142,7 @@ export default function CreateBook() {
           />
         </div>
         <span>{errorHandler.price}</span>
+        {/* CATEGORIES SELECTOR */}
         <CategoriesSelector
           newBook={newBook}
           setNewBook={setNewBook}
@@ -231,110 +226,29 @@ export default function CreateBook() {
             categories={categories}
           />
         </div>
-        {/* STACK BOTONES RESET Y CREATE */}
-        <Stack
-          className="CreateBookConfirmationStack"
-          direction="row"
-          spacing={2}
-        >
-          <Button
-            name="reset"
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={handleClickOpen}
-          >
-            Reset fields
-          </Button>
-          <Button
-            name="create"
-            variant="contained"
-            endIcon={<SendIcon />}
-            onClick={handleClickOpen}
-            disabled={
-              errorHandler.edition.length !== 0 ||
-              errorHandler.price.length !== 0 ||
-              errorHandler.synopsis.length !== 0 ||
-              errorHandler.ISBN.length !== 0 ||
-              errorHandler.stock.length !== 0 ||
-              !newBook.title ||
-              !newBook.title ||
-              !newBook.author.length ||
-              !newBook.editorial ||
-              !newBook.edition.length ||
-              !newBook.price ||
-              newBook.categories.length < 2 ||
-              !newBook.synopsis ||
-              !newBook.format ||
-              !newBook.language ||
-              !newBook.ISBN ||
-              !newBook.stock ||
-              !newBook.image
-            }
-          >
-            Create Book
-          </Button>
-        </Stack>
-        {/* CONFIRM RESET DIALOG */}
-        <Dialog
-          open={open.reset ? true : false}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Confirm Reset</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to reset all fields?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                handleClose();
-                setNewBook(emptyBook);
-                setAuthor('');
-                setOptions(defaultOptions);
-                setCatSel('Select theme');
-              }}
-              autoFocus
-            >
-              Confirm
-            </Button>
-            <Button onClick={handleClose}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
-        {/* CONFIRM CREATE DIALOG */}
-        <Dialog
-          open={open.create ? true : false}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            Confirm creation of {newBook.title}?
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Check that everything is OK and click Confirm. Else click Cancel.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={(e) => {
-                handleClose();
-                handleSubmit(e, newBook, history);
-              }}
-              autoFocus
-            >
-              Confirm
-            </Button>
-            <Button onClick={handleClose}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
-        {/*  */}
+        {/* BUTTONS STACK RESET & CREATE */}
+        <SubmitButtonStack
+          handleClickOpen={handleClickOpen}
+          errorHandler={errorHandler}
+          newBook={newBook}
+        />
+        {/* CONFIRM WINDOWS */}
+        <DialogAction
+          handleClose={handleClose}
+          newBook={newBook}
+          setNewBook={setNewBook}
+          emptyBook={emptyBook}
+          handleSubmit={handleSubmit}
+          setAuthor={setAuthor}
+          setOptions={setOptions}
+          defaultOptions={defaultOptions}
+          setCatSel={setCatSel}
+          open={open}
+          history={history}
+        />
       </div>
-      {/*  */}
       <div>
+        {/* NEW BOOK PREVIEW */}
         <NewBookPreview
           newBook={newBook}
           setNewBook={setNewBook}
