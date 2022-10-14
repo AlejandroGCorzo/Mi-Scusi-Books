@@ -21,7 +21,7 @@ function App() {
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
-        <Route path="/results/:type/:value" component={Results} />
+        <Route path="/books/:type/:value" component={Results} />
         <Route path="/categories" component={Category} />
         <Route path="/user_details" component={UserDetails} />
       </React.Fragment>
