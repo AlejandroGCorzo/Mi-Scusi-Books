@@ -28,7 +28,7 @@ const Details = (props) => {
           <span className="synopsisText">{detail.synopsis}</span>
         </div>
         <div className="leftInnerBox">
-          <span>{detail.name}</span>
+          <span className="bookName">{detail.name}</span>
           {detail.author?.map((el) => (
             <span key={el}>Author: {el}</span>
           ))}
@@ -47,7 +47,7 @@ const Details = (props) => {
           <span>ISBN: {detail.ISBN}</span>
           <span>Rating: {detail.rating}</span>
           <span>Stock: {detail.stock}</span>
-          <span>Price: {detail.price}</span>
+          <span>${detail.price}</span>
         </div>
       </div>
       <span>
