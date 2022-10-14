@@ -28,11 +28,7 @@ const Details = (props) => {
           <span className="synopsisText">{detail.synopsis}</span>
         </div>
         <div className="leftInnerBox">
-<<<<<<< HEAD
           <span className="bookName">{detail.name}</span>
-=======
-          <span>{detail.name}</span>
->>>>>>> bea2e12 (FRONT bookDetail start css)
           {detail.author?.map((el) => (
             <span key={el}>Author: {el}</span>
           ))}
@@ -51,11 +47,7 @@ const Details = (props) => {
           <span>ISBN: {detail.ISBN}</span>
           <span>Rating: {detail.rating}</span>
           <span>Stock: {detail.stock}</span>
-<<<<<<< HEAD
           <span>${detail.price}</span>
-=======
-          <span>Price: {detail.price}</span>
->>>>>>> bea2e12 (FRONT bookDetail start css)
         </div>
       </div>
       <span>
