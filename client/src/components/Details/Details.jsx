@@ -28,7 +28,7 @@ const Details = (props) => {
           <span className="synopsisText">{detail.synopsis}</span>
         </div>
         <div className="leftInnerBox">
-          <span className="bookName">{detail.name}</span>
+          <span>{detail.name}</span>
           {detail.author?.map((el) => (
             <span key={el}>Author: {el}</span>
           ))}
