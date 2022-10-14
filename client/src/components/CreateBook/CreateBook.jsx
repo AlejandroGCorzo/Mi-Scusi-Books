@@ -7,7 +7,9 @@ import ImgSelector from './ImgSelector/ImgSelector.jsx';
 import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import './CreateBook.css';
-import { handleErrors } from './Functions/handleErrors';
+import { handleErrors } from './Functions/handleErrors.js';
+import { onChange } from './Functions/onChange.js';
+import { deleteCategory } from './Functions/deleteCategory.js';
 
 export default function CreateBook() {
   const [newBook, setNewBook] = useState({
@@ -43,33 +45,8 @@ export default function CreateBook() {
   const { categories } = useSelector((state) => state.books);
   const dispatch = useDispatch();
   // // // // // //
-  function onChange(e) {
-    if (e.target.name === 'author') {
-      setNewBook({
-        ...newBook,
-        [e.target.name]: [...newBook[e.target.name], author],
-      });
-      setAuthor('');
-      return;
-    }
-    setNewBook({ ...newBook, [e.target.name]: e.target.value });
-  }
-  function handleKeyDown(e) {
-    if (e.keyCode === 13 && e.target.name === 'author') return onChange(e);
-  }
-  // // // // // //
-  function deleteCategory() {
-    setNewBook({
-      ...newBook,
-      categories: newBook.categories.slice(0, newBook.categories.length - 1),
-    });
-    if (newBook.categories.length === 1) setCatSel('Select theme');
-    if (newBook.categories.length === 2) setCatSel('Select category');
-    if (newBook.categories.length === 3) setCatSel('Select subcategory');
-  }
-
   function handleChange(e) {
-    onChange(e);
+    onChange(e, newBook, setNewBook, author, setAuthor);
     handleErrors(e, errorHandler, setErrorHandler);
   }
   // // // // // //
@@ -100,7 +77,10 @@ export default function CreateBook() {
             onChange={(e) => {
               setAuthor(e.target.value);
             }}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13 && e.target.name === 'author')
+                return onChange(e, newBook, setNewBook, author, setAuthor);
+            }}
           />
           <button name="author" disabled={!author.length} onClick={onChange}>
             add
@@ -221,7 +201,7 @@ export default function CreateBook() {
         <NewBookPreview
           newBook={newBook}
           setNewBook={setNewBook}
-          deleteCategory={deleteCategory}
+          deleteCategory={() => deleteCategory(newBook, setNewBook, setCatSel)}
         />
       </div>
     </div>
