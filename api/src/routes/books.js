@@ -35,7 +35,6 @@ bookRouter.post('/', async (req, res) => {
     } = req.body;
     let theme = await Category.find();
     const id = theme[0]._id;
-    console.log(id);
 
     //Check if it has 3 cats
     if (categories.length === 3) {
@@ -81,15 +80,15 @@ bookRouter.post('/', async (req, res) => {
         deleted: false,
       };
     } else
-      res.status(400).send('the required fields do not meet the requirements');
+      return res.status(400).send("the required fields do not meet the requirements");
     const addBook = bookSchema(book);
     await addBook.save();
     await Category.where({ _id: id }).update({
       $set: { theme: theme[0].theme },
     });
-    res.status(200).json(addBook);
+    return res.status(200).json(addBook);
   } catch (e) {
-    res.status(400).json({ msg: e + '' });
+    return res.status(400).json({ msg: e + "" });
   }
 });
 
@@ -191,15 +190,31 @@ bookRouter.put('/delete/:id', async (req, res) => {
     return res.status(400).json({ msg: 'An id is needed' });
   }
   try {
-    const bookUpdated = await bookSchema.updateOne(
-      { _id: id },
-      { $set: { deleted: true } }
-    );
-    console.log(bookUpdated);
-    if (bookUpdated.modifiedCount === 0) {
+    const book = await bookSchema.findById(id);
+    if (!book) {
       return res.status(400).json({ msg: "Book doesn't exist" });
     }
-    return res.status(200).json({ msg: 'Book deleted' });
+    const bookCategory = book.category;
+    let theme = await Category.find();
+    const themeId = theme[0]._id;
+    book.deleted = true;
+
+    if (bookCategory.length === 3) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]][bookCategory[2]]--;
+    }
+    if (bookCategory.length === 2) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]]--;
+    }
+    if (bookCategory.length === 1) {
+      theme[0].theme[bookCategory[0]]--;
+    }
+
+    await book.save();
+    await Category.where({ _id: themeId }).update({
+      $set: { theme: theme[0].theme },
+    });
+
+    return res.status(200).json({ msg: "Book deleted" });
   } catch (e) {
     return res.status(400).json({ msg: 'Something went wrong' });
   }
