@@ -113,7 +113,7 @@ bookRouter.get('/', async (req, res) => {
 // valid filter type Two author || category || rating || reviews
 bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type.toLowerCase(), value.split("%20").join(" ")];
+  let filtro = [type.split("-").join(" ").toLowerCase(), value.split("-").join(" ")]
 
   try {
     if (filterTypeOne.includes(type)) {
