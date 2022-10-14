@@ -25,7 +25,7 @@ export default function SearchBar() {
   async function handleSubmit(i) {
     i.preventDefault();
     // dispatch(setEmptyDetail());
-    dispatch(getBookName("name", name));
+    dispatch(getBookName("name", name.toLowerCase()));
     history.push(`/book_details/${books.find((b) => b.name === name)._id}`);
     setName("");
   }
