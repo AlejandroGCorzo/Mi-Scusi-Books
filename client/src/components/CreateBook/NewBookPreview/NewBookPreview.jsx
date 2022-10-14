@@ -7,71 +7,66 @@ export default function NewBookPreview({
   deleteCategory,
 }) {
   return (
-    <div>
+    <div className="bookCreationFormPreview">
       {newBook.image ? (
         <img className="imgPreview" src={newBook.image} />
       ) : (
         <img className="imgPreviewDefault" src={noImgAvailable} />
       )}
-      {newBook.title ? <span>Title: {newBook.title}.</span> : null}
-      {newBook.author?.length > 0 ? (
-        newBook.author.length > 1 ? (
-          <div>
-            <span>Authors: {newBook.author.join(', ')}.</span>
-            <button
-              onClick={() => {
-                setNewBook({
-                  ...newBook,
-                  author: newBook.author.slice(0, newBook.author.length - 1),
-                });
-              }}
-            >
-              Delete last
-            </button>
-          </div>
-        ) : (
-          newBook.author.map((el) => (
-            <div key={el}>
-              {' '}
-              <span key={el}>Author: {el}.</span>
-              <button
-                onClick={() => {
-                  setNewBook({
-                    ...newBook,
-                    author: newBook.author.slice(0, newBook.author.length - 1),
-                  });
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          ))
-        )
-      ) : null}
-      {newBook.editorial ? <span>Editorial: {newBook.editorial}.</span> : null}
-      {newBook.edition ? <span>Edition: Year {newBook.edition}.</span> : null}
-      {newBook.price ? <span>Price: U$D {newBook.price}.</span> : null}
-      {newBook.categories.length > 0 && (
-        <span>Theme: {newBook.categories[0]}.</span>
-      )}
-      {newBook.categories.length > 1 && (
-        <span>Categoy: {newBook.categories[1]}.</span>
-      )}
-      {newBook.categories.length > 2 && (
-        <span>SubCategory: {newBook.categories[2]}.</span>
-      )}
-      {newBook.categories.length > 0 && (
-        <button onClick={deleteCategory}>Delete last category</button>
-      )}
-      {newBook.synopsis ? <span>Synopsis: {newBook.synopsis}.</span> : null}
-      {newBook.format ? <span>Format: {newBook.format}.</span> : null}
-      {newBook.language ? <span>Language: {newBook.language}.</span> : null}
-      {newBook.ISBN ? <span>ISBN: {newBook.ISBN}.</span> : null}
-      {newBook.stock > 1 ? (
-        <span>Stock: {newBook.stock} units.</span>
-      ) : newBook.stock ? (
-        <span>Stock: {newBook.stock} unit.</span>
-      ) : null}
+      <span>Title: {newBook.title ? `${newBook.title}` : '<empty>'}</span>
+      <span>
+        Author:{' '}
+        {newBook.author.length ? `${newBook.author.join(', ')}` : '<empty>'}
+        {newBook.author.length ? (
+          <span
+            onClick={() => {
+              setNewBook({
+                ...newBook,
+                author: newBook.author.slice(0, newBook.author.length - 1),
+              });
+            }}
+          >
+            Delete last.
+          </span>
+        ) : null}
+      </span>
+      <span>
+        Editorial: {newBook.editorial ? `${newBook.editorial}` : '<empty>'}
+      </span>
+      <span>Edition: {newBook.edition ? `${newBook.edition}` : '<empty>'}</span>
+      <span>Price: {newBook.price ? `U$D ${newBook.price}` : '<empty>'}</span>
+      <span>
+        Theme: {newBook.categories[0] ? `${newBook.categories[0]}` : '<empty>'}
+      </span>
+      <span>
+        Categoy:{' '}
+        {newBook.categories[1] ? `${newBook.categories[1]}` : '<empty>'}
+      </span>
+      <span>
+        Subcategory:{' '}
+        {newBook.categories[2] ? `${newBook.categories[2]}` : '<empty>'}
+      </span>
+      <button
+        disabled={newBook.categories.length === 0}
+        onClick={deleteCategory}
+      >
+        Delete last category
+      </button>
+      <span>
+        Synopsis: {newBook.synopsis ? `${newBook.synopsis}` : '<empty>'}
+      </span>
+      <span>Format: {newBook.format ? `${newBook.format}` : '<empty>'}</span>
+      <span>
+        Language: {newBook.language ? `${newBook.language}` : '<empty>'}
+      </span>
+      <span>ISBN: {newBook.ISBN ? `${newBook.ISBN}` : '<empty>'}</span>
+
+      <span>
+        Stock:{' '}
+        {newBook.stock
+          ? `${newBook.stock} ${newBook.stock > 1 ? 'units' : 'unit'}`
+          : '<empty>'}
+      </span>
     </div>
   );
 }

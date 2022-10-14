@@ -20,6 +20,11 @@
   height: 90vh;
 }
 .imgPreview {
-  height: 40vh;
+  height: 30vh;
+  width: 15vw;
+}
+
+.imgPreviewDefault {
+  height: 30vh;
   width: 15vw;
 }
