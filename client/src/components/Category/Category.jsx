@@ -9,18 +9,19 @@ export default function Category (){
     const { categories } = useSelector((state) => state.books);
 
     function viewCategory(index){
+        console.log(categories[index]);
         return (<div>
             {JSON.stringify(categories[index]) !=='{}' && Object.keys(categories[index]).sort()
                 .map((el) => 
                 <div className="subCategoryDiv" key={el}>
-                    <Link to ={`/results/${index}/${el}`} style={{ textDecoration: "none" }}>
+                    <Link to ={`/results/${index.split(" ").join("-")}/${el.split(" ").join("-")}`} style={{ textDecoration: "none" }}>
                         <li>{el[0].toLocaleUpperCase() + el.slice(1)}</li>
                     </Link>
 
                     {JSON.stringify(categories[index][el]) !=='{}' && Object.keys(categories[index][el]).sort()
                     .map((elx) => 
                     <div className="subToCategoryDiv" key={elx}>
-                        <Link to ={`/results/${index}/${el}/${elx}`} style={{ textDecoration: "none" }}>
+                        <Link to ={`/results/${index.split(" ").join("-")}/${el.split(" ").join("-")}/${elx.split(" ").join("-")}`} style={{ textDecoration: "none" }}>
                             <span>{elx[0].toLocaleUpperCase() + elx.slice(1)}</span>
                         </Link>
                     </div>
