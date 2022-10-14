@@ -13,7 +13,7 @@ export default function Book({ _id, image, name, author, price }) {
         </div>
         <div className="infoBook">
           <Link to={`/book_details/${_id}`} style={{ textDecoration: "none" }}>
-            <p className="nameBook">{name}</p>
+            <p className="nameBook"><b>{name}</b></p>
           </Link>
           <p className="authorBook">{author}</p>
         </div>
