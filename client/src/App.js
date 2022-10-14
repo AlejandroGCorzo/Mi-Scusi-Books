@@ -9,6 +9,7 @@ import Nav from './components/HeaderNav/HeaderNav.jsx';
 import CreateBook from './components/CreateBook/CreateBook.jsx';
 import Results from "./components/Results/Results";
 import Category from './components/Category/Category.jsx';
+import UserDetails from "./components/UserDetails/UserDetails";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/create" component={CreateBook} />
         <Route path="/results/:type/:value" component={Results} />
         <Route path="/category" component={Category} />
+        <Route path="/userDetails" component={UserDetails} />
       </React.Fragment>
     </div>
   );

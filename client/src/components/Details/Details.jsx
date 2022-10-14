@@ -18,8 +18,6 @@ const Details = (props) => {
     };
   }, [dispatch]);
 
-  console.log(detail);
-
   return (
     <div className="outerDiv">
       <span>{detail.name}</span>
