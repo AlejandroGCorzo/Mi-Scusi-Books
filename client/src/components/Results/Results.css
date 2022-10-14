@@ -6,9 +6,9 @@
 }
 
 .cardBookResults {
-  width: 220px;
+  width: 210px;
   height: 180px;
-  margin: 15px;
+  margin: 60px 30px 80px 30px;
   display: inline-block;
   align-items: center;
   justify-content: center;
@@ -16,6 +16,8 @@
 
 .resultsMain {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
@@ -23,13 +25,14 @@
 .divLinkCategories {
   color: black;
   font-size: 14px;
-  margin-right: 75em;
+  margin-right: 95em;
 }
 
 .filtersResults {
-  width: 30em;
+  width: 20em;
   display: flex;
   margin-right: 2em;
+  /* margin-top: -32px; */
   justify-content: center;
   align-items: center;
   background-color: white;
@@ -42,9 +45,12 @@
 }
 
 .sectionBooksResults {
-  width: 70em;
+  width: 90em;
   background-color: white;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
   border-radius: 10px;
   border: 1px solid #e7e7e7;
