@@ -35,7 +35,6 @@ bookRouter.post("/", async (req, res) => {
     } = req.body;
     let theme = await Category.find();
     const id = theme[0]._id;
-    console.log(id);
 
     //Check if it has 3 cats
     if (category.length === 3) {
@@ -81,15 +80,15 @@ bookRouter.post("/", async (req, res) => {
         deleted: false,
       };
     } else
-      res.status(400).send("the required fields do not meet the requirements");
+      return res.status(400).send("the required fields do not meet the requirements");
     const addBook = bookSchema(book);
     await addBook.save();
     await Category.where({ _id: id }).update({
       $set: { theme: theme[0].theme },
     });
-    res.status(200).json(addBook);
+    return res.status(200).json(addBook);
   } catch (e) {
-    res.status(400).json({ msg: e + "" });
+    return res.status(400).json({ msg: e + "" });
   }
 });
 
@@ -117,31 +116,36 @@ bookRouter.get("/filter", async (req, res) => {
 
   try {
     if (filterTypeOne.includes(type)) {
-   
-      let data = await bookSchema.find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } }).where({deleted: false}).select("-deleted");
-      data.length === 0 ? res.status(404).json({ msg: `No books were found with this ${type}` }) : res.json(data);
-   
-    }
-    else if (filterTypeTwo.includes(type)) {
-   
-      let data = await bookSchema.find({ [filtro[0]]: { $all: [filtro[1]] } }).where({deleted:false}).select("-deleted");
-      data.length === 0 ? res.status(404).json({ msg: `No books were found with this ${type}` }) : res.json(data);
-   
-    }
-    else res.status(400).send({ msg: `filter ${type} type does not exist` });
-  
-  }catch (e) {
+      let data = await bookSchema
+        .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
+        .where({ deleted: false })
+        .select("-deleted");
+      data.length === 0
+        ? res.status(404).json({ msg: `No books were found with this ${type}` })
+        : res.json(data);
+    } else if (filterTypeTwo.includes(type)) {
+      let data = await bookSchema
+        .find({ [filtro[0]]: { $all: [filtro[1]] } })
+        .where({ deleted: false })
+        .select("-deleted");
+      data.length === 0
+        ? res.status(404).json({ msg: `No books were found with this ${type}` })
+        : res.json(data);
+    } else res.status(400).send({ msg: `filter ${type} type does not exist` });
+  } catch (e) {
     res.status(400).send({ msg: e.message });
   }
 });
 
-
 //get allBooks
 bookRouter.get("/allBooks", async (req, res) => {
   try {
-    const books = await bookSchema.find().where({ deleted: false }).select("-deleted");
+    const books = await bookSchema
+      .find()
+      .where({ deleted: false })
+      .select("-deleted");
     res.status(200).json(books);
-  }catch (e) {
+  } catch (e) {
     res.status(400).json({ msg: e });
   }
 });
@@ -151,7 +155,10 @@ bookRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   if (!id) res.status(400).json({ error: "id is required" });
   try {
-    const book = await bookSchema.findById(id).where({deleted: false}).select("-deleted");
+    const book = await bookSchema
+      .findById(id)
+      .where({ deleted: false })
+      .select("-deleted");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
 
@@ -161,22 +168,20 @@ bookRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-
-bookRouter.delete("/destroy/:id", async(req, res) => {
+bookRouter.delete("/destroy/:id", async (req, res) => {
   const { id } = req.params;
-  if(!id){
+  if (!id) {
     return res.status(400).json({ msg: "An id is needed" });
   }
-  try{
-    const deleted = await bookSchema.deleteOne({_id : id});
+  try {
+    const deleted = await bookSchema.deleteOne({ _id: id });
     if (deleted) {
-      return res.status(200).json({msg: "Book fully deleted"})
+      return res.status(200).json({ msg: "Book fully deleted" });
     }
-  } catch(e){
+  } catch (e) {
     return res.status(400).json({ msg: "Something went wrong" });
   }
-})
-
+});
 
 //soft-delete books
 bookRouter.put("/delete/:id", async (req, res) => {
@@ -185,14 +190,30 @@ bookRouter.put("/delete/:id", async (req, res) => {
     return res.status(400).json({ msg: "An id is needed" });
   }
   try {
-    const bookUpdated = await bookSchema.updateOne(
-      { _id: id },
-      { $set: { deleted: true } }
-    );
-    console.log(bookUpdated);
-    if (bookUpdated.modifiedCount === 0) {
+    const book = await bookSchema.findById(id);
+    if (!book) {
       return res.status(400).json({ msg: "Book doesn't exist" });
     }
+    const bookCategory = book.category;
+    let theme = await Category.find();
+    const themeId = theme[0]._id;
+    book.deleted = true;
+
+    if (bookCategory.length === 3) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]][bookCategory[2]]--;
+    }
+    if (bookCategory.length === 2) {
+      theme[0].theme[bookCategory[0]][bookCategory[1]]--;
+    }
+    if (bookCategory.length === 1) {
+      theme[0].theme[bookCategory[0]]--;
+    }
+
+    await book.save();
+    await Category.where({ _id: themeId }).update({
+      $set: { theme: theme[0].theme },
+    });
+
     return res.status(200).json({ msg: "Book deleted" });
   } catch (e) {
     return res.status(400).json({ msg: "Something went wrong" });
@@ -225,10 +246,9 @@ bookRouter.put("/:id", async (req, res, next) => {
 bookRouter.use((error, req, res, next) => {
   if (error.name === "CastError") {
     res.status(400).send({ error: "the data sent is malformed " });
-  }else if (error.name === "TypeError"){
-      res.status(400).json({error: error + ""})
-  } 
-  else res.status(500).end()
+  } else if (error.name === "TypeError") {
+    res.status(400).json({ error: error + "" });
+  } else res.status(500).end();
 });
 
 module.exports = bookRouter;
