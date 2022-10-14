@@ -58,8 +58,8 @@ export default function SliderImg({ books }) {
                   <img src={el.image} alt="" />
                 </div>
 
-                {/* <Link to={`/books/${el._id}`} key={el._id}> */}
-                <span>{el.name}</span>
+                <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
+                
                 <div className="buyBook">
                   <button className="buttonBuy">Buy</button>
                   <p>${el.price}</p>

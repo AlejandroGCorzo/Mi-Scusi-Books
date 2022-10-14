@@ -4,6 +4,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { getCategories } from '../../redux/StoreBooks/booksActions';
 import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
 import ImgSelector from './ImgSelector/ImgSelector.jsx';
+import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 import './CreateBook.css';
 
 export default function CreateBook() {
@@ -25,11 +27,11 @@ export default function CreateBook() {
   });
   const [errorHandler, setErrorHandler] = useState({
     edition: '',
-    price: '', 
+    price: '',
     synopsis: '',
     ISBN: '',
-    stock: ''
-  })
+    stock: '',
+  });
   const [author, setAuthor] = useState('');
   const [catSel, setCatSel] = useState('Select theme');
   const [imgSelected, setImgSelected] = useState({ file: {}, url: '' });
@@ -41,7 +43,6 @@ export default function CreateBook() {
   const dispatch = useDispatch();
   // // // // // //
   function onChange(e) {
-    // console.log(JSON.stringify(categories));
     if (e.target.name === 'author') {
       setNewBook({
         ...newBook,
@@ -66,37 +67,79 @@ export default function CreateBook() {
     if (newBook.categories.length === 3) setCatSel('Select subcategory');
   }
   // // // // // //
-  function handleErrors(e){
-    const onlyNumber = new RegExp(/^[0-9]*$/)
+  function handleErrors(e) {
+    const onlyNumber = new RegExp(/^[0-9]*$/);
     const allowDecimal = new RegExp(/^\d*\.{0,1}\d{0,2}$/);
-    const toBeNumber = ["edition", "ISBN", "stock"]
-    if(toBeNumber.includes(e.target.name)){
-      if (!onlyNumber.test(e.target.value)){
-        setErrorHandler({...errorHandler, [e.target.name]:"Only numbers allowed"})
+    if (e.target.name === 'stock') {
+      if (!onlyNumber.test(e.target.value)) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: 'Only numbers allowed',
+        });
       } else {
-        setErrorHandler({...errorHandler, [e.target.name]:""})
+        setErrorHandler({ ...errorHandler, [e.target.name]: '' });
+      }
+    }
+    if (e.target.name === 'ISBN') {
+      if (!onlyNumber.test(e.target.value)) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: 'Only numbers allowed',
+        });
+      } else if (e.target.name.length !== 13) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: 'Must contain 13 numbers',
+        });
+      } else setErrorHandler({ ...errorHandler, [e.target.name]: '' });
+    }
+
+    if (e.target.name === 'edition') {
+      if (!onlyNumber.test(e.target.value)) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: 'Only numbers allowed',
+        });
+      } else if (
+        e.target.value.length !== 4 ||
+        e.target.value > Number(new Date().getFullYear()) ||
+        e.target.value < 1800
+      ) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: 'Must be a valid Year.',
+        });
+      } else {
+        setErrorHandler({ ...errorHandler, [e.target.name]: '' });
       }
     }
 
-    if(e.target.name === "price")
-    if(!allowDecimal.test(e.target.value)){
-      setErrorHandler({...errorHandler, [e.target.name]: "Only numbers and one dot followed by two decimals allowed"})
-    } else {
-      setErrorHandler({...errorHandler, [e.target.name]: ""})
-    }
-   
-    if(e.target.name === "synopsis"){
-      if(e.target.value.length > 300){
-        setErrorHandler({...errorHandler, [e.target.name]: "300 characters allowed"})
+    if (e.target.name === 'price')
+      if (!allowDecimal.test(e.target.value)) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]:
+            'Only numbers and one dot followed by two decimals allowed',
+        });
       } else {
-        setErrorHandler({...errorHandler, [e.target.name]: ""})
+        setErrorHandler({ ...errorHandler, [e.target.name]: '' });
+      }
+
+    if (e.target.name === 'synopsis') {
+      if (e.target.value.length > 300) {
+        setErrorHandler({
+          ...errorHandler,
+          [e.target.name]: '300 characters allowed',
+        });
+      } else {
+        setErrorHandler({ ...errorHandler, [e.target.name]: '' });
       }
     }
   }
 
-  function handleChange(e){
+  function handleChange(e) {
     onChange(e);
-    handleErrors(e)
+    handleErrors(e);
   }
   // // // // // //
   useEffect(() => {
@@ -106,10 +149,6 @@ export default function CreateBook() {
   return (
     <div className="bookCreationForm">
       <div className="bookCreationFormInput">
-        <ImgSelector
-          imgSelected={imgSelected}
-          setImgSelected={setImgSelected}
-        />
         <div>
           <span>Title: </span>
           <input
@@ -176,10 +215,16 @@ export default function CreateBook() {
         />
         <div>
           <span>Synopsis: </span>
-          <textarea name="synopsis" onChange={handleChange} />
+          <TextareaAutosize
+            aria-label="minimum height"
+            minRows={3}
+            placeholder="Write here"
+            style={{ width: 200 }}
+            name="synopsis"
+            onChange={handleChange}
+          />
         </div>
         <span>{errorHandler.synopsis}</span>
-        <span></span>
         <div>
           <span>Format: </span>
           <select
@@ -231,73 +276,22 @@ export default function CreateBook() {
           />
         </div>
         <span>{errorHandler.stock}</span>
+        <div>
+          <ImgSelector
+            imgSelected={imgSelected}
+            setImgSelected={setImgSelected}
+            newBook={newBook}
+            setNewBook={setNewBook}
+          />
+        </div>
       </div>
-
       {/*  */}
-      <div className="bookCreationFormPreview">
-        {newBook.title ? <span>Title: {newBook.title}.</span> : null}
-        {newBook.author?.length > 0 ? (
-          newBook.author.length > 1 ? (
-            <div>
-              <span>Authors: {newBook.author.join(', ')}.</span>
-              <button
-                onClick={() => {
-                  setNewBook({
-                    ...newBook,
-                    author: newBook.author.slice(0, newBook.author.length - 1),
-                  });
-                }}
-              >
-                Delete last
-              </button>
-            </div>
-          ) : (
-            newBook.author.map((el) => (
-              <div key={el}>
-                {' '}
-                <span key={el}>Author: {el}.</span>
-                <button
-                  onClick={() => {
-                    setNewBook({
-                      ...newBook,
-                      author: newBook.author.slice(
-                        0,
-                        newBook.author.length - 1
-                      ),
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            ))
-          )
-        ) : null}
-        {newBook.editorial ? (
-          <span>Editorial: {newBook.editorial}.</span>
-        ) : null}
-        {newBook.edition ? <span>Edition: Year {newBook.edition}.</span> : null}
-        {newBook.price ? <span>Price: U$D {newBook.price}.</span> : null}
-        {newBook.categories.length > 0 && (
-          <span>Theme: {newBook.categories[0]}.</span>
-        )}
-        {newBook.categories.length > 1 && (
-          <span>Categoy: {newBook.categories[1]}.</span>
-        )}
-        {newBook.categories.length > 2 && (
-          <span>SubCategory: {newBook.categories[2]}.</span>
-        )}
-        {newBook.categories.length > 0 && (
-          <button onClick={deleteCategory}>Delete last category</button>
-        )}
-        {newBook.format ? <span>Format: {newBook.format}.</span> : null}
-        {newBook.language ? <span>Language: {newBook.language}.</span> : null}
-        {newBook.ISBN ? <span>ISBN: {newBook.ISBN}.</span> : null}
-        {newBook.stock > 1 ? (
-          <span>Stock: {newBook.stock} units.</span>
-        ) : newBook.stock ? (
-          <span>Stock: {newBook.stock} unit.</span>
-        ) : null}
+      <div>
+        <NewBookPreview
+          newBook={newBook}
+          setNewBook={setNewBook}
+          deleteCategory={deleteCategory}
+        />
       </div>
     </div>
   );
