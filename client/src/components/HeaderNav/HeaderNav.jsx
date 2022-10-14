@@ -19,6 +19,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
+import { Avatar } from "@mui/material";
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -149,8 +150,15 @@ export default function HeaderNav(onSearch) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <Link to="/userDetails" style={{ "text-decoration": "none" }}>
-                <MenuItem>Profile</MenuItem>
+              <Link to="/userDetails" style={{ "text-decoration": "none" , 'color':'#5b5b5b'}}>
+                <MenuItem>
+                  {/* <img
+                    src={loggedUser.picture}
+                    style={{ width: 32, height: 32, "border-radius": "30px" }}
+                  />
+                  <Avatar /> */}
+                  Profile
+                </MenuItem>
               </Link>
               <Divider />
               <MenuItem onClick={handleLogOut}>
@@ -167,7 +175,9 @@ export default function HeaderNav(onSearch) {
           </div>
         ) : (
           <div className="iconsContainer">
-            <span onClick={handleLoggin} style={{cursor:'pointer'}}>Login</span>
+            <span onClick={handleLoggin} style={{ cursor: "pointer" }}>
+              Login
+            </span>
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}
