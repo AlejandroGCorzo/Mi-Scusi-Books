@@ -12,7 +12,7 @@ const UserDetails = () => {
     <div className="userOuterDiv">
       <div className="userInnerDiv">
         <div className="titlePencilContainer">
-          <h1 style={{margin:'0'}}>Profile</h1>
+          <h1 style={{ margin: "0" }}>Profile</h1>
           {/* <p className="pencilIcon">✎</p> */}
         </div>
         <img src={loggedUser.picture} className="userImage" />
