@@ -13,6 +13,7 @@ const Details = (props) => {
   useEffect(() => {
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
+    // dispatch(setEmptyDetail())
     return () => {
       dispatch(setEmptyDetail());
     };
