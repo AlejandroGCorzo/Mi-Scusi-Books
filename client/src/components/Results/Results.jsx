@@ -7,7 +7,7 @@ import "./Results.css";
 
 export default function Results() {
   const dispatch = useDispatch();
-  const { type, value } = useParams();
+  const { type, value } = useParams(); //type=category, value=medicine
   const { results } = useSelector((state) => state.books);
   const { categories } = useSelector((state) => state.books);
   const currentBooks = results.slice(0, 8);
@@ -31,9 +31,9 @@ export default function Results() {
           /{value ? value : ""}
         </p>
         <p>
-          <label>Order by</label>
+          <label>Order by </label>
           <select className="selectResults">
-            <option value="select">All</option>
+            <option value="all">All</option>
             <option value="lowprice">Low to high price</option>
             <option value="highprice">High to low price</option>
             <option value="news">Newest arrivals</option>
