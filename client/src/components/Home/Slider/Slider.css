@@ -61,8 +61,10 @@ margin-bottom: 5px;
   width: 75px;
   border-radius: 5px;
   color: white;
-  margin-top: 10px;
-  margin-right: 100px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-right: 140px;
+  cursor: pointer;
 }
 
 .buyBook p{
