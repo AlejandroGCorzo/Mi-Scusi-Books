@@ -16,6 +16,18 @@ const userRouter = Router();
 //   email: 'nanzerjano@hotmail.com'
 // }
 
+// {
+//   sub: 'google-oauth2|104303008364141128609',
+//   given_name: 'Juan Franco',
+//   family_name: 'Ledesma',
+//   nickname: 'juanfledesma18',
+//   name: 'Juan Franco Ledesma',
+//   picture: 'https://lh3.googleusercontent.com/a/ALm5wu1jcBn1YNLdkNcMJkDoc3beLt4cOiWPqJHi9bBYug=s96-c',
+//   locale: 'es-419',
+//   updated_at: '2022-10-14T13:17:19.982Z',
+//   email: 'juanfledesma18@gmail.com',
+//   email_verified: true
+// }
 userRouter.get("/test", protect, async(req, res) => {
   console.log(req)
 })
