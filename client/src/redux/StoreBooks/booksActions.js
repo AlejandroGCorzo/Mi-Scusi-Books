@@ -4,6 +4,7 @@ import {
   getBookById,
   allCategories,
   getCategoryResults,
+  getBookByName
 } from "./booksSlice.js";
 
 export const getBooks = () => {
@@ -32,5 +33,14 @@ export const getResults = (type, value) => {
       `http://localhost:9000/books/filter?type=${type}&value=${value}`
     );
     return dispatch(getCategoryResults(json.data));
+  };
+};
+
+export const getBookName = (type, value) => {
+  return async (dispatch) => {
+    let json = await axios.get(
+      `http://localhost:9000/books/filter?type=${type}&value=${value}`
+    );
+    return dispatch(getBookByName(json.data));
   };
 };
