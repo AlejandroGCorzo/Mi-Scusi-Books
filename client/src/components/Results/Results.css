@@ -1,0 +1,74 @@
+.contentResults{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+.cardBookResults {
+  width: 220px;
+  height: 180px;
+  margin: 15px;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultsMain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.divLinkCategories {
+  color: black;
+  font-size: 14px;
+  margin-right: 75em;
+}
+
+.filtersResults {
+  width: 30em;
+  display: flex;
+  margin-right: 2em;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #e7e7e7;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  /* padding: 10px; */
+}
+
+.sectionBooksResults {
+  width: 70em;
+  background-color: white;
+  display: inline-block;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
+  border-radius: 10px;
+  border: 1px solid #e7e7e7;
+  padding: 0px 0px 80px;
+}
+
+.titleResults {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: #00cc77;
+  background-color: white;
+  border-radius: 8px 8px 0px 0px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.titlesFilters {
+  background-color: #e7e7e7;
+  width: 100%;
+  color: #00cc77;
+}
+
+.divFilters {
+  width: 100%;
+}
