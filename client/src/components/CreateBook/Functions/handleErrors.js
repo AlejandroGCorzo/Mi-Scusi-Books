@@ -1,4 +1,4 @@
-export function handleErrors(e, errorHandler, setErrorHandler) {
+export default function handleErrors(e, errorHandler, setErrorHandler) {
   const onlyNumber = new RegExp(/^[0-9]*$/);
   const allowDecimal = new RegExp(/^\d*\.{0,1}\d{0,2}$/);
   if (e.target.name === 'stock') {
