@@ -18,7 +18,7 @@ const Details = (props) => {
     };
   }, [dispatch]);
 
-  console.log(detail);
+  // console.log(detail);
 
   return (
     <div className="outerDiv">
