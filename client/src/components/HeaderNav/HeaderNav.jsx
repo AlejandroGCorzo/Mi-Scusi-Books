@@ -59,7 +59,7 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     await loginWithPopup();
     dispatch(getUserDetail(await callProtectedApi()));
-    history.push("/userDetails");
+    if (isAuthenticated) history.push("/userDetails");
   };
 
   const handleLogOut = (e) => {
@@ -73,6 +73,12 @@ export default function HeaderNav(onSearch) {
       <Link to="/" style={{ textDecoration: "none" }}>
         <div className="logo">
           <p>Scusi Book's</p>
+        </div>
+      </Link>
+
+      <Link to="/category" style={{ textDecoration: "none" }}>
+        <div className="iconsContainer">
+          <p>Categories</p>
         </div>
       </Link>
 
@@ -103,7 +109,7 @@ export default function HeaderNav(onSearch) {
                 >
                   <img
                     src={loggedUser.picture}
-                    style={{ width: 32, height: 32, 'border-radius':'30px' }}
+                    style={{ width: 32, height: 32, "border-radius": "30px" }}
                   />
                 </IconButton>
               </Tooltip>
@@ -161,7 +167,7 @@ export default function HeaderNav(onSearch) {
           </div>
         ) : (
           <div className="iconsContainer">
-            <span onClick={handleLoggin}>Login</span>
+            <span onClick={handleLoggin} style={{cursor:'pointer'}}>Login</span>
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}

@@ -1,40 +1,47 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./SearchBar.css";
 import Search from "../../sourceImg/search.svg";
+import { getBookByName } from "../../redux/StoreBooks/booksSlice";
+import { useHistory } from "react-router-dom";
 
 export default function SearchBar() {
-  const [name, setName] = useState([])
+  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  function handleInputChange(i){
+  const { bookByName } = useSelector((state) => state.books);
+  const { books } = useSelector((state) => state.books);
+
+  function handleInputChange(i) {
     setName(i.target.value);
-  };
+  }
 
-  function handleSubmit(i){
+  function handleSubmit(i) {
     i.preventDefault();
+    dispatch(getBookByName(name));
+    history.push(`/books/${books.find(b=>b.name === name)._id}`);
     setName("");
   }
 
   return (
     <div>
-        <div className="search">
+      <div className="search">
+        <input
+          id="Searching"
+          className="searchTerm"
+          type="text"
+          value={name}
+          placeholder="Search..."
+          onChange={handleInputChange}
+          pattern="^[A-Za-z\s]+$"
+          maxLength="30"
+        />
 
-          <input
-            id="Searching"
-            className="searchTerm"
-            type="text"
-            value={name}
-            placeholder="Search..."
-            onChange= {handleInputChange} 
-            pattern="^[A-Za-z\s]+$" 
-            maxLength="30"
-          />
-
-          <button className ="searchButton" type="submit" onClick= {handleSubmit}> 
-            <img src={Search} alt="imgType" width="24px" height="24px"/> 
-          </button>
-
-        </div>
-
+        <button className="searchButton" type="submit" onClick={handleSubmit}>
+          <img src={Search} alt="imgType" width="24px" height="24px" />
+        </button>
+      </div>
     </div>
   );
 }
