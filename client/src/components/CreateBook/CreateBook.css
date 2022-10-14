@@ -12,6 +12,10 @@
   height: 90vh;
 }
 
+.CreateBookConfirmationStack {
+  justify-content: center;
+}
+
 .bookCreationFormPreview {
   display: flex;
   flex-direction: column;
