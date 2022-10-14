@@ -4,6 +4,7 @@ import noImgAvailable from '../../../sourceImg/no_image_available.png';
 export default function NewBookPreview({
   newBook,
   setNewBook,
+  setUploading,
   deleteCategory,
 }) {
   return (
