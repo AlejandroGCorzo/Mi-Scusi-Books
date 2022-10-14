@@ -2,6 +2,7 @@ const { Router } = require("express");
 const bookSchema = require("../models/books");
 const Category = require("../models/category");
 const bookRouter = Router();
+const { protect } = require("../middleware/protect");
 const filterTypeOne = [
   "name",
   "editorial",
@@ -146,7 +147,7 @@ bookRouter.get("/allBooks", async (req, res) => {
 });
 
 //get book especifict
-bookRouter.get("/:id", async (req, res, next) => {
+bookRouter.get("/:id", protect, async (req, res, next) => {
   const { id } = req.params;
   if (!id) res.status(400).json({ error: "id is required" });
   try {
