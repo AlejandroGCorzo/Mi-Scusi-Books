@@ -5,6 +5,7 @@ import { getCategories } from '../../redux/StoreBooks/booksActions';
 import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
 import ImgSelector from './ImgSelector/ImgSelector.jsx';
 import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
+import CreateConfirmationAlert from './CreateConfirmationAlert/CreateConfirmationAlert';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import {
   deleteCategory,
