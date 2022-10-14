@@ -117,9 +117,9 @@ bookRouter.get('/filter', async (req, res) => {
   try {
     if (filterTypeOne.includes(type)) {
       let data = await bookSchema
-        .find({ [filtro[0]]: { $regex: filtro[1], $options: 'i' } })
+        .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
         .where({ deleted: false })
-        .select('-deleted');
+        .select("-deleted");
       data.length === 0
         ? res.status(404).json({ msg: `No books were found with this ${type}` })
         : res.json(data);
@@ -127,7 +127,7 @@ bookRouter.get('/filter', async (req, res) => {
       let data = await bookSchema
         .find({ [filtro[0]]: { $all: [filtro[1]] } })
         .where({ deleted: false })
-        .select('-deleted');
+        .select("-deleted");
       data.length === 0
         ? res.status(404).json({ msg: `No books were found with this ${type}` })
         : res.json(data);
@@ -143,7 +143,7 @@ bookRouter.get('/allBooks', async (req, res) => {
     const books = await bookSchema
       .find()
       .where({ deleted: false })
-      .select('-deleted');
+      .select("-deleted");
     res.status(200).json(books);
   } catch (e) {
     res.status(400).json({ msg: e });
@@ -158,7 +158,7 @@ bookRouter.get('/:id', async (req, res, next) => {
     const book = await bookSchema
       .findById(id)
       .where({ deleted: false })
-      .select('-deleted');
+      .select("-deleted");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
 
