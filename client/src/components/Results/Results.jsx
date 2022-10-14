@@ -7,30 +7,30 @@ import "./Results.css";
 
 export default function Results() {
   const dispatch = useDispatch();
-  const { category } = useParams();
+  const { type, value } = useParams(); //type=category, value=medicine
   const { results } = useSelector((state) => state.books);
   const currentBooks = results.slice(0, 8);
 
   useEffect(() => {
-    dispatch(getResults(category));
+    dispatch(getResults(type, value));
   }, [dispatch]);
 
   return (
     <div className="containerResults">
       <nav className="navResults">
-        <p>{`There's ${results.length} results in ${category}`}</p>
+        <p>{`There's ${results.length} results in ${value}`}</p>
       </nav>
       <section className="linkCategories">
         <p>
           <Link to={"/categories"} style={{ textDecoration: "none" }}>
             Categories
-          </Link>{" "}
-          / {category ? category : ""}
+          </Link>
+          /{value ? value : ""}
         </p>
         <p>
-          <label>Order by</label>
+          <label>Order by </label>
           <select className="selectResults">
-            <option value="select">All</option>
+            <option value="all">All</option>
             <option value="lowprice">Low to high price</option>
             <option value="highprice">High to low price</option>
             <option value="news">Newest arrivals</option>
@@ -41,26 +41,42 @@ export default function Results() {
       <div className="resultsMain">
         <article className="filtersResults">
           <div className="divCategoriesFilter">
-            <label>Subcategories</label>
+            <p>Subcategories</p>
+            <label></label>
             <input type="checkbox" id="cb1" value="checkbox1" />
           </div>
           <div className="divAuthorFilter">
-            <label>Author</label>
-            <input type="checkbox" id="cb2" value="checkbox2" />
+            <p>Author</p>
+            {results?.map((b) => (
+              <label>
+                <input type="checkbox" id={b._id} value={`${b.author}cb`}/>
+                {b.author}
+              </label>
+            ))}
           </div>
           <div className="divEditorialFilter">
-            <label>Editorial</label>
-            <input type="checkbox" id="cb3" value="checkbox3" />
+            <p>Editorial</p>
+            {results?.map((b) => (
+              <label>
+                <input type="checkbox" id={b._id} value={`${b.editorial}cb`}/>
+                {b.editorial}
+              </label>
+            ))}
           </div>
           <div className="divLanguageFilter">
-            <label>Language</label>
-            <input type="checkbox" id="cb4" value="checkbox4" />
+            <p>Language</p>
+            {results?.map((b) => (
+              <label>
+                <input type="checkbox" id={b._id} value={`${b.language}cb`}/>
+                {b.language}
+              </label>
+            ))}
           </div>
           <section className="sectionBooksResults">
             {currentBooks.length > 0 &&
               currentBooks.map((b) => {
                 return (
-                  <div className="cardBookResults" key={b.id}>
+                  <div className="cardBookResults" key={b._id}>
                     <Book
                       image={b.image}
                       name={b.name}

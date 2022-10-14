@@ -18,7 +18,7 @@ function App() {
         <Route path="/books/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
-        {/* <Route path="/books/results" component={Results} /> */}
+        <Route path="/results/:type/:value" component={Results} />
       </React.Fragment>
     </div>
   );

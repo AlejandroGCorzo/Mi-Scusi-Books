@@ -2,17 +2,17 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import "./Book.css";
 
-export default function Book({ image, name, author, price }) {
-  const { id } = useParams();
+export default function Book({ _id, image, name, author, price }) {
+  console.log("id", _id)
 
   return (
-    <div className="containerBook" key={id}>
+    <div className="containerBook" key={_id}>
       <div className="contentCard">
         <div className="divImg">
-          <img className="imgBook" src={image} alt={`book-${name}`} />
+          <img className="imgBook" src={image} alt={`book-${name}`} width="130px" />
         </div>
         <div className="infoBook">
-          <Link to={`/books/${id}`} style={{ textDecoration: "none" }}>
+          <Link to={`/books/${_id}`} style={{ textDecoration: "none" }}>
             <p className="nameBook">{name}</p>
           </Link>
           <p className="authorBook">{author}</p>
@@ -24,7 +24,7 @@ export default function Book({ image, name, author, price }) {
             </span>
           </Link>
           <span>
-            {price}
+            ${price}
           </span>
         </div>
       </div>

@@ -26,10 +26,10 @@ export const getCategories = () => (dispatch) => {
   });
 };
 
-export const getResults = (category) => {
+export const getResults = (type, value) => {
   return async (dispatch) => {
     let json = await axios.get(
-      `http://localhost:9000/books/filter?category=${category}`
+      `http://localhost:9000/books/filter?type=${type}&value=${value}`
     );
     return dispatch(getCategoryResults(json.data));
   };
