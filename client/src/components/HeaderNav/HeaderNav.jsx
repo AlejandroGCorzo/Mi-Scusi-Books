@@ -99,7 +99,7 @@ export default function HeaderNav(onSearch) {
                 textAlign: "center",
               }}
             >
-              <Tooltip title="Account settings">
+              <Tooltip title="Account">
                 <IconButton
                   onClick={handleClick}
                   size="small"
@@ -150,7 +150,10 @@ export default function HeaderNav(onSearch) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <Link to="/userDetails" style={{ "text-decoration": "none" , 'color':'#5b5b5b'}}>
+              <Link
+                to="/userDetails"
+                style={{ "text-decoration": "none", color: "#5b5b5b" }}
+              >
                 <MenuItem>
                   {/* <img
                     src={loggedUser.picture}
