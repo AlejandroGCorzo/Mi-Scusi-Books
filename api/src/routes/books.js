@@ -35,6 +35,7 @@ bookRouter.post('/', async (req, res) => {
     } = req.body;
     let theme = await Category.find();
     const id = theme[0]._id;
+    // console.log(id);
 
     //Check if it has 3 cats
     if (categories.length === 3) {
@@ -53,7 +54,7 @@ bookRouter.post('/', async (req, res) => {
       editorial &&
       price &&
       category &&
-      synopsis.length > 30 &&
+      synopsis  &&
       format &&
       edition &&
       language &&
@@ -113,7 +114,7 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type.split("-").join(" ").toLowerCase(), value.split("-").join(" ")]
+  let filtro = [type.toLowerCase(), value.split("%20").join(" ")];
 
   try {
     if (filterTypeOne.includes(type)) {
