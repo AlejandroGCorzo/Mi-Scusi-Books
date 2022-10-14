@@ -21,7 +21,7 @@
     flex-direction: row;
 }
 
-.iconsContainer img{
+.iconsContainer span{
     margin-left: 10px;
     margin-right: 10px;
 }
