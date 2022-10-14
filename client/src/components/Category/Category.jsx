@@ -16,10 +16,21 @@ export default function Category (){
                     <Link to ={`/results/${index}/${el}`} style={{ textDecoration: "none" }}>
                         <li>{el[0].toLocaleUpperCase() + el.slice(1)}</li>
                     </Link>
+
+                    {JSON.stringify(categories[index][el]) !=='{}' && Object.keys(categories[index][el]).sort()
+                    .map((elx) => 
+                    <div className="subToCategoryDiv" key={elx}>
+                        <Link to ={`/results/${index}/${el}/${elx}`} style={{ textDecoration: "none" }}>
+                            <span>{elx[0].toLocaleUpperCase() + elx.slice(1)}</span>
+                        </Link>
+                    </div>
+                    )}
+
                 </div>
             )}
         </div>);
     }
+
 
     useEffect(() => {
         if (!Object.keys(categories).length) dispatch(getCategories());
@@ -35,7 +46,7 @@ export default function Category (){
                 {JSON.stringify(categories).length !== '{}' && Object.keys(categories).sort()
                 .map((el) =>
                 <div className="categoryDiv" key={el}>
-                    <span>{el[0].toLocaleUpperCase() + el.slice(1)}</span>
+                    <p>{el[0].toLocaleUpperCase() + el.slice(1)}</p>
                     {viewCategory(el)}
                 </div>)}
             </div>
