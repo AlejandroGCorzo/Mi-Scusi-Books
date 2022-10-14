@@ -52,8 +52,8 @@ bookRouter.post('/', async (req, res) => {
       author &&
       editorial &&
       price &&
-      categories &&
-      synopsis &&
+      category &&
+      synopsis.length > 30 &&
       format &&
       edition &&
       language &&
@@ -110,9 +110,9 @@ bookRouter.get('/', async (req, res) => {
 //get filter
 // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock
 // valid filter type Two author || category || rating || reviews
-bookRouter.get('/filter', async (req, res) => {
+bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type.toLowerCase(), value.split('%20').join(' ')];
+  let filtro = [type.toLowerCase(), value.split("%20").join(" ")];
 
   try {
     if (filterTypeOne.includes(type)) {
@@ -242,7 +242,7 @@ bookRouter.put('/delete/:id', async (req, res) => {
 });
 
 //  update book
-bookRouter.put('/:id', async (req, res, next) => {
+bookRouter.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   const data = req.body;
   const value = Object.values(data);
@@ -265,11 +265,12 @@ bookRouter.put('/:id', async (req, res, next) => {
 
 //midleware error handling
 bookRouter.use((error, req, res, next) => {
-  if (error.name === 'CastError') {
-    res.status(400).send({ error: 'the data sent is malformed ' });
-  } else if (error.name === 'TypeError') {
-    res.status(400).json({ error: error + '' });
-  } else res.status(500).end();
+  if (error.name === "CastError") {
+    res.status(400).send({ error: "the data sent is malformed " });
+  }else if (error.name === "TypeError"){
+      res.status(400).json({error: error + ""})
+  } 
+  else res.status(500).end()
 });
 
 module.exports = bookRouter;
