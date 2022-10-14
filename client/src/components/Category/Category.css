@@ -12,12 +12,19 @@
     flex-wrap: wrap;
     justify-content: center;
     flex-direction: row;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    height: 450px;
     border-bottom: 1px solid #e7e7e7;
     border-top: 1px solid #e7e7e7;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    height: auto;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.contentCategoryDiv p{
+    color: #00cc77;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: -2px;
 }
 
 .categoryDiv{
@@ -32,7 +39,8 @@
 
 .subCategoryDiv li{
     margin-left: 5px;
-    color: #414141;
+    font-weight: bold;
+    color: #000000;
 }
 
 .titleForm{
@@ -60,6 +68,7 @@
     border-radius: 0px 0px 8px 8px;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     width: 100%;
+    margin-bottom: 25px;
 }
 
 .formBack button{
@@ -78,4 +87,35 @@
     font-weight: bold;
     font-size: 20px;
     cursor: pointer;
+}
+
+.subToCategoryDiv{
+    color: #414141;
+}
+.subToCategoryDiv span{
+    margin-left: 40px;
+}
+
+@media (min-height: 0px){
+    .contentCategoryDiv{
+        max-height: 480px;
+    }
+}
+
+@media (min-height: 768px){
+    .contentCategoryDiv{
+        max-height: 768px;
+    }
+}
+
+@media (min-height: 1080px){
+    .contentCategoryDiv{
+        max-height: 1450px;
+    }
+}
+
+@media (min-height: 1920px){
+    .contentCategoryDiv{
+        max-height: 1760px;
+    }
 }
