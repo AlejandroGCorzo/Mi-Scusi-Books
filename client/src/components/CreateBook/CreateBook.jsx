@@ -1,33 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getCategories } from '../../redux/StoreBooks/booksActions';
 import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
 import ImgSelector from './ImgSelector/ImgSelector.jsx';
 import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import {
+  deleteCategory,
+  handleErrors,
+  onChange,
+  handleSubmit,
+} from './Functions/exporter.js';
 import './CreateBook.css';
-import { handleErrors } from './Functions/handleErrors.js';
-import { onChange } from './Functions/onChange.js';
-import { deleteCategory } from './Functions/deleteCategory.js';
 
 export default function CreateBook() {
-  const [newBook, setNewBook] = useState({
+  const history = useHistory();
+  const dispatch = useDispatch();
+  // // // // // //
+  const emptyBook = {
     title: '',
     author: [],
     editorial: '',
-    edition: 0,
-    price: 0,
+    edition: '',
+    price: '',
     categories: [],
     synopsis: '',
     format: '',
     language: '',
-    ISBN: 0,
-    rating: 0,
-    stock: 0,
-    reviews: [],
+    ISBN: '',
+    stock: '',
     image: '',
-  });
+  };
+  const [newBook, setNewBook] = useState(emptyBook);
   const [errorHandler, setErrorHandler] = useState({
     edition: '',
     price: '',
@@ -35,20 +49,29 @@ export default function CreateBook() {
     ISBN: '',
     stock: '',
   });
+  const [open, setOpen] = useState({});
   const [author, setAuthor] = useState('');
   const [catSel, setCatSel] = useState('Select theme');
   const [imgSelected, setImgSelected] = useState({ file: {}, url: '' });
-  const [options, setOptions] = useState({
+  const defaultOptions = {
     format: 'Select format',
     language: 'Select language',
-  });
+  };
+  const [options, setOptions] = useState(defaultOptions);
   const { categories } = useSelector((state) => state.books);
-  const dispatch = useDispatch();
   // // // // // //
   function handleChange(e) {
     onChange(e, newBook, setNewBook, author, setAuthor);
-    handleErrors(e, errorHandler, setErrorHandler);
+    if (['stock', 'ISBN', 'edition', 'price'].includes(e.target.name))
+      handleErrors(e, errorHandler, setErrorHandler);
   }
+  const handleClickOpen = (e) => {
+    setOpen({ [e.target.name]: true });
+  };
+
+  const handleClose = () => {
+    setOpen({});
+  };
   // // // // // //
   useEffect(() => {
     if (!Object.keys(categories).length) dispatch(getCategories());
@@ -63,7 +86,8 @@ export default function CreateBook() {
             type="text"
             placeholder="Write here"
             name="title"
-            onChange={onChange}
+            value={newBook.title}
+            onChange={handleChange}
           />
         </div>
         <span></span>
@@ -82,7 +106,11 @@ export default function CreateBook() {
                 return onChange(e, newBook, setNewBook, author, setAuthor);
             }}
           />
-          <button name="author" disabled={!author.length} onClick={onChange}>
+          <button
+            name="author"
+            disabled={!author.length}
+            onClick={handleChange}
+          >
             add
           </button>
         </div>
@@ -93,7 +121,8 @@ export default function CreateBook() {
             type="text"
             placeholder="Write here"
             name="editorial"
-            onChange={onChange}
+            value={newBook.editorial}
+            onChange={handleChange}
           />
         </div>
         <span></span>
@@ -103,6 +132,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Year edition"
             name="edition"
+            value={newBook.edition}
             onChange={handleChange}
           />
         </div>
@@ -113,6 +143,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Numbers only"
             name="price"
+            value={newBook.price}
             onChange={handleChange}
           />
         </div>
@@ -132,6 +163,7 @@ export default function CreateBook() {
             placeholder="Write here"
             style={{ width: 200 }}
             name="synopsis"
+            value={newBook.synopsis}
             onChange={handleChange}
           />
         </div>
@@ -151,7 +183,6 @@ export default function CreateBook() {
             <option>Paperback</option>
           </select>
         </div>
-        <span></span>
         <div>
           <span>Language: </span>
           <select
@@ -166,14 +197,15 @@ export default function CreateBook() {
             <option>Spanish</option>
           </select>
         </div>
-        <span></span>
         <div>
           <span>ISBN: </span>
           <input
             type="text"
             placeholder="Numbers only"
             name="ISBN"
+            value={newBook.ISBN}
             onChange={handleChange}
+            maxLength={13}
           />
         </div>
         <span>{errorHandler.ISBN}</span>
@@ -183,6 +215,7 @@ export default function CreateBook() {
             type="text"
             placeholder="Numbers only"
             name="stock"
+            value={newBook.stock}
             onChange={handleChange}
           />
         </div>
@@ -193,8 +226,112 @@ export default function CreateBook() {
             setImgSelected={setImgSelected}
             newBook={newBook}
             setNewBook={setNewBook}
+            catSel={catSel}
+            setCatSel={setCatSel}
+            categories={categories}
           />
         </div>
+        {/* STACK BOTONES RESET Y CREATE */}
+        <Stack
+          className="CreateBookConfirmationStack"
+          direction="row"
+          spacing={2}
+        >
+          <Button
+            name="reset"
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+            onClick={handleClickOpen}
+          >
+            Reset fields
+          </Button>
+          <Button
+            name="create"
+            variant="contained"
+            endIcon={<SendIcon />}
+            onClick={handleClickOpen}
+            disabled={
+              errorHandler.edition.length !== 0 ||
+              errorHandler.price.length !== 0 ||
+              errorHandler.synopsis.length !== 0 ||
+              errorHandler.ISBN.length !== 0 ||
+              errorHandler.stock.length !== 0 ||
+              !newBook.title ||
+              !newBook.title ||
+              !newBook.author.length ||
+              !newBook.editorial ||
+              !newBook.edition.length ||
+              !newBook.price ||
+              newBook.categories.length < 2 ||
+              !newBook.synopsis ||
+              !newBook.format ||
+              !newBook.language ||
+              !newBook.ISBN ||
+              !newBook.stock ||
+              !newBook.image
+            }
+          >
+            Create Book
+          </Button>
+        </Stack>
+        {/* CONFIRM RESET DIALOG */}
+        <Dialog
+          open={open.reset ? true : false}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Confirm Reset</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to reset all fields?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleClose();
+                setNewBook(emptyBook);
+                setAuthor('');
+                setOptions(defaultOptions);
+                setCatSel('Select theme');
+              }}
+              autoFocus
+            >
+              Confirm
+            </Button>
+            <Button onClick={handleClose}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+        {/* CONFIRM CREATE DIALOG */}
+        <Dialog
+          open={open.create ? true : false}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Confirm creation of {newBook.title}?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Check that everything is OK and click Confirm. Else click Cancel.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={(e) => {
+                handleClose();
+                handleSubmit(e, newBook, history);
+              }}
+              autoFocus
+            >
+              Confirm
+            </Button>
+            <Button onClick={handleClose}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
+        {/*  */}
       </div>
       {/*  */}
       <div>

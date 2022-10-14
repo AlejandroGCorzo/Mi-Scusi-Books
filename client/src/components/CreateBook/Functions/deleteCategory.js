@@ -1,4 +1,4 @@
-export function deleteCategory(newBook, setNewBook,setCatSel) {
+export default function deleteCategory(newBook, setNewBook,setCatSel) {
   setNewBook({
     ...newBook,
     categories: newBook.categories.slice(0, newBook.categories.length - 1),

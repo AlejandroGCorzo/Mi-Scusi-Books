@@ -1,4 +1,4 @@
-export function onChange(e, newBook, setNewBook, author, setAuthor) {
+export default function onChange(e, newBook, setNewBook, author, setAuthor) {
   if (e.target.name === 'author') {
     setNewBook({
       ...newBook,
