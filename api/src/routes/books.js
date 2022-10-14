@@ -114,7 +114,7 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type.toLowerCase(), value.split('%20').join(' ')];
+  let filtro = [type.split("-").join(" ").toLowerCase(), value.split("-").join(" ").toLowerCase()]
 
   try {
     if (filterTypeOne.includes(type)) {
