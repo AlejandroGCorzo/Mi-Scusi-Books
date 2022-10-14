@@ -37,8 +37,8 @@ const UserDetails = () => {
           <span>Number: {loggedUser.address.number}</span>
           <span>Floor: {loggedUser.address.floor}</span> */}
           <span>Birthday: {loggedUser.birthdate}</span>
-          <span>Verify: {loggedUser.state}</span>
-          <span>Bills: {loggedUser.bills}</span>
+          {/* <span>Verify: {loggedUser.state}</span> */}
+          <span>Loyalty points: {loggedUser.loyaltyPoint}</span>
         </div>
         <div className="saveProfile">
           <button>save</button>
