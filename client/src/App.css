@@ -1,3 +1,18 @@
+span,
+select,
+button,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+div,
+textarea,
+input {
+  font-family: monospace;
+}
+
 .App {
   text-align: center;
 }

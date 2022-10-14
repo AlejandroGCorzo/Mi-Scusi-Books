@@ -23,6 +23,7 @@ export default function ImgSelector(props) {
           ...props.imgSelected,
           url: response.data.secure_url,
         });
+        props.setNewBook({ ...props.newBook, image: response.data.secure_url });
       });
   }
   // // // // //

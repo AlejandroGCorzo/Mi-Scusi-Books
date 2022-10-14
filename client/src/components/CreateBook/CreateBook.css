@@ -5,6 +5,9 @@
 }
 
 .bookCreationFormInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 50vw;
   height: 90vh;
 }
@@ -12,6 +15,16 @@
 .bookCreationFormPreview {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 50vw;
   height: 90vh;
+}
+.imgPreview {
+  height: 30vh;
+  width: 15vw;
+}
+
+.imgPreviewDefault {
+  height: 30vh;
+  width: 15vw;
 }
