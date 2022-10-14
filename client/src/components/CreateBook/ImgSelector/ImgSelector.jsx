@@ -1,17 +1,20 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import axios from 'axios';
 
-export default function ImgSelector(props) {
+export default function ImgSelector({
+  imgSelected,
+  setImgSelected,
+  newBook,
+  setNewBook,
+}) {
   // // // // //
-  let fileElem = document.getElementById('inputImgSel');
-  function handleImgSel(e) {
-    e.preventDefault();
-    if (fileElem) fileElem.click();
-  }
-  // // // // //
-  function uploadImage() {
+  function uploadImage(e) {
+    e.preventDefault(e);
     const formImgData = new FormData();
-    formImgData.append('file', props.imgSelected.file);
+    formImgData.append('file', imgSelected.file);
     formImgData.append('upload_preset', 'u3dgsoub');
     axios
       .post(
@@ -19,32 +22,41 @@ export default function ImgSelector(props) {
         formImgData
       )
       .then((response) => {
-        props.setImgSelected({
-          ...props.imgSelected,
+        setImgSelected({
+          ...imgSelected,
           url: response.data.secure_url,
         });
-        props.setNewBook({ ...props.newBook, image: response.data.secure_url });
+        setNewBook({ ...newBook, image: response.data.secure_url });
       });
   }
   // // // // //
   return (
-    <div>
-      <input
-        type="file"
-        accept="image/*"
-        id="inputImgSel"
-        style={{ display: 'none' }}
-        onChange={(e) => {
-          props.setImgSelected({
-            ...props.imgSelected,
-            file: e.target.files[0],
-          });
-        }}
-      />
-      <a href="#" onClick={handleImgSel}>
-        Select image
-      </a>
-      <button onClick={uploadImage}>upload</button>
+    <div className="ImgSelector">
+      <span>Select image: </span>
+      <IconButton color="primary" aria-label="upload picture" component="label">
+        <input
+          hidden
+          accept="image/*"
+          type="file"
+          onChange={(e) => {
+            setImgSelected({
+              ...imgSelected,
+              file: e.target.files[0],
+            });
+          }}
+        />
+        <PhotoCamera />
+      </IconButton>
+      <span>{imgSelected.file.name}</span>
+      <Button
+        className="ImgSelectorStackButton"
+        variant="contained"
+        component="label"
+        disabled={!imgSelected.file.name}
+      >
+        Upload cover
+        <input hidden accept="image/*" onClick={uploadImage} />
+      </Button>
     </div>
   );
 }
