@@ -89,7 +89,7 @@ bookRouter.post('/', async (req, res) => {
     });
     res.status(200).json(addBook);
   } catch (e) {
-    res.status(400).json({ msg: e + 'narnia1' });
+    res.status(400).json({ msg: e + '' });
   }
 });
 
