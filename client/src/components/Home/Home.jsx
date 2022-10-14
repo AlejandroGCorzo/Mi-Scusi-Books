@@ -16,18 +16,21 @@ import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { books } = useSelector((state) => state.books); //Libros más vendidos, no se usa por ahora
+  const { books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
 
   useEffect(() => {
     dispatch(getBooks());
-    dispatch(getUser())
+    dispatch(getUser());
   }, [dispatch]);
+
+  // const images = books.map((b) => b.image);
+  // images[Math.floor(Math.random() * images.length)]
 
   return (
     <div className="homePage">
       <div className="promotions">
         <div className="textoPromotions">
-          <h3>Upto 50% Off</h3>
+          <h3>Scusi Book's</h3>
           <p>
             At Scusi Book's we have the best books on the market, check our
             catalog to see the best deals we have for you!
