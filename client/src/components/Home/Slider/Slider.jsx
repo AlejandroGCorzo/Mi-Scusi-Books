@@ -53,18 +53,18 @@ export default function SliderImg({ books }) {
                 <img src={el.image} alt="" />
               </div>
 
+                <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
+
               <Link
                 to={`/book_details/${el._id}`}
                 key={el._id}
                 style={{ textDecoration: "none" }}
               >
-                <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
-              </Link>
-
               <div className="buyBook">
-                <button className="buttonBuy">Buy</button>
+                <button className="buttonBuy">Info</button>
                 <p>${el.price}</p>
               </div>
+              </Link>
             </div>
           ))}
         </Slider>
