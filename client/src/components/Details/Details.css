@@ -66,14 +66,14 @@
   scroll-behavior: smooth;
 }
 
-.synopsisText::-webkit-scrollbar{
-    width: 4px;
+.synopsisText::-webkit-scrollbar {
+  width: 4px;
 }
 
-.synopsisText::-webkit-scrollbar-thumb{
-    width: 1px;
-    background-color: #00cc77;
-    border-radius: 15px;
+.synopsisText::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: #00cc77;
+  border-radius: 15px;
 }
 
 .leftInnerBox {
@@ -170,3 +170,27 @@ justify-content: center;
 font-size: 25px;
 font-weight: 600;
 color: white; */
+
+@media (min-height: 0px) {
+  .outerDiv {
+    max-height: 575px;
+  }
+}
+
+@media (min-height: 768px) {
+  .outerDiv {
+    max-height: 768px;
+  }
+}
+
+@media (min-height: 1080px) {
+  .outerDiv {
+    max-height: 1450px;
+  }
+}
+
+@media (min-height: 1920px) {
+  .outerDiv {
+    max-height: 1760px;
+  }
+}
