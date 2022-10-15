@@ -40,7 +40,11 @@ const Details = (props) => {
             <span className="detailsSpan">
               Categories:
               {detail.category?.map((el) => (
-                <span key={el}>{detail.category.indexOf(el) === detail.category.length -1 ? `${el}.` : `${el} >`}</span>
+                <span key={el}>
+                  {detail.category.indexOf(el) === detail.category.length - 1
+                    ? `${el}.`
+                    : `${el} >`}
+                </span>
               ))}
             </span>
             <span className="detailsSpan">Format: {detail.format}</span>
@@ -48,7 +52,12 @@ const Details = (props) => {
             <span className="detailsSpan">Language: {detail.language}</span>
             <span className="detailsSpan">ISBN: {detail.ISBN}</span>
             <span className="detailsSpan">Rating: {detail.rating}</span>
-            <span className="detailsSpan">Stock: {detail.stock}</span>
+            <span className="detailsSpan">
+              Stock:{" "}
+              {detail.stock === 1
+                ? `${detail.stock} unit`
+                : `${detail.stock} units`}
+            </span>
           </div>
           <span className="price">${detail.price}</span>
           <div className="buttonsContainer">
