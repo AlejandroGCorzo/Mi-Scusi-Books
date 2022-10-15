@@ -16,19 +16,19 @@ import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { topTen } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
- 
+  const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
+
   useEffect(() => {
     dispatch(getBooks());
     dispatch(getUser());
-    dispatch(fetchTopTen())
+    dispatch(fetchTopTen());
   }, [dispatch]);
 
   const images = books.map((b) => b.image);
   const book1 = images[Math.floor(Math.random() * images.length)];
   const book2 = images[Math.floor(Math.random() * images.length)];
   const book3 = images[Math.floor(Math.random() * images.length)];
-  
+
   return (
     <div className="homePage">
       <div className="promotions">
