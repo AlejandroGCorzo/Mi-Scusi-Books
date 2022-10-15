@@ -114,33 +114,67 @@ bookRouter.get("/", async (req, res) => {
 // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock
 // valid filter type Two author || category || rating || reviews
 
+// bookRouter.get("/filter", async (req, res) => {
+//   const { type, value } = req.query;
+//   let filtro = [
+//     type.split("-").join(" ").toLowerCase(),
+//     value.split("-").join(" ").toLowerCase(),
+//   ];
+
+//   try {
+//     if (filterTypeOne.includes(type)) {
+//       let data = await bookSchema
+//         .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
+//         .where({ deleted: false })
+//         .select("-deleted");
+//       data.length === 0
+//         ? res.status(404).json({ msg: `No books were found with this ${type}` })
+//         : res.json(data);
+//     } else if (filterTypeTwo.includes(type)) {
+//       let data = await bookSchema
+//         .find({ [filtro[0]]: { $all: [filtro[1]] } })
+//         .where({ deleted: false })
+//         .select("-deleted");
+//       data.length === 0
+//         ? res.status(404).json({ msg: `No books were found with this ${type}` })
+//         : res.json(data);
+//     } else res.status(400).send({ msg: `filter ${type} type does not exist` });
+//   } catch (e) {
+//     res.status(400).send({ msg: e.message });
+//   }
+// });
+
+//new filter
+
 bookRouter.get("/filter", async (req, res) => {
-  const { type, value } = req.query;
-  let filtro = [
-    type.split("-").join(" ").toLowerCase(),
-    value.split("-").join(" ").toLowerCase(),
-  ];
+  const filters = req.body;
+  let filtered = await bookSchema.find({ deleted: false }).select("-deleted");
 
   try {
-    if (filterTypeOne.includes(type)) {
-      let data = await bookSchema
-        .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
-        .where({ deleted: false })
-        .select("-deleted");
-      data.length === 0
-        ? res.status(404).json({ msg: `No books were found with this ${type}` })
-        : res.json(data);
-    } else if (filterTypeTwo.includes(type)) {
-      let data = await bookSchema
-        .find({ [filtro[0]]: { $all: [filtro[1]] } })
-        .where({ deleted: false })
-        .select("-deleted");
-      data.length === 0
-        ? res.status(404).json({ msg: `No books were found with this ${type}` })
-        : res.json(data);
-    } else res.status(400).send({ msg: `filter ${type} type does not exist` });
+    for (const filter in filters) {
+      //si es array (autor o categoria filtro)
+      if (!filters[filter]) {
+        continue;
+      }
+      if (Array.isArray(filters[filter])) {
+        for (const f of filters[filter]) {
+          filtered = filtered.filter((el) => {
+            return el[filter].includes(f);
+          });
+        }
+      }
+       else {
+        if (filter === "stock") {
+          filtered = filtered.filter((el) => el.stock > 0);
+        } else {
+          filtered = filtered.filter((el) => el[filter] === filters[filter]);
+        }
+      }
+    }
+
+    return res.status(200).json(filtered);
   } catch (e) {
-    res.status(400).send({ msg: e.message });
+    return res.status(400).json({ msg: "Something went wrong" });
   }
 });
 
