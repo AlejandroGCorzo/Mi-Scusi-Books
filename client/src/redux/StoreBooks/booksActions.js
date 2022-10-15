@@ -7,6 +7,7 @@ import {
   getBookByName,
   getTopTen,
   getBooksFilteredByCat,
+  setEmptyBooksFilter,
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -37,6 +38,10 @@ export const bookFiltered = (type, value) => (dispatch) => {
     .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
     .then((resolve) => dispatch(getBooksFilteredByCat(resolve.data)))
     .catch((e) => console.log(e));
+};
+
+export const emptyBookFiltered = () => (dispatch) => {
+  dispatch(setEmptyBooksFilter());
 };
 
 export const getBookName = (type, value, history) => {

@@ -6,13 +6,12 @@ import {
   bookFiltered,
   getCategories,
   getBooks,
+  emptyBookFiltered,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
 import FilterCategories from "./FilterCategories/FilterCategories.jsx";
-import { onClickCategories } from "./Functions/exporter.js";
 import "./Books.css";
-// import { setEmptyResults } from '../../redux/StoreBooks/booksSlice.js';
 
 export default function Books() {
   // // // // // //
@@ -47,9 +46,8 @@ export default function Books() {
     }
     dispatch(getCategories());
 
-    // dispatch(getResults(type, value));
     return () => {
-      // dispatch(setEmptyResults());
+      dispatch(emptyBookFiltered());
     };
   }, [dispatch, theme, category, subcategory]);
 
@@ -135,7 +133,7 @@ export default function Books() {
               <option value="rating">Rating</option>
             </select>
           </p> */}
-          {booksFilter.length > 0 &&
+          {booksFilter.length > 0 ? (
             booksFilter.map((b) => {
               return (
                 <div className="cardBookResults" key={b._id}>
@@ -148,7 +146,10 @@ export default function Books() {
                   />
                 </div>
               );
-            })}
+            })
+          ) : (
+            <p>No books found.</p>
+          )}
         </div>
       </div>
     </div>

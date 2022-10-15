@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function FilterCategories({
   theme,
@@ -7,6 +7,10 @@ export default function FilterCategories({
   categories,
   history,
 }) {
+  // const [sum, setSum] = useState(
+  //   theme ? Object.values(categories[theme]).reduce((ac, el) => ac + el, 0) : 0
+  // );
+
   return (
     <React.Fragment>
       <div className="divFilters">
@@ -34,64 +38,68 @@ export default function FilterCategories({
               ? subcategory
                 ? null
                 : Object.keys(categories[theme][category]).length
-                ? Object.keys(categories[theme][category])?.map((el) => (
+                ? Object.keys(categories[theme][category])
+                    ?.sort()
+                    .map((el) => (
+                      <label key={el}>
+                        <input
+                          type="checkbox"
+                          value={el}
+                          onChange={(e) => {
+                            e.preventDefault();
+                            history.push(
+                              `/books/${theme.replace(
+                                /\s/g,
+                                "_"
+                              )}/${category.replace(/\s/g, "_")}/${el.replace(
+                                /\s/g,
+                                "_"
+                              )}`
+                            );
+                          }}
+                        />
+                        {`${el}()`}
+                      </label>
+                    ))
+                : null
+              : Object.keys(categories[theme]).length
+              ? Object.keys(categories[theme])
+                  ?.sort()
+                  .map((el) => (
                     <label key={el}>
                       <input
                         type="checkbox"
                         value={el}
                         onChange={(e) => {
                           e.preventDefault();
-                          console.log(el, typeof el);
-
                           history.push(
-                            `/books/${theme.replace(
+                            `/books/${theme.replace(/\s/g, "_")}/${el.replace(
                               /\s/g,
                               "_"
-                            )}/${category.replace(/\s/g, "_")}/${el.replace(/\s/g, "_")}`
+                            )}`
                           );
                         }}
                       />
-                      {el}
+                      {`${el}()`}
                     </label>
                   ))
-                : null
-              : Object.keys(categories[theme]).length
-              ? Object.keys(categories[theme])?.map((el) => (
+              : null
+            : Object.keys(categories).length
+            ? Object.keys(categories)
+                ?.sort()
+                .map((el) => (
                   <label key={el}>
                     <input
                       type="checkbox"
                       value={el}
                       onChange={(e) => {
                         e.preventDefault();
-                        console.log(el, typeof el);
-                        history.push(
-                          `/books/${theme.replace(/\s/g, "_")}/${el.replace(
-                            /\s/g,
-                            "_"
-                          )}`
-                        );
+                        history.push(`/books/${el.replace(/\s/g, "_")}`);
                       }}
                     />
-                    {el}
+                    {`${el}()`}
                   </label>
                 ))
-              : null
-            : Object.keys(categories).length
-            ? Object.keys(categories)?.map((el) => (
-                <label key={el}>
-                  <input
-                    type="checkbox"
-                    value={el}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      console.log(el, typeof el);
-
-                      history.push(`/books/${el.replace(/\s/g, "_")}`);
-                    }}
-                  />
-                  {el}
-                </label>
-              ))
             : null
           : null}
       </div>

@@ -28,8 +28,8 @@ export const booksSlice = createSlice({
     getBooksFilteredByCat: (state, action) => {
       state.booksFilter = [...action.payload];
     },
-    setEmptyResults: (state) => {
-      state.results = [];
+    setEmptyBooksFilter: (state) => {
+      state.booksFilter = [];
     },
     getBookByName: (state, action) => {
       state.bookByName = state.books.find((b) => b.name === action.payload);
@@ -47,7 +47,7 @@ export const {
   allCategories,
   getCategoryResults,
   getBookByName,
-  setEmptyResults,
+  setEmptyBooksFilter,
   getTopTen,
   getBooksFilteredByCat,
 } = booksSlice.actions;
