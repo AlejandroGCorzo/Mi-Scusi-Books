@@ -1,28 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams, useHistory } from "react-router-dom";
 import {
   // getResults,
   bookFiltered,
   getCategories,
   getBooks,
-} from '../../redux/StoreBooks/booksActions.js';
-import Book from '../Book/Book.jsx';
-import CategoriesPagination from './CategoriesPagination/CategoriesPagination.jsx';
-import './Books.css';
-// import { setEmptyResults } from '../../redux/StoreBooks/booksSlice.js';
+  emptyBookFiltered,
+} from "../../redux/StoreBooks/booksActions.js";
+import Book from "../Book/Book.jsx";
+import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
+import FilterCategories from "./FilterCategories/FilterCategories.jsx";
+import "./Books.css";
 
 export default function Books() {
   // // // // // //
+  const history = useHistory();
   const dispatch = useDispatch();
   // // // // // //
   // const { type, value } = useParams(); //type=category, value=medicine
   const { booksFilter, categories } = useSelector((state) => state.books);
-  const currentBooks = booksFilter.slice(0, 8);
+  // const currentBooks = booksFilter.slice(0, 8);
 
   // // // // // // STATES CREADOS POR ALE
   const [filters, setFilters] = useState({});
-  const { theme, category, subcategory } = useParams();
+  let { theme, category, subcategory } = useParams();
+  theme = theme?.replace(/\_/g, " ");
+  category = category?.replace(/\_/g, " ");
+  subcategory = subcategory?.replace(/\_/g, " ");
+
   // // // // // // // // // // // // // //
 
   useEffect(() => {
@@ -30,19 +36,18 @@ export default function Books() {
       dispatch(getBooks());
     }
     if (theme && !category && !subcategory) {
-      dispatch(bookFiltered('category', theme));
+      dispatch(bookFiltered("category", theme));
     }
     if (theme && category && !subcategory) {
-      dispatch(bookFiltered('category', category));
+      dispatch(bookFiltered("category", category));
     }
     if (theme && category && subcategory) {
-      dispatch(bookFiltered('category', subcategory));
+      dispatch(bookFiltered("category", subcategory));
     }
     dispatch(getCategories());
 
-    // dispatch(getResults(type, value));
     return () => {
-      // dispatch(setEmptyResults());
+      dispatch(emptyBookFiltered());
     };
   }, [dispatch, theme, category, subcategory]);
 
@@ -55,7 +60,7 @@ export default function Books() {
     <div className="contentResults">
       <div className="divLinkCategories">
         <div className="linkCategories">
-          <CategoriesPagination
+          <UrlBreadcrumb
             theme={theme}
             category={category}
             subcategory={subcategory}
@@ -67,25 +72,21 @@ export default function Books() {
           <div className="titleResults">
             <p>FILTERS</p>
           </div>
-          <div className="divFilters">
-            <b>
-              <p className="titlesFilters">Subcategories</p>
-            </b>
-            {/* {results?.map((b) => (
-              <label>
-                <input type="checkbox" id={b._id} value={`${b.author}cb`} />{" "}
-                {b.category}
-              </label>
-            ))} */}
-          </div>
+          <FilterCategories
+            theme={theme}
+            category={category}
+            subcategory={subcategory}
+            categories={categories}
+            history={history}
+          />
           <div className="divFilters">
             <b>
               <p className="titlesFilters">Author</p>
             </b>
             {booksFilter?.map((b) => (
               <p
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => handleClick(e, 'author', b.author)}
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleClick(e, "author", b.author)}
               >
                 {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
               </p>
@@ -97,8 +98,8 @@ export default function Books() {
             </b>
             {booksFilter?.map((b) => (
               <p
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => handleClick(e, 'editorial', b.editorial)}
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleClick(e, "editorial", b.editorial)}
               >
                 {b.editorial[0].toLocaleUpperCase() + b.editorial.slice(1)}
               </p>
@@ -110,8 +111,8 @@ export default function Books() {
             </b>
             {booksFilter?.map((b) => (
               <p
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => handleClick(e, 'language', b.language)}
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleClick(e, "language", b.language)}
               >
                 {b.language[0].toLocaleUpperCase() + b.language.slice(1)}
               </p>
@@ -132,8 +133,8 @@ export default function Books() {
               <option value="rating">Rating</option>
             </select>
           </p> */}
-          {currentBooks.length > 0 &&
-            currentBooks.map((b) => {
+          {booksFilter.length > 0 ? (
+            booksFilter.map((b) => {
               return (
                 <div className="cardBookResults" key={b._id}>
                   <Book
@@ -145,7 +146,10 @@ export default function Books() {
                   />
                 </div>
               );
-            })}
+            })
+          ) : (
+            <p>No books found.</p>
+          )}
         </div>
       </div>
     </div>

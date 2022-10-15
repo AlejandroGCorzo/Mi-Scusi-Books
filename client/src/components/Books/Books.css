@@ -36,6 +36,7 @@
 .filtersResults {
   width: 15vw;
   display: flex;
+  height: fit-content;
   /* margin-right: 2em; */
   /* margin-top: -32px; */
   justify-content: center;
