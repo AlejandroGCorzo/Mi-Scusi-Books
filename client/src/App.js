@@ -7,10 +7,9 @@ import Details from './components/Details/Details.jsx';
 import UserLogin from './components/UserLogin/UserLogin.jsx';
 import Nav from './components/HeaderNav/HeaderNav.jsx';
 import CreateBook from './components/CreateBook/CreateBook.jsx';
-import Results from "./components/Results/Results";
+import Results from './components/Results/Results';
 import Category from './components/Category/Category.jsx';
-import UserDetails from "./components/UserDetails/UserDetails";
-
+import UserDetails from './components/UserDetails/UserDetails';
 
 function App() {
   return (

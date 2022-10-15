@@ -1,15 +1,15 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   getAllBooks,
   getBookById,
   allCategories,
   getCategoryResults,
-  getBookByName
-} from "./booksSlice.js";
+  getBookByName,
+} from './booksSlice.js';
 
 export const getBooks = () => {
   return async (dispatch) => {
-    let json = await axios.get("http://localhost:9000/books/allBooks");
+    let json = await axios.get('http://localhost:9000/books/allBooks');
     return dispatch(getAllBooks(json.data));
   };
 };
@@ -22,7 +22,7 @@ export const getDetail = (id) => {
 };
 
 export const getCategories = () => (dispatch) => {
-  axios.get("http://localhost:9000/category").then((el) => {
+  axios.get('http://localhost:9000/category').then((el) => {
     dispatch(allCategories(el.data[0].theme));
   });
 };
@@ -36,11 +36,9 @@ export const getResults = (type, value) => {
   };
 };
 
-export const getBookName = (type, value) => {
-  return async (dispatch) => {
-    let json = await axios.get(
-      `http://localhost:9000/books/filter?type=${type}&value=${value}`
-    );
-    return dispatch(getBookByName(json.data));
-  };
+export const getBookName = (type, value, history) => {
+  axios
+    .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
+    .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
+    .catch(() => alert('Libro no encontrado'));
 };
