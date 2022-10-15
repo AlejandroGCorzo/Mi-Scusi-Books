@@ -7,7 +7,7 @@ import Details from './components/Details/Details.jsx';
 import UserLogin from './components/UserLogin/UserLogin.jsx';
 import Nav from './components/HeaderNav/HeaderNav.jsx';
 import CreateBook from './components/CreateBook/CreateBook.jsx';
-import Results from './components/Results/Results';
+import Books from './components/Books/Books.jsx';
 import Category from './components/Category/Category.jsx';
 import UserDetails from './components/UserDetails/UserDetails';
 
@@ -20,7 +20,16 @@ function App() {
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
         <Route path="/create" component={CreateBook} />
-        <Route path="/books/:type/:value" component={Results} />
+        <Switch>
+          <Route
+            exact
+            path="/books/:theme/:category/:subcategory"
+            component={Books}
+          />
+          <Route exact path="/books/:theme/:category" component={Books} />
+          <Route exact path="/books/:theme" component={Books} />
+          <Route path="/books" component={Books} />
+        </Switch>
         <Route path="/categories" component={Category} />
         <Route path="/user_details" component={UserDetails} />
       </React.Fragment>

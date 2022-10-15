@@ -1,45 +1,52 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import {
   getResults,
   getCategories,
   getBooks,
-} from "../../redux/StoreBooks/booksActions";
-import Book from "../Book/Book";
-import "./Results.css";
-import { setEmptyResults } from "../../redux/StoreBooks/booksSlice.js";
+} from '../../redux/StoreBooks/booksActions.js';
+import Book from '../Book/Book.jsx';
+import './Books.css';
+// import { setEmptyResults } from '../../redux/StoreBooks/booksSlice.js';
 
-export default function Results() {
+export default function Books() {
+  // // // // // //
   const dispatch = useDispatch();
-  const { type, value } = useParams(); //type=category, value=medicine
-  const { results } = useSelector((state) => state.books);
-  const { categories } = useSelector((state) => state.books);
-  const currentBooks = results.slice(0, 8);
+  // // // // // //
+  // const { type, value } = useParams(); //type=category, value=medicine
+  const { booksFilter, categories } = useSelector((state) => state.books);
+  const currentBooks = booksFilter.slice(0, 8);
 
-  // console.log("cat", categories)
+  // // // // // // STATES CREADOS POR ALE
+  const [filters, setFilters] = useState({});
+  const { theme, category, subcategory } = useParams();
+  // // // // // // // // // // // // // //
 
   useEffect(() => {
-    dispatch(getResults(type, value));
+    if (!theme || !category || !subcategory) {
+      dispatch(getBooks());
+    }
+    // dispatch(getResults(type, value));
     dispatch(getCategories());
     return () => {
-      dispatch(setEmptyResults());
-    }
+      // dispatch(setEmptyResults());
+    };
   }, [dispatch]);
 
   function handleClick(e, type, value) {
     e.preventDefault();
-    dispatch(getResults(type, value));
+    // dispatch(getResults(type, value));
   }
 
   return (
     <div className="contentResults">
       <div className="divLinkCategories">
         <p className="linkCategories">
-          <Link to={"/categories"} style={{ textDecoration: "none" }}>
-            Categories
+          <Link to={'/categories'} style={{ textDecoration: 'none' }}>
+            Books
           </Link>
-          /<b>{value ? value : ""}</b>
+          {/* <b>{value ? ` --> ${value}` : null}</b> */}
         </p>
       </div>
       <div className="resultsMain">
@@ -62,20 +69,24 @@ export default function Results() {
             <b>
               <p className="titlesFilters">Author</p>
             </b>
-            {results?.map((b) => (
-              <p style={{ cursor: "pointer" }}  onClick={(e) => handleClick(e, "author", b.author)}>
-              {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
-            </p>
+            {booksFilter?.map((b) => (
+              <p
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => handleClick(e, 'author', b.author)}
+              >
+                {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
+              </p>
             ))}
           </div>
           <div className="divFilters">
             <b>
-              <p className="titlesFilters">
-                Editorial
-              </p>
+              <p className="titlesFilters">Editorial</p>
             </b>
-            {results?.map((b) => (
-              <p style={{ cursor: "pointer" }} onClick={(e) => handleClick(e, "editorial", b.editorial)}>
+            {booksFilter?.map((b) => (
+              <p
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => handleClick(e, 'editorial', b.editorial)}
+              >
                 {b.editorial[0].toLocaleUpperCase() + b.editorial.slice(1)}
               </p>
             ))}
@@ -84,8 +95,11 @@ export default function Results() {
             <b>
               <p className="titlesFilters">Language</p>
             </b>
-            {results?.map((b) => (
-              <p style={{ cursor: "pointer" }} onClick={(e) => handleClick(e, "language", b.language)}>
+            {booksFilter?.map((b) => (
+              <p
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => handleClick(e, 'language', b.language)}
+              >
                 {b.language[0].toLocaleUpperCase() + b.language.slice(1)}
               </p>
             ))}
@@ -93,7 +107,7 @@ export default function Results() {
         </div>
         <div className="sectionBooksResults">
           <div className="titleResults">
-            <p>{`There's ${results.length} results in ${value}`}</p>
+            {/* <p>{`There's ${results.length} results in ${value}`}</p> */}
           </div>
           {/* <p>
             <label>Order by </label>
