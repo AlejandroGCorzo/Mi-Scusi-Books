@@ -166,8 +166,13 @@ bookRouter.post("/filter", async (req, res) => {
       } else {
         if (filter === "stock") {
           filtered = filtered.filter((el) => el.stock > 0);
+        }
+        if (filter === "ISBN") {
+          filtered = filtered.filter((el) => el[filter] == filters[filter]);
         } else {
-          filtered = filtered.filter((el) => el[filter] === filters[filter]);
+          filtered = filtered.filter((el) =>
+            el[filter].includes(filters[filter])
+          );
         }
       }
     }
