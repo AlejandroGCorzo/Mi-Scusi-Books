@@ -162,8 +162,13 @@ bookRouter.get("/filter", async (req, res) => {
             return el[filter].includes(f);
           });
         }
-      } else {
-        filtered = filtered.filter((el) => el[filter] === filters[filter]);
+      }
+       else {
+        if (filter === "stock") {
+          filtered = filtered.filter((el) => el.stock > 0);
+        } else {
+          filtered = filtered.filter((el) => el[filter] === filters[filter]);
+        }
       }
     }
 
