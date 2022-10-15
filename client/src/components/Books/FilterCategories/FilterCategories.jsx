@@ -18,7 +18,11 @@ export default function FilterCategories({
       <div className="divFilters">
         {theme ? (
           category ? (
-            subcategory ? null : (
+            subcategory ? (
+              <b>
+                <p className="titlesFilters">Subcategories</p>
+              </b>
+            ) : (
               <b>
                 <p className="titlesFilters">Subcategories</p>
               </b>
@@ -34,43 +38,13 @@ export default function FilterCategories({
           </b>
         )}
 
-        {JSON.stringify(categories) !== "{}"
-          ? theme
-            ? category
-              ? subcategory
-                ? null
-                : Object.keys(categories[theme][category]).length
-                ? Object.keys(categories[theme][category])
-                    ?.sort()
-                    .map((el) => (
-                      <label key={el}>
-                        <input
-                          type="checkbox"
-                          value={el}
-                          onChange={(e) => {
-                            e.preventDefault();
-                            dispatch(
-                              setStoreFilters({
-                                category: [theme, category, el],
-                              })
-                            );
-                            history.push(
-                              `/books/${theme.replace(
-                                /\s/g,
-                                "_"
-                              )}/${category.replace(/\s/g, "_")}/${el.replace(
-                                /\s/g,
-                                "_"
-                              )}`
-                            );
-                          }}
-                        />
-                        {`${el}()`}
-                      </label>
-                    ))
-                : null
-              : Object.keys(categories[theme]).length
-              ? Object.keys(categories[theme])
+        {JSON.stringify(categories) !== "{}" ? (
+          theme ? (
+            category ? (
+              subcategory ? (
+                <p>No more categories.</p>
+              ) : Object.keys(categories[theme][category]).length ? (
+                Object.keys(categories[theme][category])
                   ?.sort()
                   .map((el) => (
                     <label key={el}>
@@ -79,9 +53,16 @@ export default function FilterCategories({
                         value={el}
                         onChange={(e) => {
                           e.preventDefault();
-                          dispatch(setStoreFilters({ category: [theme, el] }));
+                          dispatch(
+                            setStoreFilters({
+                              category: [theme, category, el],
+                            })
+                          );
                           history.push(
-                            `/books/${theme.replace(/\s/g, "_")}/${el.replace(
+                            `/books/${theme.replace(
+                              /\s/g,
+                              "_"
+                            )}/${category.replace(/\s/g, "_")}/${el.replace(
                               /\s/g,
                               "_"
                             )}`
@@ -91,9 +72,11 @@ export default function FilterCategories({
                       {`${el}()`}
                     </label>
                   ))
-              : null
-            : Object.keys(categories).length
-            ? Object.keys(categories)
+              ) : (
+                <p>No more categories.</p>
+              )
+            ) : Object.keys(categories[theme]).length ? (
+              Object.keys(categories[theme])
                 ?.sort()
                 .map((el) => (
                   <label key={el}>
@@ -102,15 +85,38 @@ export default function FilterCategories({
                       value={el}
                       onChange={(e) => {
                         e.preventDefault();
-                        dispatch(setStoreFilters({ category: [el] }));
-                        history.push(`/books/${el.replace(/\s/g, "_")}`);
+                        dispatch(setStoreFilters({ category: [theme, el] }));
+                        history.push(
+                          `/books/${theme.replace(/\s/g, "_")}/${el.replace(
+                            /\s/g,
+                            "_"
+                          )}`
+                        );
                       }}
                     />
                     {`${el}()`}
                   </label>
                 ))
-            : null
-          : null}
+            ) : null
+          ) : Object.keys(categories).length ? (
+            Object.keys(categories)
+              ?.sort()
+              .map((el) => (
+                <label key={el}>
+                  <input
+                    type="checkbox"
+                    value={el}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      dispatch(setStoreFilters({ category: [el] }));
+                      history.push(`/books/${el.replace(/\s/g, "_")}`);
+                    }}
+                  />
+                  {`${el}()`}
+                </label>
+              ))
+          ) : null
+        ) : null}
       </div>
     </React.Fragment>
   );

@@ -30,12 +30,10 @@ export const booksSlice = createSlice({
       state.booksFilter = [...action.payload];
     },
     setFilters: (state, action) => {
-      console.log(action.payload);
       state.storeFilters = {
         ...state.storeFilters,
         ...action.payload,
       };
-      console.log(state.storeFilters);
     },
     setEmptyBooksFilter: (state) => {
       state.booksFilter = [];
