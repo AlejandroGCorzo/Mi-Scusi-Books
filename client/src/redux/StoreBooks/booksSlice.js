@@ -5,6 +5,7 @@ export const booksSlice = createSlice({
   initialState: {
     books: [],
     booksFilter: [],
+    storeFilters: {},
     detail: {},
     categories: {},
     results: [],
@@ -28,6 +29,14 @@ export const booksSlice = createSlice({
     getBooksFilteredByCat: (state, action) => {
       state.booksFilter = [...action.payload];
     },
+    setFilters: (state, action) => {
+      console.log(action.payload);
+      state.storeFilters = {
+        ...state.storeFilters,
+        ...action.payload,
+      };
+      console.log(state.storeFilters);
+    },
     setEmptyBooksFilter: (state) => {
       state.booksFilter = [];
     },
@@ -50,6 +59,7 @@ export const {
   setEmptyBooksFilter,
   getTopTen,
   getBooksFilteredByCat,
+  setFilters,
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

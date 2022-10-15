@@ -7,6 +7,7 @@ import {
   getCategories,
   getBooks,
   emptyBookFiltered,
+  setStoreFilters,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
@@ -19,7 +20,9 @@ export default function Books() {
   const dispatch = useDispatch();
   // // // // // //
   // const { type, value } = useParams(); //type=category, value=medicine
-  const { booksFilter, categories } = useSelector((state) => state.books);
+  const { booksFilter, categories, storeFilters } = useSelector(
+    (state) => state.books
+  );
   // const currentBooks = booksFilter.slice(0, 8);
 
   // // // // // // STATES CREADOS POR ALE
@@ -36,13 +39,16 @@ export default function Books() {
       dispatch(getBooks());
     }
     if (theme && !category && !subcategory) {
-      dispatch(bookFiltered("category", theme));
+      dispatch(setStoreFilters({ category: [theme] }));
+      setTimeout(() => dispatch(bookFiltered("category", theme)), 250);
     }
     if (theme && category && !subcategory) {
-      dispatch(bookFiltered("category", category));
+      dispatch(setStoreFilters({ category: [theme, category] }));
+      setTimeout(() => dispatch(bookFiltered("category", category)), 250);
     }
     if (theme && category && subcategory) {
-      dispatch(bookFiltered("category", subcategory));
+      dispatch(setStoreFilters({ category: [theme, category, subcategory] }));
+      setTimeout(() => dispatch(bookFiltered("category", subcategory)), 250);
     }
     dispatch(getCategories());
 
@@ -64,6 +70,8 @@ export default function Books() {
             theme={theme}
             category={category}
             subcategory={subcategory}
+            dispatch={dispatch}
+            setStoreFilters={setStoreFilters}
           />
         </div>
       </div>
@@ -78,6 +86,8 @@ export default function Books() {
             subcategory={subcategory}
             categories={categories}
             history={history}
+            dispatch={dispatch}
+            setStoreFilters={setStoreFilters}
           />
           <div className="divFilters">
             <b>
