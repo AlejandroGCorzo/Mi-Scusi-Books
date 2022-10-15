@@ -11,6 +11,7 @@ import {
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
 import FilterCategories from "./FilterCategories/FilterCategories.jsx";
+import FilterAuthor from "./FilterAuthor/FilterAuthor.jsx";
 import "./Books.css";
 
 export default function Books() {
@@ -26,6 +27,7 @@ export default function Books() {
 
   // // // // // // STATES CREADOS POR ALE
   // const [filters, setFilters] = useState({});
+  const [render, setRender] = useState(false);
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
@@ -35,33 +37,37 @@ export default function Books() {
 
   useEffect(() => {
     if (!theme && !category && !subcategory) {
-      dispatch(bookFiltered(storeFilters));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
     }
     if (theme && !category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme] }));
       // dispatch(bookFiltered({ category: [theme] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
     }
     if (theme && category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme, category] }));
       // dispatch(bookFiltered({ category: [theme, category] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
     }
     if (theme && category && subcategory) {
       dispatch(setStoreFilters({ category: [theme, category, subcategory] }));
       // dispatch(bookFiltered({ category: [theme, category, subcategory] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
     }
     dispatch(getCategories());
 
     return () => {
       dispatch(emptyBookFiltered());
     };
-  }, [dispatch, theme, category, subcategory]);
+  }, [dispatch, theme, category, subcategory, render]);
 
   function handleClick(e, type, value) {
     e.preventDefault();
-    if (type === "author") dispatch(setStoreFilters({ [type]: [value] }));
+    if (type === "author") {
+      dispatch(setStoreFilters({ [type]: [value] }));
+      setRender(true);
+      // setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+    }
     // dispatch(getResults(type, value));
   }
   // // // // // //
@@ -95,38 +101,7 @@ export default function Books() {
           {/*  */}
           {/*  */}
           {/*  */}
-          <div className="divFilters">
-            <b>
-              <p className="titlesFilters">Author</p>
-            </b>
-            <div style={{ textTransform: "capitalize" }}>
-              {booksFilter?.map((el) =>
-                el.author.length > 1 ? (
-                  <React.Fragment>
-                    <p
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => handleClick(e, "author", el.author[0])}
-                    >
-                      {el.author[0]}
-                    </p>
-                    <p
-                      style={{ cursor: "pointer" }}
-                      onClick={(e) => handleClick(e, "author", el.author[1])}
-                    >
-                      {el.author[1]}
-                    </p>
-                  </React.Fragment>
-                ) : (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => handleClick(e, "author", el.author[0])}
-                  >
-                    {el.author[0]}
-                  </p>
-                )
-              )}
-            </div>
-          </div>
+          <FilterAuthor booksFilter={booksFilter} handleClick={handleClick} />
           {/*  */}
           {/*  */}
           {/*  */}

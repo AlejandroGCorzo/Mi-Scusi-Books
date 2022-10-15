@@ -6,7 +6,7 @@ import {
   getCategoryResults,
   getBookByName,
   getTopTen,
-  getBooksFilteredByCat,
+  getBooksFiltered,
   setEmptyBooksFilter,
   setFilters,
 } from "./booksSlice.js";
@@ -35,10 +35,10 @@ export const getCategories = () => (dispatch) => {
 };
 
 export const bookFiltered = (filters) => (dispatch) => {
-  console.log(filters)
+  console.log(filters);
   axios
     .post(`http://localhost:9000/books/filter`, filters)
-    .then((resolve) => dispatch(getBooksFilteredByCat(resolve.data)))
+    .then((resolve) => dispatch(getBooksFiltered(resolve.data)))
     .catch((e) => console.log(e));
 };
 

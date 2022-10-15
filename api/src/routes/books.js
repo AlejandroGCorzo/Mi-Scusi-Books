@@ -148,6 +148,7 @@ bookRouter.get("/", async (req, res) => {
 
 bookRouter.post("/filter", async (req, res) => {
   const filters = req.body;
+  console.log(filters);
   let filtered = await bookSchema.find({ deleted: false }).select("-deleted");
 
   try {
