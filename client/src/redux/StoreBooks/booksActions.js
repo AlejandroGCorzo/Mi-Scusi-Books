@@ -29,7 +29,7 @@ export const getCategories = () => (dispatch) => {
     .catch((e) => console.log(e));
 };
 
-export const getResults = (type, value) => (dispatch) => {
+export const bookFiltered = (type, value) => (dispatch) => {
   axios
     .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
     .then((resolve) => dispatch(getBooksFilteredByCat(resolve.data)))

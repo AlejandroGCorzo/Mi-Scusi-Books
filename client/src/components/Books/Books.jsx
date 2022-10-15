@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import {
-  getResults,
+  // getResults,
+  bookFiltered,
   getCategories,
   getBooks,
 } from '../../redux/StoreBooks/booksActions.js';
 import Book from '../Book/Book.jsx';
+import CategoriesPagination from './CategoriesPagination/CategoriesPagination.jsx';
 import './Books.css';
 // import { setEmptyResults } from '../../redux/StoreBooks/booksSlice.js';
 
@@ -24,30 +26,41 @@ export default function Books() {
   // // // // // // // // // // // // // //
 
   useEffect(() => {
-    if (!theme || !category || !subcategory) {
+    if (!theme && !category && !subcategory) {
       dispatch(getBooks());
     }
-    // dispatch(getResults(type, value));
+    if (theme && !category && !subcategory) {
+      dispatch(bookFiltered('category', theme));
+    }
+    if (theme && category && !subcategory) {
+      dispatch(bookFiltered('category', category));
+    }
+    if (theme && category && subcategory) {
+      dispatch(bookFiltered('category', subcategory));
+    }
     dispatch(getCategories());
+
+    // dispatch(getResults(type, value));
     return () => {
       // dispatch(setEmptyResults());
     };
-  }, [dispatch]);
+  }, [dispatch, theme, category, subcategory]);
 
   function handleClick(e, type, value) {
     e.preventDefault();
     // dispatch(getResults(type, value));
   }
-
+  // // // // // //
   return (
     <div className="contentResults">
       <div className="divLinkCategories">
-        <p className="linkCategories">
-          <Link to={'/categories'} style={{ textDecoration: 'none' }}>
-            Books
-          </Link>
-          {/* <b>{value ? ` --> ${value}` : null}</b> */}
-        </p>
+        <div className="linkCategories">
+          <CategoriesPagination
+            theme={theme}
+            category={category}
+            subcategory={subcategory}
+          />
+        </div>
       </div>
       <div className="resultsMain">
         <div className="filtersResults">
