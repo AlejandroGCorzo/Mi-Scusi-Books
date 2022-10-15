@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
-import { getDetail, getBooks } from '../../redux/StoreBooks/booksActions.js';
-import { setEmptyDetail } from '../../redux/StoreBooks/booksSlice.js';
-import './Details.css';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { getDetail, getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
+import "./Details.css";
 
 const Details = (props) => {
   const dispatch = useDispatch();
@@ -29,30 +29,37 @@ const Details = (props) => {
         </div>
         <div className="leftInnerBox">
           <span className="bookName">{detail.name}</span>
-          {detail.author?.map((el) => (
-            <span key={el}>Author: {el}</span>
-          ))}
-          <span>Editorial: {detail.editorial}</span>
-
-          <span>
-            Categories:
-            {detail.category?.map((el) => (
-              <span key={el}>{el}</span>
-            ))}
-          </span>
-
-          <span>Format: {detail.format}</span>
-          <span>Edition: {detail.edition}</span>
-          <span>Language: {detail.language}</span>
-          <span>ISBN: {detail.ISBN}</span>
-          <span>Rating: {detail.rating}</span>
-          <span>Stock: {detail.stock}</span>
-          <span>${detail.price}</span>
+          <div className="detailsContainer">
+            <span className="detailsSpan">
+              Author:
+              {detail.author?.map((el) => (
+                <span key={el}>{el}</span>
+              ))}
+            </span>
+            <span className="detailsSpan">Editorial: {detail.editorial}</span>
+            <span className="detailsSpan">
+              Categories:
+              {detail.category?.map((el) => (
+                <span key={el}>{detail.category.indexOf(el) === detail.category.length -1 ? `${el}.` : `${el} >`}</span>
+              ))}
+            </span>
+            <span className="detailsSpan">Format: {detail.format}</span>
+            <span className="detailsSpan">Edition: {detail.edition}</span>
+            <span className="detailsSpan">Language: {detail.language}</span>
+            <span className="detailsSpan">ISBN: {detail.ISBN}</span>
+            <span className="detailsSpan">Rating: {detail.rating}</span>
+            <span className="detailsSpan">Stock: {detail.stock}</span>
+          </div>
+          <span className="price">${detail.price}</span>
+          <div className="buttonsContainer">
+            <button className="buttonBookDetail">Buy</button>
+            <button className="buttonBookDetail">Add to Cart</button>
+          </div>
         </div>
       </div>
-      <span>
-        {' '}
-        Reviews:
+      <span className="reviews">
+        {" "}
+        Reviews
         {detail.reviews?.map((el) => (
           <div key={el.user}>
             <span>{el.user}</span>
