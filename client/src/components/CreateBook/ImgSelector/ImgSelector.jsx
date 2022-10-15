@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import axios from 'axios';
+import React from "react";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import axios from "axios";
 
 export default function ImgSelector({
   imgSelected,
@@ -14,11 +14,11 @@ export default function ImgSelector({
   function uploadImage(e) {
     e.preventDefault(e);
     const formImgData = new FormData();
-    formImgData.append('file', imgSelected.file);
-    formImgData.append('upload_preset', 'u3dgsoub');
+    formImgData.append("file", imgSelected.file);
+    formImgData.append("upload_preset", "u3dgsoub");
     axios
       .post(
-        'https://api.cloudinary.com/v1_1/scusi-books/image/upload',
+        "https://api.cloudinary.com/v1_1/scusi-books/image/upload",
         formImgData
       )
       .then((response) => {
@@ -31,7 +31,7 @@ export default function ImgSelector({
   }
   // // // // //
   return (
-    <div className="ImgSelector">
+    <>
       <span>Select image: </span>
       <IconButton color="primary" aria-label="upload picture" component="label">
         <input
@@ -47,9 +47,9 @@ export default function ImgSelector({
         />
         <PhotoCamera />
       </IconButton>
-      <span>{imgSelected.file.name}</span>
+      <span style= {{ color: "black" }}>{imgSelected.file.name}</span>
       <Button
-        className="ImgSelectorStackButton"
+        // className="ImgSelectorStackButton"
         variant="contained"
         component="label"
         disabled={!imgSelected.file.name}
@@ -57,6 +57,6 @@ export default function ImgSelector({
         Upload cover
         <input hidden accept="image/*" onClick={uploadImage} />
       </Button>
-    </div>
+    </>
   );
 }
