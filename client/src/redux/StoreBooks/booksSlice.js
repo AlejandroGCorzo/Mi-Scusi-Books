@@ -26,7 +26,7 @@ export const booksSlice = createSlice({
       state.results = action.payload
     },
     getBookByName: (state,action) =>{
-      state.bookByName = state.books.find(b=>b.name === action.payload)
+      state.bookByName = action.payload
     }
   },
 });
