@@ -89,11 +89,16 @@
     cursor: pointer;
 }
 
-.subToCategoryDiv{
-    color: #414141;
-}
 .subToCategoryDiv span{
     margin-left: 40px;
+    color: #2f00ff;
+}
+
+.buttonCategory{
+    background-color: white;
+    border: 1px solid white;
+    cursor: pointer;
+    text-align: left;
 }
 
 @media (min-height: 0px){
