@@ -178,22 +178,21 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1000px) {
   .bookCreationForm {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    margin: 0px 50px 20px 50px;
+    align-items: flex-start;
   }
 
   .bookCreationFormPreview {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20em;
-    margin: 0;
-    padding: 0;
+    width: 30em;
+    margin-left: 30px;
+    padding: 10px;
   }
   
 }
@@ -223,15 +222,14 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    margin: 20px;
   }
 
   .bookCreationFormPreview {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30em;
-    margin: 0;
-    padding: 0;
+    width: 20em;
   }
   
 }
