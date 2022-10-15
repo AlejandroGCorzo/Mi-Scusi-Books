@@ -23,7 +23,7 @@ export default function Home() {
     dispatch(getUser());
   }, [dispatch]);
 
-  // const images = books.map((b) => b.image);
+  const images = books.map((b) => b.image);
   // images[Math.floor(Math.random() * images.length)]
 
   return (
@@ -42,9 +42,9 @@ export default function Home() {
 
         <div className="stand">
           <div className="imagePromotions">
-            <img src={book1} width="192px" heigth="192px" alt="" />
-            <img src={book2} width="192px" heigth="192px" alt="" />
-            <img src={book3} width="192px" heigth="192px" alt="" />
+            <img src={images[Math.floor(Math.random() * images.length)]/* book1 */} width="140"  height="190" alt="" />
+            <img src={images[Math.floor(Math.random() * images.length)]/* book2 */} /* max-width='1%' max-height='1%' */ width="140"  height="190" alt="" />
+            <img src={book3} width="140"  height="190" alt="" />
           </div>
           <div>
             <img src={stand} width="512px" heigth="512px" alt="" />
