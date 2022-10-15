@@ -5,6 +5,7 @@ import {
   allCategories,
   getCategoryResults,
   getBookByName,
+  getTopTen
 } from './booksSlice.js';
 
 export const getBooks = () => {
@@ -42,3 +43,10 @@ export const getBookName = (type, value, history) => {
     .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
     .catch(() => alert('Libro no encontrado'));
 };
+
+export const fetchTopTen =  () => {
+  return async function(dispatch){
+    const top = await axios.get('http://localhost:9000/books')
+    dispatch(getTopTen(top.data))
+  }
+}
