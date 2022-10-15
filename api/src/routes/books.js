@@ -1,22 +1,22 @@
-const { Router } = require('express');
-const bookSchema = require('../models/books');
-const Category = require('../models/category');
+const { Router } = require("express");
+const bookSchema = require("../models/books");
+const Category = require("../models/category");
 const bookRouter = Router();
-const { protect } = require('../middleware/protect');
+const { protect } = require("../middleware/protect");
 const filterTypeOne = [
-  'name',
-  'editorial',
-  'price',
-  'format',
-  'language',
-  'ISBN',
-  'rating',
-  'stock',
+  "name",
+  "editorial",
+  "price",
+  "format",
+  "language",
+  "ISBN",
+  "rating",
+  "stock",
 ];
-const filterTypeTwo = ['author', 'category', 'rating', 'reviews'];
+const filterTypeTwo = ["author", "category", "rating", "reviews"];
 
 //post book
-bookRouter.post('/', async (req, res) => {
+bookRouter.post("/", async (req, res) => {
   let book = {};
   try {
     const {
@@ -81,7 +81,9 @@ bookRouter.post('/', async (req, res) => {
         deleted: false,
       };
     } else
-      return res.status(400).send("the required fields do not meet the requirements");
+      return res
+        .status(400)
+        .send("the required fields do not meet the requirements");
     const addBook = bookSchema(book);
     await addBook.save();
     await Category.where({ _id: id }).update({
@@ -94,14 +96,14 @@ bookRouter.post('/', async (req, res) => {
 });
 
 //get top 10 best selling books
-bookRouter.get('/', async (req, res) => {
+bookRouter.get("/", async (req, res) => {
   try {
     let data = await bookSchema
       .find()
       .where({ deleted: false })
       .sort({ unitSold: -1 })
       .limit(10)
-      .select('-deleted');
+      .select("-deleted");
     res.json(data);
   } catch (e) {
     res.status(400).send({ msg: e.message });
@@ -114,7 +116,10 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.get("/filter", async (req, res) => {
   const { type, value } = req.query;
-  let filtro = [type.split("-").join(" ").toLowerCase(), value.split("-").join(" ").toLowerCase()]
+  let filtro = [
+    type.split("-").join(" ").toLowerCase(),
+    value.split("-").join(" ").toLowerCase(),
+  ];
 
   try {
     if (filterTypeOne.includes(type)) {
@@ -139,24 +144,23 @@ bookRouter.get("/filter", async (req, res) => {
   }
 });
 
-
 //get allBooks
-bookRouter.get('/allBooks', async (req, res) => {
+bookRouter.get("/allBooks", async (req, res) => {
   try {
     const books = await bookSchema
       .find()
       .where({ deleted: false })
       .select("-deleted");
     res.status(200).json(books);
-  }catch (e) {
+  } catch (e) {
     res.status(400).json({ msg: e });
   }
 });
 
 //get book especifict
-bookRouter.get('/:id', async (req, res, next) => {
+bookRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
-  if (!id) res.status(400).json({ error: 'id is required' });
+  if (!id) res.status(400).json({ error: "id is required" });
   try {
     const book = await bookSchema
       .findById(id)
@@ -171,10 +175,9 @@ bookRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-
-bookRouter.delete("/destroy/:id", async(req, res) => {
+bookRouter.delete("/destroy/:id", async (req, res) => {
   const { id } = req.params;
-  if(!id){
+  if (!id) {
     return res.status(400).json({ msg: "An id is needed" });
   }
   try {
@@ -198,19 +201,18 @@ bookRouter.delete("/destroy/:id", async(req, res) => {
     });
     const deleted = await bookSchema.deleteOne({ _id: id });
     if (deleted) {
-      return res.status(200).json({msg: "Book fully deleted"})
+      return res.status(200).json({ msg: "Book fully deleted" });
     }
-  } catch(e){
+  } catch (e) {
     return res.status(400).json({ msg: "Something went wrong" });
   }
-})
-
+});
 
 //soft-delete books
-bookRouter.put('/delete/:id', async (req, res) => {
+bookRouter.put("/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ msg: 'An id is needed' });
+    return res.status(400).json({ msg: "An id is needed" });
   }
   try {
     const book = await bookSchema.findById(id);
@@ -239,7 +241,7 @@ bookRouter.put('/delete/:id', async (req, res) => {
 
     return res.status(200).json({ msg: "Book deleted" });
   } catch (e) {
-    return res.status(400).json({ msg: 'Something went wrong' });
+    return res.status(400).json({ msg: "Something went wrong" });
   }
 });
 
@@ -251,15 +253,15 @@ bookRouter.put("/:id", async (req, res, next) => {
 
   if (value.some((val) => val.length == 0))
     res.json({ error: "they can't send empty comps" });
-  if (!id) return res.status(400).send({ error: 'id is required' });
+  if (!id) return res.status(400).send({ error: "id is required" });
   if (!data)
     return res
       .status(400)
-      .send({ error: 'information per body required to update ' });
+      .send({ error: "information per body required to update " });
 
   try {
     await bookSchema.updateOne({ _id: id }, { $set: data });
-    res.send('Books updated successfully!');
+    res.send("Books updated successfully!");
   } catch (e) {
     next(e);
   }
@@ -267,9 +269,11 @@ bookRouter.put("/:id", async (req, res, next) => {
 
 //midleware error handling
 bookRouter.use((error, req, res, next) => {
-  if (error.name === "CastError") res.status(400).send({ error: "the data sent is malformed " });
-  else if (error.name === "TypeError") res.status(400).json({error: error + ""})
-  else res.status(500).end()
+  if (error.name === "CastError")
+    res.status(400).send({ error: "the data sent is malformed " });
+  else if (error.name === "TypeError")
+    res.status(400).json({ error: error + "" });
+  else res.status(500).end();
 });
 
 module.exports = bookRouter;

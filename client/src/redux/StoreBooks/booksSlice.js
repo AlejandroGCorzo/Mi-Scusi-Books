@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const booksSlice = createSlice({
-  name: 'books',
+  name: "books",
   initialState: {
     books: [],
     booksFilter: [],
