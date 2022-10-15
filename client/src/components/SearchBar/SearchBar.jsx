@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import './SearchBar.css';
 import Search from '../../sourceImg/search.svg';
 import { getBookByName } from '../../redux/StoreBooks/booksSlice';
-import { getBookName } from '../../redux/StoreBooks/booksActions';
+import { getBookName, bookFiltered, setStoreFilters } from '../../redux/StoreBooks/booksActions';
 import { useHistory } from 'react-router-dom';
 
 // import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 
 export default function SearchBar() {
   const [name, setName] = useState('');
+  const [filter, setFilter] = useState('name')
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -24,10 +25,16 @@ export default function SearchBar() {
 
   function handleSubmit(i) {
     i.preventDefault();
-    const type = 'name';
-    // getBookName(type, name, history);
-    history.push(`/books/${type}/${name}`);
+    const search = {[filter]:name}
+    
+    dispatch(setStoreFilters(search))
+    history.push(`/books`);
     setName('');
+    setFilter('')
+  }
+
+  function changeFilter(e){
+    setFilter(e.target.value)
   }
 
   return (
@@ -43,7 +50,12 @@ export default function SearchBar() {
           pattern="^[A-Za-z\s]+$"
           maxLength="30"
         />
-
+        <select className="searchSelect" onChange={changeFilter}>
+          <option value="name">Title</option>
+          <option value="editorial">Editorial</option>
+          <option value="author">Author</option>
+          <option value="ISBN">ISBN</option>
+        </select>
         <button className="searchButton" type="submit" onClick={handleSubmit}>
           <img src={Search} alt="imgType" width="24px" height="24px" />
         </button>
