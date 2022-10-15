@@ -8,6 +8,7 @@ import {
 } from "../../redux/StoreBooks/booksActions";
 import Book from "../Book/Book";
 import "./Results.css";
+import { setEmptyResults } from "../../redux/StoreBooks/booksSlice.js";
 
 export default function Results() {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ export default function Results() {
   useEffect(() => {
     dispatch(getResults(type, value));
     dispatch(getCategories());
+    return () => {
+      dispatch(setEmptyResults());
+    }
   }, [dispatch]);
 
   function handleClick(e, type, value) {

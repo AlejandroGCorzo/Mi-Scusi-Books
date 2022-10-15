@@ -25,13 +25,17 @@ export const booksSlice = createSlice({
     getCategoryResults: (state, action) => {
       state.results = action.payload
     },
+    setEmptyResults: (state) => {
+      state.results= [];
+    },
     getBookByName: (state,action) =>{
       state.bookByName = state.books.find(b=>b.name === action.payload)
     }
   },
 });
 
-export const { getAllBooks, getBookById, setEmptyDetail, allCategories, getCategoryResults, getBookByName } =
+export const { getAllBooks, getBookById, setEmptyDetail, allCategories, getCategoryResults, getBookByName,
+              setEmptyResults} =
 
   booksSlice.actions;
 
