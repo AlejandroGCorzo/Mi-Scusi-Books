@@ -4,15 +4,17 @@ export const booksSlice = createSlice({
   name: 'books',
   initialState: {
     books: [],
+    booksFilter: [],
     detail: {},
     categories: {},
     results: [],
     bookByName: {},
-    topTen: []
+    topTen: [],
   },
   reducers: {
     getAllBooks: (state, action) => {
-      state.books = action.payload;
+      state.books = [...action.payload];
+      state.booksFilter = [...action.payload];
     },
     getBookById: (state, action) => {
       state.detail = action.payload;
@@ -23,24 +25,31 @@ export const booksSlice = createSlice({
     allCategories: (state, action) => {
       state.categories = action.payload;
     },
-    getCategoryResults: (state, action) => {
-      state.results = action.payload
+    getBooksFilteredByCat: (state, action) => {
+      state.booksFilter = [...action.payload];
     },
     setEmptyResults: (state) => {
-      state.results= [];
+      state.results = [];
     },
-    getBookByName: (state,action) =>{
-      state.bookByName = state.books.find(b=>b.name === action.payload)
+    getBookByName: (state, action) => {
+      state.bookByName = state.books.find((b) => b.name === action.payload);
     },
     getTopTen: (state, action) => {
-      state.topTen = action.payload
-    }
+      state.topTen = action.payload;
+    },
   },
 });
 
-export const { getAllBooks, getBookById, setEmptyDetail, allCategories, getCategoryResults, getBookByName,
-              setEmptyResults, getTopTen} =
-
-  booksSlice.actions;
+export const {
+  getAllBooks,
+  getBookById,
+  setEmptyDetail,
+  allCategories,
+  getCategoryResults,
+  getBookByName,
+  setEmptyResults,
+  getTopTen,
+  getBooksFilteredByCat,
+} = booksSlice.actions;
 
 export default booksSlice.reducer;

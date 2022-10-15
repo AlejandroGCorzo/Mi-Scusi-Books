@@ -1,8 +1,8 @@
-.contentResults{
+.contentResults {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-flow: row wrap;
+  flex-direction: column;
 }
 
 .cardBookResults {
@@ -16,27 +16,32 @@
 
 .resultsMain {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  /* flex-wrap: wrap;
+  flex-direction: row; */
+  margin: 0 2vw;
+  width: 96vw;
+  justify-content: space-around;
+  /* align-items: center; */
 }
 
 .divLinkCategories {
   color: black;
+  /* display: flex;
+  justify-content: flex-start; */
+  width: fit-content;
   font-size: 14px;
-  margin-right: 95em;
+  /* margin-left: 40vw; */
 }
 
 .filtersResults {
-  width: 20em;
+  width: 15vw;
   display: flex;
-  margin-right: 2em;
+  /* margin-right: 2em; */
   /* margin-top: -32px; */
   justify-content: center;
   align-items: center;
   background-color: white;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   flex-direction: column;
   border-radius: 10px;
   border: 1px solid #e7e7e7;
@@ -45,16 +50,17 @@
 }
 
 .sectionBooksResults {
-  width: 90em;
+  width: 75vw;
   background-color: white;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   flex-direction: row;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   border: 1px solid #e7e7e7;
   padding: 0px 0px 80px;
+  height: fit-content;
 }
 
 .titleResults {

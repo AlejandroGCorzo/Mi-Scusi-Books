@@ -4,7 +4,6 @@ export default function handleSubmit(e, newBook, history) {
   e.preventDefault();
   newBook = { ...newBook, name: newBook.title };
   delete newBook.title;
-  console.log('SUBMITEADO', newBook);
   axios
     .post('http://localhost:9000/books', newBook)
     .then((response) => {
