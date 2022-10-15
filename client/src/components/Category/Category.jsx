@@ -9,19 +9,22 @@ export default function Category (){
     const history = useHistory();
     const { categories } = useSelector((state) => state.books);
 
-    function onClickCategoryGeneral(e, type){
+    function onClickCategoryGeneral(e, theme){
         e.preventDefault();
-        history.push(`/books/category/${type}`);
+        // history.push(`/books/category/${type}`);
+        history.push(`/books/category/${theme}`);
     }
 
-    function onClickCategory(e, value, type){
+    function onClickCategory(e, theme, category){
         e.preventDefault();
-        history.push(`/books/category/${type}/${value}`);
+        // history.push(`/books/category/${type}/${value}`);
+        history.push(`/books/category/${theme}/${category}`);
     }
 
-    function onClickSubCategory(e, value, type, theme){
+    function onClickSubCategory(e, theme, category, subCategory){
         e.preventDefault();
-        history.push(`/books/category/${theme}/${type}/${value}`);
+        // history.push(`/books/category/${theme}/${type}/${value}`);
+        history.push(`/books/category/${theme}/${category}/${subCategory}`);
     }
 
     function numTotalGeneral(index){
