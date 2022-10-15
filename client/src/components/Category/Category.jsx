@@ -12,19 +12,19 @@ export default function Category (){
     function onClickCategoryGeneral(e, theme){
         e.preventDefault();
         // history.push(`/books/category/${type}`);
-        history.push(`/books/category/${theme}`);
+        history.push(`/books/${theme}`);
     }
 
     function onClickCategory(e, theme, category){
         e.preventDefault();
         // history.push(`/books/category/${type}/${value}`);
-        history.push(`/books/category/${theme}/${category}`);
+        history.push(`/books/${theme}/${category}`);
     }
 
     function onClickSubCategory(e, theme, category, subCategory){
         e.preventDefault();
         // history.push(`/books/category/${theme}/${type}/${value}`);
-        history.push(`/books/category/${theme}/${category}/${subCategory}`);
+        history.push(`/books/${theme}/${category}/${subCategory}`);
     }
 
     function numTotalGeneral(index){
@@ -73,12 +73,12 @@ export default function Category (){
             {JSON.stringify(categories[index]) !=='{}' && Object.keys(categories[index]).sort()
                 .map((el) => 
                 <div className="subCategoryDiv" key={el}>
-                        <button className="buttonCategory" onClick={(e) => onClickCategory(e, index.split(" ").join("-"), el.split(" ").join("-"))}><li>{el[0].toLocaleUpperCase() + el.slice(1)} {[index].el}{numTotalCategory(index, el)}</li></button>
+                        <button className="buttonCategory" onClick={(e) => onClickCategory(e, index.split(" ").join("_"), el.split(" ").join("_"))}><li>{el[0].toLocaleUpperCase() + el.slice(1)} {[index].el}{numTotalCategory(index, el)}</li></button>
                     
                     {JSON.stringify(categories[index][el]) !=='{}' && Object.keys(categories[index][el]).sort()
                     .map((elx) => 
                     <div className="subToCategoryDiv" key={elx}>
-                            <button className="buttonCategory" onClick={(e) => onClickSubCategory(e, index.split(" ").join("-"), el.split(" ").join("-"),elx.split(" ").join("-"))}><span>{elx[0].toLocaleUpperCase() + elx.slice(1)}{numTotalSubCategory(index, el, elx)}</span></button>
+                            <button className="buttonCategory" onClick={(e) => onClickSubCategory(e, index.split(" ").join("_"), el.split(" ").join("_"),elx.split(" ").join("_"))}><span>{elx[0].toLocaleUpperCase() + elx.slice(1)}{numTotalSubCategory(index, el, elx)}</span></button>
                     </div>
                     )}
 
