@@ -178,7 +178,27 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 950px) {
+  .bookCreationForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 50px 20px 50px;
+  }
+
+  .bookCreationFormPreview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20em;
+    margin: 0;
+    padding: 0;
+  }
+  
+}
+
+@media only screen and (max-width: 700px) {
   .bookCreationForm {
     display: flex;
     flex-wrap: wrap;
@@ -197,13 +217,12 @@
   
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 450px) {
   .bookCreationForm {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin: 0px 50px 20px 50px;
   }
 
   .bookCreationFormPreview {
@@ -216,3 +235,4 @@
   }
   
 }
+
