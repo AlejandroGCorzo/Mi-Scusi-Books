@@ -15,7 +15,7 @@ export const booksSlice = createSlice({
   reducers: {
     getAllBooks: (state, action) => {
       state.books = [...action.payload];
-      state.booksFilter = [...action.payload];
+      // state.booksFilter = [...action.payload];
     },
     getBookById: (state, action) => {
       state.detail = action.payload;
