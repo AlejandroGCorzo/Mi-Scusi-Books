@@ -35,7 +35,7 @@ export default function Home() {
             At Scusi Book's we have the best books on the market, check our
             catalog to see the best deals we have for you!
           </p>
-          <Link to={"/category"}>
+          <Link to={"/categories"}>
             <button className="buttonView">View!</button>
           </Link>
         </div>
