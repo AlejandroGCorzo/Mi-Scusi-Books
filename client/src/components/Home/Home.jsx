@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { Link } from "react-router-dom";
 import book1 from "../../sourceImg/book-4.png";
@@ -16,15 +16,18 @@ import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
+  const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
 
   useEffect(() => {
     dispatch(getBooks());
     dispatch(getUser());
+    dispatch(fetchTopTen());
   }, [dispatch]);
 
-  // const images = books.map((b) => b.image);
-  // images[Math.floor(Math.random() * images.length)]
+  const images = books.map((b) => b.image);
+  const book1 = images[Math.floor(Math.random() * images.length)];
+  const book2 = images[Math.floor(Math.random() * images.length)];
+  const book3 = images[Math.floor(Math.random() * images.length)];
 
   return (
     <div className="homePage">
@@ -42,9 +45,27 @@ export default function Home() {
 
         <div className="stand">
           <div className="imagePromotions">
-            <img src={book1} width="192px" heigth="192px" alt="" />
-            <img src={book2} width="192px" heigth="192px" alt="" />
-            <img src={book3} width="192px" heigth="192px" alt="" />
+            <img
+              src={book1}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
+            <img
+              src={book2}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
+            <img
+              src={book3}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
           </div>
           <div>
             <img src={stand} width="512px" heigth="512px" alt="" />
@@ -52,7 +73,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Slider books={books} />
+      <Slider books={topTen} />
 
       <div className="advertisements">
         <div>

@@ -8,15 +8,8 @@ export default function CategoriesSelector(props) {
     });
     if (props.newBook.categories.length === 0)
       return props.setCatSel('Select category');
-    if (props.newBook.categories.length === 1) {
-      // if (
-      //   typeof props.categories[props.newBook.categories[0]][
-      //     props.newBook.categories[1]
-      //   ] === 'number'
-      // )
-      //   return props.setCatSel('No subcategory avaible');
+    if (props.newBook.categories.length === 1)
       return props.setCatSel('Select subcategory');
-    }
     if (props.newBook.categories.length === 2)
       return props.setCatSel('All options selected');
   }
