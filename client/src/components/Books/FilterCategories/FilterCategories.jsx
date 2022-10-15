@@ -9,10 +9,7 @@ export default function FilterCategories({
   dispatch,
   setStoreFilters,
 }) {
-  // const [sum, setSum] = useState(
-  //   theme ? Object.values(categories[theme]).reduce((ac, el) => ac + el, 0) : 0
-  // );
-
+  // // // // // // // //
   return (
     <React.Fragment>
       <div className="divFilters">

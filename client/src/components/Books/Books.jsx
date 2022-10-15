@@ -5,7 +5,6 @@ import {
   // getResults,
   bookFiltered,
   getCategories,
-  emptyBookFiltered,
   setStoreFilters,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
