@@ -74,7 +74,8 @@ export default function CreateBook() {
   return (
     <div className="bookCreationForm">
       <div className="bookCreationFormInput">
-        <div>
+        <h1 className="createTitle">CREATE BOOK</h1>
+        <div className="divInputForm">
           <span>Title: </span>
           <input
             type="text"
@@ -85,7 +86,7 @@ export default function CreateBook() {
           />
         </div>
         <span></span>
-        <div>
+        <div className="divInputForm">
           <span>Author: </span>
           <input
             type="text"
@@ -104,12 +105,13 @@ export default function CreateBook() {
             name="author"
             disabled={!author.length}
             onClick={handleChange}
+            className="btnAdd"
           >
             add
           </button>
         </div>
         <span></span>
-        <div>
+        <div className="divInputForm">
           <span>Editorial: </span>
           <input
             type="text"
@@ -120,7 +122,7 @@ export default function CreateBook() {
           />
         </div>
         <span></span>
-        <div>
+        <div className="divInputForm">
           <span>Edition: </span>
           <input
             type="text"
@@ -131,7 +133,7 @@ export default function CreateBook() {
           />
         </div>
         <span>{errorHandler.edition}</span>
-        <div>
+        <div className="divInputForm">
           <span>Price: </span>
           <input
             type="text"
@@ -150,20 +152,20 @@ export default function CreateBook() {
           setCatSel={setCatSel}
           categories={categories}
         />
-        <div>
+        <div className="divInputForm">
           <span>Synopsis: </span>
           <TextareaAutosize
             aria-label="minimum height"
             minRows={3}
             placeholder="Write here"
-            style={{ width: 200 }}
+            className='textareaAutosize'
             name="synopsis"
             value={newBook.synopsis}
             onChange={handleChange}
           />
         </div>
         <span>{errorHandler.synopsis}</span>
-        <div>
+        <div className="divInputForm">
           <span>Format: </span>
           <select
             value={options.format}
@@ -178,7 +180,7 @@ export default function CreateBook() {
             <option>Paperback</option>
           </select>
         </div>
-        <div>
+        <div className="divInputForm">
           <span>Language: </span>
           <select
             value={options.language}
@@ -192,7 +194,7 @@ export default function CreateBook() {
             <option>Spanish</option>
           </select>
         </div>
-        <div>
+        <div className="divInputForm">
           <span>ISBN: </span>
           <input
             type="text"
@@ -204,7 +206,7 @@ export default function CreateBook() {
           />
         </div>
         <span>{errorHandler.ISBN}</span>
-        <div>
+        <div className="divInputForm">
           <span>Stock: </span>
           <input
             type="text"
@@ -215,7 +217,7 @@ export default function CreateBook() {
           />
         </div>
         <span>{errorHandler.stock}</span>
-        <div>
+        <div className="divInputForm">
           <ImgSelector
             imgSelected={imgSelected}
             setImgSelected={setImgSelected}
@@ -228,6 +230,7 @@ export default function CreateBook() {
         </div>
         {/* BUTTONS STACK RESET & CREATE */}
         <SubmitButtonStack
+
           handleClickOpen={handleClickOpen}
           errorHandler={errorHandler}
           newBook={newBook}

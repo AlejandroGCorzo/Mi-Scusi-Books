@@ -15,7 +15,7 @@ export default function CategoriesSelector(props) {
   }
 
   return (
-    <div>
+    <div className="divInputForm"> 
       <span>Categories: </span>
       <select value={props.catSel} onChange={selectorOnChange}>
         {props.newBook.categories.length === 2 &&
