@@ -89,6 +89,9 @@ export default function HeaderNav(onSearch) {
             <Link to="/create" style={{ textDecoration: "none" }}>
               <p>Add Book</p>
             </Link>
+            <Link to="/books" style={{ textDecoration: "none" }}>
+              <p>All Books</p>
+            </Link>
             <Link to="/categories" style={{ textDecoration: "none" }}>
               <p>Categories</p>
             </Link>
@@ -180,6 +183,9 @@ export default function HeaderNav(onSearch) {
           <div className="iconsContainer">
             <Link to="/create" style={{ textDecoration: "none" }}>
               <p>Add Book</p>
+            </Link> 
+            <Link to="/books" style={{ textDecoration: "none" }}>
+              <p>All Books</p>
             </Link>
             <Link to="/categories" style={{ textDecoration: "none" }}>
               <p>Categories</p>
