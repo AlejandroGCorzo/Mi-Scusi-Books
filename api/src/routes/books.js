@@ -145,38 +145,32 @@ bookRouter.get("/", async (req, res) => {
 // });
 
 //new filter
-/*
-{
-  name: false,
-  editorial: false,
-  format:false,
-  language: false,
-  ISBN:false,
-  stock: false, -> (mayor a 0)
-  author: false, -> []
-  category: false -> []
-}
-*/
 
 bookRouter.get("/filter", async (req, res) => {
   const filters = req.body;
-  const filtered = await bookSchema.find({ deleted: false }).select("-deleted");
-  // const filtered = [];
-  console.log(filters)
-  for(const filter in filters){
-    if(Array.isArray(filter)){
-      console.log(filter)
-      // for(const f of filters[filter]){
-      //   filtered = filtered.filter(el => {
-      //     el.filter?.includes(filters[filter])
-      //   })
-      // }
-    }
-  }
+  let filtered = await bookSchema.find({ deleted: false }).select("-deleted");
 
-  //[a, b , c]
-  res.send('ok')
-  // res.json(filtered);
+  try {
+    for (const filter in filters) {
+      //si es array (autor o categoria filtro)
+      if (!filters[filter]) {
+        continue;
+      }
+      if (Array.isArray(filters[filter])) {
+        for (const f of filters[filter]) {
+          filtered = filtered.filter((el) => {
+            return el[filter].includes(f);
+          });
+        }
+      } else {
+        filtered = filtered.filter((el) => el[filter] === filters[filter]);
+      }
+    }
+
+    return res.status(200).json(filtered);
+  } catch (e) {
+    return res.status(400).json({ msg: "Something went wrong" });
+  }
 });
 
 //get allBooks
