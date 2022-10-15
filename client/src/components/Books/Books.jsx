@@ -135,9 +135,7 @@ export default function Books() {
           {/* MODIFICADO HASTA ACÁ */}
         </div>
         <div className="sectionBooksResults">
-          <div className="titleResults">
-            {/* <p>{`There's ${results.length} results in ${value}`}</p> */}
-          </div>
+          <div className="titleResults"></div>
           {/* <p>
             <label>Order by </label>
             <select className="selectResults">
