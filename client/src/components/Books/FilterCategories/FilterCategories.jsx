@@ -6,6 +6,8 @@ export default function FilterCategories({
   subcategory,
   categories,
   history,
+  dispatch,
+  setStoreFilters,
 }) {
   // const [sum, setSum] = useState(
   //   theme ? Object.values(categories[theme]).reduce((ac, el) => ac + el, 0) : 0
@@ -47,6 +49,11 @@ export default function FilterCategories({
                           value={el}
                           onChange={(e) => {
                             e.preventDefault();
+                            dispatch(
+                              setStoreFilters({
+                                category: [theme, category, el],
+                              })
+                            );
                             history.push(
                               `/books/${theme.replace(
                                 /\s/g,
@@ -72,6 +79,7 @@ export default function FilterCategories({
                         value={el}
                         onChange={(e) => {
                           e.preventDefault();
+                          dispatch(setStoreFilters({ category: [theme, el] }));
                           history.push(
                             `/books/${theme.replace(/\s/g, "_")}/${el.replace(
                               /\s/g,
@@ -94,6 +102,7 @@ export default function FilterCategories({
                       value={el}
                       onChange={(e) => {
                         e.preventDefault();
+                        dispatch(setStoreFilters({ category: [el] }));
                         history.push(`/books/${el.replace(/\s/g, "_")}`);
                       }}
                     />
