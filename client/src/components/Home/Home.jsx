@@ -16,16 +16,18 @@ import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { topTen } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
- 
+  const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
+
   useEffect(() => {
     dispatch(getBooks());
     dispatch(getUser());
-    dispatch(fetchTopTen())
+    dispatch(fetchTopTen());
   }, [dispatch]);
-  
-  // const images = books.map((b) => b.image);
-  // images[Math.floor(Math.random() * images.length)]
+
+  const images = books.map((b) => b.image);
+  const book1 = images[Math.floor(Math.random() * images.length)];
+  const book2 = images[Math.floor(Math.random() * images.length)];
+  const book3 = images[Math.floor(Math.random() * images.length)];
 
   return (
     <div className="homePage">
@@ -43,9 +45,27 @@ export default function Home() {
 
         <div className="stand">
           <div className="imagePromotions">
-            <img src={book1} width="192px" heigth="192px" alt="" />
-            <img src={book2} width="192px" heigth="192px" alt="" />
-            <img src={book3} width="192px" heigth="192px" alt="" />
+            <img
+              src={book1}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
+            <img
+              src={book2}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
+            <img
+              src={book3}
+              className="promotionImages"
+              width="140"
+              height="190"
+              alt=""
+            />
           </div>
           <div>
             <img src={stand} width="512px" heigth="512px" alt="" />
