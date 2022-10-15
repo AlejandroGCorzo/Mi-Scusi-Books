@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
 import {
   // getResults,
   bookFiltered,
   getCategories,
-  getBooks,
   emptyBookFiltered,
+  setStoreFilters,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
@@ -19,11 +19,13 @@ export default function Books() {
   const dispatch = useDispatch();
   // // // // // //
   // const { type, value } = useParams(); //type=category, value=medicine
-  const { booksFilter, categories } = useSelector((state) => state.books);
+  const { booksFilter, categories, storeFilters } = useSelector(
+    (state) => state.books
+  );
   // const currentBooks = booksFilter.slice(0, 8);
 
   // // // // // // STATES CREADOS POR ALE
-  const [filters, setFilters] = useState({});
+  // const [filters, setFilters] = useState({});
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
@@ -33,16 +35,22 @@ export default function Books() {
 
   useEffect(() => {
     if (!theme && !category && !subcategory) {
-      dispatch(getBooks());
+      dispatch(bookFiltered(storeFilters));
     }
     if (theme && !category && !subcategory) {
-      dispatch(bookFiltered("category", theme));
+      dispatch(setStoreFilters({ category: [theme] }));
+      // dispatch(bookFiltered({ category: [theme] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     if (theme && category && !subcategory) {
-      dispatch(bookFiltered("category", category));
+      dispatch(setStoreFilters({ category: [theme, category] }));
+      // dispatch(bookFiltered({ category: [theme, category] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     if (theme && category && subcategory) {
-      dispatch(bookFiltered("category", subcategory));
+      dispatch(setStoreFilters({ category: [theme, category, subcategory] }));
+      // dispatch(bookFiltered({ category: [theme, category, subcategory] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     dispatch(getCategories());
 
@@ -53,6 +61,7 @@ export default function Books() {
 
   function handleClick(e, type, value) {
     e.preventDefault();
+    if (type === "author") dispatch(setStoreFilters({ [type]: [value] }));
     // dispatch(getResults(type, value));
   }
   // // // // // //
@@ -64,6 +73,8 @@ export default function Books() {
             theme={theme}
             category={category}
             subcategory={subcategory}
+            dispatch={dispatch}
+            setStoreFilters={setStoreFilters}
           />
         </div>
       </div>
@@ -78,20 +89,47 @@ export default function Books() {
             subcategory={subcategory}
             categories={categories}
             history={history}
+            dispatch={dispatch}
+            setStoreFilters={setStoreFilters}
           />
+          {/*  */}
+          {/*  */}
+          {/*  */}
           <div className="divFilters">
             <b>
               <p className="titlesFilters">Author</p>
             </b>
-            {booksFilter?.map((b) => (
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={(e) => handleClick(e, "author", b.author)}
-              >
-                {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
-              </p>
-            ))}
+            <div style={{ textTransform: "capitalize" }}>
+              {booksFilter?.map((el) =>
+                el.author.length > 1 ? (
+                  <React.Fragment>
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => handleClick(e, "author", el.author[0])}
+                    >
+                      {el.author[0]}
+                    </p>
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => handleClick(e, "author", el.author[1])}
+                    >
+                      {el.author[1]}
+                    </p>
+                  </React.Fragment>
+                ) : (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => handleClick(e, "author", el.author[0])}
+                  >
+                    {el.author[0]}
+                  </p>
+                )
+              )}
+            </div>
           </div>
+          {/*  */}
+          {/*  */}
+          {/*  */}
           <div className="divFilters">
             <b>
               <p className="titlesFilters">Editorial</p>

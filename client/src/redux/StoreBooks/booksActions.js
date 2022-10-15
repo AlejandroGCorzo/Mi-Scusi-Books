@@ -8,6 +8,7 @@ import {
   getTopTen,
   getBooksFilteredByCat,
   setEmptyBooksFilter,
+  setFilters,
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -33,11 +34,16 @@ export const getCategories = () => (dispatch) => {
     .catch((e) => console.log(e));
 };
 
-export const bookFiltered = (type, value) => (dispatch) => {
+export const bookFiltered = (filters) => (dispatch) => {
+  console.log(filters)
   axios
-    .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
+    .post(`http://localhost:9000/books/filter`, filters)
     .then((resolve) => dispatch(getBooksFilteredByCat(resolve.data)))
     .catch((e) => console.log(e));
+};
+
+export const setStoreFilters = (filters) => (dispatch) => {
+  dispatch(setFilters(filters));
 };
 
 export const emptyBookFiltered = () => (dispatch) => {

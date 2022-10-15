@@ -146,7 +146,7 @@ bookRouter.get("/", async (req, res) => {
 
 //new filter
 
-bookRouter.get("/filter", async (req, res) => {
+bookRouter.post("/filter", async (req, res) => {
   const filters = req.body;
   let filtered = await bookSchema.find({ deleted: false }).select("-deleted");
 
@@ -162,8 +162,7 @@ bookRouter.get("/filter", async (req, res) => {
             return el[filter].includes(f);
           });
         }
-      }
-       else {
+      } else {
         if (filter === "stock") {
           filtered = filtered.filter((el) => el.stock > 0);
         } else {
