@@ -25,7 +25,8 @@ export default function SearchBar() {
   function handleSubmit(i) {
     i.preventDefault();
     const type = 'name';
-    getBookName(type, name, history);
+    // getBookName(type, name, history);
+    history.push(`/books/${type}/${name}`);
     setName('');
   }
 

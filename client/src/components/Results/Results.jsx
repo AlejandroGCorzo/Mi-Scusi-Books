@@ -25,7 +25,7 @@ export default function Results() {
     return () => {
       dispatch(setEmptyResults());
     }
-  }, [dispatch]);
+  }, [dispatch, value, type]);
 
   function handleClick(e, type, value) {
     e.preventDefault();
