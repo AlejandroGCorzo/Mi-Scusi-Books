@@ -26,7 +26,6 @@ export default function Books() {
   // const currentBooks = booksFilter.slice(0, 8);
 
   // // // // // // STATES CREADOS POR ALE
-  // const [filters, setFilters] = useState({});
   const [render, setRender] = useState(false);
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
@@ -37,27 +36,29 @@ export default function Books() {
 
   useEffect(() => {
     if (!theme && !category && !subcategory) {
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 0);
     }
     if (theme && !category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme] }));
-      // dispatch(bookFiltered({ category: [theme] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+      dispatch(bookFiltered({ ...storeFilters, category: [theme] }));
     }
     if (theme && category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme, category] }));
-      // dispatch(bookFiltered({ category: [theme, category] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+      dispatch(bookFiltered({ ...storeFilters, category: [theme, category] }));
     }
     if (theme && category && subcategory) {
       dispatch(setStoreFilters({ category: [theme, category, subcategory] }));
-      // dispatch(bookFiltered({ category: [theme, category, subcategory] }));
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+      dispatch(
+        bookFiltered({
+          ...storeFilters,
+          category: [theme, category, subcategory],
+        })
+      );
     }
     dispatch(getCategories());
 
     return () => {
-      dispatch(emptyBookFiltered());
+      // dispatch(emptyBookFiltered());
     };
   }, [dispatch, theme, category, subcategory, render]);
 
@@ -65,10 +66,13 @@ export default function Books() {
     e.preventDefault();
     if (type === "author") {
       dispatch(setStoreFilters({ [type]: [value] }));
-      setRender(true);
-      // setTimeout(() => dispatch(bookFiltered(storeFilters)), 300);
+      setRender(render ? false : true);
     }
-    // dispatch(getResults(type, value));
+  }
+  function handleDelAuthor(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ author: false }));
+    setRender(render ? false : true);
   }
   // // // // // //
   return (
@@ -98,10 +102,14 @@ export default function Books() {
             dispatch={dispatch}
             setStoreFilters={setStoreFilters}
           />
+          <FilterAuthor
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelAuthor={handleDelAuthor}
+          />
           {/*  */}
           {/*  */}
-          {/*  */}
-          <FilterAuthor booksFilter={booksFilter} handleClick={handleClick} />
           {/*  */}
           {/*  */}
           {/*  */}
