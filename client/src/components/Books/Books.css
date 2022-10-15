@@ -21,14 +21,14 @@
   margin: 0 2vw;
   width: 96vw;
   justify-content: space-around;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .divLinkCategories {
   color: black;
   /* display: flex;
   justify-content: flex-start; */
-  width: 15vw;
+  width: fit-content;
   font-size: 14px;
   /* margin-left: 40vw; */
 }
@@ -60,6 +60,7 @@
   border-radius: 10px;
   border: 1px solid #e7e7e7;
   padding: 0px 0px 80px;
+  height: fit-content;
 }
 
 .titleResults {

@@ -26,7 +26,7 @@ export const booksSlice = createSlice({
       state.categories = action.payload;
     },
     getBooksFilteredByCat: (state, action) => {
-      state.booksFilter = action.payload;
+      state.booksFilter = [...action.payload];
     },
     setEmptyResults: (state) => {
       state.results = [];
