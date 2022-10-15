@@ -114,34 +114,69 @@ bookRouter.get("/", async (req, res) => {
 // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock
 // valid filter type Two author || category || rating || reviews
 
-bookRouter.get("/filter", async (req, res) => {
-  const { type, value } = req.query;
-  let filtro = [
-    type.split("-").join(" ").toLowerCase(),
-    value.split("-").join(" ").toLowerCase(),
-  ];
+// bookRouter.get("/filter", async (req, res) => {
+//   const { type, value } = req.query;
+//   let filtro = [
+//     type.split("-").join(" ").toLowerCase(),
+//     value.split("-").join(" ").toLowerCase(),
+//   ];
 
-  try {
-    if (filterTypeOne.includes(type)) {
-      let data = await bookSchema
-        .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
-        .where({ deleted: false })
-        .select("-deleted");
-      data.length === 0
-        ? res.status(404).json({ msg: `No books were found with this ${type}` })
-        : res.json(data);
-    } else if (filterTypeTwo.includes(type)) {
-      let data = await bookSchema
-        .find({ [filtro[0]]: { $all: [filtro[1]] } })
-        .where({ deleted: false })
-        .select("-deleted");
-      data.length === 0
-        ? res.status(404).json({ msg: `No books were found with this ${type}` })
-        : res.json(data);
-    } else res.status(400).send({ msg: `filter ${type} type does not exist` });
-  } catch (e) {
-    res.status(400).send({ msg: e.message });
+//   try {
+//     if (filterTypeOne.includes(type)) {
+//       let data = await bookSchema
+//         .find({ [filtro[0]]: { $regex: filtro[1], $options: "i" } })
+//         .where({ deleted: false })
+//         .select("-deleted");
+//       data.length === 0
+//         ? res.status(404).json({ msg: `No books were found with this ${type}` })
+//         : res.json(data);
+//     } else if (filterTypeTwo.includes(type)) {
+//       let data = await bookSchema
+//         .find({ [filtro[0]]: { $all: [filtro[1]] } })
+//         .where({ deleted: false })
+//         .select("-deleted");
+//       data.length === 0
+//         ? res.status(404).json({ msg: `No books were found with this ${type}` })
+//         : res.json(data);
+//     } else res.status(400).send({ msg: `filter ${type} type does not exist` });
+//   } catch (e) {
+//     res.status(400).send({ msg: e.message });
+//   }
+// });
+
+//new filter
+/*
+{
+  name: false,
+  editorial: false,
+  format:false,
+  language: false,
+  ISBN:false,
+  stock: false, -> (mayor a 0)
+  author: false, -> []
+  category: false -> []
+}
+*/
+
+bookRouter.get("/filter", async (req, res) => {
+  const filters = req.body;
+  const filtered = await bookSchema.find({ deleted: false }).select("-deleted");
+  // const filtered = [];
+  console.log(filters)
+  for(const filter in filters){
+    if(Array.isArray(filter)){
+      console.log(filter)
+      // for(const f of filters[filter]){
+      //   filtered = filtered.filter(el => {
+      //     el.filter?.includes(filters[filter])
+      //   })
+      // }
+    }
   }
+
+  //[a, b , c]
+  res.send('ok')
+  // res.json(filtered);
 });
 
 //get allBooks
