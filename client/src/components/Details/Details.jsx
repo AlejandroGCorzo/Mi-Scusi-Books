@@ -22,23 +22,25 @@ const Details = (props) => {
   return (
     <div className="outerDiv">
       <div className="whiteBox">
-        <div className="rightInnerBox">
-          <img src={detail.image} className="bookImage" />
-          <span className="synopsisTitle">Synopsis</span>
+      <img src={detail.image} className="bookImage" />
+        <div className="leftInnerBox">
+          <p className="synopsisTitle">Synopsis</p>
           <span className="synopsisText">{detail.synopsis}</span>
         </div>
-        <div className="leftInnerBox">
-          <span className="bookName">{detail.name}</span>
+      </div>
+      <div>
+        <div className="rightInnerBox">
+          <b><span className="bookName">{detail.name}</span></b>
           <div className="detailsContainer">
             <span className="detailsSpan">
-              Author:
+            <b>Author: </b>&nbsp;
               {detail.author?.map((el) => (
-                <span key={el}>{el}</span>
+                <span key={el}>{el}.</span>
               ))}
             </span>
-            <span className="detailsSpan">Editorial: {detail.editorial}</span>
+            <span className="detailsSpan"><b>Editorial: </b>&nbsp;{detail.editorial}.</span>
             <span className="detailsSpan">
-              Categories:
+              <b>Categories: </b>&nbsp;
               {detail.category?.map((el) => (
                 <span key={el}>
                   {detail.category.indexOf(el) === detail.category.length - 1
@@ -47,26 +49,26 @@ const Details = (props) => {
                 </span>
               ))}
             </span>
-            <span className="detailsSpan">Format: {detail.format}</span>
-            <span className="detailsSpan">Edition: {detail.edition}</span>
-            <span className="detailsSpan">Language: {detail.language}</span>
-            <span className="detailsSpan">ISBN: {detail.ISBN}</span>
-            <span className="detailsSpan">Rating: {detail.rating}</span>
+            <span className="detailsSpan"><b>Format: </b>&nbsp;{detail.format}.</span>
+            <span className="detailsSpan"><b>Edition: </b>&nbsp;{detail.edition}.</span>
+            <span className="detailsSpan"><b>Language: </b>&nbsp;{detail.language}.</span>
+            <span className="detailsSpan"><b>ISBN: </b>&nbsp;{detail.ISBN}.</span>
+            <span className="detailsSpan"><b>Rating: </b>&nbsp;{detail.rating}.</span>
             <span className="detailsSpan">
-              Stock:{" "}
+            <b>Stock:</b>&nbsp;
               {detail.stock === 1
                 ? `${detail.stock} unit`
-                : `${detail.stock} units`}
+                : `${detail.stock} units`}.
             </span>
           </div>
-          <span className="price">${detail.price}</span>
           <div className="buttonsContainer">
-            <button className="buttonBookDetail">Buy</button>
-            <button className="buttonBookDetail">Add to Cart</button>
+            <button className="buttonBookDetail"><b>BUY</b></button>
+            <span className="price"><b>${detail.price}</b></span>
+            {/* <button className="buttonBookDetail">Add to Cart</button> */}
           </div>
         </div>
       </div>
-      <span className="reviews">
+      <div className="reviews">
         {" "}
         Reviews
         {detail.reviews?.map((el) => (
@@ -77,7 +79,7 @@ const Details = (props) => {
             <span>{el.votes.downvotes}</span>
           </div>
         ))}
-      </span>
+      </div>
     </div>
   );
 };
