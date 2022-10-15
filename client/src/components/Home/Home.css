@@ -86,3 +86,7 @@
     justify-content: space-evenly;
     width: 100%;
 }
+
+.promotionImages{
+    border-radius: 5px; 
+}
