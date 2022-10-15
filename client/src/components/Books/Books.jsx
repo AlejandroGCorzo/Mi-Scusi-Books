@@ -98,10 +98,9 @@ export default function Books() {
             dispatch={dispatch}
             setStoreFilters={setStoreFilters}
           />
-          {/*  */}
-          {/*  */}
-          {/*  */}
           <FilterAuthor booksFilter={booksFilter} handleClick={handleClick} />
+          {/*  */}
+          {/*  */}
           {/*  */}
           {/*  */}
           {/*  */}
