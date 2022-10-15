@@ -80,3 +80,9 @@
 .imageFail{
     margin-top: -7px;
 }
+
+.imagePromotions{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
