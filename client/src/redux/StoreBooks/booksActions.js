@@ -5,14 +5,15 @@ import {
   allCategories,
   getCategoryResults,
   getBookByName,
-  getTopTen
+  getTopTen,
+  getBooksFilteredByCat,
 } from './booksSlice.js';
 
-export const getBooks = () => {
-  return async (dispatch) => {
-    let json = await axios.get('http://localhost:9000/books/allBooks');
-    return dispatch(getAllBooks(json.data));
-  };
+export const getBooks = () => (dispatch) => {
+  axios
+    .get('http://localhost:9000/books/allBooks')
+    .then((resolve) => dispatch(getAllBooks(resolve.data)))
+    .catch((e) => console.log(e));
 };
 
 export const getDetail = (id) => {
@@ -23,18 +24,19 @@ export const getDetail = (id) => {
 };
 
 export const getCategories = () => (dispatch) => {
-  axios.get('http://localhost:9000/category').then((el) => {
-    dispatch(allCategories(el.data[0].theme));
-  });
+  axios
+    .get('http://localhost:9000/category')
+    .then((el) => {
+      dispatch(allCategories(el.data[0].theme));
+    })
+    .catch((e) => console.log(e));
 };
 
-export const getResults = (type, value) => {
-  return async (dispatch) => {
-    let json = await axios.get(
-      `http://localhost:9000/books/filter?type=${type}&value=${value}`
-    );
-    return dispatch(getCategoryResults(json.data));
-  };
+export const getResults = (type, value) => (dispatch) => {
+  axios
+    .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
+    .then((resolve) => dispatch(getBooksFilteredByCat(resolve.data)))
+    .catch((e) => console.log(e));
 };
 
 export const getBookName = (type, value, history) => {
@@ -44,9 +46,9 @@ export const getBookName = (type, value, history) => {
     .catch(() => alert('Libro no encontrado'));
 };
 
-export const fetchTopTen =  () => {
-  return async function(dispatch){
-    const top = await axios.get('http://localhost:9000/books')
-    dispatch(getTopTen(top.data))
-  }
-}
+export const fetchTopTen = () => {
+  return async function (dispatch) {
+    const top = await axios.get('http://localhost:9000/books');
+    dispatch(getTopTen(top.data));
+  };
+};
