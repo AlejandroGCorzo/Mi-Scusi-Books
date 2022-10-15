@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { getDetail, getBooks } from "../../redux/StoreBooks/booksActions.js";
-import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
-import "./Details.css";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { getDetail, getBooks } from '../../redux/StoreBooks/booksActions.js';
+import { setEmptyDetail } from '../../redux/StoreBooks/booksSlice.js';
+import './Details.css';
 
 const Details = (props) => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Details = (props) => {
         </div>
       </div>
       <span>
-        {" "}
+        {' '}
         Reviews:
         {detail.reviews?.map((el) => (
           <div key={el.user}>

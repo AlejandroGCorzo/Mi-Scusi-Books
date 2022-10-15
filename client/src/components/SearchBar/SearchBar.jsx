@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import "./SearchBar.css";
-import Search from "../../sourceImg/search.svg";
-import { getBookByName } from "../../redux/StoreBooks/booksSlice";
-import { getBookName } from "../../redux/StoreBooks/booksActions";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './SearchBar.css';
+import Search from '../../sourceImg/search.svg';
+import { getBookByName } from '../../redux/StoreBooks/booksSlice';
+import { getBookName } from '../../redux/StoreBooks/booksActions';
+import { useHistory } from 'react-router-dom';
 
 // import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 
 export default function SearchBar() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -22,12 +22,11 @@ export default function SearchBar() {
     setName(i.target.value);
   }
 
-  async function handleSubmit(i) {
+  function handleSubmit(i) {
     i.preventDefault();
-    // dispatch(setEmptyDetail());
-    dispatch(getBookName("name", name.toLowerCase()));
-    history.push(`/book_details/${books.find((b) => b.name === name)._id}`);
-    setName("");
+    const type = 'name';
+    getBookName(type, name, history);
+    setName('');
   }
 
   return (
