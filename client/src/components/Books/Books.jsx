@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
 import {
   // getResults,
@@ -26,7 +26,7 @@ export default function Books() {
   // const currentBooks = booksFilter.slice(0, 8);
 
   // // // // // // STATES CREADOS POR ALE
-  const [filters, setFilters] = useState({});
+  // const [filters, setFilters] = useState({});
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
@@ -59,6 +59,7 @@ export default function Books() {
 
   function handleClick(e, type, value) {
     e.preventDefault();
+    if (type === "author") dispatch(setStoreFilters({ [type]: [value] }));
     // dispatch(getResults(type, value));
   }
   // // // // // //
@@ -89,19 +90,44 @@ export default function Books() {
             dispatch={dispatch}
             setStoreFilters={setStoreFilters}
           />
+          {/*  */}
+          {/*  */}
+          {/*  */}
           <div className="divFilters">
             <b>
               <p className="titlesFilters">Author</p>
             </b>
-            {booksFilter?.map((b) => (
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={(e) => handleClick(e, "author", b.author)}
-              >
-                {b.author[0].toLocaleUpperCase() + b.author.slice(1)}
-              </p>
-            ))}
+            <div style={{ textTransform: "capitalize" }}>
+              {booksFilter?.map((el) =>
+                el.author.length > 1 ? (
+                  <React.Fragment>
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => handleClick(e, "author", el.author[0])}
+                    >
+                      {el.author[0]}
+                    </p>
+                    <p
+                      style={{ cursor: "pointer" }}
+                      onClick={(e) => handleClick(e, "author", el.author[1])}
+                    >
+                      {el.author[1]}
+                    </p>
+                  </React.Fragment>
+                ) : (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => handleClick(e, "author", el.author[0])}
+                  >
+                    {el.author[0]}
+                  </p>
+                )
+              )}
+            </div>
           </div>
+          {/*  */}
+          {/*  */}
+          {/*  */}
           <div className="divFilters">
             <b>
               <p className="titlesFilters">Editorial</p>
