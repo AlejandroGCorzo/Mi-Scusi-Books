@@ -36,19 +36,22 @@ export default function Books() {
 
   useEffect(() => {
     if (!theme && !category && !subcategory) {
-      dispatch(getBooks());
+      dispatch(bookFiltered(storeFilters));
     }
     if (theme && !category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme] }));
-      setTimeout(() => dispatch(bookFiltered("category", theme)), 250);
+      // dispatch(bookFiltered({ category: [theme] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     if (theme && category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme, category] }));
-      setTimeout(() => dispatch(bookFiltered("category", category)), 250);
+      // dispatch(bookFiltered({ category: [theme, category] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     if (theme && category && subcategory) {
       dispatch(setStoreFilters({ category: [theme, category, subcategory] }));
-      setTimeout(() => dispatch(bookFiltered("category", subcategory)), 250);
+      // dispatch(bookFiltered({ category: [theme, category, subcategory] }));
+      setTimeout(() => dispatch(bookFiltered(storeFilters)), 250);
     }
     dispatch(getCategories());
 
