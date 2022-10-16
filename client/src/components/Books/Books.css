@@ -85,3 +85,12 @@
 .divFilters {
   width: 100%;
 }
+
+.divFilters label{
+  display:block;
+  text-align: left;
+  padding-left: 8%;
+  cursor: pointer;
+  text-transform: capitalize;
+  
+}
