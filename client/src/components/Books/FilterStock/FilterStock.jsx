@@ -4,7 +4,7 @@ export default function FilterStock({ handleClick, storeFilters, handleDel }) {
   return (
     <div className="divFilters">
       <b>
-        <p className="titlesFilters">Format</p>
+        <p className="titlesFilters">Stock</p>
       </b>
       <div style={{ textTransform: "capitalize" }}>
         {storeFilters.stock ? (

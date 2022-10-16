@@ -26,8 +26,8 @@ export default function Books() {
   const { booksFilter, categories, storeFilters } = useSelector(
     (state) => state.books
   );
-  const [booksToShow, setBooksToShow] = useState()
-  console.log(booksToShow)
+  const [booksToShow, setBooksToShow] = useState();
+  console.log(booksToShow);
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
   const [selectOrder, setSelectOrder] = useState("Select");
@@ -90,7 +90,6 @@ export default function Books() {
           />
         </div>
       </div>
-      <Pages books={booksFilter} setBooksToShow={(b) => setBooksToShow(b)}/>
       <div className="resultsMain">
         <div className="filtersResults">
           <div className="titleResults">
@@ -142,8 +141,10 @@ export default function Books() {
         </div>
         <div className="sectionBooksResults">
           {/* <div className="titleResults"></div> */}
-          <p>
-            <label>Order by </label>
+          <p className="orderSelect">
+            <label>
+              <b>Order by</b>
+            </label>
             <select
               value={selectOrder}
               className="selectResults"
@@ -162,7 +163,6 @@ export default function Books() {
               <option value="Z">Title (Z-A)</option>
             </select>
           </p>
-          
           {booksFilter.length > 0 ? (
             booksFilter.map((el) => {
               return (
@@ -183,7 +183,8 @@ export default function Books() {
           )}
         </div>
       </div>
-         
+      <p></p>
+      <Pages books={booksFilter} setBooksToShow={(b) => setBooksToShow(b)} />
     </div>
   );
 }

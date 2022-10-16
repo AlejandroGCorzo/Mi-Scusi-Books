@@ -216,7 +216,7 @@
   }
 }
 
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width: 590px) {
   .bookCreationForm {
     display: inline-block;
     justify-content: center;
@@ -225,14 +225,37 @@
   }
 
   .bookCreationFormInput {
-    width: 35em;
+    width: 33em;
     padding: 10px;
     margin: 40px 10px;
   }
 
   .bookCreationFormPreview {
-    width: 35em;
+    width: 33em;
     padding: 10px;
     margin: 40px 10px;
   }
 }
+
+
+@media only screen and (max-width: 400px) {
+  .bookCreationForm {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+  }
+
+  .bookCreationFormInput {
+    width: 25em;
+    padding: 10px;
+    margin: 40px 0px;
+  }
+
+  .bookCreationFormPreview {
+    width: 25em;
+    padding: 10px;
+    margin: 40px 0px;
+  }
+}
+
