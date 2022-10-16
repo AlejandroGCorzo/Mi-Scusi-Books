@@ -16,6 +16,7 @@ import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
 import FilterStock from "./FilterStock/FilterStock.jsx";
+import Pages from "./Pagination/Pages.jsx";
 
 export default function Books() {
   // // // // // //
@@ -25,6 +26,8 @@ export default function Books() {
   const { booksFilter, categories, storeFilters } = useSelector(
     (state) => state.books
   );
+  const [booksToShow, setBooksToShow] = useState()
+  console.log(booksToShow)
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
   const [selectOrder, setSelectOrder] = useState("Select");
@@ -87,6 +90,7 @@ export default function Books() {
           />
         </div>
       </div>
+      <Pages books={booksFilter} setBooksToShow={(b) => setBooksToShow(b)}/>
       <div className="resultsMain">
         <div className="filtersResults">
           <div className="titleResults">
@@ -158,6 +162,7 @@ export default function Books() {
               <option value="Z">Title (Z-A)</option>
             </select>
           </p>
+          
           {booksFilter.length > 0 ? (
             booksFilter.map((el) => {
               return (
@@ -178,6 +183,7 @@ export default function Books() {
           )}
         </div>
       </div>
+         
     </div>
   );
 }
