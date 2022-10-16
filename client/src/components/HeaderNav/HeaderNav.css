@@ -42,6 +42,13 @@
     .formBack button{
         margin-left: 15px;
     }
+    .contentCategory{
+        margin-top: -15px;
+    }
+    .contentCategoryx{
+        margin-top: -15px;
+    }
+        
 }
 
 @media (max-width: 512px) {
@@ -70,9 +77,7 @@
         width: 336px;
     }
     .contentCategory{
-        position: absolute;
-        margin-top: -25px;
-        left: -50px;
+        width: 336px;
     }
     .userOuterDiv{
         width: 336px;
