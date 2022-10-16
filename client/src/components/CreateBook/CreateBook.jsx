@@ -1,62 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { getCategories } from '../../redux/StoreBooks/booksActions';
-import CategoriesSelector from './CategoriesSelector/CategoriesSelector.jsx';
-import ImgSelector from './ImgSelector/ImgSelector.jsx';
-import NewBookPreview from './NewBookPreview/NewBookPreview.jsx';
-import DialogAction from './DialogActions/DialogActions.jsx';
-import SubmitButtonStack from './SubmitButtonsStack/SubmitButtonStack';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { getCategories } from "../../redux/StoreBooks/booksActions";
+import CategoriesSelector from "./CategoriesSelector/CategoriesSelector.jsx";
+import ImgSelector from "./ImgSelector/ImgSelector.jsx";
+import NewBookPreview from "./NewBookPreview/NewBookPreview.jsx";
+import DialogAction from "./DialogActions/DialogActions.jsx";
+import SubmitButtonStack from "./SubmitButtonsStack/SubmitButtonStack";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 import {
   deleteCategory,
   handleErrors,
   onChange,
   handleSubmit,
-} from './Functions/exporter.js';
-import './CreateBook.css';
+} from "./Functions/exporter.js";
+import "./CreateBook.css";
 
 export default function CreateBook() {
   const history = useHistory();
   const dispatch = useDispatch();
   // // // // // //
   const emptyBook = {
-    title: '',
+    title: "",
     author: [],
-    editorial: '',
-    edition: '',
-    price: '',
+    editorial: "",
+    edition: "",
+    price: "",
     categories: [],
-    synopsis: '',
-    format: '',
-    language: '',
-    ISBN: '',
-    stock: '',
-    image: '',
+    synopsis: "",
+    format: "",
+    language: "",
+    ISBN: "",
+    stock: "",
+    image: "",
   };
   const [newBook, setNewBook] = useState(emptyBook);
   const [errorHandler, setErrorHandler] = useState({
-    edition: '',
-    price: '',
-    synopsis: '',
-    ISBN: '',
-    stock: '',
+    edition: "",
+    price: "",
+    synopsis: "",
+    ISBN: "",
+    stock: "",
   });
   const [open, setOpen] = useState({});
-  const [author, setAuthor] = useState('');
-  const [catSel, setCatSel] = useState('Select theme');
-  const [imgSelected, setImgSelected] = useState({ file: {}, url: '' });
+  const [author, setAuthor] = useState("");
+  const [catSel, setCatSel] = useState("Select theme");
+  const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
   const defaultOptions = {
-    format: 'Select format',
-    language: 'Select language',
+    format: "Select format",
+    language: "Select language",
   };
   const [options, setOptions] = useState(defaultOptions);
   const { categories } = useSelector((state) => state.books);
   // // // // // //
   function handleChange(e) {
     onChange(e, newBook, setNewBook, author, setAuthor);
-    if (['stock', 'ISBN', 'edition', 'price'].includes(e.target.name))
+    if (["stock", "ISBN", "edition", "price"].includes(e.target.name))
       handleErrors(e, errorHandler, setErrorHandler);
   }
   const handleClickOpen = (e) => {
@@ -97,7 +97,7 @@ export default function CreateBook() {
               setAuthor(e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.keyCode === 13 && e.target.name === 'author')
+              if (e.keyCode === 13 && e.target.name === "author")
                 return onChange(e, newBook, setNewBook, author, setAuthor);
             }}
           />
@@ -158,7 +158,7 @@ export default function CreateBook() {
             aria-label="minimum height"
             minRows={3}
             placeholder="Write here"
-            className='textareaAutosize'
+            className="textareaAutosize"
             name="synopsis"
             value={newBook.synopsis}
             onChange={handleChange}
@@ -170,8 +170,8 @@ export default function CreateBook() {
           <select
             value={options.format}
             onChange={(e) => {
-              setNewBook({ ...newBook, format: e.target.value });
-              setOptions({ ...options, format: e.target.value });
+              setNewBook({ ...newBook, format: e.target.value.toLowerCase() });
+              setOptions({ ...options, format: e.target.value.toLowerCase() });
             }}
           >
             <option disabled>Select format</option>
@@ -230,7 +230,6 @@ export default function CreateBook() {
         </div>
         {/* BUTTONS STACK RESET & CREATE */}
         <SubmitButtonStack
-
           handleClickOpen={handleClickOpen}
           errorHandler={errorHandler}
           newBook={newBook}
