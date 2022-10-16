@@ -15,6 +15,7 @@ import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
 import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
+import FilterStock from "./FilterStock/FilterStock.jsx";
 
 export default function Books() {
   // // // // // //
@@ -60,8 +61,7 @@ export default function Books() {
     if (type === "author") {
       dispatch(setStoreFilters({ [type]: [value] }));
       setRender(!render);
-    }
-    if (type === "editorial" || type === "language" || type === "format") {
+    } else {
       dispatch(setStoreFilters({ [type]: value }));
       setRender(!render);
     }
@@ -84,6 +84,11 @@ export default function Books() {
   function handleDelFormat(e) {
     e.preventDefault();
     dispatch(setStoreFilters({ format: false }));
+    setRender(!render);
+  }
+  function handleDelStock(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ stock: false }));
     setRender(!render);
   }
   // // // // // //
@@ -119,8 +124,6 @@ export default function Books() {
             handleClick={handleClick}
             storeFilters={storeFilters}
             handleDelAuthor={handleDelAuthor}
-            render={render}
-            setRender={setRender}
           />
           <FilterEditorial
             booksFilter={booksFilter}
@@ -140,6 +143,11 @@ export default function Books() {
             storeFilters={storeFilters}
             handleDelFormat={handleDelFormat}
           />
+          <FilterStock
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelStock={handleDelStock}
+          />
           {/* NO TOCAR ARRIBA */}
           {/*  */}
           {/*  */}
@@ -148,15 +156,17 @@ export default function Books() {
         </div>
         <div className="sectionBooksResults">
           {/* <div className="titleResults"></div> */}
-          {/* <p>
+          <p>
             <label>Order by </label>
             <select className="selectResults">
-              <option value="all">All</option>
+              {/* <option value="all">All</option> */}
               <option value="highest">Highest price</option>
               <option value="lowest">Lowest price</option>
               <option value="rating">Best rating</option>
+              <option value="A">Title (A-Z)</option>
+              <option value="Z">Title (Z-A)</option>
             </select>
-          </p> */}
+          </p>
           {booksFilter.length > 0 ? (
             booksFilter.map((el) => {
               return (
