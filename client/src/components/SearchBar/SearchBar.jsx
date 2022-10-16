@@ -24,7 +24,7 @@ export default function SearchBar() {
   }
 
   function handleSubmit(i) {
-    i.preventDefault();
+    // i.preventDefault();
     dispatch(emptyBookFiltered())
     let search;
     if(filter === "author"){
@@ -53,6 +53,9 @@ export default function SearchBar() {
           value={name}
           placeholder="Search..."
           onChange={handleInputChange}
+          onKeyDown={(e)=>{if(e.keyCode === 13){
+            return handleSubmit()
+          }}}
           pattern="^[A-Za-z\s]+$"
           maxLength="30"
         />
