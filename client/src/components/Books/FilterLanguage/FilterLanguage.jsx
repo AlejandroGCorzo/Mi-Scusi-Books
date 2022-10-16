@@ -4,7 +4,7 @@ export default function FilterLanguage({
   booksFilter,
   handleClick,
   storeFilters,
-  handleDelLanguage,
+  handleDel,
 }) {
   const allLanguage = booksFilter?.map((el) => el.language);
 
@@ -16,7 +16,7 @@ export default function FilterLanguage({
       {storeFilters.language ? (
         <React.Fragment>
           <p>{storeFilters.language}</p>
-          <button onClick={handleDelLanguage}>x</button>
+          <button onClick={(e) => handleDel(e, "language")}>x</button>
         </React.Fragment>
       ) : (
         allLanguage

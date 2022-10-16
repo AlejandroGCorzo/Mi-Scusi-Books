@@ -4,7 +4,7 @@ export default function FilterEditorial({
   booksFilter,
   handleClick,
   storeFilters,
-  handleDelEditorial,
+  handleDel,
 }) {
   const allEdit = booksFilter?.map((el) => el.editorial);
 
@@ -17,7 +17,7 @@ export default function FilterEditorial({
         {storeFilters.editorial ? (
           <React.Fragment>
             <p>{storeFilters.editorial}</p>
-            <button onClick={handleDelEditorial}>x</button>
+            <button onClick={(e) => handleDel(e, "editorial")}>x</button>
           </React.Fragment>
         ) : (
           allEdit

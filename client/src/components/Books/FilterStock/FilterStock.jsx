@@ -1,10 +1,6 @@
 import React from "react";
 
-export default function FilterStock({
-  handleClick,
-  storeFilters,
-  handleDelStock,
-}) {
+export default function FilterStock({ handleClick, storeFilters, handleDel }) {
   return (
     <div className="divFilters">
       <b>
@@ -14,7 +10,7 @@ export default function FilterStock({
         {storeFilters.stock ? (
           <React.Fragment>
             <p>{`Stock available`}</p>
-            <button onClick={handleDelStock}>x</button>
+            <button onClick={(e) => handleDel(e, "stock")}>x</button>
           </React.Fragment>
         ) : (
           <p

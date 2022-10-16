@@ -4,7 +4,7 @@ export default function FilterFormat({
   booksFilter,
   handleClick,
   storeFilters,
-  handleDelFormat,
+  handleDel,
 }) {
   // const posibilites = ["hardcover", "paperback"]
   let allFormat = booksFilter?.map((el) => el.format);
@@ -20,7 +20,7 @@ export default function FilterFormat({
         {storeFilters.format ? (
           <React.Fragment>
             <p>{storeFilters.format}</p>
-            <button onClick={handleDelFormat}>x</button>
+            <button onClick={(e) => handleDel(e, "format")}>x</button>
           </React.Fragment>
         ) : (
           allFormat?.map((el) => (

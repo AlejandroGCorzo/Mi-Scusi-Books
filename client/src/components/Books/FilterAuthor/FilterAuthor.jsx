@@ -4,7 +4,7 @@ export default function FilterAuthor({
   booksFilter,
   handleClick,
   storeFilters,
-  handleDelAuthor,
+  handleDel,
 }) {
   return (
     <div className="divFilters">
@@ -15,7 +15,7 @@ export default function FilterAuthor({
         {storeFilters.author ? (
           <React.Fragment>
             <p>{storeFilters.author[0]}</p>
-            <button onClick={handleDelAuthor}>x</button>
+            <button onClick={(e) => handleDel(e, "author")}>x</button>
           </React.Fragment>
         ) : (
           booksFilter?.map((el) =>

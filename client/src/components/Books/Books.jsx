@@ -66,29 +66,9 @@ export default function Books() {
       setRender(!render);
     }
   }
-  function handleDelAuthor(e) {
+  function handleDel(e, type) {
     e.preventDefault();
-    dispatch(setStoreFilters({ author: false }));
-    setRender(!render);
-  }
-  function handleDelEditorial(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ editorial: false }));
-    setRender(!render);
-  }
-  function handleDelLanguage(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ language: false }));
-    setRender(!render);
-  }
-  function handleDelFormat(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ format: false }));
-    setRender(!render);
-  }
-  function handleDelStock(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ stock: false }));
+    dispatch(setStoreFilters({ [type]: false }));
     setRender(!render);
   }
   // // // // // //
@@ -123,30 +103,30 @@ export default function Books() {
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelAuthor={handleDelAuthor}
+            handleDel={handleDel}
           />
           <FilterEditorial
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelEditorial={handleDelEditorial}
+            handleDel={handleDel}
           />
           <FilterLanguage
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelLanguage={handleDelLanguage}
+            handleDel={handleDel}
           />
           <FilterFormat
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelFormat={handleDelFormat}
+            handleDel={handleDel}
           />
           <FilterStock
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelStock={handleDelStock}
+            handleDel={handleDel}
           />
           {/* NO TOCAR ARRIBA */}
           {/*  */}
