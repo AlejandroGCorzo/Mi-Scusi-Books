@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { Link } from "react-router-dom";
-import book1 from "../../sourceImg/book-4.png";
-import book2 from "../../sourceImg/book-5.png";
-import book3 from "../../sourceImg/book-6.png";
 import shipping from "../../sourceImg/shipping.svg";
 import payment from "../../sourceImg/payment.svg";
 import protecte from "../../sourceImg/protected.svg";
@@ -24,10 +21,9 @@ export default function Home() {
     dispatch(fetchTopTen());
   }, [dispatch]);
 
-  const images = books.map((b) => b.image);
-  const book1 = images[Math.floor(Math.random() * images.length)];
-  const book2 = images[Math.floor(Math.random() * images.length)];
-  const book3 = images[Math.floor(Math.random() * images.length)];
+  const _ = require('underscore')
+  let images = books.map((b) => b.image);
+  images = _.shuffle(images)
 
   return (
     <div className="homePage">
@@ -46,21 +42,21 @@ export default function Home() {
         <div className="stand">
           <div className="imagePromotions">
             <img
-              src={book1}
+              src={images[0]}
               className="promotionImages"
               width="140"
               height="190"
               alt=""
             />
             <img
-              src={book2}
+              src={images[1]}
               className="promotionImages"
               width="140"
               height="190"
               alt=""
             />
             <img
-              src={book3}
+              src={images[2]}
               className="promotionImages"
               width="140"
               height="190"
