@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function FilterCategories({
   theme,
@@ -9,6 +9,18 @@ export default function FilterCategories({
   dispatch,
   setStoreFilters,
 }) {
+  // // // // // // // //
+  function sumInObj(object, sum = 0) {
+    if (typeof object === "object")
+      for (const key in object) {
+        if (typeof object[key] !== "number") sum += sumInObj(object[key]);
+        else sum += object[key];
+      }
+    else return object;
+    return sum;
+  }
+  // // // // // // // //
+
   // // // // // // // //
   return (
     <React.Fragment>
@@ -66,7 +78,7 @@ export default function FilterCategories({
                           );
                         }}
                       />
-                      {`${el}()`}
+                      {`${el}(${categories[theme][category][el]})`}
                     </label>
                   ))
               ) : (
@@ -91,7 +103,7 @@ export default function FilterCategories({
                         );
                       }}
                     />
-                    {`${el}()`}
+                    {`${el}(${sumInObj(categories[theme][el])})`}
                   </label>
                 ))
             ) : null
@@ -109,7 +121,7 @@ export default function FilterCategories({
                       history.push(`/books/${el.replace(/\s/g, "_")}`);
                     }}
                   />
-                  {`${el}()`}
+                  {`${el}(${sumInObj(categories[el])})`}
                 </label>
               ))
           ) : null
