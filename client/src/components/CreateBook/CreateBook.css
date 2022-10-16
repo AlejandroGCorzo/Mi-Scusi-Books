@@ -2,6 +2,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  margin: 15px;
 }
 
 .bookCreationFormInput {
@@ -11,7 +12,7 @@
   margin-top: 30px;
   margin-bottom: 30px;
   width: 40em;
-  height: auto;
+  height: 82em;
   background-color: white;
   display: flex;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
@@ -22,14 +23,6 @@
 
 .CreateBookConfirmationStack {
   justify-content: center;
-}
-
-.bookCreationFormPreview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50vw;
-  height: 90vh;
 }
 
 .imgPreview {
@@ -122,9 +115,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 30px 0px 30px 100px;
+  margin: 30px 0px 30px 80px;
   width: 45em;
-  height: auto;
+  height: 82em;
   background-color: white;
   display: flex;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
@@ -178,60 +171,68 @@
   cursor: pointer;
 }
 
-@media only screen and (max-width: 1000px) {
+
+@media only screen and (max-width: 1070px) {
   .bookCreationForm {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .bookCreationFormPreview {
-    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 30em;
-    margin-left: 30px;
-    padding: 10px;
-  }
-  
-}
-
-@media only screen and (max-width: 700px) {
-  .bookCreationForm {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .bookCreationFormPreview {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40em;
     margin: 0;
-    padding: 0;
   }
-  
+
+  .bookCreationFormInput {
+    width: 30em;
+    padding: 5px;
+    margin: 40px 0px;
+  }
+
+  .bookCreationFormPreview {
+    width: 30em;
+    padding: 5px;
+    margin: 40px 0px 40px 40px;
+  }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 850px) {
   .bookCreationForm {
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-block;
     justify-content: center;
     align-items: center;
     margin: 20px;
   }
 
-  .bookCreationFormPreview {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20em;
+  .bookCreationFormInput {
+    width: 40em;
+    padding: 10px;
+    margin: 40px 0px;
   }
-  
+
+  .bookCreationFormPreview {
+    width: 40em;
+    padding: 10px;
+    margin: 40px 0px;
+  }
 }
 
+@media only screen and (max-width: 520px) {
+  .bookCreationForm {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+  }
 
+  .bookCreationFormInput {
+    width: 35em;
+    padding: 10px;
+    margin: 40px 10px;
+  }
+
+  .bookCreationFormPreview {
+    width: 35em;
+    padding: 10px;
+    margin: 40px 10px;
+  }
+}
