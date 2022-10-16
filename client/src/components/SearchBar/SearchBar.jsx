@@ -28,9 +28,9 @@ export default function SearchBar() {
     dispatch(emptyBookFiltered())
     let search;
     if(filter === "author"){
-      search = {[filter]:[name]}
+      search = {[filter]:[name.trim()]}
     } else {
-      search = {[filter]:name}
+      search = {[filter]:name.trim()}
     }
     dispatch(setStoreFilters(search))
     dispatch(bookFiltered(search))
