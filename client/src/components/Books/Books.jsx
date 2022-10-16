@@ -27,7 +27,7 @@ export default function Books() {
     (state) => state.books
   );
   const [booksToShow, setBooksToShow] = useState();
-  console.log(booksToShow);
+  // console.log(booksToShow);
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
   const [selectOrder, setSelectOrder] = useState("Select");
