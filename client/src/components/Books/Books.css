@@ -91,4 +91,6 @@
   text-align: left;
   padding-left: 8%;
   cursor: pointer;
+  text-transform: capitalize;
+  
 }
