@@ -3,8 +3,6 @@ import {
   getAllBooks,
   getBookById,
   allCategories,
-  getCategoryResults,
-  getBookByName,
   getTopTen,
   getBooksFiltered,
   setEmptyBooksFilter,

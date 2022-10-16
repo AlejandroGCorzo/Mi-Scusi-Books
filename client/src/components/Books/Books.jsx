@@ -5,38 +5,35 @@ import {
   // getResults,
   bookFiltered,
   getCategories,
-  emptyBookFiltered,
   setStoreFilters,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
 import FilterCategories from "./FilterCategories/FilterCategories.jsx";
 import FilterAuthor from "./FilterAuthor/FilterAuthor.jsx";
+import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
+import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
+import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
 
 export default function Books() {
   // // // // // //
   const history = useHistory();
   const dispatch = useDispatch();
-  // // // // // //
-  // const { type, value } = useParams(); //type=category, value=medicine
+  // // // // // // STORE
   const { booksFilter, categories, storeFilters } = useSelector(
     (state) => state.books
   );
-  // const currentBooks = booksFilter.slice(0, 8);
-
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
   subcategory = subcategory?.replace(/\_/g, " ");
-
-  // // // // // // // // // // // // // //
-
+  // // // // // // USE EFFECT
   useEffect(() => {
     if (!theme && !category && !subcategory) {
-      setTimeout(() => dispatch(bookFiltered(storeFilters)), 0);
+      dispatch(bookFiltered(storeFilters));
     }
     if (theme && !category && !subcategory) {
       dispatch(setStoreFilters({ category: [theme] }));
@@ -56,23 +53,38 @@ export default function Books() {
       );
     }
     dispatch(getCategories());
-
-    return () => {
-      // dispatch(emptyBookFiltered());
-    };
   }, [dispatch, theme, category, subcategory, render]);
-
+  // // // // // // // FUNCIONES
   function handleClick(e, type, value) {
     e.preventDefault();
     if (type === "author") {
       dispatch(setStoreFilters({ [type]: [value] }));
-      setRender(render ? false : true);
+      setRender(!render);
+    }
+    if (type === "editorial" || type === "language" || type === "format") {
+      dispatch(setStoreFilters({ [type]: value }));
+      setRender(!render);
     }
   }
   function handleDelAuthor(e) {
     e.preventDefault();
     dispatch(setStoreFilters({ author: false }));
-    setRender(render ? false : true);
+    setRender(!render);
+  }
+  function handleDelEditorial(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ editorial: false }));
+    setRender(!render);
+  }
+  function handleDelLanguage(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ language: false }));
+    setRender(!render);
+  }
+  function handleDelFormat(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ format: false }));
+    setRender(!render);
   }
   // // // // // //
   return (
@@ -107,63 +119,55 @@ export default function Books() {
             handleClick={handleClick}
             storeFilters={storeFilters}
             handleDelAuthor={handleDelAuthor}
+            render={render}
+            setRender={setRender}
           />
+          <FilterEditorial
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelEditorial={handleDelEditorial}
+          />
+          <FilterLanguage
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelLanguage={handleDelLanguage}
+          />
+          <FilterFormat
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelFormat={handleDelFormat}
+          />
+          {/* NO TOCAR ARRIBA */}
           {/*  */}
           {/*  */}
           {/*  */}
-          {/*  */}
-          {/*  */}
-          <div className="divFilters">
-            <b>
-              <p className="titlesFilters">Editorial</p>
-            </b>
-            {booksFilter?.map((b) => (
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={(e) => handleClick(e, "editorial", b.editorial)}
-              >
-                {b.editorial[0].toLocaleUpperCase() + b.editorial.slice(1)}
-              </p>
-            ))}
-          </div>
-          <div className="divFilters">
-            <b>
-              <p className="titlesFilters">Language</p>
-            </b>
-            {booksFilter?.map((b) => (
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={(e) => handleClick(e, "language", b.language)}
-              >
-                {b.language[0].toLocaleUpperCase() + b.language.slice(1)}
-              </p>
-            ))}
-          </div>
+          {/* MODIFICADO HASTA ACÁ */}
         </div>
         <div className="sectionBooksResults">
-          <div className="titleResults">
-            {/* <p>{`There's ${results.length} results in ${value}`}</p> */}
-          </div>
+          {/* <div className="titleResults"></div> */}
           {/* <p>
             <label>Order by </label>
             <select className="selectResults">
               <option value="all">All</option>
-              <option value="lowprice">Low to high price</option>
-              <option value="highprice">High to low price</option>
-              <option value="news">Newest arrivals</option>
-              <option value="rating">Rating</option>
+              <option value="highest">Highest price</option>
+              <option value="lowest">Lowest price</option>
+              <option value="rating">Best rating</option>
             </select>
           </p> */}
           {booksFilter.length > 0 ? (
-            booksFilter.map((b) => {
+            booksFilter.map((el) => {
               return (
-                <div className="cardBookResults" key={b._id}>
+                <div className="cardBookResults" key={el._id}>
                   <Book
-                    image={b.image}
-                    name={b.name}
-                    author={b.author}
-                    price={b.price}
-                    _id={b._id}
+                    image={el.image}
+                    name={el.name}
+                    editorial={el.editorial}
+                    author={el.author}
+                    price={el.price}
+                    _id={el._id}
                   />
                 </div>
               );
