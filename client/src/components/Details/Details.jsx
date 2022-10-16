@@ -68,7 +68,7 @@ const Details = (props) => {
           </div>
         </div>
       </div>
-      <div className="reviews">
+      {/* <div className="reviews">
         {" "}
         Reviews
         {detail.reviews?.map((el) => (
@@ -79,7 +79,7 @@ const Details = (props) => {
             <span>{el.votes.downvotes}</span>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
