@@ -74,6 +74,9 @@
         margin-top: -25px;
         left: -50px;
     }
+    .userOuterDiv{
+        width: 336px;
+    }
 }
 
 .routesHeader{

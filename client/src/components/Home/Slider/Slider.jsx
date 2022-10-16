@@ -48,7 +48,7 @@ export default function SliderImg({ books }) {
         </div>
         <Slider {...settings}>
           {books.map((el) => (
-            <div className="card">
+            <div className="card" key={el._id}>
               <div className="card-top">
                 <img src={el.image} alt="" />
               </div>
@@ -57,11 +57,10 @@ export default function SliderImg({ books }) {
 
               <Link
                 to={`/book_details/${el._id}`}
-                key={el._id}
                 style={{ textDecoration: "none" }}
               >
               <div className="buyBook">
-                <button className="buttonBuy">Info</button>
+                <button className="buttonBuy">View</button>
                 <p>${el.price}</p>
               </div>
               </Link>
