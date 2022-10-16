@@ -10,31 +10,15 @@ const UserDetails = () => {
 
   return (
     <div className="userOuterDiv">
-      <div className="contentCategoryx">
-            <div className="titleForm">
-                <p>Shopping/Purchases</p>
-            </div>
-
-            <div className="contentCategoryDiv">
-                <div className="categoryDiv">
-
-                </div>
-            </div>
-
-            <div className="formBack">
-                <Link to ="/" style={{ textDecoration: "none" }}>
-                    <button className="buttonBack">View All</button>
-                </Link>
-            </div>
-        </div>
         <div className="contentCategoryx">
-            <div className="titleForm">
+            <div className="titleFormx">
                 <p>Profile</p>
-                <button className="pencilButton">✎</button>
+                <button className="pencilButtonx">✎</button>
             </div>
 
-            <div className="contentCategoryDiv">
-                <div className="categoryDiv">
+            <div className="contentCategoryDivx">
+                <div className="categoryDivx">
+
                   <div className="userImage">
                     <img src={loggedUser.picture} />
                   </div>
@@ -57,13 +41,31 @@ const UserDetails = () => {
                 </div>
             </div>
 
-            <div className="formBack">
+            <div className="formBackx">
                 <Link to ="/" style={{ textDecoration: "none" }}>
-                    <button className="buttonBack">Save</button>
+                    <button className="buttonBackx">Save</button>
                 </Link>
             </div>
-
       </div>
+
+      <div className="contentCategoryx">
+            <div className="titleFormx">
+                <p>Shopping</p>
+            </div>
+
+            <div className="contentCategoryDivx">
+                <div className="categoryDivx">
+
+                </div>
+            </div>
+
+            <div className="formBackx">
+                <Link to ="/" style={{ textDecoration: "none" }}>
+                    <button className="buttonBackx">View All</button>
+                </Link>
+            </div>
+        </div>
+
     </div>
   );
 };

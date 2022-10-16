@@ -38,11 +38,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
+  width: 95%;
   min-width: 336px;
+  transform: scale(1);
 }
 
-.contentCategoryDiv{
+.contentCategoryDivx{
   background-color: white;
   display:flex;
   flex-wrap: wrap;
@@ -51,25 +52,29 @@
   border-bottom: 1px solid #e7e7e7;
   border-top: 1px solid #e7e7e7;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  overflow-y: scroll;
   width: 100%;
+  overflow-y: scroll;
   scroll-behavior: smooth;
 }
 
-.contentCategoryDiv p{
+.contentCategoryDivx p{
   color: #00cc77;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
 }
 
-.categoryDiv{
+.categoryDivx{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  flex-direction: column;
   width: 336px;
   margin-top: 15px;
   text-align: left;
 }
 
-.titleForm{
+.titleFormx{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -83,7 +88,7 @@
   width: 100%;
 }
 
-.formBack{
+.formBackx{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -92,16 +97,15 @@
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
-  margin-bottom: 25px;
 }
 
-.formBack button{
+.formBackx button{
   margin-right: 15px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
-.buttonBack{
+.buttonBackx{
   color: white;
   background-color: #00cc77;
   border: 1px solid #00cc77;
@@ -113,7 +117,7 @@
   cursor: pointer;
 }
 
-.pencilButton{
+.pencilButtonx{
   background-color: white;
   border: 1px solid white;
   justify-content: flex-end;
@@ -123,26 +127,25 @@
 }
 
 @media (min-height: 0px){
-  .contentCategoryDiv{
+  .contentCategoryDivx{
       height: 480px;
   }
 }
 
 @media (min-height: 768px){
-  .contentCategoryDiv{
+  .contentCategoryDivx{
     height: 768px;
   }
 }
 
 @media (min-height: 1080px){
-  .contentCategoryDiv{
+  .contentCategoryDivx{
       height: 768px;
   }
-
 }
 
 @media (min-height: 1920px){
-  .contentCategoryDiv{
+  .contentCategoryDivx{
     height: 1450px;
   }
 }
@@ -157,10 +160,29 @@
   .contentCategoryx{
     max-width: 614px;
   }
+
 }
 
-@media (min-width: 1920px){
+@media (min-width: 1900px){
   .contentCategoryx{
-    max-width: 1214px;
+    max-width: 900px;
+  }
+  .categoryDivx{
+    transform: scale(1.7);
+  }
+}
+
+@media (min-width: 2560px){
+  .contentCategoryx{
+    max-width: 1260px;
+  }
+}
+
+@media (min-width: 3260px){
+  .contentCategoryx{
+    max-width: 1660px;
+  }
+  .categoryDivx{
+    transform: scale(2.5);
   }
 }
