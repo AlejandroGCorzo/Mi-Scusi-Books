@@ -1,19 +1,23 @@
 .contentCard {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
   border-radius: 5px;
   background-color: #f3f3f3;
-  padding-bottom: 10px;
+  height: 25em;
   box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.2);
 }
 
 .nameBook {
   text-transform: uppercase;
   color: black;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .imgBook {
-  width: 100px;
-  margin-top: 1em;
+  width: 90px;
+  margin-top: 0.5em;
   border-radius: 5px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
@@ -22,6 +26,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  justify-self: unset;
 }
 
 .priceNumber {
@@ -36,4 +41,8 @@
   border-radius: 5px;
   color: white;
   cursor: pointer;
+}
+
+.infoBook {
+  padding: 10px;
 }
