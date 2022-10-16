@@ -102,7 +102,7 @@ export default function Category (){
                 {JSON.stringify(categories).length !== '{}' && Object.keys(categories).sort()
                 .map((el) =>
                 <div className="categoryDiv" key={el}>
-                    <button className="buttonCategory" onClick={(e)=> onClickCategoryGeneral(e, el.split(" ").join("-"))}><p>{el[0].toLocaleUpperCase() + el.slice(1)}{numTotalGeneral(el)}</p></button>
+                    <button className="buttonCategory" onClick={(e)=> onClickCategoryGeneral(e, el.split(" ").join("_"))}><p>{el[0].toLocaleUpperCase() + el.slice(1)}{numTotalGeneral(el)}</p></button>
                     {viewCategory(el)}
                 </div>)}
             </div>
