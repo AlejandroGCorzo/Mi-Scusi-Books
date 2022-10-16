@@ -18,10 +18,11 @@ export default function ImgSelector({
     formImgData.append("upload_preset", "u3dgsoub");
     axios
       .post(
-        "https://api.cloudinary.com/v1_1/scusi-books/image/upload",
+        "https://api.cloudinary.com/v1_1/scusi-books/image/upload/",
         formImgData
       )
       .then((response) => {
+        console.log(response);
         setImgSelected({
           ...imgSelected,
           url: response.data.secure_url,
@@ -47,7 +48,7 @@ export default function ImgSelector({
         />
         <PhotoCamera />
       </IconButton>
-      <span style= {{ color: "black" }}>{imgSelected.file.name}</span>
+      <span style={{ color: "black" }}>{imgSelected.file.name}</span>
       <Button
         // className="ImgSelectorStackButton"
         variant="contained"
