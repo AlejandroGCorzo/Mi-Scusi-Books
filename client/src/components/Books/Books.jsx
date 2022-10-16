@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
 import {
-  // getResults,
   bookFiltered,
   getCategories,
   setStoreFilters,
+  orderFilteredBooks,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
@@ -15,6 +15,7 @@ import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
 import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
+import FilterStock from "./FilterStock/FilterStock.jsx";
 
 export default function Books() {
   // // // // // //
@@ -26,6 +27,7 @@ export default function Books() {
   );
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
+  const [selectOrder, setSelectOrder] = useState("Select");
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
@@ -53,6 +55,7 @@ export default function Books() {
       );
     }
     dispatch(getCategories());
+    return setSelectOrder("Select");
   }, [dispatch, theme, category, subcategory, render]);
   // // // // // // // FUNCIONES
   function handleClick(e, type, value) {
@@ -60,30 +63,14 @@ export default function Books() {
     if (type === "author") {
       dispatch(setStoreFilters({ [type]: [value] }));
       setRender(!render);
-    }
-    if (type === "editorial" || type === "language" || type === "format") {
+    } else {
       dispatch(setStoreFilters({ [type]: value }));
       setRender(!render);
     }
   }
-  function handleDelAuthor(e) {
+  function handleDel(e, type) {
     e.preventDefault();
-    dispatch(setStoreFilters({ author: false }));
-    setRender(!render);
-  }
-  function handleDelEditorial(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ editorial: false }));
-    setRender(!render);
-  }
-  function handleDelLanguage(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ language: false }));
-    setRender(!render);
-  }
-  function handleDelFormat(e) {
-    e.preventDefault();
-    dispatch(setStoreFilters({ format: false }));
+    dispatch(setStoreFilters({ [type]: false }));
     setRender(!render);
   }
   // // // // // //
@@ -118,27 +105,30 @@ export default function Books() {
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelAuthor={handleDelAuthor}
-            render={render}
-            setRender={setRender}
+            handleDel={handleDel}
           />
           <FilterEditorial
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelEditorial={handleDelEditorial}
+            handleDel={handleDel}
           />
           <FilterLanguage
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelLanguage={handleDelLanguage}
+            handleDel={handleDel}
           />
           <FilterFormat
             booksFilter={booksFilter}
             handleClick={handleClick}
             storeFilters={storeFilters}
-            handleDelFormat={handleDelFormat}
+            handleDel={handleDel}
+          />
+          <FilterStock
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDel={handleDel}
           />
           {/* NO TOCAR ARRIBA */}
           {/*  */}
@@ -148,15 +138,26 @@ export default function Books() {
         </div>
         <div className="sectionBooksResults">
           {/* <div className="titleResults"></div> */}
-          {/* <p>
+          <p>
             <label>Order by </label>
-            <select className="selectResults">
-              <option value="all">All</option>
+            <select
+              value={selectOrder}
+              className="selectResults"
+              onChange={(e) => {
+                setSelectOrder(e.target.value);
+                dispatch(orderFilteredBooks(e.target.value));
+              }}
+            >
+              <option disabled value="Select">
+                Select
+              </option>
               <option value="highest">Highest price</option>
               <option value="lowest">Lowest price</option>
               <option value="rating">Best rating</option>
+              <option value="A">Title (A-Z)</option>
+              <option value="Z">Title (Z-A)</option>
             </select>
-          </p> */}
+          </p>
           {booksFilter.length > 0 ? (
             booksFilter.map((el) => {
               return (
