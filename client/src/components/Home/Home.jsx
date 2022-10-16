@@ -25,9 +25,9 @@ export default function Home() {
   }, [dispatch]);
 
   const images = books.map((b) => b.image);
-  const book1 = images[Math.floor(Math.random() * images.length)];
-  const book2 = images[Math.floor(Math.random() * images.length)];
-  const book3 = images[Math.floor(Math.random() * images.length)];
+  const book1 = images.pop(Math.floor(Math.random() * images.length));
+  const book2 = images.pop(Math.floor(Math.random() * images.length));
+  const book3 = images.pop(Math.floor(Math.random() * images.length));
 
   return (
     <div className="homePage">
