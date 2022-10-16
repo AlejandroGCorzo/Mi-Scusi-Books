@@ -3,12 +3,13 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 40px;
 }
 
 .cardBookResults {
   width: 210px;
   height: 180px;
-  margin: 60px 30px 80px 30px;
+  margin: 60px 20px 110px 20px;
   display: inline-block;
   align-items: center;
   justify-content: center;
@@ -16,42 +17,34 @@
 
 .resultsMain {
   display: flex;
-  /* flex-wrap: wrap;
-  flex-direction: row; */
   margin: 0 2vw;
   width: 96vw;
   justify-content: space-around;
-  /* align-items: center; */
 }
 
 .divLinkCategories {
   color: black;
-  /* display: flex;
-  justify-content: flex-start; */
   width: fit-content;
   font-size: 14px;
-  /* margin-left: 40vw; */
+  align-self: flex-start;
+  margin-bottom: 30px;
 }
 
 .filtersResults {
-  width: 15vw;
+  width: 22vw;
   display: flex;
   height: fit-content;
-  /* margin-right: 2em; */
-  /* margin-top: -32px; */
   justify-content: center;
   align-items: center;
   background-color: white;
-  /* flex-wrap: wrap; */
   flex-direction: column;
   border-radius: 10px;
   border: 1px solid #e7e7e7;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  /* padding: 10px; */
 }
 
 .sectionBooksResults {
-  width: 75vw;
+  width: 70vw;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -60,8 +53,14 @@
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   border: 1px solid #e7e7e7;
-  padding: 0px 0px 80px;
+  padding: 0px 0px 40px;
   height: fit-content;
+}
+
+.orderSelect {
+  width: 100%;
+  display: block;
+  margin-bottom: -20px;
 }
 
 .titleResults {
@@ -79,11 +78,18 @@
 .titlesFilters {
   background-color: #e7e7e7;
   width: 100%;
+  padding: 5px 0px;
   color: #00cc77;
 }
 
 .divFilters {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.divFilters p {
+  padding: -15px;
 }
 
 .divFilters label{
@@ -91,6 +97,92 @@
   text-align: left;
   padding-left: 8%;
   cursor: pointer;
-  text-transform: capitalize;
-  
+  text-transform: capitalize; 
 }
+
+.divFilters input {
+  margin: 8px 0px;
+}
+
+.divFilters button {
+  background-color: #00cc77;
+  border: 1px solid #00cc77;
+  height: 25px;
+  width: 30px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1075px) {
+  .sectionBooksResults {
+    width: 60em;
+    margin-left: 30px;
+  }
+
+  .cardBookResults {
+    width: 200px;
+    height: 170px;
+    margin: 60px 20px 110px 20px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .sectionBooksResults {
+    width: 50em;
+    margin-left: 30px;
+  }
+
+  .cardBookResults {
+    width: 200px;
+    height: 170px;
+    margin: 60px 20px 110px 20px;
+  }
+
+  .filtersResults {
+    width: 30em;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .sectionBooksResults {
+    width: 30em;
+    margin-left: 30px;
+  }
+
+  .cardBookResults {
+    width: 200px;
+    height: 170px;
+    margin: 60px 20px 110px 20px;
+  }
+
+  .filtersResults {
+    width: 30em;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  /* .contentResults {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+  } */
+
+  .sectionBooksResults {
+    width: 30em;
+  }
+
+  .cardBookResults {
+    width: 200px;
+    height: 170px;
+    margin: 60px 20px 110px 20px;
+  }
+
+  .filtersResults {
+    width: 35em;
+  }
+}
+
