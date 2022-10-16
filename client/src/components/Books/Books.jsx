@@ -13,6 +13,7 @@ import FilterCategories from "./FilterCategories/FilterCategories.jsx";
 import FilterAuthor from "./FilterAuthor/FilterAuthor.jsx";
 import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
 import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
+import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
 
 export default function Books() {
@@ -60,7 +61,7 @@ export default function Books() {
       dispatch(setStoreFilters({ [type]: [value] }));
       setRender(!render);
     }
-    if (type === "editorial" || type === "language") {
+    if (type === "editorial" || type === "language" || type === "format") {
       dispatch(setStoreFilters({ [type]: value }));
       setRender(!render);
     }
@@ -78,6 +79,11 @@ export default function Books() {
   function handleDelLanguage(e) {
     e.preventDefault();
     dispatch(setStoreFilters({ language: false }));
+    setRender(!render);
+  }
+  function handleDelFormat(e) {
+    e.preventDefault();
+    dispatch(setStoreFilters({ format: false }));
     setRender(!render);
   }
   // // // // // //
@@ -128,6 +134,12 @@ export default function Books() {
             storeFilters={storeFilters}
             handleDelLanguage={handleDelLanguage}
           />
+          <FilterFormat
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDelFormat={handleDelFormat}
+          />
           {/* NO TOCAR ARRIBA */}
           {/*  */}
           {/*  */}
@@ -135,15 +147,14 @@ export default function Books() {
           {/* MODIFICADO HASTA ACÁ */}
         </div>
         <div className="sectionBooksResults">
-          <div className="titleResults"></div>
+          {/* <div className="titleResults"></div> */}
           {/* <p>
             <label>Order by </label>
             <select className="selectResults">
               <option value="all">All</option>
-              <option value="lowprice">Low to high price</option>
-              <option value="highprice">High to low price</option>
-              <option value="news">Newest arrivals</option>
-              <option value="rating">Rating</option>
+              <option value="highest">Highest price</option>
+              <option value="lowest">Lowest price</option>
+              <option value="rating">Best rating</option>
             </select>
           </p> */}
           {booksFilter.length > 0 ? (
