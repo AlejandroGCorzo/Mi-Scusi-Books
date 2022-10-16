@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './SearchBar.css';
 import Search from '../../sourceImg/search.svg';
 import { getBookByName } from '../../redux/StoreBooks/booksSlice';
-import { getBookName, bookFiltered, setStoreFilters } from '../../redux/StoreBooks/booksActions';
+import { getBookName, bookFiltered, setStoreFilters,emptyBookFiltered } from '../../redux/StoreBooks/booksActions';
 import { useHistory } from 'react-router-dom';
 
 // import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
@@ -25,15 +25,21 @@ export default function SearchBar() {
 
   function handleSubmit(i) {
     i.preventDefault();
-    const search = {[filter]:name}
-    
+    dispatch(emptyBookFiltered())
+    let search;
+    if(filter === "author"){
+      search = {[filter]:[name]}
+    } else {
+      search = {[filter]:name}
+    }
     dispatch(setStoreFilters(search))
+    dispatch(bookFiltered(search))
     history.push(`/books`);
     setName('');
-    setFilter('')
   }
 
   function changeFilter(e){
+    
     setFilter(e.target.value)
   }
 
