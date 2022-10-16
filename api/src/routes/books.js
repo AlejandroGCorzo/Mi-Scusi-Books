@@ -157,46 +157,49 @@ bookRouter.post("/filter", async (req, res) => {
       if (!filters[filter]) {
         continue;
       }
-      if(filter === "stock"){
+      if (filter === "stock") {
         filtered = filtered.filter((el) => el.stock > 0);
       }
-      if(filter=== "ISBN"){
+      if (filter === "ISBN") {
         filtered = filtered.filter((el) => el[filter] == filters[filter]);
       }
-      if(filter==="category"){
+      if (filter === "category") {
         for (const f of filters[filter]) {
           filtered = filtered.filter((el) => {
             return el[filter].includes(f);
           });
         }
       }
-      if(filter==="author"){
+      if (filter === "author") {
         let searchAuthor;
-        filters[filter].forEach(el => {
-          searchAuthor = el.split(" ")
-        })
-        for(const author of searchAuthor){
-         
-          filtered = filtered.filter(book => {
-            return(
-              book.author.some(el => el.includes(author.toLowerCase()))
-            )
-          })
+        filters[filter].forEach((el) => {
+          searchAuthor = el.split(" ");
+        });
+        for (const author of searchAuthor) {
+          filtered = filtered.filter((book) => {
+            return book.author.some((el) => el.includes(author.toLowerCase()));
+          });
         }
       }
-      if(filter==="editorial"){
-        filtered = filtered.filter(book => book.editorial.includes(filters[filter].toLowerCase()))
+      if (filter === "editorial") {
+        filtered = filtered.filter((book) =>
+          book.editorial.includes(filters[filter].toLowerCase())
+        );
       }
-      if(filter==="format"){
-        filtered = filtered.filter(book => book.format === filters[filter].toLowerCase())
+      if (filter === "format") {
+        filtered = filtered.filter(
+          (book) => book.format === filters[filter].toLowerCase()
+        );
       }
-      if(filter==="language"){
-        filtered = filtered.filter(book => book.language === filters[filter].toLowerCase())
+      if (filter === "language") {
+        filtered = filtered.filter((book) => book.language === filters[filter]);
       }
-      if(filter==="name"){
-        filtered = filtered.filter(book => book.name.includes(filters[filter]))
+      if (filter === "name") {
+        filtered = filtered.filter((book) =>
+          book.name.includes(filters[filter])
+        );
       }
-    }  
+    }
     return res.status(200).json(filtered);
   } catch (e) {
     return res.status(400).json({ msg: "Something went wrong" });
