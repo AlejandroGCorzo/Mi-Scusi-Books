@@ -56,14 +56,14 @@ export default function handleErrors(e, errorHandler, setErrorHandler) {
       setErrorHandler({ ...errorHandler, [e.target.name]: '' });
     }
 
-  if (e.target.name === 'synopsis') {
-    if (e.target.value.length > 300) {
-      setErrorHandler({
-        ...errorHandler,
-        [e.target.name]: '300 characters allowed',
-      });
-    } else {
-      setErrorHandler({ ...errorHandler, [e.target.name]: '' });
-    }
-  }
+  // if (e.target.name === 'synopsis') {
+  //   if (e.target.value.length > 300) {
+  //     setErrorHandler({
+  //       ...errorHandler,
+  //       [e.target.name]: '300 characters allowed',
+  //     });
+  //   } else {
+  //     setErrorHandler({ ...errorHandler, [e.target.name]: '' });
+  //   }
+  // }
 }
