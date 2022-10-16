@@ -32,7 +32,16 @@ export const getCategories = () => (dispatch) => {
     })
     .catch((e) => console.log(e));
 };
+
+export const fetchTopTen = () => {
+  return async function (dispatch) {
+    const top = await axios.get("http://localhost:9000/books");
+    dispatch(getTopTen(top.data));
+  };
+};
+
 // // // // FILTROS // // // //
+//
 export const bookFiltered = (filters) => (dispatch) => {
   axios
     .post(`http://localhost:9000/books/filter`, filters)
@@ -52,16 +61,12 @@ export const orderFilteredBooks = (value) => (dispatch) => {
   dispatch(setOrderBooks(value));
 };
 // // // // // // // // // // // //
-export const getBookName = (type, value, history) => {
-  axios
-    .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
-    .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
-    .catch(() => alert("Libro no encontrado"));
-};
 
-export const fetchTopTen = () => {
-  return async function (dispatch) {
-    const top = await axios.get("http://localhost:9000/books");
-    dispatch(getTopTen(top.data));
-  };
-};
+// // // // // // // // // // // // DESACTUALIZADAS
+//
+// export const getBookName = (type, value, history) => {
+//   axios
+//     .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
+//     .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
+//     .catch(() => alert("Libro no encontrado"));
+// };
