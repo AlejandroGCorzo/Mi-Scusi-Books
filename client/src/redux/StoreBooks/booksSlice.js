@@ -26,8 +26,43 @@ export const booksSlice = createSlice({
     allCategories: (state, action) => {
       state.categories = action.payload;
     },
+    // // // // FILTROS // // // //
     getBooksFiltered: (state, action) => {
       state.booksFilter = [...action.payload];
+    },
+    setOrderBooks: (state, action) => {
+      switch (action.payload) {
+        case "highest": {
+          state.booksFilter = state.booksFilter.sort(
+            (a, b) => b.price - a.price
+          );
+          break;
+        }
+        case "lowest": {
+          state.booksFilter = state.booksFilter.sort(
+            (a, b) => a.price - b.price
+          );
+          break;
+        }
+        case "rating": {
+          state.booksFilter = state.booksFilter.sort(
+            (a, b) => b.rating - a.rating
+          );
+          break;
+        }
+        case "A": {
+          state.booksFilter = state.booksFilter.sort((a, b) =>
+            a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+          );
+          break;
+        }
+        case "Z": {
+          state.booksFilter = state.booksFilter.sort((a, b) =>
+            a.name.toLowerCase() < b.name.toLowerCase() ? 1 : -1
+          );
+          break;
+        }
+      }
     },
     setFilters: (state, action) => {
       state.storeFilters = {
@@ -39,6 +74,7 @@ export const booksSlice = createSlice({
       state.booksFilter = [];
       state.storeFilters = {};
     },
+    // // // // // // // // // // // //
     getBookByName: (state, action) => {
       state.bookByName = state.books.find((b) => b.name === action.payload);
     },
@@ -59,6 +95,7 @@ export const {
   getTopTen,
   getBooksFiltered,
   setFilters,
+  setOrderBooks,
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

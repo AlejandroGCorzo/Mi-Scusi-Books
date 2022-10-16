@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
 import {
-  // getResults,
   bookFiltered,
   getCategories,
   setStoreFilters,
+  orderFilteredBooks,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
@@ -27,6 +27,7 @@ export default function Books() {
   );
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
+  const [selectOrder, setSelectOrder] = useState("Select");
   let { theme, category, subcategory } = useParams();
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
@@ -54,6 +55,7 @@ export default function Books() {
       );
     }
     dispatch(getCategories());
+    return setSelectOrder("Select");
   }, [dispatch, theme, category, subcategory, render]);
   // // // // // // // FUNCIONES
   function handleClick(e, type, value) {
@@ -138,8 +140,17 @@ export default function Books() {
           {/* <div className="titleResults"></div> */}
           <p>
             <label>Order by </label>
-            <select className="selectResults">
-              {/* <option value="all">All</option> */}
+            <select
+              value={selectOrder}
+              className="selectResults"
+              onChange={(e) => {
+                setSelectOrder(e.target.value);
+                dispatch(orderFilteredBooks(e.target.value));
+              }}
+            >
+              <option disabled value="Select">
+                Select
+              </option>
               <option value="highest">Highest price</option>
               <option value="lowest">Lowest price</option>
               <option value="rating">Best rating</option>

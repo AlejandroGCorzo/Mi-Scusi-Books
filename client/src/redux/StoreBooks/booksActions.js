@@ -7,6 +7,7 @@ import {
   getBooksFiltered,
   setEmptyBooksFilter,
   setFilters,
+  setOrderBooks,
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -31,7 +32,7 @@ export const getCategories = () => (dispatch) => {
     })
     .catch((e) => console.log(e));
 };
-
+// // // // FILTROS // // // //
 export const bookFiltered = (filters) => (dispatch) => {
   axios
     .post(`http://localhost:9000/books/filter`, filters)
@@ -47,6 +48,10 @@ export const emptyBookFiltered = () => (dispatch) => {
   dispatch(setEmptyBooksFilter());
 };
 
+export const orderFilteredBooks = (value) => (dispatch) => {
+  dispatch(setOrderBooks(value));
+};
+// // // // // // // // // // // //
 export const getBookName = (type, value, history) => {
   axios
     .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
