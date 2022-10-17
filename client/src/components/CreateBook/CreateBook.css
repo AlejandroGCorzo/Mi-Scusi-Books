@@ -5,36 +5,20 @@
   margin: 15px;
 }
 
-.bookCreationFormInput {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  width: 40em;
-  height: 82em;
-  background-color: white;
-  display: flex;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
-  border-radius: 10px;
-  border: 1px solid #e7e7e7;
-  padding: 0px 0px 30px;
-}
-
 .CreateBookConfirmationStack {
   justify-content: center;
 }
 
 .imgPreview {
-  margin: 30px 0px;
-  height: 30vh;
-  width: 15vw;
+  height: 125px;
+  width: 115px;
+  border-radius: 8px;
 }
 
 .imgPreviewDefault {
-  height: 30vh;
-  width: 15vw;
-  margin: 30px 0px;
+  height: 125px;
+  width: 115px;
+  border-radius: 8px;
 }
 
 .ImgSelector {
@@ -42,6 +26,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .ImgSelector label {
   padding: 0;
   font-family: monospace;
@@ -59,15 +44,12 @@
 
 .divInputForm {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
   flex-direction: column;
-  padding: 5px;
-  background-color: #eff0ef61;
-  width: 80%;
+  width: 100%;
   margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 
@@ -75,12 +57,14 @@
   padding: 5px;
   border: 2px solid rgb(121, 121, 121);
   border-radius: 5px;
-  margin-left: 20px;
   color: #4f504f;
 } 
 
+.divInputForm select{
+  width: 100%;
+}
+
 .divInputForm span {
-  text-transform: uppercase;
   font-size: 15px;
   color: #00cc77;
   font-weight: bold;
@@ -103,46 +87,49 @@
 }
 
 .textareaAutosize {
-  padding: 5px;
+  margin-top: 10px;
+  border-radius: 8px;
   border: 2px solid rgb(121, 121, 121);
-  border-radius: 5px;
-  margin-left: 20px;
   color: #4f504f;
-  width: 200;
 }
 
-.bookCreationFormPreview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 30px 0px 30px 80px;
-  width: 45em;
-  height: 82em;
-  background-color: white;
-  display: flex;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); 
-  border-radius: 10px;
-  border: 1px solid #e7e7e7;
-  padding: 0px 0px 30px;
+.textareaAutosizex {
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 2px solid rgb(121, 121, 121);
+  color: #4f504f;
+  width: 100%;
 }
 
 .previewTitles {
-  text-transform: uppercase;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   font-size: 15px;
   color: #00cc77;
   font-weight: bold;
   padding-bottom: 5px;
-  padding: 10px;
-  margin: 5px;
-  background-color: #eff0ef61;
-  width: 80%;
-  border-radius: 5px;
+  margin-top: 15px;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid rgb(121, 121, 121);
+  padding: 5px;
+}
+
+.previewTitlesSynopsis{
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  font-size: 15px;
+  color: #00cc77;
+  font-weight: bold;
+  margin-top: 5px;
+  padding: 5px;
+  margin-bottom: -11px;
 }
 
 .contentTitles {
+  display: flex;
   margin-left: 10px;
   color: black;
   text-transform: capitalize;
@@ -171,91 +158,140 @@
   cursor: pointer;
 }
 
-
-@media only screen and (max-width: 1070px) {
-  .bookCreationForm {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-  }
-
-  .bookCreationFormInput {
-    width: 30em;
-    padding: 5px;
-    margin: 40px 0px;
-  }
-
-  .bookCreationFormPreview {
-    width: 30em;
-    padding: 5px;
-    margin: 40px 0px 40px 40px;
-  }
-}
-
-@media only screen and (max-width: 850px) {
-  .bookCreationForm {
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    margin: 20px;
-  }
-
-  .bookCreationFormInput {
-    width: 40em;
-    padding: 10px;
-    margin: 40px 0px;
-  }
-
-  .bookCreationFormPreview {
-    width: 40em;
-    padding: 10px;
-    margin: 40px 0px;
-  }
-}
-
-@media only screen and (max-width: 590px) {
-  .bookCreationForm {
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    margin: 30px;
-  }
-
-  .bookCreationFormInput {
-    width: 33em;
-    padding: 10px;
-    margin: 40px 10px;
-  }
-
-  .bookCreationFormPreview {
-    width: 33em;
-    padding: 10px;
-    margin: 40px 10px;
-  }
+.userOuterDiv {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 
-@media only screen and (max-width: 400px) {
-  .bookCreationForm {
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    margin: 30px;
-  }
 
-  .bookCreationFormInput {
-    width: 25em;
-    padding: 10px;
-    margin: 40px 0px;
-  }
+.contentCreateBook{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 95%;
+  min-width: 336px;
+  transform: scale(1);
+}
 
-  .bookCreationFormPreview {
-    width: 25em;
-    padding: 10px;
-    margin: 40px 0px;
+.contentBookDiv{
+  background-color: white;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  border-bottom: 1px solid #e7e7e7;
+  border-top: 1px solid #e7e7e7;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.contentBookDiv p{
+  color: #00cc77;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: -2px;
+}
+
+.categoryBook{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  flex-direction: column;
+  width: 336px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.buttonDeleteBook{
+  color: white;
+  background-color: #00cc77;
+  border: 1px solid #00cc77;
+  border-radius: 8px;
+  height: 45px;
+  font-weight: bold;
+  font-size: 19px;
+  cursor: pointer;
+  width: 250px;
+}
+
+.mantengo{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+}
+
+
+@media (min-height: 0px){
+  .contentBookDiv{
+      height: 480px;
+  }
+  .contentBookDiv{
+    overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 }
 
+@media (min-height: 768px){
+  .contentBookDiv{
+    height: 768px;
+  }
+}
+
+@media (min-height: 1080px){
+  .contentBookDiv{
+      height: 768px;
+  }
+}
+
+@media (min-height: 1440px){
+  .contentBookDiv{
+      height: 1440px;
+  }
+}
+
+@media (min-height: 1920px){
+  .contentBookDiv{
+    height: 1450px;
+  }
+}
+
+@media (min-width: 768px){
+  .contentCreateBook{
+    max-width: 514px;
+  }
+}
+
+@media (min-width: 1080px){
+  .contentCreateBook{
+    max-width: 614px;
+  }
+
+}
+
+@media (min-width: 1930px){
+  .contentCreateBook{
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 2560px){
+  .contentCreateBook{
+    max-width: 1260px;
+  }
+  .categoryBook{
+    margin-top: 150px;
+    transform: scale(1.3);
+  }
+}
+
+@media (min-width: 3260px){
+  .contentCreateBook{
+    max-width: 1660px;
+  }
+  .categoryBook{
+    transform: scale(1.5);
+  }
+}

@@ -159,10 +159,9 @@
     }
 }
 
-@media (min-width: 3260px){
+@media (min-width: 3000px){
     .categoryDiv{
-        margin-top: 1150px;
-      transform: scale(2.5);
+        margin-top: 520px;
+        transform: scale(1.7);
     }
 }
-
