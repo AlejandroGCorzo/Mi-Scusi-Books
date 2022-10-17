@@ -61,6 +61,10 @@ const userSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Bills"
     },
+    votedBooks:{
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Books"
+    }
   }, { timestamps: false }
 );
 

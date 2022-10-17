@@ -8,6 +8,7 @@ import {
   setEmptyBooksFilter,
   setFilters,
   setOrderBooks,
+  currentPage
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -61,7 +62,9 @@ export const orderFilteredBooks = (value) => (dispatch) => {
   dispatch(setOrderBooks(value));
 };
 // // // // // // // // // // // //
-
+export const setCurrentPage = (value) => (dispatch) => {
+  dispatch(currentPage(value))
+}
 // // // // // // // // // // // // DESACTUALIZADAS
 //
 // export const getBookName = (type, value, history) => {
