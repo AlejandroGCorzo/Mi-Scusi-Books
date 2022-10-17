@@ -4,7 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import UsersTable from './UsersTable/UsersTable.jsx'
+import UsersTable from "./UsersTable/UsersTable.jsx";
+import BooksTable from "./BooksTable/BooksTable.jsx";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
@@ -49,11 +50,11 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
-  const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+  //   useEffect(() => {
+  //     dispatch(getUser());
+  //   }, [dispatch]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -69,15 +70,13 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <UsersTable/>
+        <UsersTable />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <div>
-          <h1>TAB 2</h1>
-        </div>
+        <BooksTable/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        TAB 3
+        Futures Payments
       </TabPanel>
     </Box>
   );
