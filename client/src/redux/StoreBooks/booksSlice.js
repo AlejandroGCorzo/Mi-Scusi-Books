@@ -11,6 +11,7 @@ export const booksSlice = createSlice({
     results: [],
     bookByName: {},
     topTen: [],
+    page: 1,
   },
   reducers: {
     getAllBooks: (state, action) => {
@@ -81,6 +82,9 @@ export const booksSlice = createSlice({
     getTopTen: (state, action) => {
       state.topTen = action.payload;
     },
+    currentPage: (state, action) => {
+      state.page = action.payload
+    }
   },
 });
 
@@ -96,6 +100,7 @@ export const {
   getBooksFiltered,
   setFilters,
   setOrderBooks,
+  currentPage
 } = booksSlice.actions;
 
 export default booksSlice.reducer;
