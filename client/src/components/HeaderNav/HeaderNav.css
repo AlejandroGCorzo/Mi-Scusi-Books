@@ -48,6 +48,10 @@
     .contentCategoryx{
         margin-top: -15px;
     }
+    .categoryBookDetails{
+        align-items: center;
+        flex-direction: column;
+    }
         
 }
 
