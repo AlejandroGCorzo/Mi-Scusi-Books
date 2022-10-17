@@ -37,7 +37,7 @@ font-size: 28px;
 border-radius: 5px;
 background-color: #f3f3f3;
 max-width: 300px;
-
+font-size: 14px;
 }
 
 .card span{
@@ -54,6 +54,8 @@ margin-bottom: 5px;
   display: flex;
   justify-content: center;
   flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .buttonBuy{

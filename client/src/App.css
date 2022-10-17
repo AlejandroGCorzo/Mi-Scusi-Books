@@ -11,7 +11,7 @@ div,
 textarea,
 label,
 input {
-  font-family: monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif;
 }
 
 .App {

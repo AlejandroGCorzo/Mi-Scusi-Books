@@ -60,8 +60,8 @@ export default function SliderImg({ books }) {
                 style={{ textDecoration: "none" }}
               >
               <div className="buyBook">
-                <button className="buttonBuy">View</button>
-                <p>${el.price}</p>
+                  <button className="buttonBuy">View</button>
+                  <p>${el.price.toString().length === 2 ? el.price + ".00" : el.price}</p>
               </div>
               </Link>
             </div>
