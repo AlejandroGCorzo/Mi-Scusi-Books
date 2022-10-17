@@ -24,54 +24,9 @@ const Details = (props) => {
   }, [dispatch]);
 
   return (
-    <div className="outerDiv" scrollTop= '0'>
-      <div className="whiteBox">
-      <img src={detail.image} className="bookImage" />
-        <div className="leftInnerBox">
-          <p className="synopsisTitle">Synopsis</p>
-          <span className="synopsisText">{detail.synopsis}</span>
-        </div>
-      </div>
-      <div>
-        <div className="rightInnerBox">
-          <b><span className="bookName">{detail.name}</span></b>
-          <div className="detailsContainer">
-            <span className="detailsSpan">
-            <b>Author: </b>&nbsp;
-              {detail.author?.map((el) => (
-                <span key={el}>{el}.</span>
-              ))}
-            </span>
-            <span className="detailsSpan"><b>Editorial: </b>&nbsp;{detail.editorial}.</span>
-            <span className="detailsSpan">
-              <b>Categories: </b>&nbsp;
-              {detail.category?.map((el) => (
-                <span key={el}>
-                  {detail.category.indexOf(el) === detail.category.length - 1
-                    ? `${el}.`
-                    : `${el} >`}
-                </span>
-              ))}
-            </span>
-            <span className="detailsSpan"><b>Format: </b>&nbsp;{detail.format}.</span>
-            <span className="detailsSpan"><b>Edition: </b>&nbsp;{detail.edition}.</span>
-            <span className="detailsSpan"><b>Language: </b>&nbsp;{detail.language}.</span>
-            <span className="detailsSpan"><b>ISBN: </b>&nbsp;{detail.ISBN}.</span>
-            <span className="detailsSpan"><b>Rating: </b>&nbsp;{detail.rating}.</span>
-            <span className="detailsSpan">
-            <b>Stock:</b>&nbsp;
-              {detail.stock === 1
-                ? `${detail.stock} unit`
-                : `${detail.stock} units`}.
-            </span>
-          </div>
-          <div className="buttonsContainer">
-            <button className="buttonBookDetail"><b>BUY</b></button>
-            <span className="price"><b>${detail.price}</b></span>
-            {/* <button className="buttonBookDetail">Add to Cart</button> */}
-          </div>
-        </div>
-      </div>
+
+    <div className="contentCategory">
+
       {/* <div className="reviews">
         {" "}
         Reviews
