@@ -29,9 +29,9 @@ export default function Home() {
     <div className="homePage">
       <div className="promotions">
         <div className="textoPromotions">
-          <h3>Scusi Book's</h3>
+          <h3>Mi Scusi Books</h3>
           <p>
-            At Scusi Book's we have the best books on the market, check our
+            At Mi Scusi Books we have the best books on the market, check our
             catalog to see the best deals we have for you!
           </p>
           <Link to={"/books"}>
@@ -83,14 +83,14 @@ export default function Home() {
         <div>
           <img src={shipping} alt="" />
           <p>
-            Buying more than 5 books at Scusi Book's you get one totally free.
+            Buying more than 5 books at Mi Scusi Books you get one totally free.
           </p>
         </div>
 
         <div className="imageFail">
           <img src={protecte} alt="" />
           <p>
-            At Scusi Book's you are always protected with our payment system.
+            At Mi Scusi Books you are always protected with our payment system.
           </p>
         </div>
       </div>
