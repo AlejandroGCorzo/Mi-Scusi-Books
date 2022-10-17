@@ -51,11 +51,11 @@ const userSchema = mongoose.Schema(
     },
     state: {
       type: String,
-      default: "Pending"
+      default: "pending"
     },
     type: {
       type: String,
-      default: "Normal"
+      default: "normal"
     },
     bills: {
       type: mongoose.Schema.Types.ObjectId,

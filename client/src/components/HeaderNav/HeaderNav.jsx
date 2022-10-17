@@ -60,6 +60,7 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     await loginWithPopup();
     const user = dispatch(getUserDetail(await callProtectedApi()));
+    console.log(user.payload);
     if (user.payload.id) history.push("/user_details");
   };
 
@@ -68,6 +69,8 @@ export default function HeaderNav(onSearch) {
     logout();
     dispatch(setEmptyLoggedUser());
   };
+
+  console.log(loggedUser);
 
   return (
     <div className="header">
@@ -166,6 +169,16 @@ export default function HeaderNav(onSearch) {
                   Profile
                 </MenuItem>
               </Link>
+              {isAuthenticated && loggedUser.type === "admin" ? (
+                <Link
+                  to="/admin_panel"
+                  style={{ "text-decoration": "none", color: "#5b5b5b" }}
+                >
+                  <MenuItem>
+                    Dashboard
+                  </MenuItem>
+                </Link>
+              ) : null}
               <Divider />
               <MenuItem onClick={handleLogOut}>
                 <ListItemIcon>
@@ -183,7 +196,7 @@ export default function HeaderNav(onSearch) {
           <div className="iconsContainer">
             <Link to="/create" style={{ textDecoration: "none" }}>
               <p>Add Book</p>
-            </Link> 
+            </Link>
             <Link to="/books" style={{ textDecoration: "none" }}>
               <p>All Books</p>
             </Link>
