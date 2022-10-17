@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import UsersTable from "./UsersTable/UsersTable.jsx";
 import BooksTable from "./BooksTable/BooksTable.jsx";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
@@ -50,6 +50,9 @@ export default function BasicTabs() {
     setValue(newValue);
   };
 
+  const { loggedUser } = useSelector((state) => state.users);
+
+
   //   const dispatch = useDispatch();
 
   //   useEffect(() => {
@@ -58,6 +61,8 @@ export default function BasicTabs() {
 
   return (
     <Box sx={{ width: "100%" }}>
+        {loggedUser?.type === 'admin' ? 
+        <>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -78,6 +83,8 @@ export default function BasicTabs() {
       <TabPanel value={value} index={2}>
         Futures Payments
       </TabPanel>
+      </>
+      : <span>No sos admin wacho!!</span>}
     </Box>
   );
 }
