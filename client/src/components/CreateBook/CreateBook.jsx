@@ -45,7 +45,7 @@ export default function CreateBook() {
   });
   const [open, setOpen] = useState({});
   const [author, setAuthor] = useState("");
-  const [catSel, setCatSel] = useState("Select theme");
+  const [catSel, setCatSel] = useState("Select Theme");
   const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
   const defaultOptions = {
     format: "Select format",
@@ -60,6 +60,7 @@ export default function CreateBook() {
       handleErrors(e, errorHandler, setErrorHandler);
   }
   const handleClickOpen = (e) => {
+    console.log(newBook);
     setOpen({ [e.target.name]: true });
   };
 
@@ -83,6 +84,9 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Title: </span>
               <input
+                autoComplete="off"
+                style={{ textTransform: "capitalize" }}
+                maxLength={30}
                 type="text"
                 placeholder="Write here"
                 name="title"
@@ -94,12 +98,15 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Author: </span>
               <input
+                autoComplete="off"
+                style={{ textTransform: "capitalize" }}
+                maxLength={30}
                 type="text"
                 placeholder="Write here"
                 name="author"
                 value={author}
                 onChange={(e) => {
-                  setAuthor(e.target.value);
+                  setAuthor(e.target.value.toLowerCase());
                 }}
                 onKeyDown={(e) => {
                   if (e.keyCode === 13 && e.target.name === "author")
@@ -119,6 +126,9 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Editorial: </span>
               <input
+                autoComplete="off"
+                style={{ textTransform: "capitalize" }}
+                maxLength={30}
                 type="text"
                 placeholder="Write here"
                 name="editorial"
@@ -130,6 +140,8 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Edition: </span>
               <input
+                autoComplete="off"
+                maxLength={30}
                 type="text"
                 placeholder="Year edition"
                 name="edition"
@@ -143,6 +155,8 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Price: </span>
               <input
+                autoComplete="off"
+                maxLength={30}
                 type="text"
                 placeholder="Numbers only"
                 name="price"

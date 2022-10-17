@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function CategoriesSelector(props) {
   function selectorOnChange(e) {
@@ -7,73 +7,105 @@ export default function CategoriesSelector(props) {
       categories: [...props.newBook.categories, e.target.value],
     });
     if (props.newBook.categories.length === 0)
-      return props.setCatSel('Select category');
+      return props.setCatSel("Select Category");
     if (props.newBook.categories.length === 1)
-      return props.setCatSel('Select subcategory');
+      return props.setCatSel("Select Subcategory");
     if (props.newBook.categories.length === 2)
-      return props.setCatSel('All options selected');
+      return props.setCatSel("All Options Selected");
   }
 
   return (
-    <div className="divInputForm"> 
+    <div className="divInputForm">
       <span>Categories: </span>
       <select value={props.catSel} onChange={selectorOnChange}>
         {props.newBook.categories.length === 2 &&
           typeof props.categories[props.newBook.categories[0]][
             props.newBook.categories[1]
-          ] === 'number' && (
-            <option disabled name="Select subcategory">
-              Select subcategory
+          ] === "number" && (
+            <option
+              style={{ textTransform: "capitalize" }}
+              disabled
+              name="Select Subcategory"
+            >
+              Select Subcategory
             </option>
           )}
         {props.newBook.categories.length === 2 &&
           typeof props.categories[props.newBook.categories[0]][
             props.newBook.categories[1]
-          ] === 'number' && (
-            <option disabled name="No subcategory avaible">
-              No subcategory avaible
+          ] === "number" && (
+            <option
+              style={{ textTransform: "capitalize" }}
+              disabled
+              name="No Subcategory Available"
+            >
+              No Subcategory Available
             </option>
           )}
 
         {props.newBook.categories.length === 3 && (
-          <option disabled name="All options selected">
-            All options selected
+          <option
+            style={{ textTransform: "capitalize" }}
+            disabled
+            name="All Options Selected"
+          >
+            All Options Selected
           </option>
         )}
         {/*  */}
         {props.newBook.categories.length === 0 && (
-          <option disabled name="Select theme">
-            Select theme
+          <option
+            style={{ textTransform: "capitalize" }}
+            disabled
+            name="Select Theme"
+          >
+            Select Theme
           </option>
         )}
-        {JSON.stringify(props.categories).length !== '{}' &&
+        {JSON.stringify(props.categories).length !== "{}" &&
           props.newBook.categories.length === 0 &&
           Object.keys(props.categories)
             .sort()
-            .map((el) => <option key={el}>{el}</option>)}
+            .map((el) => (
+              <option style={{ textTransform: "capitalize" }} key={el}>
+                {el}
+              </option>
+            ))}
         {/*  */}
         {props.newBook.categories.length === 1 && (
-          <option disabled name="Select category">
-            Select category
+          <option
+            style={{ textTransform: "capitalize" }}
+            disabled
+            name="Select Category"
+          >
+            Select Category
           </option>
         )}
         {JSON.stringify(props.categories[props.newBook.categories[0]]) !==
-          '{}' &&
+          "{}" &&
           props.newBook.categories.length === 1 &&
           Object.keys(props.categories[props.newBook.categories[0]])
             .sort()
-            .map((el) => <option key={el}>{el}</option>)}
+            .map((el) => (
+              <option style={{ textTransform: "capitalize" }} key={el}>
+                {el}
+              </option>
+            ))}
         {/*  */}
         {props.newBook.categories.length === 2 &&
           typeof props.categories[props.newBook.categories[0]][
             props.newBook.categories[1]
-          ] !== 'number' && (
-            <option disabled name="Select category">
-              Select subcategory
+          ] !== "number" && (
+            <option
+              style={{ textTransform: "capitalize" }}
+              disabled
+              name="Select Subcategory"
+            >
+              Select Subcategory
             </option>
           )}
         {JSON.stringify(props.categories[props.newBook.categories[0]]) !==
-          '{}' &&
+          "{}" &&
           props.newBook.categories.length === 2 &&
           Object.keys(
             props.categories[props.newBook.categories[0]][
@@ -81,7 +113,11 @@ export default function CategoriesSelector(props) {
             ]
           )
             .sort()
-            .map((el) => <option key={el}>{el}</option>)}
+            .map((el) => (
+              <option style={{ textTransform: "capitalize" }} key={el}>
+                {el}
+              </option>
+            ))}
       </select>
     </div>
   );
