@@ -230,12 +230,13 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>ISBN: </span>
               <input
+                autoComplete="off"
+                maxLength={13}
                 type="text"
                 placeholder="Numbers only"
                 name="ISBN"
                 value={newBook.ISBN}
                 onChange={handleChange}
-                maxLength={13}
               />
             </div>
 
@@ -244,6 +245,8 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Stock: </span>
               <input
+                autoComplete="off"
+                maxLength={6}
                 type="text"
                 placeholder="Numbers only"
                 name="stock"

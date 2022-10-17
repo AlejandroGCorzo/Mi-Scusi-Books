@@ -1,6 +1,6 @@
 export default function handleErrors(e, errorHandler, setErrorHandler) {
   const onlyNumber = new RegExp(/^[0-9]*$/);
-  const allowDecimal = new RegExp(/^\d{1,4}(\.{1}\d{2})?$/);
+  const allowDecimal = new RegExp(/^\d{1,4}\.{1}\d{2}$/);
   if (e.target.name === "stock") {
     if (!onlyNumber.test(e.target.value)) {
       setErrorHandler({
@@ -50,8 +50,7 @@ export default function handleErrors(e, errorHandler, setErrorHandler) {
     if (!allowDecimal.test(e.target.value)) {
       setErrorHandler({
         ...errorHandler,
-        [e.target.name]:
-          "Only numbers and one dot followed by two decimals allowed",
+        [e.target.name]: "Please follow this format '####.##'.",
       });
     } else {
       setErrorHandler({ ...errorHandler, [e.target.name]: "" });
