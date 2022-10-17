@@ -4,7 +4,8 @@ export default function onChange(e, newBook, setNewBook, author, setAuthor) {
       ...newBook,
       [e.target.name]: [...newBook[e.target.name], author],
     });
-    setAuthor('');
+    setAuthor("");
+    console.log(author);
     return;
   }
   setNewBook({ ...newBook, [e.target.name]: e.target.value });
