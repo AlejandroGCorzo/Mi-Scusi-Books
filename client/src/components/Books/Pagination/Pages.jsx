@@ -1,22 +1,18 @@
 import { Box, Pagination } from "@mui/material";
-import {useEffect, useState} from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPage } from "../../../redux/StoreBooks/booksActions";
 
-const pageSize = 8;
 
-export default function Pages({count, setBooksToShow, setPagination}){
-  // const [pagination, setPagination] = useState({
-  //   from: 0,
-  //   to: pageSize
-  // })
-  // const count = Math.ceil(books.length / pageSize)
-  // const toShow = books.slice(pagination.from, pagination.to)
 
-  // console.log('toShow', toShow)
 
-  function handleChange(e, page){
-    const from = (page - 1) * pageSize;
-    const to = (page - 1) * pageSize + pageSize;
-    setPagination({from: from, to: to})
+export default function Pages({count}){
+ const dispatch = useDispatch()
+ const { page } = useSelector(
+  (state) => state.books
+);
+  function handleChange(e, page, selected){
+    console.log('aca', page, selected)
+    dispatch(setCurrentPage(page))
   }
  
   return(
@@ -24,6 +20,7 @@ export default function Pages({count, setBooksToShow, setPagination}){
       <Pagination 
       count={count}
       onChange={handleChange}
+      page={page}
       />
     </Box>
   )

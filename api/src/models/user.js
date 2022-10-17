@@ -51,16 +51,20 @@ const userSchema = mongoose.Schema(
     },
     state: {
       type: String,
-      default: "Pending"
+      default: "pending"
     },
     type: {
       type: String,
-      default: "Normal"
+      default: "normal"
     },
     bills: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Bills"
     },
+    votedBooks:{
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Books"
+    }
   }, { timestamps: false }
 );
 
