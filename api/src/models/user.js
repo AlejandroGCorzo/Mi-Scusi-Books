@@ -58,7 +58,7 @@ const userSchema = mongoose.Schema(
       default: "normal"
     },
     bills: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Bills"
     },
   }, { timestamps: false }
