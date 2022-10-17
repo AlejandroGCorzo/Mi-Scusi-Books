@@ -53,8 +53,6 @@
   border-top: 1px solid #e7e7e7;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
 }
 
 .contentCategoryDivx p{
@@ -97,6 +95,7 @@
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
+  margin-bottom: 25px;
 }
 
 .formBackx button{
@@ -163,12 +162,16 @@
 
 }
 
-@media (min-width: 1900px){
+@media (min-width: 1930px){
   .contentCategoryx{
     max-width: 900px;
   }
   .categoryDivx{
     transform: scale(1.7);
+  }
+  .contentCategoryDivx{
+    overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 }
 
