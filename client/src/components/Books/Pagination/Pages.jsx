@@ -1,5 +1,6 @@
 import { Box, Pagination } from "@mui/material";
-import {useEffect, useState} from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentPage } from "../../../redux/StoreBooks/booksActions";
 
 
 
