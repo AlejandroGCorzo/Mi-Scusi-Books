@@ -41,7 +41,7 @@ export default function DialogAction({
               setNewBook(emptyBook);
               setAuthor("");
               setOptions(defaultOptions);
-              setCatSel("Select theme");
+              setCatSel("Select Theme");
             }}
             autoFocus
           >

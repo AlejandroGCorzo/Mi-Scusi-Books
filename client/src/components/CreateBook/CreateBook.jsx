@@ -193,28 +193,30 @@ export default function CreateBook() {
             <div className="divInputForm">
               <span>Format: </span>
               <select
+                style={{ textTransform: "capitalize" }}
                 value={options.format}
                 onChange={(e) => {
                   setNewBook({
                     ...newBook,
-                    format: e.target.value.toLowerCase(),
+                    format: e.target.value,
                   });
                   setOptions({
                     ...options,
-                    format: e.target.value.toLowerCase(),
+                    format: e.target.value,
                   });
                 }}
               >
                 <option disabled>Select format</option>
-                <option>Digital</option>
-                <option>Hardcover</option>
-                <option>Paperback</option>
+                <option>digital</option>
+                <option>hardcover</option>
+                <option>paperback</option>
               </select>
             </div>
 
             <div className="divInputForm">
               <span>Language: </span>
               <select
+                style={{ textTransform: "capitalize" }}
                 value={options.language}
                 onChange={(e) => {
                   setNewBook({ ...newBook, language: e.target.value });
@@ -222,8 +224,8 @@ export default function CreateBook() {
                 }}
               >
                 <option disabled>Select language</option>
-                <option>English</option>
-                <option>Spanish</option>
+                <option>english</option>
+                <option>spanish</option>
               </select>
             </div>
 
