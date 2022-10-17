@@ -14,13 +14,14 @@ const Details = (props) => {
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
+    window.scrollTo(0,0); 
     return () => {
       dispatch(setEmptyDetail());
     };
   }, [dispatch]);
 
   return (
-    <div className="outerDiv">
+    <div className="outerDiv" scrollTop= '0'>
       <div className="whiteBox">
       <img src={detail.image} className="bookImage" />
         <div className="leftInnerBox">
