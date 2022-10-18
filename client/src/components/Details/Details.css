@@ -147,8 +147,7 @@
 }
 
 .estrellasRating {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  color:#00cc77;
 }
 .contentFav {
   display: flex;
@@ -159,6 +158,13 @@
   margin-top: 10px;
   margin-bottom: -15px;
   cursor: pointer;
+  color:#00cc77;
+}
+.favColor {
+  color:#00cc77;
+}
+.contentRating{
+  margin-bottom: 5px;
 }
 
 @media (min-width: 768px) {

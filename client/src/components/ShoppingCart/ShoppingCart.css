@@ -109,6 +109,7 @@
     justify-content: center;
     width: 150px;
     height: 200px;
+    border-radius: 5px;
 }
 
 .buttonDelete {

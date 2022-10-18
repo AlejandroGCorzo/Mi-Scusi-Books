@@ -3,14 +3,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { getDetail, getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
-import estrellita from "../../sourceImg/estrella.png";
-import corazonFav from "../../sourceImg/corazonVacio.png";
-import corazonFavActive from "../../sourceImg/corazonLLeno.png";
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+
+import Checkbox from '@mui/material/Checkbox';
+
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
 import "./Details.css";
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+const labels = {
+  0.5: 'Useless',
+  1: 'Useless',
+  1.5: 'Poor',
+  2: 'Poor',
+  2.5: 'Ok!',
+  3: 'Ok!',
+  3.5: 'Good!',
+  4: 'Good!',
+  4.5: 'Excellent!',
+  5: 'Excellent!',
+};
 
 const Details = (props) => {
   const dispatch = useDispatch();
-
+  var value = 2.5;
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
@@ -44,9 +65,7 @@ const Details = (props) => {
 
       <div className="contentBookDetailDiv">
         <div className="contentFav">
-          <div>
-            <img src={corazonFav} width="24px" height="24x" />
-          </div>
+          <Checkbox {...label} icon={<FavoriteBorder className="favColor"/>} checkedIcon={<Favorite className="favColor"/>} />
         </div>
         <div className="categoryBookDetails">
           <div className="whiteBox">
@@ -59,12 +78,24 @@ const Details = (props) => {
             </div>
 
             <div className="detailsContainer">
-              <div className="estrellasRating">
-                <img src={estrellita} width="24px" height="24x" />
-                <img src={estrellita} width="24px" height="24x" />
-                <img src={estrellita} width="24px" height="24x" />
-                <img src={estrellita} width="24px" height="24x" />
-                <img src={estrellita} width="24px" height="24x" />
+              <div className="contentRating">
+                <Box
+                  sx={{
+                    width: 200,
+                    display: 'flex',
+                    alignItems: 'center',
+                    color:'#00cc77',
+                  }}
+                >
+                  <Rating
+                    name="text-feedback"
+                    value={value}                 //Acá hay que pasarle el valor del rating del libro
+                    readOnly
+                    precision={0.5}
+                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                  />
+                  <Box sx={{ ml: 2 }}>{labels[value]}</Box>
+                </Box>
               </div>
               <span className="detailsSpan">
                 <b>Author: </b>&nbsp;
@@ -107,7 +138,7 @@ const Details = (props) => {
                   : `${detail.stock} units`}
                 .
               </span>
-              <span className="price">${detail.price}</span>
+              <span className="price">${detail.price && detail.price.toString().length === 2 ? detail.price + ".00" : detail.price}</span>
               <div className="buttonsContainer">
                 <button className="buttonBookDetail">
                   <b>Buy</b>
