@@ -29,7 +29,7 @@ const userRouter = Router();
 //   email_verified: true
 // }
 userRouter.get("/test", protect, async (req, res) => {
-  console.log(req);
+  // console.log(req);
 });
 
 userRouter.get("/detail", async (req, res) => {
@@ -46,20 +46,21 @@ userRouter.get("/detail", async (req, res) => {
     console.log(accesToken)
     const userInfo = response.data;
     if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email }).populate("bills");
+      let user = await User.findOne({ email: userInfo.email }).populate("favorites");
       if (!user) {
         user = await User.create({
           email: userInfo.email,
           userName: userInfo.nickname,
           firstName: userInfo.given_name,
           lastName: userInfo.family_name,
+          image: userInfo.picture
         });
       }
       const formatUser = {
         id: user._id,
         sub: userInfo.sub,
         email: user.email,
-        picture: userInfo.picture,
+        picture: user.image,
         nickname: userInfo.nickname,
         userName: user.username,
         firstName: user.firstName,
@@ -76,7 +77,7 @@ userRouter.get("/detail", async (req, res) => {
     }
     console.log("entraste con correo");
     // console.log(userInfo);
-    const user = await User.findOne({ email: userInfo.email }).populate("bills");
+    const user = await User.findOne({ email: userInfo.email });
     // console.log(user);
     const formatUser = {
       id: user._id,
@@ -129,7 +130,7 @@ userRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).send({ msg: "Id not found!" });
   try {
-    const searchedUser = await User.findById(id).populate('bills');
+    const searchedUser = await User.findById(id);
     if (!searchedUser) return res.status(400).send({ msg: "User not found!" });
     res.send(searchedUser);
   } catch (e) {
