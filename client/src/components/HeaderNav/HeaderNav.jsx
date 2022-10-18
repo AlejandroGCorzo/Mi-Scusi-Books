@@ -20,9 +20,9 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import HomeIcon from '@mui/icons-material/Home';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import HomeIcon from "@mui/icons-material/Home";
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -52,7 +52,7 @@ export default function HeaderNav(onSearch) {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error.message);
@@ -63,7 +63,7 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     await loginWithPopup();
     const user = dispatch(getUserDetail(await callProtectedApi()));
-    console.log(user.payload);
+    // console.log(user.payload);
     if (user.payload.id) history.push("/user_details");
   };
 
@@ -72,8 +72,6 @@ export default function HeaderNav(onSearch) {
     logout();
     dispatch(setEmptyLoggedUser());
   };
-
-  console.log(loggedUser);
 
   return (
     <div className="header">
@@ -92,19 +90,19 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
-                        <p>
-            <Link to="/" style={{ textDecoration: "none" }}>
-                <HomeIcon style={{ color: "white" }}/>
+            <p>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <HomeIcon style={{ color: "white" }} />
               </Link>
             </p>
             <p>
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
-                <ShoppingCartIcon style={{ color: "white" }}/>
+                <ShoppingCartIcon style={{ color: "white" }} />
               </Link>
             </p>
             <p>
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
-                <FavoriteIcon style={{ color: "white" }}/>
+                <FavoriteIcon style={{ color: "white" }} />
               </Link>
             </p>
 
@@ -204,23 +202,23 @@ export default function HeaderNav(onSearch) {
           <div className="iconsContainer">
             <p>
               <Link to="/" style={{ textDecoration: "none" }}>
-                <HomeIcon style={{ color: "white" }}/>
+                <HomeIcon style={{ color: "white" }} />
               </Link>
             </p>
             <p>
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
-                <ShoppingCartIcon style={{ color: "white" }}/>
+                <ShoppingCartIcon style={{ color: "white" }} />
               </Link>
             </p>
             <p>
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
-                <FavoriteIcon style={{ color: "white" }}/>
+                <FavoriteIcon style={{ color: "white" }} />
               </Link>
             </p>
             <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Login
             </p>
-            
+
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}
