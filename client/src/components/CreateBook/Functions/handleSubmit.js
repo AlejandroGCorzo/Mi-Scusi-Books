@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default function handleSubmit(e, newBook, history) {
   e.preventDefault();
   newBook = { ...newBook, name: newBook.title };
   delete newBook.title;
   axios
-    .post('http://localhost:9000/books', newBook)
+    .post("http://localhost:9000/books", newBook)
     .then((response) => {
       history.push(`/book_details/${response.data._id}`);
     })

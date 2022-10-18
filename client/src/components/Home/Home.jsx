@@ -21,9 +21,9 @@ export default function Home() {
     dispatch(fetchTopTen());
   }, [dispatch]);
 
-  const _ = require('underscore')
+  const _ = require("underscore");
   let images = books.map((b) => b.image);
-  images = _.shuffle(images)
+  images = _.shuffle(images);
 
   return (
     <div className="homePage">

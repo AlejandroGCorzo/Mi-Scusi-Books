@@ -1,9 +1,9 @@
 import { Box, Pagination } from "@mui/material";
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from "react";
 
 const pageSize = 8;
 
-export default function Pages({count, setBooksToShow, setPagination}){
+export default function Pages({ count, setBooksToShow, setPagination }) {
   // const [pagination, setPagination] = useState({
   //   from: 0,
   //   to: pageSize
@@ -13,18 +13,15 @@ export default function Pages({count, setBooksToShow, setPagination}){
 
   // console.log('toShow', toShow)
 
-  function handleChange(e, page){
+  function handleChange(e, page) {
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
-    setPagination({from: from, to: to})
+    setPagination({ from: from, to: to });
   }
- 
-  return(
+
+  return (
     <Box>
-      <Pagination 
-      count={count}
-      onChange={handleChange}
-      />
+      <Pagination count={count} onChange={handleChange} />
     </Box>
-  )
+  );
 }

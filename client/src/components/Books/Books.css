@@ -92,12 +92,12 @@
   padding: -15px;
 }
 
-.divFilters label{
-  display:block;
+.divFilters label {
+  display: block;
   text-align: left;
   padding-left: 8%;
   cursor: pointer;
-  text-transform: capitalize; 
+  text-transform: capitalize;
 }
 
 .divFilters input {
@@ -185,4 +185,3 @@
     width: 35em;
   }
 }
-

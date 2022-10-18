@@ -1,4 +1,4 @@
-.containerx{
+.containerx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -8,49 +8,49 @@
 }
 
 .containerSlider {
-width: 80%;
+  width: 80%;
 }
 
 .slick-slide > div {
-margin: 0 10px;
+  margin: 0 10px;
 }
 .slick-list {
-margin: 0 -10px;
+  margin: 0 -10px;
 }
 
-.slick-prev{
-margin-left: -10px;
+.slick-prev {
+  margin-left: -10px;
 }
 
 .slick-prev:before {
-color: #00cc77;
-font-size: 28px;
+  color: #00cc77;
+  font-size: 28px;
 }
 
 .slick-next:before {
-color: #00cc77;
-font-size: 28px;
+  color: #00cc77;
+  font-size: 28px;
 }
 
 .card {
-/* cursor: pointer; */
-border-radius: 5px;
-background-color: #f3f3f3;
-max-width: 300px;
-font-size: 14px;
+  /* cursor: pointer; */
+  border-radius: 5px;
+  background-color: #f3f3f3;
+  max-width: 300px;
+  font-size: 14px;
 }
 
-.card span{
+.card span {
   color: black;
 }
 .card-top > img {
-width: 100%;
-height: 395px;
-border-radius: 5px 5px 0px 0px;
-margin-bottom: 5px;
+  width: 100%;
+  height: 395px;
+  border-radius: 5px 5px 0px 0px;
+  margin-bottom: 5px;
 }
 
-.buyBook{
+.buyBook {
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -58,7 +58,7 @@ margin-bottom: 5px;
   margin-right: 10px;
 }
 
-.buttonBuy{
+.buttonBuy {
   background-color: #00cc77;
   border: 1px solid #00cc77;
   height: 35px;
@@ -71,12 +71,12 @@ margin-bottom: 5px;
   cursor: pointer;
 }
 
-.buyBook p{
+.buyBook p {
   color: black;
 }
 
-.titleTop h3{
-display: flex;
-justify-content:flex-start;
-font-size: 1.5rem;
+.titleTop h3 {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 1.5rem;
 }
