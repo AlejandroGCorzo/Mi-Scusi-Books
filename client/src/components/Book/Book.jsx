@@ -27,7 +27,7 @@ export default function Book({ _id, image, name, editorial, author, price }) {
         <Link to={`/book_details/${_id}`} style={{ textDecoration: "none" }}>
           <span>
             <button className="btnBuy">
-              <b>+INFO</b>
+              <b>View</b>
             </button>
           </span>
         </Link>

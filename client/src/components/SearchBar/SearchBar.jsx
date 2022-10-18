@@ -10,7 +10,7 @@ import {
   emptyBookFiltered,
 } from "../../redux/StoreBooks/booksActions";
 import { useHistory } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 // import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 
 export default function SearchBar() {
@@ -73,7 +73,21 @@ export default function SearchBar() {
         <button className="searchButton" type="submit" onClick={handleSubmit}>
           <img src={Search} alt="imgType" width="24px" height="24px" />
         </button>
+
       </div>
+      <div className="headerLow">
+          <Link to="/create" style={{ textDecoration: "none" }}>
+                <p>Add Book</p>
+            </Link>
+            <Link to="/books" style={{ textDecoration: "none" }}>
+                <p>All Books</p>
+            </Link>
+            <Link to="/categories" style={{ textDecoration: "none" }}>
+                <p>Categories</p>
+          </Link>
+          </div>
     </div>
   );
 }
+
+

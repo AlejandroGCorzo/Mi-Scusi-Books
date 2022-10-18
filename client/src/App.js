@@ -11,6 +11,7 @@ import Books from "./components/Books/Books.jsx";
 import Category from "./components/Category/Category.jsx";
 import UserDetails from "./components/UserDetails/UserDetails";
 import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
+import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/categories" component={Category} />
         <Route path="/user_details" component={UserDetails} />
         <Route path="/admin_panel" component={AdminPanel} />
+        <Route path="/shopping/:type" component={ShoppingCart} />
       </React.Fragment>
     </div>
   );
