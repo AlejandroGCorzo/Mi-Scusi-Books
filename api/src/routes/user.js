@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const User = require("../models/user");
 const axios = require("axios");
-const { transporter } = require("../mailer/mailer");;
+const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
 
 const userRouter = Router();
@@ -28,22 +28,9 @@ const userRouter = Router();
 //   email: 'juanfledesma18@gmail.com',
 //   email_verified: true
 // }
-userRouter.get("/test", protect, async(req, res) => {
-  console.log(req)
-})
-
-// {
-//   sub: 'google-oauth2|104303008364141128609',
-//   given_name: 'Juan Franco',
-//   family_name: 'Ledesma',
-//   nickname: 'juanfledesma18',
-//   name: 'Juan Franco Ledesma',
-//   picture: 'https://lh3.googleusercontent.com/a/ALm5wu1jcBn1YNLdkNcMJkDoc3beLt4cOiWPqJHi9bBYug=s96-c',
-//   locale: 'es-419',
-//   updated_at: '2022-10-14T13:17:19.982Z',
-//   email: 'juanfledesma18@gmail.com',
-//   email_verified: true
-// }
+userRouter.get("/test", protect, async (req, res) => {
+  console.log(req);
+});
 
 userRouter.get("/detail", async (req, res) => {
   try {
@@ -59,13 +46,13 @@ userRouter.get("/detail", async (req, res) => {
     console.log(accesToken)
     const userInfo = response.data;
     if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email });
+      let user = await User.findOne({ email: userInfo.email }).populate("bills");
       if (!user) {
         user = await User.create({
-          email : userInfo.email,
-          userName : userInfo.nickname,
-          firstName : userInfo.given_name,
-          lastName : userInfo.family_name
+          email: userInfo.email,
+          userName: userInfo.nickname,
+          firstName: userInfo.given_name,
+          lastName: userInfo.family_name,
         });
       }
       const formatUser = {
@@ -82,15 +69,14 @@ userRouter.get("/detail", async (req, res) => {
         address: user.address,
         birthdate: user.birthdate,
         type: user.type,
-        bills: user.bills ? user.bills : "empty",
         state: user.state,
-        loyaltyPoint: user.loyaltyPoint
+        loyaltyPoint: user.loyaltyPoint,
       };
-      return res.send(formatUser)
+      return res.send(formatUser);
     }
     console.log("entraste con correo");
     // console.log(userInfo);
-    const user = await User.findOne({ email: userInfo.email });
+    const user = await User.findOne({ email: userInfo.email }).populate("bills");
     // console.log(user);
     const formatUser = {
       id: user._id,
@@ -106,9 +92,8 @@ userRouter.get("/detail", async (req, res) => {
       address: user.address,
       birthdate: user.birthdate,
       type: user.type,
-      bills: user.bills ? user.bills : "empty",
       state: user.state,
-      loyaltyPoint: user.loyaltyPoint
+      loyaltyPoint: user.loyaltyPoint,
     };
     // console.log(formatUser);
     res.send(formatUser);
@@ -123,14 +108,13 @@ userRouter.post("/", async (req, res) => {
     console.log(req.body);
     const repeatedUsername = await User.findOne({ username: username });
     if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-    console.log('llegue');
+    console.log("llegue");
     const newUser = await User.create(req.body);
     res.send("User created successfully!");
   } catch (e) {
     res.status(400).send({ error: e });
   }
 });
-
 
 userRouter.get("/", async (req, res) => {
   try {
@@ -145,7 +129,7 @@ userRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).send({ msg: "Id not found!" });
   try {
-    const searchedUser = await User.findById(id);
+    const searchedUser = await User.findById(id).populate('bills');
     if (!searchedUser) return res.status(400).send({ msg: "User not found!" });
     res.send(searchedUser);
   } catch (e) {
@@ -213,10 +197,40 @@ userRouter.put("/sanction/:id", async (req, res) => {
       <p>Mi Scusi Books staff.</p>
       `,
     });
-    res.send({ msg: "State updated successfully!" });
+    res.send({ msg: `State updated successfully to ${state} !` });
   } catch (error) {
     res.status(400).send({ msg: error, otherMsg: "algo fallo en sanction" });
   }
 });
+
+userRouter.put("/type/:id", async (req, res) => {
+  const { id } = req.params;
+  const { type } = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(id, { $set: { type: type } });
+    await transporter.sendMail({
+      from: `"Type changed" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Type changed",
+      html: `
+      <h2>Your user type has been changed.</h2>
+      <p>New type: ${type}</p>
+      <br>
+      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `,
+    });
+    res.send({ msg: `Type updated successfully to ${type} !` });
+  } catch (error) {
+    res.status(400).send({ msg: error, otherMsg: "algo fallo en type" });
+  }
+});
+
+userRouter.put("/cart/:id", async(req,res) => {
+  const {id} = req.params;
+  const {libro,cant} = req.body;
+
+})
 
 module.exports = userRouter;
