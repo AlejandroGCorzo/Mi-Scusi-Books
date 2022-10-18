@@ -24,19 +24,17 @@ export default function SearchBar() {
 
   // const { detail } = useSelector((state) => state.books);
 
-  function handleInputChange(i) {
-    setName(i.target.value);
+  function handleInputChange(e) {
+    setName(e.target.value.toLowerCase());
   }
 
-  function handleSubmit(i) {
-    // i.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
     dispatch(emptyBookFiltered());
     let search;
-    if (filter === "author") {
-      search = { [filter]: [name.trim()] };
-    } else {
-      search = { [filter]: name.trim() };
-    }
+    filter === "author"
+      ? (search = { [filter]: [name.trim()] })
+      : (search = { [filter]: name.trim() });
     dispatch(setStoreFilters(search));
     dispatch(bookFiltered(search));
     history.push(`/books`);
@@ -51,6 +49,8 @@ export default function SearchBar() {
     <div>
       <div className="search">
         <input
+          style={{ textTransform: "capitalize" }}
+          autoComplete="off"
           id="Searching"
           className="searchTerm"
           type="text"
