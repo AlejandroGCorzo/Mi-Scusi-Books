@@ -3,13 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "../../../redux/StoreBooks/booksActions";
 
 
-export default function Pages({ count, setBooksToShow, setPagination }) {
-  // const [pagination, setPagination] = useState({
-  //   from: 0,
-  //   to: pageSize
-  // })
-  // const count = Math.ceil(books.length / pageSize)
-  // const toShow = books.slice(pagination.from, pagination.to)
 
 
 export default function Pages({count}){
