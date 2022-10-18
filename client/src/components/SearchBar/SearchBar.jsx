@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './SearchBar.css';
-import Search from '../../sourceImg/search.svg';
-import { getBookByName } from '../../redux/StoreBooks/booksSlice';
-import { getBookName, bookFiltered, setStoreFilters,emptyBookFiltered } from '../../redux/StoreBooks/booksActions';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./SearchBar.css";
+import Search from "../../sourceImg/search.svg";
+import { getBookByName } from "../../redux/StoreBooks/booksSlice";
+import {
+  getBookName,
+  bookFiltered,
+  setStoreFilters,
+  emptyBookFiltered,
+} from "../../redux/StoreBooks/booksActions";
+import { useHistory } from "react-router-dom";
 
 // import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 
 export default function SearchBar() {
-  const [name, setName] = useState('');
-  const [filter, setFilter] = useState('name')
+  const [name, setName] = useState("");
+  const [filter, setFilter] = useState("name");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -25,22 +30,21 @@ export default function SearchBar() {
 
   function handleSubmit(i) {
     // i.preventDefault();
-    dispatch(emptyBookFiltered())
+    dispatch(emptyBookFiltered());
     let search;
-    if(filter === "author"){
-      search = {[filter]:[name.trim()]}
+    if (filter === "author") {
+      search = { [filter]: [name.trim()] };
     } else {
-      search = {[filter]:name.trim()}
+      search = { [filter]: name.trim() };
     }
-    dispatch(setStoreFilters(search))
-    dispatch(bookFiltered(search))
+    dispatch(setStoreFilters(search));
+    dispatch(bookFiltered(search));
     history.push(`/books`);
-    setName('');
+    setName("");
   }
 
-  function changeFilter(e){
-    
-    setFilter(e.target.value)
+  function changeFilter(e) {
+    setFilter(e.target.value);
   }
 
   return (
@@ -53,9 +57,11 @@ export default function SearchBar() {
           value={name}
           placeholder="Search..."
           onChange={handleInputChange}
-          onKeyDown={(e)=>{if(e.keyCode === 13){
-            return handleSubmit()
-          }}}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) {
+              return handleSubmit();
+            }
+          }}
           pattern="^[A-Za-z\s]+$"
           maxLength="30"
         />
