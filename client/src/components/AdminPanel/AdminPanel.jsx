@@ -6,9 +6,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import UsersTable from "./UsersTable/UsersTable.jsx";
 import BooksTable from "./BooksTable/BooksTable.jsx";
-
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
@@ -61,12 +63,14 @@ export default function BasicTabs() {
   return (
     <Box sx={{ width: "100%" }}>
       {loggedUser?.type === "admin" ? (
-        <>
+        <ThemeProvider theme={colorMiScusi}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
               onChange={handleChange}
               aria-label="basic tabs example"
+              textColor="primary"
+              indicatorColor="primary"
               centered
             >
               <Tab label="Users" {...a11yProps(0)} />
@@ -83,7 +87,7 @@ export default function BasicTabs() {
           <TabPanel value={value} index={2}>
             Futures Payments
           </TabPanel>
-        </>
+        </ThemeProvider>
       ) : (
         <span>No sos admin</span>
       )}
