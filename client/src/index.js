@@ -7,6 +7,14 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
+import axios from "axios";
+// import * as dotenv from 'dotenv'
+// require("dotenv").config();
+// import dotenv from "dotenv";
+
+//process.env.REACT_APP_API ||
+
+axios.defaults.baseURL = "http://localhost:9000/";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
