@@ -37,10 +37,10 @@ export default function Books() {
 
   // // // // // // PAGINATO
   
-  const booksPerPage = 10;   
-  const lastIndex = page * booksPerPage;
-  const firstIndex = lastIndex - booksPerPage;
-  const totalPages = Math.ceil(booksFilter.length / booksPerPage);
+  // const booksPerPage = 10;   
+  const lastIndex = page.currentPage * page.rows + page.rows;
+  const firstIndex = lastIndex - page.rows;
+  // const totalPages = Math.ceil(booksFilter.length / booksPerPage);
   let booksToShow = booksFilter.slice(firstIndex, lastIndex);
 
 
@@ -193,7 +193,7 @@ export default function Books() {
         </div>
       </div>
       <p></p>
-      <Pages count={totalPages}/>
+      <Pages count={booksFilter.length}/>
     </div>
   );
 }

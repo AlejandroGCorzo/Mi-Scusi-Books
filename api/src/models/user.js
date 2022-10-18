@@ -64,6 +64,17 @@ const userSchema = mongoose.Schema(
     votedBooks:{
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Books"
+    },
+    favorites:{
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Books"
+    },
+    cart:{
+      books:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Books"
+      },
+      amounts: [Number]
     }
   }, { timestamps: false }
 );

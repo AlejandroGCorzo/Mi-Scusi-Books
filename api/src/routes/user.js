@@ -56,6 +56,7 @@ userRouter.get("/detail", async (req, res) => {
         },
       }
     );
+    console.log(accesToken)
     const userInfo = response.data;
     if (userInfo.sub.includes("google")) {
       let user = await User.findOne({ email: userInfo.email });
