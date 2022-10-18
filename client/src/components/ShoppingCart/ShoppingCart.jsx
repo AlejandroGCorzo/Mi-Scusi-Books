@@ -7,6 +7,8 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
@@ -42,8 +44,7 @@ export default function ShoppingCart(props) {
 
   const [value, setValue] = React.useState( valueIndex );
   const dispatch = useDispatch();
-  console.log(valueIndex);
-  console.log(value);
+
   //Cuando tengamos las rutas acá deberian ir los favoritos y añadidos al carrito por ahora solo le paso el topten.
   const shoppingCart = useSelector((state) => state.books.topTen);
   const favorites = useSelector((state) => state.books.topTen);
@@ -63,12 +64,16 @@ export default function ShoppingCart(props) {
 
   return (
     <div className="contentCategory">
-    <Box sx={{ width: '100%' }}>
+      
+    <Box sx={{ width: '100%' }} >
+    <ThemeProvider theme={colorMiScusi}>
         <div className="titleFormShopping">
             <BottomNavigation
                 showLabels
                 value={value}
                 className="bottomNavigation"
+                textColor="primary"
+                indicatorColor="primary"
                 onChange={(event, newValue) => {
                     setValue(newValue);
                 }}
@@ -76,8 +81,9 @@ export default function ShoppingCart(props) {
                 <BottomNavigationAction className="bottomNavigationActionx" label="Shopping Cart" icon={<ShoppingCartIcon />} />
                 <BottomNavigationAction className="bottomNavigationActionx" label="Favorites" icon={<FavoriteIcon />} />
             </BottomNavigation>
+           
         </div>
-
+        </ThemeProvider>
         <div className="contentShoppingDetail">
             <div className="itemsShoppingDetail">
             <TabPanel value={value} index={0} className="tabPanel">
