@@ -57,25 +57,22 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "normal"
     },
-    bills: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Bills"
-    },
     votedBooks:{
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "Books"
+      ref: "Books",
     },
     favorites:{
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "Books"
+      ref: "Books",
     },
     cart:{
       books:{
         type: [mongoose.Schema.Types.ObjectId],
-        ref: "Books"
+        ref: "Books",
       },
       amounts: [Number]
-    }
+    }, 
+    image: String
   }, { timestamps: false }
 );
 
