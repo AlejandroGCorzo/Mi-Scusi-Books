@@ -15,4 +15,5 @@ billsRouter.post('/', async(req,res)=>{
     } catch (error) {
         res.status(400).send({error:error})
     }
+
 })
