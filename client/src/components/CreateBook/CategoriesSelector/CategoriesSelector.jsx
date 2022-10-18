@@ -65,12 +65,11 @@ export default function CategoriesSelector(props) {
         {JSON.stringify(props.categories).length !== "{}" &&
           props.newBook.categories.length === 0 &&
           Object.keys(props.categories)
-            .sort()
-            .map((el) => (
-              <option style={{ textTransform: "capitalize" }} key={el}>
-                {el}
-              </option>
-            ))}
+          .map((el) => (
+            <option style={{ textTransform: "capitalize" }} key={el}>
+              {el}
+            </option>
+          ))}
         {/*  */}
         {props.newBook.categories.length === 1 && (
           <option
@@ -85,12 +84,11 @@ export default function CategoriesSelector(props) {
           "{}" &&
           props.newBook.categories.length === 1 &&
           Object.keys(props.categories[props.newBook.categories[0]])
-            .sort()
-            .map((el) => (
-              <option style={{ textTransform: "capitalize" }} key={el}>
-                {el}
-              </option>
-            ))}
+          .map((el) => (
+            <option style={{ textTransform: "capitalize" }} key={el}>
+              {el}
+            </option>
+          ))}
         {/*  */}
         {props.newBook.categories.length === 2 &&
           typeof props.categories[props.newBook.categories[0]][
@@ -112,12 +110,11 @@ export default function CategoriesSelector(props) {
               props.newBook.categories[1]
             ]
           )
-            .sort()
-            .map((el) => (
-              <option style={{ textTransform: "capitalize" }} key={el}>
-                {el}
-              </option>
-            ))}
+          .map((el) => (
+            <option style={{ textTransform: "capitalize" }} key={el}>
+              {el}
+            </option>
+          ))}
       </select>
     </div>
   );
