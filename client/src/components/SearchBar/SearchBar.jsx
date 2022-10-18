@@ -19,9 +19,10 @@ export default function SearchBar() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const { loggedUser } = useSelector((state) => state.users); // Se usa para no renderizarle el create a todos los users
+  
   const { bookByName } = useSelector((state) => state.books);
   const { books } = useSelector((state) => state.books);
-
   // const { detail } = useSelector((state) => state.books);
 
   function handleInputChange(e) {
@@ -76,9 +77,11 @@ export default function SearchBar() {
 
       </div>
       <div className="headerLow">
+        {/* {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? */}
           <Link to="/create" style={{ textDecoration: "none" }}>
                 <p>Add Book</p>
             </Link>
+            {/* : null} */}
             <Link to="/books" style={{ textDecoration: "none" }}>
                 <p>All Books</p>
             </Link>

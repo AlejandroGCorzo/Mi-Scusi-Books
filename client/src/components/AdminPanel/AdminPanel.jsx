@@ -6,8 +6,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import UsersTable from "./UsersTable/UsersTable.jsx";
 import BooksTable from "./BooksTable/BooksTable.jsx";
-
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
@@ -51,40 +54,43 @@ export default function BasicTabs() {
   };
 
   const { loggedUser } = useSelector((state) => state.users);
+  const history = useHistory();
 
-
-  //   const dispatch = useDispatch();
-
-  //   useEffect(() => {
-  //     dispatch(getUser());
-  //   }, [dispatch]);
+  useEffect(() => {
+    if (loggedUser?.type !== "admin") history.push("/");
+  }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
-        {loggedUser?.type === 'admin' ? 
-        <>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Users" {...a11yProps(0)} />
-          <Tab label="Books" {...a11yProps(1)} />
-          <Tab label="Payments" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <UsersTable />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <BooksTable/>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Futures Payments
-      </TabPanel>
-      </>
-      : <span>No sos admin wacho!!</span>}
+      {loggedUser?.type === "admin" ? (
+        <ThemeProvider theme={colorMiScusi}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+              textColor="primary"
+              indicatorColor="primary"
+              centered
+            >
+              <Tab label="Users" {...a11yProps(0)} />
+              <Tab label="Books" {...a11yProps(1)} />
+              <Tab label="Payments" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <UsersTable />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <BooksTable />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            Futures Payments
+          </TabPanel>
+        </ThemeProvider>
+      ) : (
+        <span>No sos admin</span>
+      )}
     </Box>
   );
 }
