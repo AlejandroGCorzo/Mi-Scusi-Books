@@ -13,21 +13,21 @@ import {
 
 export const getBooks = () => (dispatch) => {
   axios
-    .get("http://localhost:9000/books/allBooks")
+    .get("/books/allBooks")
     .then((resolve) => dispatch(getAllBooks(resolve.data)))
     .catch((e) => console.log(e));
 };
 
 export const getDetail = (id) => {
   return async (dispatch) => {
-    let json = await axios.get(`http://localhost:9000/books/${id}`);
+    let json = await axios.get(`/books/${id}`);
     return dispatch(getBookById(json.data));
   };
 };
 
 export const getCategories = () => (dispatch) => {
   axios
-    .get("http://localhost:9000/category")
+    .get("/category")
     .then((el) => {
       dispatch(allCategories(el.data[0].theme));
     })
@@ -36,7 +36,7 @@ export const getCategories = () => (dispatch) => {
 
 export const fetchTopTen = () => {
   return async function (dispatch) {
-    const top = await axios.get("http://localhost:9000/books");
+    const top = await axios.get("/books");
     dispatch(getTopTen(top.data));
   };
 };
@@ -45,7 +45,7 @@ export const fetchTopTen = () => {
 //
 export const bookFiltered = (filters) => (dispatch) => {
   axios
-    .post(`http://localhost:9000/books/filter`, filters)
+    .post(`/books/filter`, filters)
     .then((resolve) => dispatch(getBooksFiltered(resolve.data)))
     .catch((e) => console.log(e));
 };
@@ -69,7 +69,7 @@ export const setCurrentPage = (value) => (dispatch) => {
 //
 // export const getBookName = (type, value, history) => {
 //   axios
-//     .get(`http://localhost:9000/books/filter?type=${type}&value=${value}`)
+//     .get(`/books/filter?type=${type}&value=${value}`)
 //     .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
 //     .catch(() => alert("Libro no encontrado"));
 // };
