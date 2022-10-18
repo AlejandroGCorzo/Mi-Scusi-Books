@@ -10,52 +10,52 @@ const userSchema = mongoose.Schema(
     },
     firstName: {
       type: String,
-      default: 'empty'
+      default: "empty",
     },
     lastName: {
       type: String,
-      default: 'empty'
+      default: "empty",
     },
     email: {
       type: String,
     },
     dni: {
       type: Number,
-      default: 0
+      default: 0,
     },
     phone: {
       type: Number,
-      default: 0
+      default: 0,
     },
     address: {
       street: {
         type: String,
-        default: 'empty'
+        default: "empty",
       },
       number: {
         type: Number,
-        default: 0
+        default: 0,
       },
       floor: {
         type: Number,
-        default: 0
-      }
+        default: 0,
+      },
     },
     birthdate: {
       type: String,
-      default: 'empty'
+      default: "empty",
     },
     loyaltyPoint: {
       type: Number,
-      default: 0
+      default: 0,
     },
     state: {
       type: String,
-      default: "pending"
+      default: "pending",
     },
     type: {
       type: String,
-      default: "normal"
+      default: "normal",
     },
     votedBooks:{
       type: [mongoose.Schema.Types.ObjectId],
