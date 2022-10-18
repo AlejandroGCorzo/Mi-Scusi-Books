@@ -1,0 +1,156 @@
+.titleFormShopping{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 25px;
+    font-weight: bold;
+    font-size: 25px;
+    color: #00cc77;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px 8px 0px 0px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.bottomNavigationActionx{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 250px;
+    border-radius: 8px;
+}
+
+.bottomNavigation{
+    border-radius: 8px;
+}
+
+.contentShoppingDetail {
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: 1px solid #e7e7e7;
+    border-top: 1px solid #e7e7e7;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    overflow: scroll;
+  }
+  
+.contentShoppingDetail p {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.itemsShoppingDetail {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 336px;
+}
+
+.contenedorx{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+    flex-direction: row;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.contenedorItems{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+    flex-direction: column;
+}
+
+.conteinerShopping{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    flex-direction: column;
+    width: 100%;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.conteinerShopping span{
+    width: 336px;
+}
+
+.tabPanel{
+    width: 100%;
+    min-width: 336px;
+    margin-top: -24px;
+}
+
+.contBuy{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+
+.textBuy{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    color: black;
+}
+
+.contBuy span{
+    margin-top: 6px;
+    margin-left: 15px;
+}
+
+.contentImage img{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 150px;
+    height: 200px;
+}
+
+.buttonDelete {
+    background-color: #cc0000;
+    border: 1px solid #ff0000;
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+
+@media (min-height: 0px){
+    .itemsShoppingDetail{
+        max-height: 480px;
+    }
+}
+
+@media (min-height: 768px){
+    .itemsShoppingDetail{
+        max-height: 768px;
+    }
+}
+
+@media (min-height: 1080px){
+    .itemsShoppingDetail{
+        max-height: 1450px;
+    }
+}
+
+@media (min-height: 1920px){
+    .itemsShoppingDetail{
+        max-height: 1760px;
+    }
+}
+
+@media (max-width: 914px) {
+    .contBuy{
+        flex-direction: column;
+    }
+    .contBuy span{
+        margin-left: -15px;
+    }
+}
+

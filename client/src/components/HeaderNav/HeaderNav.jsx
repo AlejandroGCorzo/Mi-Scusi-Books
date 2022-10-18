@@ -20,6 +20,9 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import HomeIcon from '@mui/icons-material/Home';
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -89,15 +92,22 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
-            <Link to="/create" style={{ textDecoration: "none" }}>
-              <p>Add Book</p>
-            </Link>
-            <Link to="/books" style={{ textDecoration: "none" }}>
-              <p>All Books</p>
-            </Link>
-            <Link to="/categories" style={{ textDecoration: "none" }}>
-              <p>Categories</p>
-            </Link>
+                        <p>
+            <Link to="/" style={{ textDecoration: "none" }}>
+                <HomeIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
+            <p>
+              <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
+                <ShoppingCartIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
+            <p>
+              <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
+                <FavoriteIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
+
             <Box
               sx={{
                 display: "flex",
@@ -192,19 +202,25 @@ export default function HeaderNav(onSearch) {
           </div>
         ) : (
           <div className="iconsContainer">
-            <Link to="/create" style={{ textDecoration: "none" }}>
-              <p>Add Book</p>
-            </Link>
-            <Link to="/books" style={{ textDecoration: "none" }}>
-              <p>All Books</p>
-            </Link>
-            <Link to="/categories" style={{ textDecoration: "none" }}>
-              <p>Categories</p>
-            </Link>
+            <p>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <HomeIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
+            <p>
+              <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
+                <ShoppingCartIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
+            <p>
+              <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
+                <FavoriteIcon style={{ color: "white" }}/>
+              </Link>
+            </p>
             <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Login
             </p>
-
+            
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
               <p>Login</p>
             </Link> */}
