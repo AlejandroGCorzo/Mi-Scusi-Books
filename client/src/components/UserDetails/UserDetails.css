@@ -26,7 +26,7 @@
   margin-right: 10px;
 }
 
-.userInfoContainer span{
+.userInfoContainer span {
   border: 1px solid #c5c5c5;
   width: 100%;
   margin-top: 10px;
@@ -34,7 +34,7 @@
   color: #1f1f1f;
 }
 
-.contentCategoryx{
+.contentCategoryx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -43,9 +43,9 @@
   transform: scale(1);
 }
 
-.contentCategoryDivx{
+.contentCategoryDivx {
   background-color: white;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
@@ -55,24 +55,24 @@
   width: 100%;
 }
 
-.contentCategoryDivx p{
+.contentCategoryDivx p {
   color: #00cc77;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
 }
 
-.categoryDivx{
+.categoryDivx {
   display: flex;
   flex-wrap: wrap;
-  justify-content:center;
+  justify-content: center;
   flex-direction: column;
   width: 336px;
   margin-top: 15px;
   text-align: left;
 }
 
-.titleFormx{
+.titleFormx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -86,7 +86,7 @@
   width: 100%;
 }
 
-.formBackx{
+.formBackx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -98,13 +98,13 @@
   margin-bottom: 25px;
 }
 
-.formBackx button{
+.formBackx button {
   margin-right: 15px;
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
-.buttonBackx{
+.buttonBackx {
   color: white;
   background-color: #00cc77;
   border: 1px solid #00cc77;
@@ -116,7 +116,7 @@
   cursor: pointer;
 }
 
-.pencilButtonx{
+.pencilButtonx {
   background-color: white;
   border: 1px solid white;
   justify-content: flex-end;
@@ -125,67 +125,66 @@
   cursor: pointer;
 }
 
-@media (min-height: 0px){
-  .contentCategoryDivx{
-      height: 480px;
+@media (min-height: 0px) {
+  .contentCategoryDivx {
+    height: 480px;
   }
 }
 
-@media (min-height: 768px){
-  .contentCategoryDivx{
+@media (min-height: 768px) {
+  .contentCategoryDivx {
     height: 768px;
   }
 }
 
-@media (min-height: 1080px){
-  .contentCategoryDivx{
-      height: 768px;
+@media (min-height: 1080px) {
+  .contentCategoryDivx {
+    height: 768px;
   }
 }
 
-@media (min-height: 1920px){
-  .contentCategoryDivx{
+@media (min-height: 1920px) {
+  .contentCategoryDivx {
     height: 1450px;
   }
 }
 
-@media (min-width: 768px){
-  .contentCategoryx{
+@media (min-width: 768px) {
+  .contentCategoryx {
     max-width: 514px;
   }
 }
 
-@media (min-width: 1080px){
-  .contentCategoryx{
+@media (min-width: 1080px) {
+  .contentCategoryx {
     max-width: 614px;
   }
-
 }
 
-@media (min-width: 1930px){
-  .contentCategoryx{
+@media (min-width: 1930px) {
+  .contentCategoryx {
     max-width: 900px;
   }
-  .categoryDivx{
+  .categoryDivx {
     transform: scale(1.7);
   }
-  .contentCategoryDivx{
+  .contentCategoryDivx {
     overflow-y: scroll;
     scroll-behavior: smooth;
   }
 }
 
-@media (min-width: 2560px){
-  .contentCategoryx{
+@media (min-width: 2560px) {
+  .contentCategoryx {
     max-width: 1260px;
   }
 }
 
-@media (min-width: 3260px){
-  .contentCategoryx{
+@media (min-width: 3260px) {
+  .contentCategoryx {
     max-width: 1660px;
   }
-  .categoryDivx{
+  .categoryDivx {
     transform: scale(2.5);
   }
 }

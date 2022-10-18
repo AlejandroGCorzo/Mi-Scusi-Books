@@ -52,15 +52,16 @@
   border-radius: 8px;
 }
 
-
-.divInputForm input, select, option {
+.divInputForm input,
+select,
+option {
   padding: 5px;
   border: 2px solid rgb(121, 121, 121);
   border-radius: 5px;
   color: #4f504f;
-} 
+}
 
-.divInputForm select{
+.divInputForm select {
   width: 100%;
 }
 
@@ -116,7 +117,7 @@
   padding: 5px;
 }
 
-.previewTitlesSynopsis{
+.previewTitlesSynopsis {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -164,9 +165,7 @@
   justify-content: space-around;
 }
 
-
-
-.contentCreateBook{
+.contentCreateBook {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -175,9 +174,9 @@
   transform: scale(1);
 }
 
-.contentBookDiv{
+.contentBookDiv {
   background-color: white;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
@@ -187,24 +186,24 @@
   width: 100%;
 }
 
-.contentBookDiv p{
+.contentBookDiv p {
   color: #00cc77;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
 }
 
-.categoryBook{
+.categoryBook {
   display: flex;
   flex-wrap: wrap;
-  justify-content:center;
+  justify-content: center;
   flex-direction: column;
   width: 336px;
   margin-top: 15px;
   text-align: left;
 }
 
-.buttonDeleteBook{
+.buttonDeleteBook {
   color: white;
   background-color: #00cc77;
   border: 1px solid #00cc77;
@@ -216,82 +215,80 @@
   width: 250px;
 }
 
-.mantengo{
+.mantengo {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
 }
 
-
-@media (min-height: 0px){
-  .contentBookDiv{
-      height: 480px;
+@media (min-height: 0px) {
+  .contentBookDiv {
+    height: 480px;
   }
-  .contentBookDiv{
+  .contentBookDiv {
     overflow-y: scroll;
     scroll-behavior: smooth;
   }
 }
 
-@media (min-height: 768px){
-  .contentBookDiv{
+@media (min-height: 768px) {
+  .contentBookDiv {
     height: 768px;
   }
 }
 
-@media (min-height: 1080px){
-  .contentBookDiv{
-      height: 768px;
+@media (min-height: 1080px) {
+  .contentBookDiv {
+    height: 768px;
   }
 }
 
-@media (min-height: 1440px){
-  .contentBookDiv{
-      height: 1440px;
+@media (min-height: 1440px) {
+  .contentBookDiv {
+    height: 1440px;
   }
 }
 
-@media (min-height: 1920px){
-  .contentBookDiv{
+@media (min-height: 1920px) {
+  .contentBookDiv {
     height: 1450px;
   }
 }
 
-@media (min-width: 768px){
-  .contentCreateBook{
+@media (min-width: 768px) {
+  .contentCreateBook {
     max-width: 514px;
   }
 }
 
-@media (min-width: 1080px){
-  .contentCreateBook{
+@media (min-width: 1080px) {
+  .contentCreateBook {
     max-width: 614px;
   }
-
 }
 
-@media (min-width: 1930px){
-  .contentCreateBook{
+@media (min-width: 1930px) {
+  .contentCreateBook {
     max-width: 900px;
   }
 }
 
-@media (min-width: 2560px){
-  .contentCreateBook{
+@media (min-width: 2560px) {
+  .contentCreateBook {
     max-width: 1260px;
   }
-  .categoryBook{
+  .categoryBook {
     margin-top: 150px;
     transform: scale(1.3);
   }
 }
 
-@media (min-width: 3260px){
-  .contentCreateBook{
+@media (min-width: 3260px) {
+  .contentCreateBook {
     max-width: 1660px;
   }
-  .categoryBook{
+  .categoryBook {
     transform: scale(1.5);
   }
 }

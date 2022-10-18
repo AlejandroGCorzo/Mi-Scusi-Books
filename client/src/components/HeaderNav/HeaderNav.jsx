@@ -174,9 +174,7 @@ export default function HeaderNav(onSearch) {
                   to="/admin_panel"
                   style={{ "text-decoration": "none", color: "#5b5b5b" }}
                 >
-                  <MenuItem>
-                    Dashboard
-                  </MenuItem>
+                  <MenuItem>Dashboard</MenuItem>
                 </Link>
               ) : null}
               <Divider />

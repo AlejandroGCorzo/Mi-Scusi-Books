@@ -1,93 +1,93 @@
-.homePage{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: column;
+.homePage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.promotions{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction:row;
-    height: auto;
-    width: 100%;
-    background-image: url("../../sourceImg/banner.jpg");
-    background-position: center center;
-    background-size: cover;
-    border-radius: 0px 0px 5px 5px;
+.promotions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  height: auto;
+  width: 100%;
+  background-image: url("../../sourceImg/banner.jpg");
+  background-position: center center;
+  background-size: cover;
+  border-radius: 0px 0px 5px 5px;
 }
 
-.textoPromotions{
-    margin-top: 50px;
-    margin-bottom: 50px;
-    width: 45%;
+.textoPromotions {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 45%;
 }
 
-.textoPromotions h3{
-    font-size: 2.5rem;
+.textoPromotions h3 {
+  font-size: 2.5rem;
 }
 
-.textoPromotions p{
-    font-size: 1rem;
+.textoPromotions p {
+  font-size: 1rem;
 }
 
-.detailBook p{
-    width: 250px;
+.detailBook p {
+  width: 250px;
 }
 
-.detailBook{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.detailBook {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.detailBook img{
-    width: 250px;
+.detailBook img {
+  width: 250px;
 }
 
-.stand{
-    margin-top: 50px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: column;
-    margin-bottom: 50px;
+.stand {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 50px;
 }
 
-.buttonView{
-    background-color: #00cc77;
-    border: 1px solid #00cc77;
-    height: 40px;
-    width: 100px;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
+.buttonView {
+  background-color: #00cc77;
+  border: 1px solid #00cc77;
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
 }
 
-.advertisements{
-    margin-top: 100px;
-    margin-bottom: 90px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
+.advertisements {
+  margin-top: 100px;
+  margin-bottom: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.advertisements p{
-    width: 280px;
+.advertisements p {
+  width: 280px;
 }
 
-.imageFail{
-    margin-top: -7px;
+.imageFail {
+  margin-top: -7px;
 }
 
-.imagePromotions{
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
+.imagePromotions {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
-.promotionImages{
-    border-radius: 5px; 
+.promotionImages {
+  border-radius: 5px;
 }

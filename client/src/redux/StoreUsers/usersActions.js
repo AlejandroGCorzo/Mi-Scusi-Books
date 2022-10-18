@@ -3,9 +3,9 @@ import { getAllUsers, getLoggedUserData } from "./usersSlice.js";
 
 export const getUser = () => {
   return async (dispatch) => {
-    let json = await axios.get('http://localhost:9000/user')
-    return dispatch(getAllUsers(json.data))
-  }
+    let json = await axios.get("http://localhost:9000/user");
+    return dispatch(getAllUsers(json.data));
+  };
 };
 
 export const getUserDetail = (data) => {
