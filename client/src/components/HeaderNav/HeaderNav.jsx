@@ -190,7 +190,7 @@ export default function HeaderNav(onSearch) {
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>
-                Logout
+                Log out
               </MenuItem>
             </Menu>
 
@@ -216,7 +216,7 @@ export default function HeaderNav(onSearch) {
               </Link>
             </p>
             <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
-              Login
+              Log in
             </p>
 
             {/* <Link to="/login" style={{ textDecoration: "none" }}>
