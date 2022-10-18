@@ -1,4 +1,4 @@
-import { Box, Pagination } from "@mui/material";
+import { Box, Pagination, TablePagination } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "../../../redux/StoreBooks/booksActions";
 
