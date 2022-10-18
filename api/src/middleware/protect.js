@@ -2,6 +2,7 @@ const User = require("../models/user.js");
 const axios = require("axios");
 
 const protect = async (req, res, next) => {
+  
   let accesToken;
   if (
     req.headers.authorization &&
@@ -26,7 +27,7 @@ const protect = async (req, res, next) => {
       }).select("-password");
       next();
     } catch (e) {
-      res.status(302).json({ msg: "Not authorized" });
+      res.status(302).json({ msg: "Not authorized 1" });
     }
   }
   if (!accesToken) {

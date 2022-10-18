@@ -23,10 +23,9 @@ export default function Books() {
   const history = useHistory();
   const dispatch = useDispatch();
   // // // // // // STORE
-  const { booksFilter, categories, storeFilters } = useSelector(
+  const { booksFilter, categories, storeFilters, page } = useSelector(
     (state) => state.books
   );
-  const [booksToShow, setBooksToShow] = useState();
   // console.log(booksToShow);
   // // // // // // STATES CREADOS POR ALE
   const [render, setRender] = useState(false);
@@ -35,6 +34,16 @@ export default function Books() {
   theme = theme?.replace(/\_/g, " ");
   category = category?.replace(/\_/g, " ");
   subcategory = subcategory?.replace(/\_/g, " ");
+
+  // // // // // // PAGINATO
+  
+  // const booksPerPage = 10;   
+  const lastIndex = page.currentPage * page.rows + page.rows;
+  const firstIndex = lastIndex - page.rows;
+  // const totalPages = Math.ceil(booksFilter.length / booksPerPage);
+  let booksToShow = booksFilter.slice(firstIndex, lastIndex);
+
+
   // // // // // // USE EFFECT
   useEffect(() => {
     if (!theme && !category && !subcategory) {
@@ -163,8 +172,8 @@ export default function Books() {
               <option value="Z">Title (Z-A)</option>
             </select>
           </p>
-          {booksFilter.length > 0 ? (
-            booksFilter.map((el) => {
+          {booksToShow.length > 0 ? (
+            booksToShow.map((el) => {
               return (
                 <div className="cardBookResults" key={el._id}>
                   <Book
@@ -184,7 +193,7 @@ export default function Books() {
         </div>
       </div>
       <p></p>
-      <Pages books={booksFilter} setBooksToShow={(b) => setBooksToShow(b)} />
+      <Pages count={booksFilter.length}/>
     </div>
   );
 }
