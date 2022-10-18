@@ -29,7 +29,6 @@ export default function SearchBar() {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
     dispatch(emptyBookFiltered());
     let search;
     filter === "author"
