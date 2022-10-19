@@ -56,33 +56,33 @@ userRouter.get("/keepLog", protect, async(req, res) => {
   }
 })
 
-userRouter.get("/login", async(req, res) => {
-  const { email, password } = req.body;
-  // const salt = await bcrypt.genSalt(10)
-  // const hash = await bcrypt.hash("Admin123", salt)
-  // console.log(hash)
-  try{
-    const user = await User.findOne({ email });
-    let formatUser;
-    if(user && (await bcrypt.compare(password, user.password))){
-      formatUser = {
-        id: user._id,
-        picture: user.picture,
-        userName: user.username,
-        type: user.type,
-        state: user.state,
-        token: generateToken(user._id),
-      };
-    } 
-    console.log(formatUser)
-    res.status(200).json(formatUser)
-  } catch(e) {
-    res.status(400).json({msg : "Email or password invalid"})
-  }
-})
+// userRouter.get("/login", async(req, res) => {
+//   const { email, password } = req.body;
+//   // const salt = await bcrypt.genSalt(10)
+//   // const hash = await bcrypt.hash("Admin123", salt)
+//   // console.log(hash)
+//   try{
+//     const user = await User.findOne({ email });
+//     let formatUser;
+//     if(user && (await bcrypt.compare(password, user.password))){
+//       formatUser = {
+//         id: user._id,
+//         picture: user.picture,
+//         userName: user.username,
+//         type: user.type,
+//         state: user.state,
+//         token: generateToken(user._id),
+//       };
+//     } 
+//     console.log(formatUser)
+//     res.status(200).json(formatUser)
+//   } catch(e) {
+//     res.status(400).json({msg : "Email or password invalid"})
+//   }
+// })
 
 
-userRouter.get("/login_google", async (req, res) => {
+userRouter.get("/login", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
