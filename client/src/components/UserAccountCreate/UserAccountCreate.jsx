@@ -14,7 +14,7 @@ function espacios(string){
   return contador;
 }
 
-function validar() {
+function validar(){
   const input = document.getElementById('name');
   if(!input.checkValidity()) return false;
   return true;
@@ -54,9 +54,6 @@ function validate(user){
   if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(user.email)) errors.email = "Email can contain only letters, numbers, -, _, or .";
   if (!/^\S+@\S+\.\S+$/.test(user.email))errors.email = "Email is invalid";
   if (user.password !== user.confirmPassword) errors.confirmPassword = "Different password ";
-    // } else if (!usersEmail.includes(user.email)) {
-    //   errors.email = "That email doesn't exist";
-    // }
 
   if(espacios(user.name) > 2 || user.name[0] === " ") errors.name = "Max 2 spaces";
   if(espacios(user.lastname) > 2 || user.lastname[0] === " ") errors.lastname = "Max 2 spaces";
@@ -71,45 +68,45 @@ const history = useHistory();
 const [errors,setErrors] = useState({});
 
 const [user, setUser] = useState({
-    name: "",
-    lastname: "",
-    username: "",
-    email: "",
-    dni: "",
-    phone: "",
-    address: "",
-    birthday: "",
-    password: "",
-    confirmPassword: ""
-  });
+  name: "",
+  lastname: "",
+  username: "",
+  email: "",
+  dni: "",
+  phone: "",
+  address: "",
+  birthday: "",
+  password: "",
+  confirmPassword: ""
+});
 
 function onInputChange(e) {
-    e.preventDefault();
+  e.preventDefault();
     setUser({
       ...user,
       [e.target.name]: e.target.value,
-    });
-    setErrors(
+  });
+  setErrors(
       validate({
         ...user,
         [e.target.name]: e.target.value,
       })
-    );
+  );
 }
 
 function onSubmit(e) {
-    e.preventDefault();
-    if(Object.entries(errors).length !== 0){
+  e.preventDefault();
+  if(Object.entries(errors).length !== 0){
       alert("Please complete all fields!");
-    }else{
+  }else{
     //   dispatch(postUser(User)); Acá hay que agregar para que mande el post
-      alert("Successfully created character, check your email!");
-      setUser({user});
-      history.push("/");
-    } 
-  }
+    alert("Successfully created character, check your email!");
+    setUser({user});
+    history.push("/");
+  } 
+}
 
-  return(
+return(
     <div className="containerLandingGeneralForm">
       <div className="imagenLibros">
         <img src={imgLibritos} alt="Books"/>
@@ -221,5 +218,4 @@ function onSubmit(e) {
 
     </div>
   )
-
 }
