@@ -46,7 +46,7 @@ export const keepLog = (token) => {
 
 export const setUserDete = (id) => {
   return async (dispatch) => {
-    let json = await axios.get(`/user/delete/${id}`);
+    let json = await axios.put(`/user/delete/${id}`);
     return dispatch(filterDeleteUser(id));
   };
 };

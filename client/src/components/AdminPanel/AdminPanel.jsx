@@ -80,19 +80,19 @@ export default function BasicTabs() {
               indicatorColor="primary"
               centered
             >
-              <Tab label="Users" {...a11yProps(0)} />
+              <Tab label="Users Nueva Tabla" {...a11yProps(0)} />
               <Tab label="Books" {...a11yProps(1)} />
-              <Tab label="Test de Users" {...a11yProps(2)} />
+              <Tab label="Users Tabla Vieja" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <UsersTable />
+            <TestUsers />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <BooksTable />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TestUsers />
+            <UsersTable />
           </TabPanel>
         </ThemeProvider>
       ) : (
