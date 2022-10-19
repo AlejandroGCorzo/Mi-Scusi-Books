@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -16,40 +15,12 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
-
 import { useSelector } from "react-redux";
 
-// function createData(name, calories, fat, carbs, protein) {
-//   return {
-//     name,
-//     calories,
-//     fat,
-//     carbs,
-//     protein,
-//   };
-// }
-
-// const rows = [
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Donut", 452, 25.0, 51, 4.9),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9),
-//   createData("Honeycomb", 408, 3.2, 87, 6.5),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Jelly Bean", 375, 0.0, 94, 0.0),
-//   createData("KitKat", 518, 26.0, 65, 7.0),
-//   createData("Lollipop", 392, 0.2, 98, 0.0),
-//   createData("Marshmallow", 318, 0, 81, 2.0),
-//   createData("Nougat", 360, 19.0, 9, 37.0),
-//   createData("Oreo", 437, 18.0, 63, 4.0),
-// ];
+import UsersDelete from "../ConfirmDialog/UsersDelete";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -139,14 +110,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, numSelected, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -154,17 +118,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          {/* <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          /> */}
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -191,17 +145,9 @@ function EnhancedTableHead(props) {
   );
 }
 
-// EnhancedTableHead.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-//   onRequestSort: PropTypes.func.isRequired,
-//   onSelectAllClick: PropTypes.func.isRequired,
-//   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-//   orderBy: PropTypes.string.isRequired,
-//   rowCount: PropTypes.number.isRequired,
-// };
-
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+  const { numSelected, openDelete, handleOpenDelete, handleCloseDelete, id } =
+    props;
 
   return (
     <Toolbar
@@ -218,66 +164,65 @@ const EnhancedTableToolbar = (props) => {
       }}
     >
       {
-        //numSelected > 0 ? (
         <Typography
           sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected ? `User: ${numSelected}` : null}
         </Typography>
-        //   ) : (
-        //     null
-        //     // <Typography
-        //     //   sx={{ flex: "1 1 100%" }}
-        //     //   variant="h6"
-        //     //   id="tableTitle"
-        //     //   component="div"
-        //     // >
-        //     //   Users
-        //     // </Typography>
-        //   )
       }
-
-      {
-        numSelected > 0 ? (
+      {numSelected ? (
+        <>
           <>
-            <Tooltip title="Delete">
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Block">
-              <IconButton>
-                <BlockIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleOpenDelete} title="Delete" key={"block"}>
+              <DeleteIcon />
+            </IconButton>
+            <UsersDelete
+              numSelected={numSelected}
+              openDialog={openDelete}
+              handleClose={handleCloseDelete}
+              id={id}
+            />
           </>
-        ) : null
-        // <Tooltip title="Filter list">
-        //   <IconButton>
-        //     <FilterListIcon />
-        //   </IconButton>
-        // </Tooltip>
-      }
+          {/* <>
+            <IconButton onClick={handleOpenBlock} title="Block">
+              <BlockIcon />
+            </IconButton>
+            <UsersBlock
+              numSelected={numSelected}
+              openDialog={openBlock}
+              handleClose={handleCloseblock}
+            />
+          </> */}
+        </>
+      ) : null}
     </Toolbar>
   );
 };
 
-// EnhancedTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired,
-// };
-
 export default function TestUsers() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("email");
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState();
+  const [showEmail, setShowEmail] = React.useState();
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   console.log(selected);
+
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const handleOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setSelected()
+  };
 
   const { users } = useSelector((state) => state.users);
 
@@ -287,33 +232,9 @@ export default function TestUsers() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = users.map((n) => n.name);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
+  const handleClick = (event, id, email) => {
+    id === selected ? setSelected() : setSelected(id);
+    email === showEmail ? setShowEmail() : setShowEmail(email);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -325,11 +246,7 @@ export default function TestUsers() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id) => id === selected;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -338,7 +255,13 @@ export default function TestUsers() {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={showEmail /* .length */}
+          openDelete={openDelete}
+          handleOpenDelete={handleOpenDelete}
+          handleCloseDelete={handleCloseDelete}
+          id={selected}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -346,10 +269,9 @@ export default function TestUsers() {
             size={"small"}
           >
             <EnhancedTableHead
-              numSelected={selected.length}
+              numSelected={selected /* .length */}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={users.length}
             />
@@ -365,11 +287,11 @@ export default function TestUsers() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, u._id)}
+                      onClick={(event) => handleClick(event, u._id, u.email)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={u.email}
+                      key={u._id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
