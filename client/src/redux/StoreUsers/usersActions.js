@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllUsers, getLoggedUserData, setUserDetails, keepUserLog } from "./usersSlice.js";
+import { getAllUsers, getLoggedUserData, setUserDetails, keepUserLog, filterDeleteUser, setLogin } from "./usersSlice.js";
 
 export const getUser = () => {
   return async (dispatch) => {
@@ -16,18 +16,18 @@ export const getLoggedUser = (data) => {
 
 export const getUserDetails = (id, token) => {
   return async (dispatch) => {
-    try{
+    try {
       const details = await axios.get(`/user/${id}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
-      })
-      return dispatch(setUserDetails(details.data))
-    } catch (e){
-      return dispatch(setUserDetails(e.response.data))
+      });
+      return dispatch(setUserDetails(details.data));
+    } catch (e) {
+      return dispatch(setUserDetails(e.response.data));
     }
-  }
-}
+  };
+};
 
 export const keepLog = (token) => {
   return async(dispatch) => {
@@ -43,3 +43,14 @@ export const keepLog = (token) => {
    }
   }
 }
+
+export const setUserDelete = (id) => {
+  return async (dispatch) => {
+    let json = await axios.put(`/user/delete/${id}`);
+    return dispatch(filterDeleteUser(id));
+  };
+};
+
+export const loging = () => (dispatch) => {
+  dispatch(setLogin());
+};

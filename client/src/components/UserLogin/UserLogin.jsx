@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { getUser } from "../../redux/StoreUsers/usersActions.js";
+import { loging } from "../../redux/StoreUsers/usersActions.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+// const bcrypt = require("bcrypt");
 
 export default function UserLogin() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.users);
-  const usersEmail = users.map((u) => u.email);
-  const [input, setInput] = useState({
+  const { loggedUser } = useSelector((state) => state.users);
+  const [rememberMe, setRememberMe] = useState(false);
+  // const { users } = useSelector((state) => state.users);
+  // const usersEmail = users.map((u) => u.email);
+  const emptyInput = {
     email: "",
     password: "",
-    disabled: true,
-  });
-  const [errors, setErrors] = useState({});
+  };
+  const [input, setInput] = useState(emptyInput);
+  const [errors, setErrors] = useState("");
 
   useEffect(() => {
-    dispatch(getUser());
+    // dispatch(getUser());
+    if (
+      window.localStorage.getItem("token") ||
+      window.sessionStorage.getItem("token")
+    )
+      history.push("/");
   }, [dispatch]);
 
   const {
@@ -50,51 +58,63 @@ export default function UserLogin() {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
+    // setErrors(
+    //   validate({
+    //     ...input,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
   }
 
-  function handleSubmit(e) {
+  async function handleLogIn(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-    history.push("/");
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(input.password, salt);
+    console.log(input);
+    axios
+      .post("/user/login", input)
+      .then((el) => {
+        console.log(el.data);
+        if (rememberMe) window.localStorage.setItem("token", el.data.token);
+        else window.sessionStorage.setItem("token", el.data.token);
+        dispatch(loging());
+        history.push("/");
+      })
+      .catch((e) => {
+        console.log("error", e);
+        setErrors(`${JSON.parse(e.request.response).msg}`);
+      });
+    // setInput(emptyInput);
   }
 
-  function validate(input) {
-    let errors = {};
+  // function validate(input) {
+  //   let errors = {};
 
-    if (!input.email) {
-      errors.email = "Email is required";
-    } else if (input.email.length < 6) {
-      errors.email = "Email must contain at least 6 characters";
-    } else if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(input.email)) {
-      errors.email = "Email can contain only letters, numbers, -, _, or .";
-    } else if (!/^\S+@\S+\.\S+$/.test(input.email)) {
-      errors.email = "Email is invalid";
-    } else if (!usersEmail.includes(input.email)) {
-      errors.email = "That email doesn't exist";
-    }
+  //   if (!input.email) {
+  //     errors.email = "Email is required";
+  //   } else if (input.email.length < 6) {
+  //     errors.email = "Email must contain at least 6 characters";
+  //   } else if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(input.email)) {
+  //     errors.email = "Email can contain only letters, numbers, -, _, or .";
+  //   } else if (!/^\S+@\S+\.\S+$/.test(input.email)) {
+  //     errors.email = "Email is invalid";
+  //   } else if (!usersEmail.includes(input.email)) {
+  //     errors.email = "That email doesn't exist";
+  //   }
 
-    if (!input.password) {
-      errors.password = "Password is required";
-    } else if (input.password.length < 8 || input.password.length >= 16) {
-      errors.password =
-        "Password must be min 8 characters and max 16 characters";
-    } else if (
-      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(input.password)
-    ) {
-      errors.password =
-        "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
-    }
-    return errors;
-  }
+  //   if (!input.password) {
+  //     errors.password = "Password is required";
+  //   } else if (input.password.length < 8 || input.password.length >= 16) {
+  //     errors.password =
+  //       "Password must be min 8 characters and max 16 characters";
+  //   } else if (
+  //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(input.password)
+  //   ) {
+  //     errors.password =
+  //       "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
+  //   }
+  //   return errors;
+  // }
 
   return (
     <div>
@@ -107,20 +127,21 @@ export default function UserLogin() {
           />
           <h1>LOGIN</h1>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogIn}>
           <div>
             <label>Email: </label>
             <input
               type="text"
               name="email"
+              autoComplete="off"
               placeholder="you@example.com"
               value={input.email}
               onChange={handleInputChange}
               required
             />
-            <span>
+            {/* <span>
               {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
-            </span>
+            </span> */}
           </div>
           <div>
             <label>Password: </label>
@@ -134,15 +155,14 @@ export default function UserLogin() {
               onChange={handleInputChange}
               required
             />
-            <span>
-              {errors.password && (
-                <p style={{ color: "red" }}>{errors.password}</p>
-              )}
-            </span>
+            <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span>
           </div>
           <div>
             <label>
-              <input type="checkbox" id="cb1" value="cb" />
+              <input
+                type="checkbox"
+                onChange={() => setRememberMe(!rememberMe)}
+              />
               Remember me
             </label>
             <Link
@@ -152,7 +172,10 @@ export default function UserLogin() {
               <span>Forgot password?</span>
             </Link>
           </div>
-          <input disabled={input.disabled} type="submit" value="LOGIN" />
+          <button disabled={false} type="submit">
+            LOGIN
+          </button>
+          {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
           {/* falta configurar el disabled */}
         </form>
         <div>
@@ -160,7 +183,7 @@ export default function UserLogin() {
           <Link to={"/signup"}>
             <button>SIGN UP</button>
           </Link>
-          <ul>
+          {/* <ul>
             <li>
               <button onClick={loginWithPopup}>Login with Popup</button>
             </li>
@@ -181,7 +204,7 @@ export default function UserLogin() {
             <pre style={{ textAlign: "start" }}>
               {JSON.stringify(user, null, 2)}
             </pre>
-          )}
+          )} */}
         </div>
       </section>
     </div>
