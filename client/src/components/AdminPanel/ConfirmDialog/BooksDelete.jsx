@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 import { useDispatch } from "react-redux";
-import { setUserDelete } from "../../../redux/StoreUsers/usersActions";
+import { setBookDelete } from "../../../redux/StoreBooks/booksActions";
 
 export default function UsersDelete(props) {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function UsersDelete(props) {
   console.log(id);
 
   const handleDelete = (e) => {
-    dispatch(setUserDelete(id));
+    dispatch(setBookDelete(id));
     dispatch(handleClose);
   };
 
@@ -33,7 +33,7 @@ export default function UsersDelete(props) {
     >
       <DialogTitle id="responsive-dialog-title">{"Delete Book"}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText >
           If you want to delete book {numSelected} please click CONFIRM,
           otherwise click CANCEL.
         </DialogContentText>
@@ -42,7 +42,7 @@ export default function UsersDelete(props) {
         <Button autoFocus onClick={handleClose}>
           CANCEL
         </Button>
-        <Button onClick={handleClose/* handleDelete */} autoFocus>
+        <Button onClick={handleDelete/* handleDelete */} autoFocus>
           CONFIRM
         </Button>
       </DialogActions>
