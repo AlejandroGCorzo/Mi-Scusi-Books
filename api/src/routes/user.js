@@ -195,18 +195,70 @@ userRouter.get("/login", async (req, res) => {
 //   }
 // });
 
-userRouter.post("/", async (req, res) => {
-  try {
-    const { username } = req.body;
-    console.log(req.body);
-    const repeatedUsername = await User.findOne({ username: username });
-    if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-    console.log("llegue");
-    const newUser = await User.create(req.body);
-    res.send("User created successfully!");
-  } catch (e) {
-    res.status(400).send({ error: e });
+userRouter.post("/signup", async (req, res) => {
+  const { firstName, lastName, username, password, email, dni, phone, address, birthdate } = req.body;
+
+  if( !firstName || !lastName || !username || !password || !email || !dni || !phone || !address.street || !address.number || !birthdate){
+    return res.status(400).json({msg: "All fields are required"});
   }
+
+  try{
+    const userFound = await User.findOne(email);
+    if(userFound){
+      return res.status(400).json({msg: "Email already in use"})
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const newUser = {
+      username,
+      firstName,
+      lastName,
+      password: hashPassword,
+      email,
+      dni,
+      phone,
+      address:{
+        street: address.street,
+        number: address.number,
+        floor: address.floor || 0
+      },
+      birthdate,
+      loyaltyPoint: 0,
+      state: "pending",
+      type: "normal",
+      votedBooks: [],
+      favorites: [],
+      cart: {
+        books:[],
+        ammounts: []
+      },
+      image: "http://cdn.onlinewebfonts.com/svg/img_568656.png"
+    }
+    const user = await User.create(newUser);
+    formatUser = {
+      id: user._id,
+      picture: user.picture,
+      userName: user.username,
+      type: user.type,
+      state: user.state,
+      token: generateToken(user._id),
+    };
+
+    return res.status(200).json(formatUser);
+  } catch(e){
+    return res.status(400).json({msg: "Something went wrong creating the user, try again later"})
+  }
+  // try {
+  //   const { username } = req.body;
+  //   console.log(req.body);
+  //   const repeatedUsername = await User.findOne({ username: username });
+  //   if (repeatedUsername) return res.status(400).send("Username alredy exist!");
+  //   console.log("llegue");
+  //   const newUser = await User.create(req.body);
+  //   res.send("User created successfully!");
+  // } catch (e) {
+  //   res.status(400).send({ error: e });
+  // }
 });
 
 userRouter.get("/", async (req, res) => {
