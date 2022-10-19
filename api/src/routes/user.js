@@ -10,6 +10,7 @@ const userRouter = Router();
 const bcrypt = require('bcrypt');
 require("dotenv").config();
 //create user
+
 // {
 //   sub: 'auth0|63474946bce9a900112d95f3',
 //   nickname: 'nanzerjano',
@@ -33,6 +34,7 @@ require("dotenv").config();
 // }
 
 // // // // // FUNCION GENERAR TOKEN // // // //
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d"
