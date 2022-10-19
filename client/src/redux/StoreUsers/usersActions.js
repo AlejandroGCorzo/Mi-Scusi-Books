@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllUsers, getLoggedUserData, setUserDetails, keepUserLog } from "./usersSlice.js";
+import { getAllUsers, getLoggedUserData, setUserDetails, keepUserLog, filterDeleteUser } from "./usersSlice.js";
 
 export const getUser = () => {
   return async (dispatch) => {
@@ -43,3 +43,10 @@ export const keepLog = (token) => {
    }
   }
 }
+
+export const setUserDete = (id) => {
+  return async (dispatch) => {
+    let json = await axios.get(`/user/delete/${id}`);
+    return dispatch(filterDeleteUser(id));
+  };
+};
