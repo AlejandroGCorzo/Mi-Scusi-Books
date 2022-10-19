@@ -25,10 +25,13 @@ export const usersSlice = createSlice({
     },
     keepUserLog: (state, action) => {
       state.loggedUser = action.payload;
-    }
+    },
+    filterDeleteUser: (state, action) =>{
+      state.users = state.users.filter(u=> u._id !== action.payload)
+    },
   },
 });
 
-export const { getAllUsers, getLoggedUserData, setEmptyLoggedUser, setUserDetails,clearUserDetail, keepUserLog } =
+export const { getAllUsers, getLoggedUserData, setEmptyLoggedUser, setUserDetails,clearUserDetail, keepUserLog, filterDeleteUser } =
   usersSlice.actions;
 export default usersSlice.reducer;
