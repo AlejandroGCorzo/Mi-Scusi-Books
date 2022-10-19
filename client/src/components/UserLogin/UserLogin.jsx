@@ -113,6 +113,7 @@ export default function UserLogin() {
             <input
               type="text"
               name="email"
+              autoComplete="off"
               placeholder="you@example.com"
               value={input.email}
               onChange={handleInputChange}
