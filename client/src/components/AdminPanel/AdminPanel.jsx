@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -16,6 +17,11 @@ import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   return (
     <div
