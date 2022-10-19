@@ -7,6 +7,7 @@ const bookSchema = require("../models/books");
 const billsSchema = require("../models/bills");
 const jwt = require("jsonwebtoken");
 const userRouter = Router();
+const bcrypt = require('bcrypt');
 require("dotenv").config();
 //create user
 // {
@@ -33,13 +34,55 @@ require("dotenv").config();
 
 // // // // // FUNCION GENERAR TOKEN // // // //
 const generateToken = (id) => {
-  console.log("id", id);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
+    expiresIn: "30d"
+  })
+}
 
-userRouter.get("/login", async (req, res) => {
+userRouter.get("/keepLog", protect, async(req, res) => {
+  try{
+    const user = await User.findById(req.user.id)
+    console.log('back', user)
+    const formatUser = {
+      id: user._id,
+      type: user.type,
+      picture: user.image,
+      userName: user.username,
+      state: user.state
+    }
+    res.status(200).json(formatUser)
+  } catch(e){
+    res.status(400).json({msg: "Something went wrong"})
+  }
+})
+
+userRouter.get("/login", async(req, res) => {
+  const { email, password } = req.body;
+  // const salt = await bcrypt.genSalt(10)
+  // const hash = await bcrypt.hash("Admin123", salt)
+  // console.log(hash)
+  try{
+    const user = await User.findOne({ email });
+    let formatUser;
+    if(user && (await bcrypt.compare(password, user.password))){
+      formatUser = {
+        id: user._id,
+        picture: user.picture,
+        userName: user.username,
+        type: user.type,
+        state: user.state,
+        token: generateToken(user._id),
+      };
+    } 
+    console.log(formatUser)
+    res.status(200).json(formatUser)
+  } catch(e) {
+    res.status(400).json({msg : "Email or password invalid"})
+  }
+})
+
+
+userRouter.get("/login_google", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -72,92 +115,80 @@ userRouter.get("/login", async (req, res) => {
       };
       return res.status(200).json(formatUser);
     }
-
-    const user = await User.findOne({ email: userInfo.email });
-    const formatUser = {
-      id: user._id,
-      picture: userInfo.picture,
-      userName: user.username,
-      type: user.type,
-      state: user.state,
-      token: generateToken(user._id),
-    };
-    console.log("res", formatUser);
-    return res.status(200).send(formatUser);
   } catch (e) {
     return res.status(400).json({ msg: e.message });
   }
 });
 
-userRouter.get("/detail", async (req, res) => {
-  try {
-    const accesToken = req.headers.authorization.split(" ")[1];
-    const response = await axios.get(
-      "https://miscusibooks.us.auth0.com/userinfo",
-      {
-        headers: {
-          authorization: `Bearer ${accesToken}`,
-        },
-      }
-    );
-    const userInfo = response.data;
-    if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email });
-      if (!user) {
-        user = await User.create({
-          email: userInfo.email,
-          userName: userInfo.nickname,
-          firstName: userInfo.given_name,
-          lastName: userInfo.family_name,
-          image: userInfo.picture,
-        });
-      }
-      const formatUser = {
-        id: user._id,
-        sub: userInfo.sub,
-        email: user.email,
-        picture: user.image,
-        nickname: userInfo.nickname,
-        userName: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        dni: user.dni,
-        phone: user.phone,
-        address: user.address,
-        birthdate: user.birthdate,
-        type: user.type,
-        state: user.state,
-        loyaltyPoint: user.loyaltyPoint,
-      };
-      return res.send(formatUser);
-    }
-    console.log("entraste con correo");
-    // console.log(userInfo);
-    const user = await User.findOne({ email: userInfo.email });
-    // console.log(user);
-    const formatUser = {
-      id: user._id,
-      sub: userInfo.sub,
-      email: user.email,
-      picture: userInfo.picture,
-      nickname: userInfo.nickname,
-      userName: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      dni: user.dni,
-      phone: user.phone,
-      address: user.address,
-      birthdate: user.birthdate,
-      type: user.type,
-      state: user.state,
-      loyaltyPoint: user.loyaltyPoint,
-    };
-    // console.log(formatUser);
-    res.send(formatUser);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
+// userRouter.get("/detail", async (req, res) => {
+//   try {
+//     const accesToken = req.headers.authorization.split(" ")[1];
+//     const response = await axios.get(
+//       "https://miscusibooks.us.auth0.com/userinfo",
+//       {
+//         headers: {
+//           authorization: `Bearer ${accesToken}`,
+//         },
+//       }
+//     );
+//     const userInfo = response.data;
+//     if (userInfo.sub.includes("google")) {
+//       let user = await User.findOne({ email: userInfo.email });
+//       if (!user) {
+//         user = await User.create({
+//           email: userInfo.email,
+//           userName: userInfo.nickname,
+//           firstName: userInfo.given_name,
+//           lastName: userInfo.family_name,
+//           image: userInfo.picture
+//         });
+//       }
+//       const formatUser = {
+//         id: user._id,
+//         sub: userInfo.sub,
+//         email: user.email,
+//         picture: user.image,
+//         nickname: userInfo.nickname,
+//         userName: user.username,
+//         firstName: user.firstName,
+//         lastName: user.lastName,
+//         dni: user.dni,
+//         phone: user.phone,
+//         address: user.address,
+//         birthdate: user.birthdate,
+//         type: user.type,
+//         state: user.state,
+//         loyaltyPoint: user.loyaltyPoint,
+//       };
+//       return res.send(formatUser);
+//     }
+//     console.log("entraste con correo");
+//     // console.log(userInfo);
+//     const user = await User.findOne({ email: userInfo.email });
+//     // console.log(user);
+//     const formatUser = {
+//       id: user._id,
+//       sub: userInfo.sub,
+//       email: user.email,
+//       picture: userInfo.picture,
+//       nickname: userInfo.nickname,
+//       userName: user.username,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       dni: user.dni,
+//       phone: user.phone,
+//       address: user.address,
+//       birthdate: user.birthdate,
+//       type: user.type,
+//       state: user.state,
+//       loyaltyPoint: user.loyaltyPoint,
+//     };
+//     // console.log(formatUser);
+//     res.send(formatUser);
+//   } catch (e) {
+//     res.send(e.message);
+//   }
+// });
 
 userRouter.post("/", async (req, res) => {
   try {
@@ -226,7 +257,7 @@ userRouter.put("/delete/:id", async (req, res) => {
   try {
     const deletedUser = await User.updateOne(
       { _id: id },
-      { $set: { state: "Inactive" } }
+      { $set: { state: "inactive" } }
     );
     if (!deletedUser.matchedCount) return res.send("User not found!");
     res.send({ msg: "User deleted successfully!" });
@@ -321,7 +352,7 @@ userRouter.put("/cart/:id", async (req, res) => {
 userRouter.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("cart.books");
     res.send(user.cart);
   } catch (error) {
     res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
