@@ -12,6 +12,7 @@ import Category from "./components/Category/Category.jsx";
 import UserDetails from "./components/UserDetails/UserDetails";
 import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
+import AccountCreate from "./components/UserAccountCreate/UserAccountCreate.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
+        <Route path="/signup" component={AccountCreate} />
         <Route path="/create" component={CreateBook} />
         <Switch>
           <Route
