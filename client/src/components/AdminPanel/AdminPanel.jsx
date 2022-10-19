@@ -11,6 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import TestUsers from "./BillsTable/TestTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
@@ -75,7 +76,7 @@ export default function BasicTabs() {
             >
               <Tab label="Users" {...a11yProps(0)} />
               <Tab label="Books" {...a11yProps(1)} />
-              <Tab label="Payments" {...a11yProps(2)} />
+              <Tab label="Test de Users" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -85,7 +86,7 @@ export default function BasicTabs() {
             <BooksTable />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Futures Payments
+            <TestUsers />
           </TabPanel>
         </ThemeProvider>
       ) : (
