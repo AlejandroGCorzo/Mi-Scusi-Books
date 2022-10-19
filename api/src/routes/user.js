@@ -3,6 +3,8 @@ const User = require("../models/user");
 const axios = require("axios");
 const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
+const bookSchema = require("../models/books");
+const billsSchema = require("../models/bills")
 const jwt = require('jsonwebtoken');
 const userRouter = Router();
 require('dotenv').config()
@@ -176,7 +178,7 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.get("/", async (req, res) => {
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find()
     res.send(allUsers);
   } catch (e) {
     res.status(400).send({ error: e });
@@ -297,8 +299,66 @@ userRouter.put("/type/:id", async (req, res) => {
 
 userRouter.put("/cart/:id", async(req,res) => {
   const {id} = req.params;
-  const {libro,cant} = req.body;
+  const {idBooks, amounts} = req.body;
+  try {
+    const books = [] //array de instancias de libros de la base de datos
+    for(const id of idBooks) {
+      console.log('entre');
+      const b = await bookSchema.findById(id) 
+      books.push(b)
+    }
+    console.log(books);
+    const user = await User.findByIdAndUpdate(id, { $set: { cart: {books: books, amounts: amounts}}})
+    res.send(user)
+  } catch (error) {
+    res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
+  }
+})
 
+userRouter.get("/cart/:id", async(req,res) => {
+  const {id} = req.params;
+  try {
+    const user = await User.findById(id);
+    res.send(user.cart)
+  } catch (error) {
+    res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
+  }
+})
+
+userRouter.put("pay/:id", async(req,res) => {
+  const {id} = req.params;
+  try {
+    const user = await User.findById(id);
+  //   {
+  //     "books": [
+  //         "634dfc25b06f8d621df258fb", en lugar de esto tengo la instancia de libro
+  //         "634dfc2967fe5d32ed35ddd2",
+  //         "634dfaaeb06f8d621df258e7"
+  //     ],
+  //     "amounts": [
+  //         4,
+  //         7,
+  //         2
+  //     ]
+  // }
+    const books = []
+    for(const id of user.cart.books){
+      const book = await bookSchema.findById(id)
+      books.push(book)
+    }
+
+    const price = []
+    for(const book of books){
+      price.push(book.price)
+    }
+
+    const total = price.reduce((acc, curr)=> acc + curr,0)
+
+    const date = new Date().toDateString()
+
+  } catch (error) {
+    
+  }
 })
 
 module.exports = userRouter;

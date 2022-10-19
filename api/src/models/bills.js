@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userShema = mongoose.Schema({
+const billsSchema = mongoose.Schema({
 
     books:{
         type:[mongoose.Schema.Types.ObjectId],
@@ -19,7 +19,7 @@ const userShema = mongoose.Schema({
        require:true
     },
     user:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:[mongoose.Schema.Types.ObjectId],
         ref: "User"
     }
     ,
@@ -29,4 +29,4 @@ const userShema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Bills', userShema)
+module.exports = mongoose.model('Bills', billsSchema)
