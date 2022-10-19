@@ -3,7 +3,7 @@ import {
   getAllUsers,
   getLoggedUserData,
   setUserDetails,
-  keepUserLog,
+  keepUserLog, filterDeleteUser,
   setLogin,
 } from "./usersSlice.js";
 
@@ -52,4 +52,11 @@ export const keepLog = (token) => {
 
 export const loging = () => (dispatch) => {
   dispatch(setLogin());
+};
+
+export const setUserDete = (id) => {
+  return async (dispatch) => {
+    let json = await axios.get(`/user/delete/${id}`);
+    return dispatch(filterDeleteUser(id));
+  };
 };
