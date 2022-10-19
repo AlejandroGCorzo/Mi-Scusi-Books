@@ -8,7 +8,6 @@ var errors = {};
 
 function espacios(string) {
   var contador = 0;
-
   for (var i = 0; i < string.length; i++) {
     if (string[i] === " ") contador++;
   }
