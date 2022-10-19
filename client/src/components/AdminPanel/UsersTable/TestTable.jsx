@@ -221,7 +221,8 @@ export default function TestUsers() {
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
-    setSelected()
+    setSelected();
+    setShowEmail();
   };
 
   const { users } = useSelector((state) => state.users);
@@ -311,14 +312,34 @@ export default function TestUsers() {
                       >
                         {u.email}
                       </TableCell>
-                      <TableCell align="left">{u.firstName}</TableCell>
-                      <TableCell align="left">{u.lastName}</TableCell>
+                      <TableCell
+                        align="left"
+                        style={{ "text-transform": "capitalize" }}
+                      >
+                        {u.firstName}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        style={{ "text-transform": "capitalize" }}
+                      >
+                        {u.lastName}
+                      </TableCell>
                       <TableCell align="left">{u.dni}</TableCell>
                       <TableCell align="left">{u.phone}</TableCell>
-                      <TableCell align="left">{u.address.street}</TableCell>
+                      <TableCell
+                        align="left"
+                        style={{ "text-transform": "capitalize" }}
+                      >
+                        {u.address.street}
+                      </TableCell>
                       <TableCell align="left">{u.address.number}</TableCell>
                       <TableCell align="left">{u.address.floor}</TableCell>
-                      <TableCell align="left">{u.type}</TableCell>
+                      <TableCell
+                        align="left"
+                        style={{ "text-transform": "capitalize" }}
+                      >
+                        {u.type}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
