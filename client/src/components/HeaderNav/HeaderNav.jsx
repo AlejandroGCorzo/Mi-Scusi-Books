@@ -192,7 +192,7 @@ export default function HeaderNav(onSearch) {
                   Profile
                 </MenuItem>
               </Link>
-              {isAuthenticated && loggedUser.type === "admin" ? (
+              { loggedUser.type === "admin" ? (
                 <Link
                   to="/admin_panel"
                   style={{ "text-decoration": "none", color: "#5b5b5b" }}
