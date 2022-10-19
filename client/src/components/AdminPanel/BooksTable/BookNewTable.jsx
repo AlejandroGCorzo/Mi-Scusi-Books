@@ -20,7 +20,7 @@ import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
 
-import UsersDelete from "../ConfirmDialog/UsersDelete"; // Cambiar por books
+import BooksDelete from "../ConfirmDialog/BooksDelete.jsx"
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -179,7 +179,7 @@ const EnhancedTableToolbar = (props) => {
             <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
-            <UsersDelete
+            <BooksDelete
               numSelected={numSelected}
               openDialog={openDelete}
               handleClose={handleCloseDelete}
