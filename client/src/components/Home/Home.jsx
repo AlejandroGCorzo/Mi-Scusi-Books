@@ -17,7 +17,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getBooks());
-    dispatch(getUser());
+    // dispatch(getUser());
     dispatch(fetchTopTen());
   }, [dispatch]);
 
