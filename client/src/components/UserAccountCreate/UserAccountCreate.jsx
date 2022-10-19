@@ -73,45 +73,45 @@ const history = useHistory();
 const [errors,setErrors] = useState({});
 
 const [user, setUser] = useState({
-    name: "",
-    lastname: "",
-    username: "",
-    email: "",
-    dni: "",
-    phone: "",
-    address: "",
-    birthday: "",
-    password: "",
-    confirmPassword: ""
-  });
+  name: "",
+  lastname: "",
+  username: "",
+  email: "",
+  dni: "",
+  phone: "",
+  address: "",
+  birthday: "",
+  password: "",
+  confirmPassword: ""
+});
 
 function onInputChange(e) {
-    e.preventDefault();
-    setUser({
+  e.preventDefault();
+  setUser({
+    ...user,
+    [e.target.name]: e.target.value,
+  });
+  setErrors(
+    validate({
       ...user,
       [e.target.name]: e.target.value,
-    });
-    setErrors(
-      validate({
-        ...user,
-        [e.target.name]: e.target.value,
-      })
-    );
+    })
+  );
 }
 
 function onSubmit(e) {
-    e.preventDefault();
-    if(Object.entries(errors).length !== 0){
-      alert("Please complete all fields!");
-    }else{
-    //   dispatch(postUser(User)); Acá hay que agregar para que mande el post
-      alert("Successfully created character, check your email!");
-      setUser({user});
-      history.push("/");
-    } 
-  }
+  e.preventDefault();
+  if(Object.entries(errors).length !== 0){
+    alert("Please complete all fields!");
+  }else{
+  //dispatch(postUser(User)); Acá hay que agregar para que mande el post
+    alert("Successfully created character, check your email!");
+    setUser({user});
+    history.push("/");
+  } 
+}
 
-  return(
+return(
     <div className="userOuterDiv">
 
       <div className="contentCategoryx">
@@ -129,7 +129,7 @@ function onSubmit(e) {
             
           <div className="contentInputDiv">
             <div className="inputDiv">
-              <form onSubmit={onSubmit}>
+              <form >
                 <div className="formInputs">
                   <div className="divFormInputs">
                     {/* Input Name */}
@@ -227,12 +227,10 @@ function onSubmit(e) {
                   <Link to="/login" > 
                     <button className="bottoms">Cancel</button>
                   </Link> 
-                  <button type="submit" className="bottoms">Create</button>
+                  <button type="submit" className="bottoms" onClick={e => onSubmit(e)} >Create</button>
                 </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-
+    </div>)
 }
