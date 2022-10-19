@@ -20,7 +20,7 @@ import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
 
-import UsersDelete from "../ConfirmDialog/UsersDelete";
+import UsersDelete from "../ConfirmDialog/UsersDelete"; // Cambiar por books
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -54,58 +54,58 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "email",
+    id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Email",
+    label: "Name",
   },
   {
-    id: "firstName",
+    id: "author",
     numeric: false,
     disablePadding: true,
-    label: "First Name",
+    label: "Author",
   },
   {
-    id: "lastName",
+    id: "format",
     numeric: false,
     disablePadding: true,
-    label: "Last Name",
+    label: "Format",
   },
   {
-    id: "dni",
+    id: "edition",
     numeric: false,
     disablePadding: true,
-    label: "DNI",
+    label: "Edition",
   },
   {
-    id: "phone",
+    id: "language",
     numeric: false,
     disablePadding: true,
-    label: "Phone",
+    label: "Language",
   },
   {
-    id: "street",
+    id: "ISBN",
     numeric: false,
     disablePadding: true,
-    label: "Street",
+    label: "ISBN",
   },
   {
-    id: "number",
+    id: "rating",
     numeric: false,
     disablePadding: true,
-    label: "Number",
+    label: "Rating",
   },
   {
-    id: "floor",
+    id: "stock",
     numeric: false,
     disablePadding: true,
-    label: "Floor",
+    label: "Stock",
   },
   {
-    id: "type",
+    id: "price",
     numeric: false,
     disablePadding: true,
-    label: "Type",
+    label: "Price",
   },
 ];
 
@@ -176,7 +176,7 @@ const EnhancedTableToolbar = (props) => {
       {numSelected ? (
         <>
           <>
-            <IconButton onClick={handleOpenDelete} title="Delete" key={"block"}>
+            <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
             <UsersDelete
@@ -224,7 +224,7 @@ export default function TestUsers() {
     setSelected()
   };
 
-  const { users } = useSelector((state) => state.users);
+  const { books } = useSelector((state) => state.books);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -232,9 +232,9 @@ export default function TestUsers() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, id, email) => {
+  const handleClick = (event, id, name) => {
     id === selected ? setSelected() : setSelected(id);
-    email === showEmail ? setShowEmail() : setShowEmail(email);
+    name === showEmail ? setShowEmail() : setShowEmail(name);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -250,7 +250,7 @@ export default function TestUsers() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - books.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -273,25 +273,25 @@ export default function TestUsers() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={users.length}
+              rowCount={books.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(books, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((u, index) => {
-                  const isItemSelected = isSelected(u._id);
+                .map((b, index) => {
+                  const isItemSelected = isSelected(b._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, u._id, u.email)}
+                      onClick={(event) => handleClick(event, b._id, b.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={u._id}
+                      key={b._id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -309,16 +309,16 @@ export default function TestUsers() {
                         scope="row"
                         padding="none"
                       >
-                        {u.email}
+                        {b.name}
                       </TableCell>
-                      <TableCell align="left">{u.firstName}</TableCell>
-                      <TableCell align="left">{u.lastName}</TableCell>
-                      <TableCell align="left">{u.dni}</TableCell>
-                      <TableCell align="left">{u.phone}</TableCell>
-                      <TableCell align="left">{u.address.street}</TableCell>
-                      <TableCell align="left">{u.address.number}</TableCell>
-                      <TableCell align="left">{u.address.floor}</TableCell>
-                      <TableCell align="left">{u.type}</TableCell>
+                      <TableCell align="left">{b.author}</TableCell>
+                      <TableCell align="left">{b.format}</TableCell>
+                      <TableCell align="left">{b.edition}</TableCell>
+                      <TableCell align="left">{b.language}</TableCell>
+                      <TableCell align="left">{b.ISBN}</TableCell>
+                      <TableCell align="left">{b.rating}</TableCell>
+                      <TableCell align="left">{b.stock}</TableCell>
+                      <TableCell align="left">{b.price}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -337,7 +337,7 @@ export default function TestUsers() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={users.length}
+          count={books.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
