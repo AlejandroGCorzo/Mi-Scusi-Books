@@ -3,9 +3,9 @@ const User = require("../models/user");
 const axios = require("axios");
 const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
-
+const jwt = require('jsonwebtoken');
 const userRouter = Router();
-
+require('dotenv').config()
 //create user
 // {
 //   sub: 'auth0|63474946bce9a900112d95f3',
@@ -28,8 +28,66 @@ const userRouter = Router();
 //   email: 'juanfledesma18@gmail.com',
 //   email_verified: true
 // }
-userRouter.get("/test", protect, async (req, res) => {
-  // console.log(req);
+
+
+// // // // // FUNCION GENERAR TOKEN // // // // 
+const generateToken = (id) => {
+  console.log('id',id)
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d"
+  })
+}
+
+userRouter.get("/login", async (req, res) => {
+  try{
+    const accesToken = req.headers.authorization.split(" ")[1];
+    const response = await axios.get(
+      "https://miscusibooks.us.auth0.com/userinfo",
+      {
+        headers: {
+          authorization: `Bearer ${accesToken}`,
+        },
+      }
+    );
+    const userInfo = response.data;
+    if(userInfo.sub.includes("google")){
+      let user = await User.findOne({ email: userInfo.email});
+      if(!user){
+        user = await User.create({
+          email: userInfo.email,
+          userName: userInfo.nickname,
+          firstName: userInfo.given_name,
+          lastName: userInfo.family_name,
+          image: userInfo.picture
+        });
+      }
+      const formatUser = {
+        id: user._id,
+        type: user.type,
+        picture: user.image,
+        userName: user.username,
+        state: user.state,
+        token: generateToken(user._id)
+      }
+      return res.status(200).json(formatUser)
+    } 
+    
+      const user = await User.findOne({ email: userInfo.email });
+      const formatUser = {
+        id: user._id,
+        picture: userInfo.picture,
+        userName: user.username,
+        type: user.type,
+        state: user.state,
+        token: generateToken(user._id)
+      }
+      console.log('res', formatUser)
+      return res.status(200).send(formatUser)
+    
+  } catch(e){
+   
+    return res.status(400).json({msg: e.message})
+  }
 });
 
 userRouter.get("/detail", async (req, res) => {
@@ -43,10 +101,9 @@ userRouter.get("/detail", async (req, res) => {
         },
       }
     );
-    console.log(accesToken)
     const userInfo = response.data;
     if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email }).populate("favorites");
+      let user = await User.findOne({ email: userInfo.email });
       if (!user) {
         user = await User.create({
           email: userInfo.email,
@@ -126,16 +183,26 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
-userRouter.get("/:id", async (req, res) => {
+userRouter.get("/:id", protect,async (req, res) => {
   const { id } = req.params;
-  if (!id) return res.status(400).send({ msg: "Id not found!" });
-  try {
-    const searchedUser = await User.findById(id);
-    if (!searchedUser) return res.status(400).send({ msg: "User not found!" });
-    res.send(searchedUser);
-  } catch (e) {
-    res.status(400).send({ error: e });
+  if(!req.user){
+    return res.status(400).send("Not authorized")
   }
+  console.log('user id', req.user.id)
+  console.log('query id', id)
+  if(id === req.user.id){
+    try {
+      const searchedUser = await User.findById(id).select("-password -type -cart -tenant -client_id -connection -transaction").populate("favorites");
+      if (!searchedUser) return res.status(400).send({ msg: "User not found!" });
+      res.send(searchedUser);
+    } catch (e) {
+      res.status(400).send({ error: e });
+    }
+    if (!id) return res.status(400).send({ msg: "Id not found!" });
+  } else {
+    res.status(400).json({msg: "Not authorized"})
+  }
+  
 });
 
 userRouter.delete("/:id", async (req, res) => {
