@@ -10,6 +10,7 @@ export default function UserLogin() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.users);
+  const [rememberMe, setRememberMe] = useState(false);
   // const { users } = useSelector((state) => state.users);
   // const usersEmail = users.map((u) => u.email);
   const emptyInput = {
@@ -21,8 +22,12 @@ export default function UserLogin() {
 
   useEffect(() => {
     // dispatch(getUser());
-    if (window.localStorage.getItem("token")) history.push("/");
-  }, [dispatch, loggedUser.id]);
+    if (
+      window.localStorage.getItem("token") ||
+      window.sessionStorage.getItem("token")
+    )
+      history.push("/");
+  }, [dispatch]);
 
   const {
     loginWithPopup,
@@ -70,7 +75,8 @@ export default function UserLogin() {
       .post("/user/login", input)
       .then((el) => {
         console.log(el.data);
-        window.localStorage.setItem("token", el.data.token);
+        if (rememberMe) window.localStorage.setItem("token", el.data.token);
+        else window.sessionStorage.setItem("token", el.data.token);
         dispatch(loging());
         history.push("/");
       })
@@ -153,7 +159,10 @@ export default function UserLogin() {
           </div>
           <div>
             <label>
-              <input type="checkbox" id="cb1" value="cb" />
+              <input
+                type="checkbox"
+                onChange={() => setRememberMe(!rememberMe)}
+              />
               Remember me
             </label>
             <Link
@@ -174,7 +183,7 @@ export default function UserLogin() {
           <Link to={"/signup"}>
             <button>SIGN UP</button>
           </Link>
-          <ul>
+          {/* <ul>
             <li>
               <button onClick={loginWithPopup}>Login with Popup</button>
             </li>
@@ -195,7 +204,7 @@ export default function UserLogin() {
             <pre style={{ textAlign: "start" }}>
               {JSON.stringify(user, null, 2)}
             </pre>
-          )}
+          )} */}
         </div>
       </section>
     </div>

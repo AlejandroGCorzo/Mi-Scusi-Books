@@ -42,7 +42,9 @@ export default function HeaderNav(onSearch) {
   const { loggedUser, login } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
-  const accessToken = window.localStorage.getItem("token");
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
   const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
 
@@ -63,10 +65,11 @@ export default function HeaderNav(onSearch) {
 
   const handleLoggin = async (e) => {
     e.preventDefault();
-    await loginWithPopup();
-    const user = dispatch(getLoggedUser(await callProtectedApi()));
-    console.log(user);
-    window.localStorage.setItem("token", user.payload.token);
+    history.push("/login")
+    // await loginWithPopup();
+    // const user = dispatch(getLoggedUser(await callProtectedApi()));
+    // console.log(user);
+    // window.localStorage.setItem("token", user.payload.token);
     // console.log(user.payload);
     // if (user.payload.id) history.push("/user_details");
   };
@@ -76,6 +79,7 @@ export default function HeaderNav(onSearch) {
     logout();
     dispatch(setEmptyLoggedUser());
     window.localStorage.removeItem("token");
+    window.sessionStorage.removeItem("token");
   };
 
   useEffect(() => {
