@@ -5,7 +5,7 @@ import SearchBar from "../SearchBar/SearchBar.jsx";
 import "./HeaderNav.css";
 import userIcon from "../../sourceImg/user.svg";
 import userShopping from "../../sourceImg/shopping-cart.svg";
-import { getLoggedUser } from "../../redux/StoreUsers/usersActions.js";
+import { getLoggedUser, keepLog } from "../../redux/StoreUsers/usersActions.js";
 import { setEmptyLoggedUser } from "../../redux/StoreUsers/usersSlice.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -40,7 +40,7 @@ export default function HeaderNav(onSearch) {
   const { loggedUser } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const accessToken = window.localStorage.getItem('token');
   const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
 
@@ -76,7 +76,11 @@ export default function HeaderNav(onSearch) {
     window.localStorage.removeItem('token')
   };
 
-  
+  useEffect(() => {
+    if(accessToken){
+      dispatch(keepLog(accessToken))
+    }
+  }, [dispatch])  
 
   return (
     <div className="header">
@@ -89,7 +93,7 @@ export default function HeaderNav(onSearch) {
       <SearchBar onSearch={onSearch} />
 
       <div>
-        {isAuthenticated ? (
+        {isAuthenticated || loggedUser.id ? (
           <div className="iconsContainer">
             {/* <span onClick={handleLogOut}>Logout</span>
             <Link to="/userDetails">

@@ -22,10 +22,13 @@ export const usersSlice = createSlice({
     }, 
     clearUserDetail: (state) => {
       state.profile = {};
+    },
+    keepUserLog: (state, action) => {
+      state.loggedUser = action.payload;
     }
   },
 });
 
-export const { getAllUsers, getLoggedUserData, setEmptyLoggedUser, setUserDetails,clearUserDetail } =
+export const { getAllUsers, getLoggedUserData, setEmptyLoggedUser, setUserDetails,clearUserDetail, keepUserLog } =
   usersSlice.actions;
 export default usersSlice.reducer;

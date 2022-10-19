@@ -35,9 +35,9 @@ require("dotenv").config();
 const generateToken = (id) => {
   console.log("id", id);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-};
+    expiresIn: "30d"
+  })
+}
 
 userRouter.get("/login", async (req, res) => {
   try {
@@ -109,7 +109,7 @@ userRouter.get("/detail", async (req, res) => {
           userName: userInfo.nickname,
           firstName: userInfo.given_name,
           lastName: userInfo.family_name,
-          image: userInfo.picture,
+          image: userInfo.picture
         });
       }
       const formatUser = {
@@ -226,7 +226,7 @@ userRouter.put("/delete/:id", async (req, res) => {
   try {
     const deletedUser = await User.updateOne(
       { _id: id },
-      { $set: { state: "Inactive" } }
+      { $set: { state: "inactive" } }
     );
     if (!deletedUser.matchedCount) return res.send("User not found!");
     res.send({ msg: "User deleted successfully!" });
