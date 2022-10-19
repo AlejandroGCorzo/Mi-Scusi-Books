@@ -21,7 +21,7 @@ export default function UserLogin() {
 
   useEffect(() => {
     // dispatch(getUser());
-    // if (loggedUser.id) history.push("/");
+    if (window.localStorage.getItem("token")) history.push("/");
   }, [dispatch, loggedUser.id]);
 
   const {
@@ -112,102 +112,92 @@ export default function UserLogin() {
 
   return (
     <div>
-      {window.localStorage.getItem("token") ? (
-        <span>USUARIO YA LOGUEADO</span>
-      ) : (
-        <>
-          <section>
-            <div>
-              <img
-                src="http://cdn.onlinewebfonts.com/svg/img_568656.png"
-                width="110px"
-                height="110px"
-              />
-              <h1>LOGIN</h1>
-            </div>
-            <form onSubmit={handleLogIn}>
-              <div>
-                <label>Email: </label>
-                <input
-                  type="text"
-                  name="email"
-                  autoComplete="off"
-                  placeholder="you@example.com"
-                  value={input.email}
-                  onChange={handleInputChange}
-                  required
-                />
-                {/* <span>
+      <section>
+        <div>
+          <img
+            src="http://cdn.onlinewebfonts.com/svg/img_568656.png"
+            width="110px"
+            height="110px"
+          />
+          <h1>LOGIN</h1>
+        </div>
+        <form onSubmit={handleLogIn}>
+          <div>
+            <label>Email: </label>
+            <input
+              type="text"
+              name="email"
+              autoComplete="off"
+              placeholder="you@example.com"
+              value={input.email}
+              onChange={handleInputChange}
+              required
+            />
+            {/* <span>
               {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
             </span> */}
-              </div>
-              <div>
-                <label>Password: </label>
-                <input
-                  type="password"
-                  name="password"
-                  minLength={8}
-                  maxLength={16}
-                  placeholder="123456Aa"
-                  value={input.password}
-                  onChange={handleInputChange}
-                  required
-                />
-                <span>
-                  {errors && <p style={{ color: "red" }}>{errors}</p>}
-                </span>
-              </div>
-              <div>
-                <label>
-                  <input type="checkbox" id="cb1" value="cb" />
-                  Remember me
-                </label>
-                <Link
-                  to={"/login/password_reset"}
-                  style={{ textDecoration: "none" }}
-                >
-                  <span>Forgot password?</span>
-                </Link>
-              </div>
-              <button disabled={false} type="submit">
-                LOGIN
-              </button>
-              {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
-              {/* falta configurar el disabled */}
-            </form>
-            <div>
-              <h3>Don't have an account?</h3>
-              <Link to={"/signup"}>
-                <button>SIGN UP</button>
-              </Link>
-              <ul>
-                <li>
-                  <button onClick={loginWithPopup}>Login with Popup</button>
-                </li>
-                <li>
-                  <button onClick={loginWithRedirect}>
-                    Login with Redirect
-                  </button>
-                </li>
-                <li>
-                  <button onClick={logout}>Logout</button>
-                </li>
-              </ul>
-              <ul>
-                <li>
-                  <button onClick={callProtectedApi}>Call Protect Api</button>
-                </li>
-              </ul>
-              <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
-              {isAuthenticated && (
-                <pre style={{ textAlign: "start" }}>
-                  {JSON.stringify(user, null, 2)}
-                </pre>
-              )}
-            </div>
-          </section>
-        </>
-      )}
+          </div>
+          <div>
+            <label>Password: </label>
+            <input
+              type="password"
+              name="password"
+              minLength={8}
+              maxLength={16}
+              placeholder="123456Aa"
+              value={input.password}
+              onChange={handleInputChange}
+              required
+            />
+            <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" id="cb1" value="cb" />
+              Remember me
+            </label>
+            <Link
+              to={"/login/password_reset"}
+              style={{ textDecoration: "none" }}
+            >
+              <span>Forgot password?</span>
+            </Link>
+          </div>
+          <button disabled={false} type="submit">
+            LOGIN
+          </button>
+          {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
+          {/* falta configurar el disabled */}
+        </form>
+        <div>
+          <h3>Don't have an account?</h3>
+          <Link to={"/signup"}>
+            <button>SIGN UP</button>
+          </Link>
+          <ul>
+            <li>
+              <button onClick={loginWithPopup}>Login with Popup</button>
+            </li>
+            <li>
+              <button onClick={loginWithRedirect}>Login with Redirect</button>
+            </li>
+            <li>
+              <button onClick={logout}>Logout</button>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <button onClick={callProtectedApi}>Call Protect Api</button>
+            </li>
+          </ul>
+          <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
+          {isAuthenticated && (
+            <pre style={{ textAlign: "start" }}>
+              {JSON.stringify(user, null, 2)}
+            </pre>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
