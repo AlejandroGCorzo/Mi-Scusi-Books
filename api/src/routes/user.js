@@ -4,10 +4,10 @@ const axios = require("axios");
 const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
 const bookSchema = require("../models/books");
-const billsSchema = require("../models/bills")
-const jwt = require('jsonwebtoken');
+const billsSchema = require("../models/bills");
+const jwt = require("jsonwebtoken");
 const userRouter = Router();
-require('dotenv').config()
+require("dotenv").config();
 //create user
 // {
 //   sub: 'auth0|63474946bce9a900112d95f3',
@@ -31,17 +31,16 @@ require('dotenv').config()
 //   email_verified: true
 // }
 
-
-// // // // // FUNCION GENERAR TOKEN // // // // 
+// // // // // FUNCION GENERAR TOKEN // // // //
 const generateToken = (id) => {
-  console.log('id',id)
+  console.log("id", id);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d"
-  })
-}
+    expiresIn: "30d",
+  });
+};
 
 userRouter.get("/login", async (req, res) => {
-  try{
+  try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
       "https://miscusibooks.us.auth0.com/userinfo",
@@ -52,15 +51,15 @@ userRouter.get("/login", async (req, res) => {
       }
     );
     const userInfo = response.data;
-    if(userInfo.sub.includes("google")){
-      let user = await User.findOne({ email: userInfo.email});
-      if(!user){
+    if (userInfo.sub.includes("google")) {
+      let user = await User.findOne({ email: userInfo.email });
+      if (!user) {
         user = await User.create({
           email: userInfo.email,
           userName: userInfo.nickname,
           firstName: userInfo.given_name,
           lastName: userInfo.family_name,
-          image: userInfo.picture
+          image: userInfo.picture,
         });
       }
       const formatUser = {
@@ -69,26 +68,24 @@ userRouter.get("/login", async (req, res) => {
         picture: user.image,
         userName: user.username,
         state: user.state,
-        token: generateToken(user._id)
-      }
-      return res.status(200).json(formatUser)
-    } 
-    
-      const user = await User.findOne({ email: userInfo.email });
-      const formatUser = {
-        id: user._id,
-        picture: userInfo.picture,
-        userName: user.username,
-        type: user.type,
-        state: user.state,
-        token: generateToken(user._id)
-      }
-      console.log('res', formatUser)
-      return res.status(200).send(formatUser)
-    
-  } catch(e){
-   
-    return res.status(400).json({msg: e.message})
+        token: generateToken(user._id),
+      };
+      return res.status(200).json(formatUser);
+    }
+
+    const user = await User.findOne({ email: userInfo.email });
+    const formatUser = {
+      id: user._id,
+      picture: userInfo.picture,
+      userName: user.username,
+      type: user.type,
+      state: user.state,
+      token: generateToken(user._id),
+    };
+    console.log("res", formatUser);
+    return res.status(200).send(formatUser);
+  } catch (e) {
+    return res.status(400).json({ msg: e.message });
   }
 });
 
@@ -112,7 +109,7 @@ userRouter.get("/detail", async (req, res) => {
           userName: userInfo.nickname,
           firstName: userInfo.given_name,
           lastName: userInfo.family_name,
-          image: userInfo.picture
+          image: userInfo.picture,
         });
       }
       const formatUser = {
@@ -178,33 +175,37 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.get("/", async (req, res) => {
   try {
-    const allUsers = await User.find()
+    const allUsers = await User.find();
     res.send(allUsers);
   } catch (e) {
     res.status(400).send({ error: e });
   }
 });
 
-userRouter.get("/:id", protect,async (req, res) => {
+userRouter.get("/:id", protect, async (req, res) => {
   const { id } = req.params;
-  if(!req.user){
-    return res.status(400).send("Not authorized")
+  if (!req.user) {
+    return res.status(400).send("Not authorized");
   }
-  console.log('user id', req.user.id)
-  console.log('query id', id)
-  if(id === req.user.id){
+  console.log("user id", req.user.id);
+  console.log("query id", id);
+  if (id === req.user.id) {
     try {
-      const searchedUser = await User.findById(id).select("-password -type -cart -tenant -client_id -connection -transaction").populate("favorites");
-      if (!searchedUser) return res.status(400).send({ msg: "User not found!" });
+      const searchedUser = await User.findById(id)
+        .select(
+          "-password -type -cart -tenant -client_id -connection -transaction"
+        )
+        .populate("favorites");
+      if (!searchedUser)
+        return res.status(400).send({ msg: "User not found!" });
       res.send(searchedUser);
     } catch (e) {
       res.status(400).send({ error: e });
     }
     if (!id) return res.status(400).send({ msg: "Id not found!" });
   } else {
-    res.status(400).json({msg: "Not authorized"})
+    res.status(400).json({ msg: "Not authorized" });
   }
-  
 });
 
 userRouter.delete("/:id", async (req, res) => {
@@ -297,68 +298,92 @@ userRouter.put("/type/:id", async (req, res) => {
   }
 });
 
-userRouter.put("/cart/:id", async(req,res) => {
-  const {id} = req.params;
-  const {idBooks, amounts} = req.body;
+userRouter.put("/cart/:id", async (req, res) => {
+  const { id } = req.params;
+  const { idBooks, amounts } = req.body;
   try {
-    const books = [] //array de instancias de libros de la base de datos
-    for(const id of idBooks) {
-      console.log('entre');
-      const b = await bookSchema.findById(id) 
-      books.push(b)
+    const books = []; //array de instancias de libros de la base de datos
+    for (const id of idBooks) {
+      console.log("entre");
+      const b = await bookSchema.findById(id);
+      books.push(b);
     }
     console.log(books);
-    const user = await User.findByIdAndUpdate(id, { $set: { cart: {books: books, amounts: amounts}}})
-    res.send(user)
+    const user = await User.findByIdAndUpdate(id, {
+      $set: { cart: { books: books, amounts: amounts } },
+    });
+    res.send(user);
   } catch (error) {
     res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
   }
-})
+});
 
-userRouter.get("/cart/:id", async(req,res) => {
-  const {id} = req.params;
+userRouter.get("/cart/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const user = await User.findById(id);
-    res.send(user.cart)
+    res.send(user.cart);
   } catch (error) {
     res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
   }
-})
+});
 
-userRouter.put("pay/:id", async(req,res) => {
-  const {id} = req.params;
+userRouter.put("/pay/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const user = await User.findById(id);
-  //   {
-  //     "books": [
-  //         "634dfc25b06f8d621df258fb", en lugar de esto tengo la instancia de libro
-  //         "634dfc2967fe5d32ed35ddd2",
-  //         "634dfaaeb06f8d621df258e7"
-  //     ],
-  //     "amounts": [
-  //         4,
-  //         7,
-  //         2
-  //     ]
-  // }
-    const books = []
-    for(const id of user.cart.books){
-      const book = await bookSchema.findById(id)
-      books.push(book)
+
+    if (!user.cart.books.length || !user.cart.amounts.length)
+      return res.status(400).send({ msg: "dangerous car" });
+
+    const books = [];
+    for (const id of user.cart.books) {
+      const book = await bookSchema.findById(id);
+      books.push(book);
     }
-
-    const price = []
-    for(const book of books){
-      price.push(book.price)
+    const price = [];
+    for (const book of books) {
+      price.push(book.price);
     }
+    const total = price.reduce((acc, curr) => acc + curr, 0);
+    const date = new Date().toDateString();
 
-    const total = price.reduce((acc, curr)=> acc + curr,0)
+    const bill = await billsSchema.create({
+      books: books,
+      amountBooks: user.cart.amounts,
+      price: price,
+      total: total,
+      date: date,
+      user: user._id,
+    });
 
-    const date = new Date().toDateString()
+    await transporter.sendMail({
+      from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Thanks for shopping!",
+      html: `
+      <h2>Here is your bill! Dont demand us!</h2>
+      <br>
+      <p>Date: ${date}</p>
+      <p>Books: ${books.map((b) => b.name)}</p>
+      <p>Amounts: ${user.cart.amounts}</p>
+      <p>Price p/u: ${price}</p>
+      <p>Total: ${total}</p>
+      <br>
+      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `,
+    });
 
+    await User.findByIdAndUpdate(id, {
+      $set: { cart: { books: [], amounts: [] } },
+    });
+
+    res.send(bill);
   } catch (error) {
-    
+    res.status(400).send({ msg: error, otherMsg: "algo fallo en pay" });
   }
-})
+});
 
 module.exports = userRouter;
