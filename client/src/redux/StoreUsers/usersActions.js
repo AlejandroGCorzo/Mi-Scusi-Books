@@ -54,7 +54,7 @@ export const loging = () => (dispatch) => {
   dispatch(setLogin());
 };
 
-export const setUserDete = (id) => {
+export const setUserDelete = (id) => {
   return async (dispatch) => {
     let json = await axios.put(`/user/delete/${id}`);
     return dispatch(filterDeleteUser(id));
