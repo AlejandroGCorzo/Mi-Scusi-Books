@@ -65,4 +65,32 @@ const createOrder = async (req, res) => {
   }
 };
 
-module.exports = { createOrder };
+const captureOrder = async (req, res) => {
+  const { token } = req.query;
+
+  try {
+    const response = await axios.post(
+      `${process.env.PAYPAL_API_URL}/v2/checkout/orders/${token}/capture`,
+      {},
+      {
+        auth: {
+          username: process.env.CLIENT_ID,
+          password: process.env.CLIENT_SECRET,
+        },
+      }
+    );
+
+    console.log(response.data);
+
+    res.redirect("http://localhost:3000/order-successfully");
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const cancelOrder = (req, res) => {
+  res.redirect("http://localhost:3000/");
+};
+
+module.exports = { createOrder, captureOrder, cancelOrder };
