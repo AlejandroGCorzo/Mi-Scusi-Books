@@ -10,6 +10,7 @@ const category = require("./category");
 const review = require("./review");
 const books = require("./books");
 const bills = require("./bills");
+const paypalRouter = require("./paypal");
 
 const { application } = require("express");
 //middleware
@@ -46,5 +47,6 @@ router.use("/category", category);
 router.use("/review", review);
 router.use("/books", books);
 router.use("/bills", bills);
+router.use("/payment", paypalRouter);
 
 module.exports = router;
