@@ -7,7 +7,7 @@ const bookSchema = require("../models/books");
 const billsSchema = require("../models/bills");
 const jwt = require("jsonwebtoken");
 const userRouter = Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 //create user
 
@@ -37,36 +37,36 @@ require("dotenv").config();
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d"
-  })
-}
+    expiresIn: "30d",
+  });
+};
 
-userRouter.get("/keepLog", protect, async(req, res) => {
-  try{
-    const user = await User.findById(req.user.id)
-    console.log('back', user)
+userRouter.get("/keepLog", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    // console.log("back", user);
     const formatUser = {
       id: user._id,
       type: user.type,
       picture: user.image,
       userName: user.username,
-      state: user.state
-    }
-    res.status(200).json(formatUser)
-  } catch(e){
-    res.status(400).json({msg: "Something went wrong"})
+      state: user.state,
+    };
+    res.status(200).json(formatUser);
+  } catch (e) {
+    res.status(400).json({ msg: "Something went wrong" });
   }
-})
+});
 
-userRouter.post("/login", async(req, res) => {
+userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   // const salt = await bcrypt.genSalt(10)
   // const hash = await bcrypt.hash("Admin123", salt)
   // console.log(hash)
-  try{
+  try {
     const user = await User.findOne({ email });
     let formatUser;
-    if(user && (await bcrypt.compare(password, user.password))){
+    if (user && (await bcrypt.compare(password, user.password))) {
       formatUser = {
         id: user._id,
         picture: user.picture,
@@ -75,16 +75,19 @@ userRouter.post("/login", async(req, res) => {
         state: user.state,
         token: generateToken(user._id),
       };
-    } 
-    console.log(formatUser)
-    res.status(200).json(formatUser)
-  } catch(e) {
-    res.status(400).json({msg : "Email or password invalid"})
+    }
+    // console.log(user);
+    if (!formatUser)
+      return res
+        .status(400)
+        .json({ msg: "Your password or email is incorrect." });
+    res.status(200).json(formatUser);
+  } catch (e) {
+    res.status(400).json({ msg: "Your password or email is incorrect." });
   }
-})
+});
 
-
-userRouter.get("/login_google", async (req, res) => {
+userRouter.get("/login", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -208,7 +211,7 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.get("/", async (req, res) => {
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().where({ state: { $ne: "inactive" } });
     res.send(allUsers);
   } catch (e) {
     res.status(400).send({ error: e });

@@ -12,6 +12,7 @@ import Category from "./components/Category/Category.jsx";
 import UserDetails from "./components/UserDetails/UserDetails";
 import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
+import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx"
 import AccountCreate from "./components/UserAccountCreate/UserAccountCreate.jsx";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/user_details/:id" component={UserDetails} />
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
+        <Route path="/order-successfully" component={PaymentAcepted} />
       </React.Fragment>
     </div>
   );

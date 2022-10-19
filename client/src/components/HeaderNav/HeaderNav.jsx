@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar.jsx";
@@ -37,10 +37,14 @@ export default function HeaderNav(onSearch) {
   };
   /////////////////////////////////////////////
 
-  const { loggedUser } = useSelector((state) => state.users);
+  // const [reload, setReload] = useState(false);
+
+  const { loggedUser, login } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
-  const accessToken = window.localStorage.getItem('token');
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
   const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
 
@@ -52,19 +56,20 @@ export default function HeaderNav(onSearch) {
           authorization: `Bearer ${token}`,
         },
       });
-      
+
       return response.data;
     } catch (error) {
-      console.log('error', error.message);
+      console.log("error", error.message);
     }
   };
 
   const handleLoggin = async (e) => {
     e.preventDefault();
-    await loginWithPopup();
-    const user = dispatch(getLoggedUser(await callProtectedApi()));
-    console.log(user)
-    window.localStorage.setItem('token', user.payload.token)
+    history.push("/login")
+    // await loginWithPopup();
+    // const user = dispatch(getLoggedUser(await callProtectedApi()));
+    // console.log(user);
+    // window.localStorage.setItem("token", user.payload.token);
     // console.log(user.payload);
     // if (user.payload.id) history.push("/user_details");
   };
@@ -73,14 +78,15 @@ export default function HeaderNav(onSearch) {
     e.preventDefault();
     logout();
     dispatch(setEmptyLoggedUser());
-    window.localStorage.removeItem('token')
+    window.localStorage.removeItem("token");
+    window.sessionStorage.removeItem("token");
   };
 
   useEffect(() => {
-    if(accessToken){
-      dispatch(keepLog(accessToken))
+    if (accessToken) {
+      dispatch(keepLog(accessToken));
     }
-  }, [dispatch])  
+  }, [dispatch, login]);
 
   return (
     <div className="header">
@@ -174,7 +180,7 @@ export default function HeaderNav(onSearch) {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <Link
-                to= {`/user_details/${loggedUser.id}`}
+                to={`/user_details/${loggedUser.id}`}
                 style={{ "text-decoration": "none", color: "#5b5b5b" }}
               >
                 <MenuItem>

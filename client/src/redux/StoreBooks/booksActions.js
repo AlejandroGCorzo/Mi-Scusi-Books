@@ -8,7 +8,8 @@ import {
   setEmptyBooksFilter,
   setFilters,
   setOrderBooks,
-  currentPage
+  currentPage,
+  filterDeleteBook
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -73,3 +74,10 @@ export const setCurrentPage = (value) => (dispatch) => {
 //     .then((resolve) => history.push(`/book_details/${resolve.data[0]._id}`))
 //     .catch(() => alert("Libro no encontrado"));
 // };
+
+export const setBookDelete = (id) => {
+  return async (dispatch) => {
+    let json = await axios.put(`/books/delete/${id}`);
+    return dispatch(filterDeleteBook(id));
+  };
+};

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,11 +12,17 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import TestUsers from "./BillsTable/TestTable.jsx";
+import TestUsers from "./UsersTable/TestTable.jsx";
+import BookNewTable from "./BooksTable/BookNewTable.jsx"
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   return (
     <div
@@ -74,19 +81,23 @@ export default function BasicTabs() {
               indicatorColor="primary"
               centered
             >
-              <Tab label="Users" {...a11yProps(0)} />
-              <Tab label="Books" {...a11yProps(1)} />
-              <Tab label="Test de Users" {...a11yProps(2)} />
+              <Tab label="Users New Table" {...a11yProps(0)} />
+              <Tab label="Books New Table" {...a11yProps(1)} />
+              <Tab label="Books Old Table" {...a11yProps(2)} />
+              <Tab label="Users Old Table" {...a11yProps(3)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <UsersTable />
+            <TestUsers />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <BooksTable />
+            <BookNewTable />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TestUsers />
+            <BooksTable />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <UsersTable />
           </TabPanel>
         </ThemeProvider>
       ) : (
