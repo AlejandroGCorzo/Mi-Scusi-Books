@@ -84,7 +84,10 @@ export const booksSlice = createSlice({
     },
     currentPage: (state, action) => {
       state.page = action.payload
-    }
+    },
+    filterDeleteBook: (state, action) =>{
+      state.books = state.books.filter(b=> b._id !== action.payload)
+    },
   },
 });
 
@@ -100,7 +103,8 @@ export const {
   getBooksFiltered,
   setFilters,
   setOrderBooks,
-  currentPage
+  currentPage,
+  filterDeleteBook
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

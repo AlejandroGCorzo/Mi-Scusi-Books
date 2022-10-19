@@ -87,7 +87,7 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get("/login_google", async (req, res) => {
+userRouter.get("/login", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -211,7 +211,7 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.get("/", async (req, res) => {
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().where({ state: { $ne: "inactive" } });
     res.send(allUsers);
   } catch (e) {
     res.status(400).send({ error: e });
