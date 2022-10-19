@@ -44,9 +44,18 @@ export const keepLog = (token) => {
   }
 }
 
+<<<<<<< HEAD
 export const setUserDelete = (id) => {
   return async (dispatch) => {
     let json = await axios.put(`/user/delete/${id}`);
     return dispatch(filterDeleteUser(id));
   };
 };
+=======
+export const setUserDete = (id) => {
+  return async (dispatch) => {
+    let json = await axios.get(`/user/delete/${id}`);
+    return dispatch(filterDeleteUser(id));
+  };
+};
+>>>>>>> 57b85a6 (create action delete)
