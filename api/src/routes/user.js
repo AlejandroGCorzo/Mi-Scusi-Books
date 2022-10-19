@@ -7,6 +7,7 @@ const bookSchema = require("../models/books");
 const billsSchema = require("../models/bills");
 const jwt = require("jsonwebtoken");
 const userRouter = Router();
+const bcrypt = require('bcrypt');
 require("dotenv").config();
 //create user
 // {
@@ -33,7 +34,6 @@ require("dotenv").config();
 
 // // // // // FUNCION GENERAR TOKEN // // // //
 const generateToken = (id) => {
-  console.log("id", id);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d"
   })
@@ -56,7 +56,33 @@ userRouter.get("/keepLog", protect, async(req, res) => {
   }
 })
 
-userRouter.get("/login", async (req, res) => {
+userRouter.get("/login", async(req, res) => {
+  const { email, password } = req.body;
+  // const salt = await bcrypt.genSalt(10)
+  // const hash = await bcrypt.hash("Admin123", salt)
+  // console.log(hash)
+  try{
+    const user = await User.findOne({ email });
+    let formatUser;
+    if(user && (await bcrypt.compare(password, user.password))){
+      formatUser = {
+        id: user._id,
+        picture: user.picture,
+        userName: user.username,
+        type: user.type,
+        state: user.state,
+        token: generateToken(user._id),
+      };
+    } 
+    console.log(formatUser)
+    res.status(200).json(formatUser)
+  } catch(e) {
+    res.status(400).json({msg : "Email or password invalid"})
+  }
+})
+
+
+userRouter.get("/login_google", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -89,18 +115,6 @@ userRouter.get("/login", async (req, res) => {
       };
       return res.status(200).json(formatUser);
     }
-
-    const user = await User.findOne({ email: userInfo.email });
-    const formatUser = {
-      id: user._id,
-      picture: userInfo.picture,
-      userName: user.username,
-      type: user.type,
-      state: user.state,
-      token: generateToken(user._id),
-    };
-    console.log("res", formatUser);
-    return res.status(200).send(formatUser);
   } catch (e) {
     return res.status(400).json({ msg: e.message });
   }
@@ -338,7 +352,7 @@ userRouter.put("/cart/:id", async (req, res) => {
 userRouter.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("cart.books");
     res.send(user.cart);
   } catch (error) {
     res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
