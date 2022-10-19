@@ -44,7 +44,22 @@ export const keepLog = (token) => {
   }
 }
 
-export const setUserDelete = (id) => {
+export const keepLog = (token) => {
+  return async(dispatch) => {
+   try{
+    const user = await axios.get("/user/keepLog", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+    return dispatch(keepUserLog(user.data))
+   } catch(e){
+    console.log(e)
+   }
+  }
+}
+
+export const setUserDete = (id) => {
   return async (dispatch) => {
     let json = await axios.put(`/user/delete/${id}`);
     return dispatch(filterDeleteUser(id));
