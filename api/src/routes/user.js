@@ -211,7 +211,7 @@ userRouter.post("/", async (req, res) => {
 
 userRouter.get("/", async (req, res) => {
   try {
-    const allUsers = await User.find();
+    const allUsers = await User.find().where({ state: { $ne: "inactive" } });
     res.send(allUsers);
   } catch (e) {
     res.status(400).send({ error: e });

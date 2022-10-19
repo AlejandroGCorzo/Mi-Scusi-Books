@@ -169,8 +169,9 @@ const EnhancedTableToolbar = (props) => {
           color="inherit"
           variant="subtitle1"
           component="div"
+          style={{'text-transform': 'capitalize'}}
         >
-          {numSelected ? `User: ${numSelected}` : null}
+          {numSelected ? `Book: ${numSelected}` : null}
         </Typography>
       }
       {numSelected ? (
@@ -221,7 +222,8 @@ export default function TestUsers() {
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
-    setSelected()
+    setSelected();
+    setShowEmail()
   };
 
   const { books } = useSelector((state) => state.books);
@@ -293,6 +295,7 @@ export default function TestUsers() {
                       tabIndex={-1}
                       key={b._id}
                       selected={isItemSelected}
+                      style={{'text-transform': 'capitalize'}}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
