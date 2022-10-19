@@ -5,7 +5,7 @@ import SearchBar from "../SearchBar/SearchBar.jsx";
 import "./HeaderNav.css";
 import userIcon from "../../sourceImg/user.svg";
 import userShopping from "../../sourceImg/shopping-cart.svg";
-import { getUserDetail } from "../../redux/StoreUsers/usersActions.js";
+import { getLoggedUser } from "../../redux/StoreUsers/usersActions.js";
 import { setEmptyLoggedUser } from "../../redux/StoreUsers/usersSlice.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -47,31 +47,36 @@ export default function HeaderNav(onSearch) {
   const callProtectedApi = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get("http://localhost:9000/user/detail", {
+      const response = await axios.get("/user/login", {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-      // console.log(response.data);
+      
       return response.data;
     } catch (error) {
-      console.log(error.message);
+      console.log('error', error.message);
     }
   };
 
   const handleLoggin = async (e) => {
     e.preventDefault();
     await loginWithPopup();
-    const user = dispatch(getUserDetail(await callProtectedApi()));
+    const user = dispatch(getLoggedUser(await callProtectedApi()));
+    console.log(user)
+    window.localStorage.setItem('token', user.payload.token)
     // console.log(user.payload);
-    if (user.payload.id) history.push("/user_details");
+    // if (user.payload.id) history.push("/user_details");
   };
 
   const handleLogOut = (e) => {
     e.preventDefault();
     logout();
     dispatch(setEmptyLoggedUser());
+    window.localStorage.removeItem('token')
   };
+
+  
 
   return (
     <div className="header">
@@ -165,7 +170,7 @@ export default function HeaderNav(onSearch) {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <Link
-                to="/user_details"
+                to= {`/user_details/${loggedUser.id}`}
                 style={{ "text-decoration": "none", color: "#5b5b5b" }}
               >
                 <MenuItem>

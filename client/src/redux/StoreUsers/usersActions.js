@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAllUsers, getLoggedUserData } from "./usersSlice.js";
+import { getAllUsers, getLoggedUserData, setUserDetails } from "./usersSlice.js";
 
 export const getUser = () => {
   return async (dispatch) => {
@@ -8,8 +8,25 @@ export const getUser = () => {
   };
 };
 
-export const getUserDetail = (data) => {
+export const getLoggedUser = (data) => {
   return (dispatch) => {
     return dispatch(getLoggedUserData(data));
   };
 };
+
+export const getUserDetails = (id, token) => {
+  return async (dispatch) => {
+    try{
+      const details = await axios.get(`/user/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      return dispatch(setUserDetails(details.data))
+    } catch (e){
+      return dispatch(setUserDetails(e.response.data))
+    }
+  }
+}
+
+

@@ -33,7 +33,7 @@ function App() {
           <Route path="/books" component={Books} />
         </Switch>
         <Route path="/categories" component={Category} />
-        <Route path="/user_details" component={UserDetails} />
+        <Route path="/user_details/:id" component={UserDetails} />
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
       </React.Fragment>
