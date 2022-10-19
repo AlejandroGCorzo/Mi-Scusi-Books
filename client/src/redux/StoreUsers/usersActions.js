@@ -1,5 +1,11 @@
 import axios from "axios";
-import { getAllUsers, getLoggedUserData, setUserDetails, keepUserLog } from "./usersSlice.js";
+import {
+  getAllUsers,
+  getLoggedUserData,
+  setUserDetails,
+  keepUserLog,
+  setLogin,
+} from "./usersSlice.js";
 
 export const getUser = () => {
   return async (dispatch) => {
@@ -16,30 +22,34 @@ export const getLoggedUser = (data) => {
 
 export const getUserDetails = (id, token) => {
   return async (dispatch) => {
-    try{
+    try {
       const details = await axios.get(`/user/${id}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
-      })
-      return dispatch(setUserDetails(details.data))
-    } catch (e){
-      return dispatch(setUserDetails(e.response.data))
+      });
+      return dispatch(setUserDetails(details.data));
+    } catch (e) {
+      return dispatch(setUserDetails(e.response.data));
     }
-  }
-}
+  };
+};
 
 export const keepLog = (token) => {
-  return async(dispatch) => {
-   try{
-    const user = await axios.get("/user/keepLog", {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    })
-    return dispatch(keepUserLog(user.data))
-   } catch(e){
-    console.log(e)
-   }
-  }
-}
+  return async (dispatch) => {
+    try {
+      const user = await axios.get("/user/keepLog", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return dispatch(keepUserLog(user.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const loging = () => (dispatch) => {
+  dispatch(setLogin());
+};
