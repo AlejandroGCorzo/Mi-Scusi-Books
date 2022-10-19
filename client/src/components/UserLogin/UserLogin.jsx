@@ -4,21 +4,22 @@ import { useHistory, Link } from "react-router-dom";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+// const bcrypt = require("bcrypt");
 
 export default function UserLogin() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.users);
-  const usersEmail = users.map((u) => u.email);
-  const [input, setInput] = useState({
+  // const { users } = useSelector((state) => state.users);
+  // const usersEmail = users.map((u) => u.email);
+  const emptyInput = {
     email: "",
     password: "",
-    disabled: true,
-  });
+  };
+  const [input, setInput] = useState(emptyInput);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    dispatch(getUser());
+    // dispatch(getUser());
   }, [dispatch]);
 
   const {
@@ -50,51 +51,56 @@ export default function UserLogin() {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(
-      validate({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
+    // setErrors(
+    //   validate({
+    //     ...input,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
   }
 
-  function handleSubmit(e) {
+  async function handleLogIn(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-    history.push("/");
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(input.password, salt);
+    axios
+      .get("/user/login", input)
+      .then((el) => {
+        console.log(el.data);
+      })
+      .catch((e) => console.log(e));
+    setInput(emptyInput);
+    // history.push("/");
   }
 
-  function validate(input) {
-    let errors = {};
+  // function validate(input) {
+  //   let errors = {};
 
-    if (!input.email) {
-      errors.email = "Email is required";
-    } else if (input.email.length < 6) {
-      errors.email = "Email must contain at least 6 characters";
-    } else if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(input.email)) {
-      errors.email = "Email can contain only letters, numbers, -, _, or .";
-    } else if (!/^\S+@\S+\.\S+$/.test(input.email)) {
-      errors.email = "Email is invalid";
-    } else if (!usersEmail.includes(input.email)) {
-      errors.email = "That email doesn't exist";
-    }
+  //   if (!input.email) {
+  //     errors.email = "Email is required";
+  //   } else if (input.email.length < 6) {
+  //     errors.email = "Email must contain at least 6 characters";
+  //   } else if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(input.email)) {
+  //     errors.email = "Email can contain only letters, numbers, -, _, or .";
+  //   } else if (!/^\S+@\S+\.\S+$/.test(input.email)) {
+  //     errors.email = "Email is invalid";
+  //   } else if (!usersEmail.includes(input.email)) {
+  //     errors.email = "That email doesn't exist";
+  //   }
 
-    if (!input.password) {
-      errors.password = "Password is required";
-    } else if (input.password.length < 8 || input.password.length >= 16) {
-      errors.password =
-        "Password must be min 8 characters and max 16 characters";
-    } else if (
-      !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(input.password)
-    ) {
-      errors.password =
-        "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
-    }
-    return errors;
-  }
+  //   if (!input.password) {
+  //     errors.password = "Password is required";
+  //   } else if (input.password.length < 8 || input.password.length >= 16) {
+  //     errors.password =
+  //       "Password must be min 8 characters and max 16 characters";
+  //   } else if (
+  //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,16}$/.test(input.password)
+  //   ) {
+  //     errors.password =
+  //       "Password must contain at least one of the following: uppercase letters, lowercase letters, numbers and symbols";
+  //   }
+  //   return errors;
+  // }
 
   return (
     <div>
@@ -107,7 +113,7 @@ export default function UserLogin() {
           />
           <h1>LOGIN</h1>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogIn}>
           <div>
             <label>Email: </label>
             <input
@@ -153,7 +159,10 @@ export default function UserLogin() {
               <span>Forgot password?</span>
             </Link>
           </div>
-          <input disabled={input.disabled} type="submit" value="LOGIN" />
+          <button disabled={false} type="submit">
+            LOGIN
+          </button>
+          {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
           {/* falta configurar el disabled */}
         </form>
         <div>
