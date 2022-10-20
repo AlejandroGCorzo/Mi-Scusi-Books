@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
+import Button from "@mui/material/Button";
 
 import UsersDelete from "../ConfirmDialog/UsersDelete";
 
@@ -163,29 +164,35 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected ? `User: ${numSelected}` : null}
-        </Typography>
-      }
       {numSelected ? (
         <>
-          <>
-            <IconButton onClick={handleOpenDelete} title="Delete">
-              <DeleteIcon />
-            </IconButton>
-            <UsersDelete
-              numSelected={numSelected}
-              openDialog={openDelete}
-              handleClose={handleCloseDelete}
-              id={id}
-            />
-          </>
+          <div>
+            <Button
+              onClick={alert("hola")}
+              variant="outlined"
+              style={{ "min-width": "122px" }}
+            >
+              Make admin
+            </Button>
+          </div>
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected ? `User: ${numSelected}` : null}
+          </Typography>
+          <IconButton onClick={handleOpenDelete} title="Delete">
+            <DeleteIcon />
+          </IconButton>
+          <UsersDelete
+            numSelected={numSelected}
+            openDialog={openDelete}
+            handleClose={handleCloseDelete}
+            id={id}
+          />
+
           {/* <>
             <IconButton onClick={handleOpenBlock} title="Block">
               <BlockIcon />
