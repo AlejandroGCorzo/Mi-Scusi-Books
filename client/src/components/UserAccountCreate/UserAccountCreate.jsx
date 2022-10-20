@@ -5,7 +5,7 @@ import "./UserAccountCreate.css";
 import imgLibritos from "../../sourceImg/imgLibritos.png";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
-
+import EmailIcon from '@mui/icons-material/Email';
 var errors = {};
 
 function espacios(string) {
@@ -17,8 +17,8 @@ function espacios(string) {
   return contador;
 }
 
-function validar() {
-  const input = document.getElementById("name");
+function validar(valor) {
+  const input = document.getElementById(valor);
   if (!input.checkValidity()) return false;
   return true;
 }
@@ -28,10 +28,10 @@ function validate(user) {
   errors.lastName = "A lastName is required";
   errors.username = "A username is required";
   errors.email = "A email is required";
-  errors.dni = "A dni is required";
-  errors.phone = "A phone is required";
-  errors.address = "A address is required";
-  errors.birthdate = "A birthdate is required";
+  // errors.dni = "A dni is required";
+  // errors.phone = "A phone is required";
+  // errors.address = "A address is required";
+  // errors.birthdate = "A birthdate is required";
   errors.password = "A password is required";
   errors.confirmPassword = "Confirm password";
 
@@ -39,18 +39,15 @@ function validate(user) {
   if (user.lastName) delete errors.lastName;
   if (user.username) delete errors.username;
   if (user.email) delete errors.email;
-  if (user.dni) delete errors.dni;
-  if (user.phone) delete errors.phone;
-  if (user.address) delete errors.address;
-  if (user.birthdate) delete errors.birthdate;
+  // if (user.dni) delete errors.dni;
+  // if (user.phone) delete errors.phone;
+  // if (user.address) delete errors.address;
+  // if (user.birthdate) delete errors.birthdate;
   if (user.password) delete errors.password;
   if (user.confirmPassword) delete errors.confirmPassword;
 
-  if (user.dni.toString().length > 8) errors.dni = "Invalid dni";
-  if (user.phone.toString().length > 10) errors.phone = "Invalid phone";
-
-  if (validar() === false) errors.name = "Invalid character";
-  if (validar() === false) errors.lastName = "Invalid character";
+  if (validar('name') === false) errors.name = "Invalid character";
+  if (validar('lastName') === false) errors.lastName = "Invalid character";
 
   if (!user.email) errors.email = "Email is required";
   if (user.email.length < 6)
@@ -63,18 +60,6 @@ function validate(user) {
   // } else if (!usersEmail.includes(user.email)) {
   //   errors.email = "That email doesn't exist";
   // }
-
-  if (validar() === false) errors.name = "Invalid character";
-  if (validar() === false) errors.lastName = "Invalid character";
-
-  if (!user.email) errors.email = "Email is required";
-  if (user.email.length < 6)
-    errors.email = "Email must contain at least 6 characters";
-  if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(user.email))
-    errors.email = "Email can contain only letters, numbers, -, _, or .";
-  if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Email is invalid";
-  if (user.password !== user.confirmPassword)
-    errors.confirmPassword = "Different password ";
 
   if (espacios(user.name) > 2 || user.name[0] === " ")
     errors.name = "Max 2 spaces";
@@ -138,28 +123,17 @@ export default function AccountCreate() {
       // history.push("/");
     }
   }
-
+  console.log(errors);
   return (
-    <div className="userOuterDiv">
-      <div className="contentCategoryx">
-        <div className="imagenLibros">
-          <img src={imgLibritos} alt="Books" />
-        </div>
-      </div>
+    <div className="userAccountContainer">
 
-      <div className="contentCategoryx">
-        <form className="contentCategory">
-          <div className="titleFormx">
-            <p>Create Account</p>
-          </div>
-
-          <div className="contentInputDiv">
-            <div className="inputDiv">
-              <form>
+        <div className="containerAccount">
+        <div className="sign-in-containerAccount">
+          <form onSubmit={onSubmit}>
+            <h2>Create Account</h2>
                 <div className="formInputs">
-                  <div className="divFormInputs">
+
                     {/* Input Name */}
-                    <span> Name </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -174,11 +148,8 @@ export default function AccountCreate() {
                       maxLength="20"
                     />
                     {errors.name && <p className="error">{errors.name}</p>}
-                  </div>
 
-                  <div className="divFormInputs">
                     {/* Input lastName */}
-                    <span> lastName </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -195,12 +166,11 @@ export default function AccountCreate() {
                     {errors.lastName && (
                       <p className="error">{errors.lastName}</p>
                     )}
-                  </div>
+
                 </div>
                 <div className="formInputs">
-                  <div className="divFormInputs">
+
                     {/* Input Username */}
-                    <span> Username </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -217,11 +187,8 @@ export default function AccountCreate() {
                     {errors.username && (
                       <p className="error">{errors.username}</p>
                     )}
-                  </div>
-
-                  <div className="divFormInputs">
+                    
                     {/* Input E-mail */}
-                    <span> E-mail </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -234,8 +201,9 @@ export default function AccountCreate() {
                       placeholder="E-mail..."
                       maxLength="40"
                     />
-                    {errors.email && <p className="error">{errors.email}</p>}
-                  </div>
+
+                  {errors.email && <p className="error">{errors.email}</p>}
+
                 </div>
                 <div className="formInputs">
                   {/* <div className="divFormInputs">
@@ -317,9 +285,8 @@ export default function AccountCreate() {
                 </div>
 
                 <div className="formInputs">
-                  <div className="divFormInputs">
+
                     {/* Input Password */}
-                    <span> Password </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -336,11 +303,9 @@ export default function AccountCreate() {
                     {errors.password && (
                       <p className="error">{errors.password}</p>
                     )}
-                  </div>
 
-                  <div className="divFormInputs">
+
                     {/* Input Confirm Password */}
-                    <span> Confirm Password </span>
                     <input
                       autoComplete="off"
                       onChange={onInputChange}
@@ -357,28 +322,24 @@ export default function AccountCreate() {
                     {errors.confirmPassword && (
                       <p className="error">{errors.confirmPassword}</p>
                     )}
-                  </div>
                 </div>
+
+                <div className="formInputsx">
+                  <Link to="/login">
+                    <button className="bottoms">Cancel</button>
+                  </Link>
+                  <button
+                    type="submit"
+                    className="bottoms"
+                  >
+                    Create
+                  </button>
+                </div>
+
               </form>
             </div>
           </div>
-          <div className="formBackx">
-            {/* Boton crear */}
-            <div className="formInputs">
-              <Link to="/login">
-                <button className="bottoms">Cancel</button>
-              </Link>
-              <button
-                type="submit"
-                className="bottoms"
-                onClick={(e) => onSubmit(e)}
-              >
-                Create
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
-    </div>
+
   );
 }

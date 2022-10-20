@@ -4,6 +4,8 @@ import { useHistory, Link } from "react-router-dom";
 import { loging } from "../../redux/StoreUsers/usersActions.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import "./UserLogin.css";
+import GoogleIcon from '@mui/icons-material/Google';
 // const bcrypt = require("bcrypt");
 
 export default function UserLogin() {
@@ -116,97 +118,110 @@ export default function UserLogin() {
   //   return errors;
   // }
 
-  return (
-    <div>
-      <section>
-        <div>
-          <img
-            src="http://cdn.onlinewebfonts.com/svg/img_568656.png"
-            width="110px"
-            height="110px"
-          />
-          <h1>LOGIN</h1>
-        </div>
-        <form onSubmit={handleLogIn}>
-          <div>
-            <label>Email: </label>
+return (
+    <div className="userLoginDiv">
+      <div className="container" id="container">
+        <div className="form-container sign-in-container">
+          <form onSubmit={handleLogIn}>
+            <h1>Sign in</h1>
+            <div className="social-container">
+              <p className="social"><GoogleIcon/> </p>
+            </div>
+            <span>or use your account</span>
             <input
-              type="text"
+              type="email"
               name="email"
               autoComplete="off"
-              placeholder="you@example.com"
+              placeholder="E-mail"
               value={input.email}
               onChange={handleInputChange}
               required
             />
             {/* <span>
               {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
-            </span> */}
-          </div>
-          <div>
-            <label>Password: </label>
+              </span> */}
             <input
               type="password"
               name="password"
-              minLength={8}
+              minLength={6}
               maxLength={16}
-              placeholder="123456Aa"
+              placeholder="Password"
               value={input.password}
               onChange={handleInputChange}
               required
             />
             <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span>
-          </div>
-          <div>
-            <label>
+            <div className="labelsito">
+              <div>
               <input
                 type="checkbox"
                 onChange={() => setRememberMe(!rememberMe)}
-              />
-              Remember me
-            </label>
+                />
+              </div>
+              <div className="remember">
+                <a>Remember me</a>
+              </div>
+            </div>
             <Link
               to={"/login/password_reset"}
               style={{ textDecoration: "none" }}
-            >
-              <span>Forgot password?</span>
-            </Link>
-          </div>
-          <button disabled={false} type="submit">
-            LOGIN
-          </button>
-          {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
-          {/* falta configurar el disabled */}
-        </form>
-        <div>
-          <h3>Don't have an account?</h3>
-          <Link to={"/signup"}>
-            <button>SIGN UP</button>
-          </Link>
-          {/* <ul>
-            <li>
-              <button onClick={loginWithPopup}>Login with Popup</button>
-            </li>
-            <li>
-              <button onClick={loginWithRedirect}>Login with Redirect</button>
-            </li>
-            <li>
-              <button onClick={logout}>Logout</button>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <button onClick={callProtectedApi}>Call Protect Api</button>
-            </li>
-          </ul>
-          <h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
-          {isAuthenticated && (
-            <pre style={{ textAlign: "start" }}>
-              {JSON.stringify(user, null, 2)}
-            </pre>
-          )} */}
+            > 
+            <a>Forgot your password?</a>
+            </Link>   
+
+            <button disabled={false} type="submit">Login</button>
+                      {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
+                {/* falta configurar el disabled */}
+
+            <div className="accountMobile">
+              <Link to={"/signup"}>
+                  <a>Don't have an account?!</a>
+              </Link>
+            </div>
+
+          </form>
         </div>
-      </section>
+              
+        <div className="overlay-container">
+          <div className="overlay">
+            <div className="overlay-panel overlay-right">
+              <h1>Don't have an account?!</h1>
+              <p>Enter your personal information and join us</p>
+              <Link to={"/signup"}>
+                <button className="ghost" id="signUp">Sign Up</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+    <div>
+
+{/* <ul>
+  <li>
+    <button onClick={loginWithPopup}>Login with Popup</button>
+  </li>
+  <li>
+    <button onClick={loginWithRedirect}>Login with Redirect</button>
+  </li>
+  <li>
+    <button onClick={logout}>Logout</button>
+  </li>
+</ul>
+<ul>
+  <li>
+    <button onClick={callProtectedApi}>Call Protect Api</button>
+  </li>
+</ul>
+<h3>User is {isAuthenticated ? "Logged in" : "Not logged in"}</h3>
+{isAuthenticated && (
+  <pre style={{ textAlign: "start" }}>
+    {JSON.stringify(user, null, 2)}
+  </pre>
+)} */}
+</div>
+
     </div>
   );
 }
