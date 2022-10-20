@@ -198,7 +198,7 @@ userRouter.get("/login_google", async (req, res) => {
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {
   const {
-    firstName,
+    name,
     lastName,
     username,
     password,
@@ -234,7 +234,7 @@ userRouter.post("/signup", async (req, res) => {
 
     const newUser = {
       username,
-      firstName,
+      firstName: name,
       lastName,
       password: hashPassword,
       email,
