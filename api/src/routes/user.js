@@ -87,17 +87,6 @@ userRouter.post("/login", async (req, res) => {
 });
 
 //Loguear cuenta de google -> publica
-
-/* 
-google {
-  email: '',
-  email_verified: true,
-  picture: '',
-  given_name: 'Alejandro Gabriel',
-  family_name: 'Corzo',
-}
-*/
-
 userRouter.get("/login_google", async (req, res) => {
   
   const accesToken = req.headers.authorization.split(" ")[1];
