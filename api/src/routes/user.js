@@ -88,28 +88,34 @@ userRouter.post("/login", async (req, res) => {
 
 //Loguear cuenta de google -> publica
 userRouter.get("/login_google", async (req, res) => {
+  
+  const accesToken = req.headers.authorization.split(" ")[1];
+  const tokenDecode = jwt.decode(accesToken);
+
   try {
-    const accesToken = req.headers.authorization.split(" ")[1];
-    const response = await axios.get(
-      "https://miscusibooks.us.auth0.com/userinfo",
-      {
-        headers: {
-          authorization: `Bearer ${accesToken}`,
-        },
-      }
-    );
-    const userInfo = response.data;
-    if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email });
-      if (!user) {
-        user = await User.create({
-          email: userInfo.email,
-          userName: userInfo.nickname,
-          firstName: userInfo.given_name,
-          lastName: userInfo.family_name,
-          image: userInfo.picture,
-        });
-      }
+    let user = await User.findOne({ email: tokenDecode.email });
+    if (!user) {
+      const newUser = {
+        firstName: tokenDecode.given_name,
+        lastName: tokenDecode.family_name,
+        email: tokenDecode.email,
+        state: "active",
+        image: tokenDecode.picture,
+      };
+      console.log('newUser')
+      const googleUser = await User.create(newUser);
+      const formatUser = {
+        id: googleUser._id,
+        type: googleUser.type,
+        picture: googleUser.image,
+        userName: googleUser.username,
+        state: googleUser.state,
+        token: generateToken(googleUser._id),
+      };
+
+      return res.status(200).json(formatUser)
+    } else {
+      console.log('existe')
       const formatUser = {
         id: user._id,
         type: user.type,
@@ -118,12 +124,52 @@ userRouter.get("/login_google", async (req, res) => {
         state: user.state,
         token: generateToken(user._id),
       };
+
       return res.status(200).json(formatUser);
     }
   } catch (e) {
-    return res.status(400).json({ msg: e.message });
+    return res.status(400).json({msg: "Something went wrong, try again later"})
   }
 });
+
+//VIEJO, ESPERAR PARA BORRARLO
+// userRouter.get("/login_google", async (req, res) => {
+//   try {
+//     const accesToken = req.headers.authorization.split(" ")[1];
+//     const response = await axios.get(
+//       "https://miscusibooks.us.auth0.com/userinfo",
+//       {
+//         headers: {
+//           authorization: `Bearer ${accesToken}`,
+//         },
+//       }
+//     );
+//     const userInfo = response.data;
+//     if (userInfo.sub.includes("google")) {
+//       let user = await User.findOne({ email: userInfo.email });
+//       if (!user) {
+//         user = await User.create({
+//           email: userInfo.email,
+//           userName: userInfo.nickname,
+//           firstName: userInfo.given_name,
+//           lastName: userInfo.family_name,
+//           image: userInfo.picture,
+//         });
+//       }
+//       const formatUser = {
+//         id: user._id,
+//         type: user.type,
+//         picture: user.image,
+//         userName: user.username,
+//         state: user.state,
+//         token: generateToken(user._id),
+//       };
+//       return res.status(200).json(formatUser);
+//     }
+//   } catch (e) {
+//     return res.status(400).json({ msg: e.message });
+//   }
+// });
 
 // userRouter.get("/detail", async (req, res) => {
 //   try {
@@ -311,11 +357,9 @@ userRouter.get("/:id", protect, async (req, res) => {
   console.log("query id", id);
   if (id === req.user.id) {
     try {
-      const searchedUser = await User.findById(id)
-        .select(
-          "-password -type -cart -tenant -client_id -connection -transaction"
-        )
-        .populate("favorites");
+      const searchedUser = await User.findById(id).select(
+        "-password -type -cart -tenant -client_id -connection -transaction"
+      );
       if (!searchedUser)
         return res.status(400).send({ msg: "User not found!" });
       res.send(searchedUser);
@@ -380,7 +424,7 @@ userRouter.put("/update/:id", protect, async (req, res) => {
 userRouter.put("/sanction/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { state } = req.body;
-  
+
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
@@ -445,7 +489,6 @@ userRouter.put("/cart/:id", protect, async (req, res) => {
     try {
       const books = []; //array de instancias de libros de la base de datos
       for (const id of idBooks) {
-        console.log("entre");
         const b = await bookSchema.findById(id);
         books.push(b);
       }
@@ -535,11 +578,56 @@ userRouter.put("/pay/:id", async (req, res) => {
 });
 
 //Añade libros favoritos al usuario -> protegido, solo el usuario logueado puede agregar favoritos
-userRouter.put("/favorites", protect, async (req, res) => {
-  const { id, books } = req.body;
+//Recibe el id de un usuario y el id de un libro, lo agrega a sus favoritos si es que aun no existe
+userRouter.put("/favorites/:idUser", protect, async (req, res) => {
+  const { idUser } = req.params;
+  const { idBook } = req.body;
+  if (!idUser || !idBook) return res.status(400).send({ msg: "Missing data!" });
   try {
-    const user = await User.findById(user);
-    const newFavorites = user.favorites.concat(books);
+    const user = await User.findById(idUser);
+    if (user.favorites.some((b) => b.id === idBook))
+      return res.send({ msg: "Already exist!" });
+    let book = await bookSchema.findById(idBook);
+    book = {
+      id: book.id,
+      name: book.name,
+      price: book.price,
+    };
+    const newFavorites = [...user.favorites, book];
+    await user.updateOne({ favorites: newFavorites });
+    res.send(newFavorites);
+  } catch (error) {
+    res
+      .status(400)
+      .send({ msg: error, otherMsg: "algo fallo en put a favorite" });
+  }
+});
+
+userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
+  const { id } = req.params;
+  const { idBook } = req.body;
+  if (!id || !idBook) return res.status(400).send("Missing data!");
+  try {
+    const user = await User.findById(id);
+    console.log(user);
+    const newFavorites = user.favorites.filter((b) => b.id !== idBook);
+    await user.updateOne({ favorites: newFavorites });
+    res.send(newFavorites);
+  } catch (error) {
+    res
+      .status(400)
+      .send({ msg: error, otherMsg: "algo fallo en put a favorite/delete" });
+  }
+});
+
+userRouter.get("/favorites/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!id) return res.status(400).send("Missing data!");
+    const user = await User.findById(id);
+    console.log(user);
+    if (!user) return res.status(404).send("User not found!");
+    return res.send(user.favorites);
   } catch (error) {
     res
       .status(400)

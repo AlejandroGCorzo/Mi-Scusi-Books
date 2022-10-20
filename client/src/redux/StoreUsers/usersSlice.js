@@ -30,8 +30,16 @@ export const usersSlice = createSlice({
     setLogin: (state) => {
       state.login = !state.login;
     },
-    filterDeleteUser: (state, action) =>{
-      state.users = state.users.filter(u=> u._id !== action.payload)
+    filterDeleteUser: (state, action) => {
+      state.users =
+        action.payload.state === "limited"
+          ? state.users.filter((u) => u.type !== "inactive")
+          : state.users.filter((u) => u._id !== action.payload.id);
+    },
+    setChangeRol: (state, action) => {
+      const newAdmin = state.users.find(u=> u._id === action.payload.id)
+      newAdmin.type = action.payload.type
+      state.users = [...state.users.filter(e=>e._id !== newAdmin._id), newAdmin ]
     },
   },
 });
@@ -44,6 +52,7 @@ export const {
   clearUserDetail,
   keepUserLog,
   setLogin,
-  filterDeleteUser
+  filterDeleteUser,
+  setChangeRol
 } = usersSlice.actions;
 export default usersSlice.reducer;

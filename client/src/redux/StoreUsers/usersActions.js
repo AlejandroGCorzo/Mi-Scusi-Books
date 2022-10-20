@@ -6,6 +6,7 @@ import {
   keepUserLog,
   filterDeleteUser,
   setLogin,
+  setChangeRol
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -62,10 +63,21 @@ export const setUserDelete = (id, state, token) => {
         authorization: `Bearer ${token}`,
       },
     });
-    return dispatch(filterDeleteUser(id));
+    return dispatch(filterDeleteUser({id,state}));
   };
 };
 
 export const loging = () => (dispatch) => {
   dispatch(setLogin());
+};
+
+export const setUserChangeRol = (id, type, token) => {
+  return async (dispatch) => {
+    let json = await axios.put(`/user/type/${id}`, {type}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(setChangeRol({id,type}));
+  };
 };
