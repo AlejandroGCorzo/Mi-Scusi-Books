@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { loging } from "../../redux/StoreUsers/usersActions.js";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
+import { GoogleLogin } from "@react-oauth/google";
+
 import axios from "axios";
 import "./UserLogin.css";
-import GoogleIcon from "@mui/icons-material/Google";
+// import GoogleIcon from "@mui/icons-material/Google";
 // const bcrypt = require("bcrypt");
 
 export default function UserLogin() {
@@ -31,19 +33,19 @@ export default function UserLogin() {
       history.push("/");
   }, [dispatch]);
 
-  const {
-    loginWithPopup,
-    loginWithRedirect,
-    logout,
-    user,
-    isAuthenticated,
-    getAccessTokenSilently,
-  } = useAuth0();
+  // const {
+  //   loginWithPopup,
+  //   loginWithRedirect,
+  //   logout,
+  //   user,
+  //   isAuthenticated,
+  //   getAccessTokenSilently,
+  // } = useAuth0();
 
   const callProtectedApi = async () => {
     try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get("http://localhost:9000/user/protected", {
+      const token = {};
+      const response = await axios.get("/user/protected", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -124,12 +126,12 @@ export default function UserLogin() {
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
             <h1>Login</h1>
-            <div className="social-container">
+            {/* <div className="social-container">
               <p className="social">
                 <GoogleIcon />
               </p>
             </div>
-            <span>or use your account</span>
+            <span>or use your account</span> */}
             <input
               type="email"
               name="email"
@@ -174,6 +176,15 @@ export default function UserLogin() {
             <button disabled={false} type="submit">
               Login
             </button>
+            <GoogleLogin
+              // buttonText="Sign in with Google"
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
             {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
             {/* falta configurar el disabled */}
 
