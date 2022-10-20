@@ -5,7 +5,7 @@ import "./UserAccountCreate.css";
 import imgLibritos from "../../sourceImg/imgLibritos.png";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 var errors = {};
 
 function espacios(string) {
@@ -46,8 +46,8 @@ function validate(user) {
   if (user.password) delete errors.password;
   if (user.confirmPassword) delete errors.confirmPassword;
 
-  if (validar('name') === false) errors.name = "Invalid character";
-  if (validar('lastName') === false) errors.lastName = "Invalid character";
+  if (validar("name") === false) errors.name = "Invalid character";
+  if (validar("lastName") === false) errors.lastName = "Invalid character";
 
   if (!user.email) errors.email = "Email is required";
   if (user.email.length < 6)
@@ -126,87 +126,78 @@ export default function AccountCreate() {
   console.log(errors);
   return (
     <div className="userAccountContainer">
-
-        <div className="containerAccount">
+      <div className="containerAccount">
         <div className="sign-in-containerAccount">
           <form onSubmit={onSubmit}>
             <h2>Create Account</h2>
-                <div className="formInputs">
+            <div className="formInputs">
+              {/* Input Name */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="name"
+                name="name"
+                type="text"
+                value={user.name}
+                className="input"
+                required
+                placeholder="Name..."
+                pattern="^[A-Za-z\s]+$"
+                maxLength="20"
+              />
+              {errors.name && <p className="error">{errors.name}</p>}
 
-                    {/* Input Name */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={user.name}
-                      className="input"
-                      required
-                      placeholder="Name..."
-                      pattern="^[A-Za-z\s]+$"
-                      maxLength="20"
-                    />
-                    {errors.name && <p className="error">{errors.name}</p>}
+              {/* Input lastName */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="lastName"
+                name="lastName"
+                type="text"
+                value={user.lastName}
+                className="input"
+                required
+                placeholder="lastName..."
+                pattern="^[A-Za-z\s]+$"
+                maxLength="20"
+              />
+              {errors.lastName && <p className="error">{errors.lastName}</p>}
+            </div>
+            <div className="formInputs">
+              {/* Input Username */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="username"
+                name="username"
+                type="text"
+                value={user.username}
+                className="input"
+                required
+                placeholder="Username..."
+                pattern="^[A-Za-z\s]+$"
+                maxLength="20"
+              />
+              {errors.username && <p className="error">{errors.username}</p>}
 
-                    {/* Input lastName */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="lastName"
-                      name="lastName"
-                      type="text"
-                      value={user.lastName}
-                      className="input"
-                      required
-                      placeholder="lastName..."
-                      pattern="^[A-Za-z\s]+$"
-                      maxLength="20"
-                    />
-                    {errors.lastName && (
-                      <p className="error">{errors.lastName}</p>
-                    )}
+              {/* Input E-mail */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="email"
+                name="email"
+                type="text"
+                value={user.email}
+                className="input"
+                required
+                placeholder="E-mail..."
+                maxLength="40"
+              />
 
-                </div>
-                <div className="formInputs">
-
-                    {/* Input Username */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="username"
-                      name="username"
-                      type="text"
-                      value={user.username}
-                      className="input"
-                      required
-                      placeholder="Username..."
-                      pattern="^[A-Za-z\s]+$"
-                      maxLength="20"
-                    />
-                    {errors.username && (
-                      <p className="error">{errors.username}</p>
-                    )}
-                    
-                    {/* Input E-mail */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="email"
-                      name="email"
-                      type="text"
-                      value={user.email}
-                      className="input"
-                      required
-                      placeholder="E-mail..."
-                      maxLength="40"
-                    />
-
-                  {errors.email && <p className="error">{errors.email}</p>}
-
-                </div>
-                <div className="formInputs">
-                  {/* <div className="divFormInputs">
+              {errors.email && <p className="error">{errors.email}</p>}
+            </div>
+            <div className="formInputs">
+              {/* <div className="divFormInputs">
                     <span> DNI </span>
                     <input
                       autoComplete="off"
@@ -224,7 +215,7 @@ export default function AccountCreate() {
                     {errors.dni && <p className="error">{errors.dni}</p>}
                   </div> */}
 
-                  {/* <div className="divFormInputs">
+              {/* <div className="divFormInputs">
                     <span> Phone </span>
                     <input
                       autoComplete="off"
@@ -241,10 +232,10 @@ export default function AccountCreate() {
                     />
                     {errors.phone && <p className="error">{errors.phone}</p>}
                   </div> */}
-                </div>
+            </div>
 
-                <div className="formInputs">
-                  {/* <div className="divFormInputs">
+            <div className="formInputs">
+              {/* <div className="divFormInputs">
                     <span> Address </span>
                     <input
                       autoComplete="off"
@@ -263,7 +254,7 @@ export default function AccountCreate() {
                     )}
                   </div> */}
 
-                  {/* <div className="divFormInputs">
+              {/* <div className="divFormInputs">
                     <span> birthdate </span>
                     <input
                       autoComplete="off"
@@ -282,64 +273,55 @@ export default function AccountCreate() {
                       <p className="error">{errors.birthdate}</p>
                     )}
                   </div> */}
-                </div>
-
-                <div className="formInputs">
-
-                    {/* Input Password */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="password"
-                      name="password"
-                      type="password"
-                      value={user.password}
-                      className="input"
-                      required
-                      placeholder="Password..."
-                      pattern="^[A-Za-z\s]+$"
-                      maxLength="20"
-                    />
-                    {errors.password && (
-                      <p className="error">{errors.password}</p>
-                    )}
-
-
-                    {/* Input Confirm Password */}
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      value={user.confirmPassword}
-                      className="input"
-                      required
-                      placeholder="Confirm Password..."
-                      pattern="^[A-Za-z\s]+$"
-                      maxLength="20"
-                    />
-                    {errors.confirmPassword && (
-                      <p className="error">{errors.confirmPassword}</p>
-                    )}
-                </div>
-
-                <div className="formInputsx">
-                  <Link to="/login">
-                    <button className="bottoms">Cancel</button>
-                  </Link>
-                  <button
-                    type="submit"
-                    className="bottoms"
-                  >
-                    Create
-                  </button>
-                </div>
-
-              </form>
             </div>
-          </div>
-      </div>
 
+            <div className="formInputs">
+              {/* Input Password */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="password"
+                name="password"
+                type="password"
+                value={user.password}
+                className="input"
+                required
+                placeholder="Password..."
+                pattern="^[A-Za-z\s]+$"
+                maxLength="20"
+              />
+              {errors.password && <p className="error">{errors.password}</p>}
+
+              {/* Input Confirm Password */}
+              <input
+                autoComplete="off"
+                onChange={onInputChange}
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={user.confirmPassword}
+                className="input"
+                required
+                placeholder="Confirm Password..."
+                pattern="^[A-Za-z\s]+$"
+                maxLength="20"
+              />
+              {errors.confirmPassword && (
+                <p className="error">{errors.confirmPassword}</p>
+              )}
+            </div>
+
+            <div className="formInputsx">
+              <Link to="/login">
+                <button className="bottoms">Cancel</button>
+              </Link>
+              <button type="submit" className="bottoms">
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import { loging } from "../../redux/StoreUsers/usersActions.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import "./UserLogin.css";
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from "@mui/icons-material/Google";
 // const bcrypt = require("bcrypt");
 
 export default function UserLogin() {
@@ -118,14 +118,16 @@ export default function UserLogin() {
   //   return errors;
   // }
 
-return (
+  return (
     <div className="userLoginDiv">
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
             <h1>Sign in</h1>
             <div className="social-container">
-              <p className="social"><GoogleIcon/> </p>
+              <p className="social">
+                <GoogleIcon />{" "}
+              </p>
             </div>
             <span>or use your account</span>
             <input
@@ -153,52 +155,53 @@ return (
             <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span>
             <div className="labelsito">
               <div>
-              <input
-                type="checkbox"
-                onChange={() => setRememberMe(!rememberMe)}
+                <input
+                  type="checkbox"
+                  onChange={() => setRememberMe(!rememberMe)}
                 />
               </div>
               <div className="remember">
-                <a>Remember me</a>
+                <span>Remember me</span>
               </div>
             </div>
             <Link
               to={"/login/password_reset"}
               style={{ textDecoration: "none" }}
-            > 
-            <a>Forgot your password?</a>
-            </Link>   
+            >
+              <span>Forgot your password?</span>
+            </Link>
 
-            <button disabled={false} type="submit">Login</button>
-                      {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
-                {/* falta configurar el disabled */}
+            <button disabled={false} type="submit">
+              Login
+            </button>
+            {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
+            {/* falta configurar el disabled */}
 
             <div className="accountMobile">
               <Link to={"/signup"}>
-                  <a>Don't have an account?!</a>
+                <span>Don't have an account?!</span>
               </Link>
             </div>
-
           </form>
         </div>
-              
+
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-right">
               <h1>Don't have an account?!</h1>
               <p>Enter your personal information and join us</p>
               <Link to={"/signup"}>
-                <button className="ghost" id="signUp">Sign Up</button>
+                <button className="ghost" id="signUp">
+                  Sign Up
+                </button>
               </Link>
             </div>
           </div>
         </div>
-        
       </div>
 
-    <div>
-
-{/* <ul>
+      <div>
+        {/* <ul>
   <li>
     <button onClick={loginWithPopup}>Login with Popup</button>
   </li>
@@ -220,8 +223,7 @@ return (
     {JSON.stringify(user, null, 2)}
   </pre>
 )} */}
-</div>
-
+      </div>
     </div>
   );
 }
