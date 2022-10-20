@@ -201,10 +201,10 @@ export default function UserLogin() {
       </div>
 
       <div>
+        {/* <li>
+          <button onClick={loginWithPopup}>Login with Popup</button>
+        </li> */}
         {/* <ul>
-  <li>
-    <button onClick={loginWithPopup}>Login with Popup</button>
-  </li>
   <li>
     <button onClick={loginWithRedirect}>Login with Redirect</button>
   </li>
