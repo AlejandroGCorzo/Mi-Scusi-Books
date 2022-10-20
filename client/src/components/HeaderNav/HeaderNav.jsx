@@ -65,7 +65,7 @@ export default function HeaderNav(onSearch) {
 
   const handleLoggin = async (e) => {
     e.preventDefault();
-    history.push("/login")
+    history.push("/login");
     // await loginWithPopup();
     // const user = dispatch(getLoggedUser(await callProtectedApi()));
     // console.log(user);
@@ -139,7 +139,7 @@ export default function HeaderNav(onSearch) {
                 >
                   <img
                     src={loggedUser.picture}
-                    style={{ width: 32, height: 32, "border-radius": "30px" }}
+                    style={{ width: 32, height: 32, borderRadius: "30px" }}
                   />
                 </IconButton>
               </Tooltip>
@@ -181,7 +181,7 @@ export default function HeaderNav(onSearch) {
             >
               <Link
                 to={`/user_details/${loggedUser.id}`}
-                style={{ "text-decoration": "none", color: "#5b5b5b" }}
+                style={{ textDecoration: "none", color: "#5b5b5b" }}
               >
                 <MenuItem>
                   {/* <img
@@ -192,10 +192,10 @@ export default function HeaderNav(onSearch) {
                   Profile
                 </MenuItem>
               </Link>
-              { loggedUser.type === "admin" ? (
+              {loggedUser.type === "admin" ? (
                 <Link
                   to="/admin_panel"
-                  style={{ "text-decoration": "none", color: "#5b5b5b" }}
+                  style={{ textDecoration: "none", color: "#5b5b5b" }}
                 >
                   <MenuItem>Dashboard</MenuItem>
                 </Link>
