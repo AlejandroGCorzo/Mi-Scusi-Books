@@ -6,7 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
+// import { Auth0Provider } from "@auth0/auth0-react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
 
 // console.log(process.env.REACT_APP_API);
@@ -16,15 +17,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Auth0Provider
-        domain="miscusibooks.us.auth0.com"
-        clientId="YFEM1zut4WdwwqVE5209XDkP4KUqSKLN"
-        redirectUri={window.location.origin}
-        audience="MiScusiBooks"
-        scope="openid profile email"
+      <GoogleOAuthProvider
+        clientId={process.env.REACT_APP_GOOGLE_CLOUD_CLIENT_ID}
       >
         <App />
-      </Auth0Provider>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   </Provider>
 );
