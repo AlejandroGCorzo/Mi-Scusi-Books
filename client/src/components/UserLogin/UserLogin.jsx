@@ -126,7 +126,7 @@ export default function UserLogin() {
             <h1>Sign in</h1>
             <div className="social-container">
               <p className="social">
-                <GoogleIcon />{" "}
+                <GoogleIcon />
               </p>
             </div>
             <span>or use your account</span>
