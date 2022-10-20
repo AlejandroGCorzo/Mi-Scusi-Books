@@ -87,29 +87,46 @@ userRouter.post("/login", async (req, res) => {
 });
 
 //Loguear cuenta de google -> publica
+
+/* 
+google {
+  email: '',
+  email_verified: true,
+  picture: '',
+  given_name: 'Alejandro Gabriel',
+  family_name: 'Corzo',
+}
+*/
+
 userRouter.get("/login_google", async (req, res) => {
+  
+  const accesToken = req.headers.authorization.split(" ")[1];
+  const tokenDecode = jwt.decode(accesToken);
+
   try {
-    const accesToken = req.headers.authorization.split(" ")[1];
-    const response = await axios.get(
-      "https://miscusibooks.us.auth0.com/userinfo",
-      {
-        headers: {
-          authorization: `Bearer ${accesToken}`,
-        },
-      }
-    );
-    const userInfo = response.data;
-    if (userInfo.sub.includes("google")) {
-      let user = await User.findOne({ email: userInfo.email });
-      if (!user) {
-        user = await User.create({
-          email: userInfo.email,
-          userName: userInfo.nickname,
-          firstName: userInfo.given_name,
-          lastName: userInfo.family_name,
-          image: userInfo.picture,
-        });
-      }
+    let user = await User.findOne({ email: tokenDecode.email });
+    if (!user) {
+      const newUser = {
+        firstName: tokenDecode.given_name,
+        lastName: tokenDecode.family_name,
+        email: tokenDecode.email,
+        state: "active",
+        image: tokenDecode.picture,
+      };
+      console.log('newUser')
+      const googleUser = await User.create(newUser);
+      const formatUser = {
+        id: googleUser._id,
+        type: googleUser.type,
+        picture: googleUser.image,
+        userName: googleUser.username,
+        state: googleUser.state,
+        token: generateToken(googleUser._id),
+      };
+
+      return res.status(200).json(formatUser)
+    } else {
+      console.log('existe')
       const formatUser = {
         id: user._id,
         type: user.type,
@@ -118,12 +135,52 @@ userRouter.get("/login_google", async (req, res) => {
         state: user.state,
         token: generateToken(user._id),
       };
+
       return res.status(200).json(formatUser);
     }
   } catch (e) {
-    return res.status(400).json({ msg: e.message });
+    return res.status(400).json({msg: "Something went wrong, try again later"})
   }
 });
+
+//VIEJO, ESPERAR PARA BORRARLO
+// userRouter.get("/login_google", async (req, res) => {
+//   try {
+//     const accesToken = req.headers.authorization.split(" ")[1];
+//     const response = await axios.get(
+//       "https://miscusibooks.us.auth0.com/userinfo",
+//       {
+//         headers: {
+//           authorization: `Bearer ${accesToken}`,
+//         },
+//       }
+//     );
+//     const userInfo = response.data;
+//     if (userInfo.sub.includes("google")) {
+//       let user = await User.findOne({ email: userInfo.email });
+//       if (!user) {
+//         user = await User.create({
+//           email: userInfo.email,
+//           userName: userInfo.nickname,
+//           firstName: userInfo.given_name,
+//           lastName: userInfo.family_name,
+//           image: userInfo.picture,
+//         });
+//       }
+//       const formatUser = {
+//         id: user._id,
+//         type: user.type,
+//         picture: user.image,
+//         userName: user.username,
+//         state: user.state,
+//         token: generateToken(user._id),
+//       };
+//       return res.status(200).json(formatUser);
+//     }
+//   } catch (e) {
+//     return res.status(400).json({ msg: e.message });
+//   }
+// });
 
 // userRouter.get("/detail", async (req, res) => {
 //   try {
@@ -378,7 +435,7 @@ userRouter.put("/update/:id", protect, async (req, res) => {
 userRouter.put("/sanction/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { state } = req.body;
-  
+
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
