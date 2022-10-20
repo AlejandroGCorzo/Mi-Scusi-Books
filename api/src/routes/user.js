@@ -201,14 +201,15 @@ userRouter.post("/signup", async (req, res) => {
   if( !firstName || !lastName || !username || !password || !email || !dni || !phone || !address.street || !address.number || !birthdate){
     return res.status(400).json({msg: "All fields are required"});
   }
-
+  
   try{
-    const userFound = await User.findOne(email);
+    const userFound = await User.findOne({email});
     if(userFound){
       return res.status(400).json({msg: "Email already in use"})
     }
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
+    
     const newUser = {
       username,
       firstName,
