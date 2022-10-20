@@ -8,7 +8,7 @@ const createOrder = async (req, res) => {
         {
           amount: {
             currency_code: "USD",
-            value: "105.70",
+            value: "35",
           },
         },
       ],
@@ -61,7 +61,7 @@ const createOrder = async (req, res) => {
       console.log('aca se rompe');
     // console.log(response.data);
 
-    return res.json(response.data);
+    return res.json(response.data.links[1].href);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json("Something goes wrong");

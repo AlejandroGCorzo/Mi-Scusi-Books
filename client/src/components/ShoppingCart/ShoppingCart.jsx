@@ -12,6 +12,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
+import CheckoutPayPal from "../../components/Paypal/PayPal"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -61,6 +62,12 @@ export default function ShoppingCart(props) {
   shoppingCart.forEach(e => {
     totalShopping += e.price;
   });
+
+  const handleClickBuy = async () => {
+    const { data } = await CheckoutPayPal()
+    console.log(data)
+    window.location.href = data
+  }
 
   return (
     <div className="contentCategory">
@@ -155,9 +162,9 @@ export default function ShoppingCart(props) {
                 <span>Shipment: ${envio}</span>
                 <span>Total with shipping: ${(totalShopping + envio).toFixed(2)}</span>
             </div>
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <button className="buttonBack">Buy</button>
-            </Link>
+            {/* <Link to="/" style={{ textDecoration: "none" }}> */}
+              <button className="buttonBack" onClick={handleClickBuy}>Buy</button>
+            {/* </Link> */}
           </div>: 
           <Link to="/" style={{ textDecoration: "none" }}>
               <button className="buttonBack">Back</button>
