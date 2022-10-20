@@ -21,6 +21,7 @@ import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
 
 import BooksDelete from "../ConfirmDialog/BooksDelete.jsx"
+import { Link } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -312,7 +313,9 @@ export default function TestUsers() {
                         scope="row"
                         padding="none"
                       >
+                        <Link to={`/book_details/${b._id}`} style={{ textDecoration: "none"/* , color: "#000000" */ }}>
                         {b.name}
+                        </Link>
                       </TableCell>
                       <TableCell align="left">{b.author}</TableCell>
                       <TableCell align="left">{b.format}</TableCell>
@@ -321,7 +324,7 @@ export default function TestUsers() {
                       <TableCell align="left">{b.ISBN}</TableCell>
                       <TableCell align="left">{b.rating}</TableCell>
                       <TableCell align="left">{b.stock}</TableCell>
-                      <TableCell align="left">{b.price}</TableCell>
+                      <TableCell align="left">${b.price}</TableCell>
                     </TableRow>
                   );
                 })}
