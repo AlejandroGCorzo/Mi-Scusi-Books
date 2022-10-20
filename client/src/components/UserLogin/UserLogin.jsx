@@ -123,7 +123,7 @@ return (
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
-            <h1>Sign in</h1>
+            <h1>Login</h1>
             <div className="social-container">
               <p className="social"><GoogleIcon/> </p>
             </div>
@@ -159,14 +159,14 @@ return (
                 />
               </div>
               <div className="remember">
-                <a>Remember me</a>
+                <a href="#/">Remember me</a>
               </div>
             </div>
             <Link
               to={"/login/password_reset"}
               style={{ textDecoration: "none" }}
             > 
-            <a>Forgot your password?</a>
+            <a href="#/">Forgot your password?</a>
             </Link>   
 
             <button disabled={false} type="submit">Login</button>
@@ -175,7 +175,7 @@ return (
 
             <div className="accountMobile">
               <Link to={"/signup"}>
-                  <a>Don't have an account?!</a>
+                  <a href="#/">Don't have an account?!</a>
               </Link>
             </div>
 
