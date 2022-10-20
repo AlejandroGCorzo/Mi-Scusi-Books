@@ -15,7 +15,7 @@ const filterTypeOne = [
 ];
 const filterTypeTwo = ["author", "category", "rating", "reviews"];
 
-//post book
+//post book 
 bookRouter.post("/", async (req, res) => {
   let book = {};
   try {
@@ -206,7 +206,7 @@ bookRouter.post("/filter", async (req, res) => {
   }
 });
 
-//get allBooks
+//get allBooks-
 bookRouter.get("/allBooks", async (req, res) => {
   try {
     const books = await bookSchema
@@ -219,7 +219,7 @@ bookRouter.get("/allBooks", async (req, res) => {
   }
 });
 
-//get book especifict
+//get book especifict -> AGREGAR EL PROMEDI DE RATING Y COMPLETAR LOS DEMAS CAMPOS
 bookRouter.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   if (!id) res.status(400).json({ error: "id is required" });
@@ -227,7 +227,7 @@ bookRouter.get("/:id", async (req, res, next) => {
     const book = await bookSchema
       .findById(id)
       .where({ deleted: false })
-      .select("-deleted");
+      .select("-deleted").populate("reviews");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
 
