@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import imgLibritos from "../../sourceImg/imgLibritos.png";
 import axios from "axios";
+import { loging } from "../../redux/StoreUsers/usersActions";
 
 var errors = {};
 
@@ -94,12 +95,12 @@ export default function AccountCreate() {
     name: "",
     lastName: "",
     username: "",
-    email: "",
-    dni: "",
-    phone: "",
-    address: "",
-    birthdate: "",
     password: "",
+    email: "",
+    // dni: "",
+    // phone: "",
+    // address: "",
+    // birthdate: "",
     confirmPassword: "",
   });
 
@@ -125,7 +126,14 @@ export default function AccountCreate() {
       //dispatch(postUser(User)); Acá hay que agregar para que mande el post
       // alert("Successfully created character, check your email!");
       console.log(user);
-      axios.post("/signup", user);
+      axios
+        .post("/user/signup", user)
+        .then((el) => {
+          console.log(el);
+          window.sessionStorage.setItem("token", el.data.token);
+          dispatch(loging());
+        })
+        .catch((el) => console.log(el));
       // setUser({ user });
       // history.push("/");
     }
@@ -230,8 +238,7 @@ export default function AccountCreate() {
                   </div>
                 </div>
                 <div className="formInputs">
-                  <div className="divFormInputs">
-                    {/* Input DNI */}
+                  {/* <div className="divFormInputs">
                     <span> DNI </span>
                     <input
                       autoComplete="off"
@@ -247,10 +254,9 @@ export default function AccountCreate() {
                       maxLength="8"
                     />
                     {errors.dni && <p className="error">{errors.dni}</p>}
-                  </div>
+                  </div> */}
 
-                  <div className="divFormInputs">
-                    {/* Input Phone */}
+                  {/* <div className="divFormInputs">
                     <span> Phone </span>
                     <input
                       autoComplete="off"
@@ -266,12 +272,11 @@ export default function AccountCreate() {
                       maxLength="10"
                     />
                     {errors.phone && <p className="error">{errors.phone}</p>}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="formInputs">
-                  <div className="divFormInputs">
-                    {/* Input Address */}
+                  {/* <div className="divFormInputs">
                     <span> Address </span>
                     <input
                       autoComplete="off"
@@ -288,10 +293,9 @@ export default function AccountCreate() {
                     {errors.address && (
                       <p className="error">{errors.address}</p>
                     )}
-                  </div>
+                  </div> */}
 
-                  <div className="divFormInputs">
-                    {/* Input birthdate */}
+                  {/* <div className="divFormInputs">
                     <span> birthdate </span>
                     <input
                       autoComplete="off"
@@ -309,7 +313,7 @@ export default function AccountCreate() {
                     {errors.birthdate && (
                       <p className="error">{errors.birthdate}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="formInputs">
