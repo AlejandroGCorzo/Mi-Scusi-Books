@@ -380,7 +380,7 @@ userRouter.put("/update/:id", protect, async (req, res) => {
 userRouter.put("/sanction/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { state } = req.body;
-
+  
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
