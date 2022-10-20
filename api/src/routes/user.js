@@ -41,6 +41,7 @@ const generateToken = (id) => {
   });
 };
 
+//Mantener usuario logueado -> potegida
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -58,11 +59,9 @@ userRouter.get("/keepLog", protect, async (req, res) => {
   }
 });
 
+//Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  // const salt = await bcrypt.genSalt(10)
-  // const hash = await bcrypt.hash("Admin123", salt)
-  // console.log(hash)
   try {
     const user = await User.findOne({ email });
     let formatUser;
@@ -87,7 +86,8 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get("/login", async (req, res) => {
+//Loguear cuenta de google -> publica
+userRouter.get("/login_google", async (req, res) => {
   try {
     const accesToken = req.headers.authorization.split(" ")[1];
     const response = await axios.get(
@@ -195,29 +195,113 @@ userRouter.get("/login", async (req, res) => {
 //   }
 // });
 
-userRouter.post("/", async (req, res) => {
+//Registrar nueva cuenta -> publica
+userRouter.post("/signup", async (req, res) => {
+  console.log("entre");
+  const {
+    name,
+    lastName,
+    username,
+    password,
+    email,
+    // dni,
+    // phone,
+    // address,
+    // birthdate,
+  } = req.body;
+
+  if (
+    !name ||
+    !lastName ||
+    !username ||
+    !password ||
+    !email
+    // || !dni ||
+    // !phone ||
+    // !address.street ||
+    // !address.number ||
+    // !birthdate
+  ) {
+    return res.status(400).json({ msg: "All fields are required" });
+  }
+
   try {
-    const { username } = req.body;
-    console.log(req.body);
-    const repeatedUsername = await User.findOne({ username: username });
-    if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-    console.log("llegue");
-    const newUser = await User.create(req.body);
-    res.send("User created successfully!");
+    const userFound = await User.findOne({ email });
+    if (userFound) {
+      return res.status(400).json({ msg: "Email already in use" });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    const newUser = {
+      username,
+      firstName: name,
+      lastName,
+      password: hashPassword,
+      email,
+      // dni,
+      // phone,
+      // address: {
+      //   street: address.street,
+      //   number: address.number,
+      //   floor: address.floor || 0,
+      // },
+      // birthdate,
+      loyaltyPoint: 0,
+      state: "pending",
+      type: "normal",
+      votedBooks: [],
+      favorites: [],
+      cart: {
+        books: [],
+        ammounts: [],
+      },
+      image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
+    };
+    const user = await User.create(newUser);
+    formatUser = {
+      id: user._id,
+      picture: user.picture,
+      userName: user.username,
+      type: user.type,
+      state: user.state,
+      token: generateToken(user._id),
+    };
+
+    return res.status(200).json(formatUser);
   } catch (e) {
-    res.status(400).send({ error: e });
+    return res
+      .status(400)
+      .json({ msg: "Something went wrong creating the user, try again later" });
+  }
+  // try {
+  //   const { username } = req.body;
+  //   console.log(req.body);
+  //   const repeatedUsername = await User.findOne({ username: username });
+  //   if (repeatedUsername) return res.status(400).send("Username alredy exist!");
+  //   console.log("llegue");
+  //   const newUser = await User.create(req.body);
+  //   res.send("User created successfully!");
+  // } catch (e) {
+  //   res.status(400).send({ error: e });
+  // }
+});
+
+//Conseguir todos los usuarios activos -> protegida
+userRouter.get("/", protect, async (req, res) => {
+  if (req.user && req.user.type === "admin") {
+    try {
+      const allUsers = await User.find().where({ state: { $ne: "inactive" } });
+      res.send(allUsers);
+    } catch (e) {
+      res.status(400).send({ error: e });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not Authorized" });
   }
 });
 
-userRouter.get("/", async (req, res) => {
-  try {
-    const allUsers = await User.find().where({ state: { $ne: "inactive" } });
-    res.send(allUsers);
-  } catch (e) {
-    res.status(400).send({ error: e });
-  }
-});
-
+// Detalles del usuario -> protegida, solo usuario logueado puede pedir sus detalles
 userRouter.get("/:id", protect, async (req, res) => {
   const { id } = req.params;
   if (!req.user) {
@@ -244,6 +328,7 @@ userRouter.get("/:id", protect, async (req, res) => {
   }
 });
 
+//Borra completamente al usuario -> SOLO PARA PRUEBAS EN DEV
 userRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
   if (!id) return res.status(400).send({ msg: "Not id found!" });
@@ -256,101 +341,130 @@ userRouter.delete("/:id", async (req, res) => {
   }
 });
 
-userRouter.put("/delete/:id", async (req, res) => {
+//Borra de forma logica al usuario -> protegida, solo usuario puede borrar su propia cuenta (admin y vendedor borran en otra ruta)
+userRouter.put("/delete/:id", protect, async (req, res) => {
   const { id } = req.params;
-  if (!id) return res.status(400).send({ msg: "Not id found!" });
-  try {
-    const deletedUser = await User.updateOne(
-      { _id: id },
-      { $set: { state: "inactive" } }
-    );
-    if (!deletedUser.matchedCount) return res.send("User not found!");
-    res.send({ msg: "User deleted successfully!" });
-  } catch (e) {
-    res.status(400).send({ msg: e });
+  if (req.user && req.user.id === id) {
+    if (!id) return res.status(400).send({ msg: "Not id found!" });
+    try {
+      const deletedUser = await User.updateOne(
+        { _id: id },
+        { $set: { state: "inactive" } }
+      );
+      if (!deletedUser.matchedCount) return res.send("User not found!");
+      res.send({ msg: "User deleted successfully!" });
+    } catch (e) {
+      res.status(400).send({ msg: e });
+    }
   }
 });
 
-userRouter.put("/update/:id", async (req, res) => {
+//Actualiza los datos del usuasrio -> protegida, solo usuario puede actualizar sus propios datos
+userRouter.put("/update/:id", protect, async (req, res) => {
   const { id } = req.params;
   const update = req.body;
-  if (!id) return res.status(400).send({ msg: "Not id found!" });
-  try {
-    const updatedUser = await User.updateOne({ _id: id }, { $set: update });
-    res.send({ msg: "User updated successfully!" });
-  } catch (e) {
-    res.status(400).send({ msg: e });
+  if (req.user && req.user.id === id) {
+    if (!id) return res.status(400).send({ msg: "Not id found!" });
+    try {
+      const updatedUser = await User.updateOne({ _id: id }, { $set: update });
+      res.send({ msg: "User updated successfully!" });
+    } catch (e) {
+      res.status(400).send({ msg: e });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to update this user" });
   }
 });
 
-userRouter.put("/sanction/:id", async (req, res) => {
+//Sanciona al usuario -> protegida, solo admin y seller pueden sancionar usuarios
+userRouter.put("/sanction/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { state } = req.body;
-  try {
-    const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
-    await transporter.sendMail({
-      from: `"Status changed" <${process.env.GMAIL_USER}>`,
-      to: user.email,
-      subject: "Status changed",
-      html: `
-      <h2>Your user status has been changed.</h2>
-      <p>New status: ${state}</p>
-      <br>
-      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
-      <br>
-      <p>Mi Scusi Books staff.</p>
-      `,
-    });
-    res.send({ msg: `State updated successfully to ${state} !` });
-  } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en sanction" });
+
+  if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
+    try {
+      const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
+      await transporter.sendMail({
+        from: `"Status changed" <${process.env.GMAIL_USER}>`,
+        to: user.email,
+        subject: "Status changed",
+        html: `
+        <h2>Your user status has been changed.</h2>
+        <p>New status: ${state}</p>
+        <br>
+        <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+        <br>
+        <p>Mi Scusi Books staff.</p>
+        `,
+      });
+      res.send({ msg: `State updated successfully to ${state} !` });
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en sanction" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to sanction users" });
   }
 });
 
-userRouter.put("/type/:id", async (req, res) => {
+//Cambia el tipo de cuenta de usuario -> protegida, solo admin puede cambar el tipo de cuenta
+userRouter.put("/type/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { type } = req.body;
-  try {
-    const user = await User.findByIdAndUpdate(id, { $set: { type: type } });
-    await transporter.sendMail({
-      from: `"Type changed" <${process.env.GMAIL_USER}>`,
-      to: user.email,
-      subject: "Type changed",
-      html: `
-      <h2>Your user type has been changed.</h2>
-      <p>New type: ${type}</p>
-      <br>
-      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
-      <br>
-      <p>Mi Scusi Books staff.</p>
-      `,
-    });
-    res.send({ msg: `Type updated successfully to ${type} !` });
-  } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en type" });
+  if (req.user && req.user.type === "admin") {
+    try {
+      const user = await User.findByIdAndUpdate(id, { $set: { type: type } });
+      await transporter.sendMail({
+        from: `"Type changed" <${process.env.GMAIL_USER}>`,
+        to: user.email,
+        subject: "Type changed",
+        html: `
+        <h2>Your user type has been changed.</h2>
+        <p>New type: ${type}</p>
+        <br>
+        <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+        <br>
+        <p>Mi Scusi Books staff.</p>
+        `,
+      });
+      res.send({ msg: `Type updated successfully to ${type} !` });
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en type" });
+    }
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "Not authorized to change account type" });
   }
 });
 
-userRouter.put("/cart/:id", async (req, res) => {
+//Actualiza el carrito de compras -> protegida, solo el usuario logueado puede modificar su carrito
+userRouter.put("/cart/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { idBooks, amounts } = req.body;
-  try {
-    const books = []; //array de instancias de libros de la base de datos
-    for (const id of idBooks) {
-      console.log("entre");
-      const b = await bookSchema.findById(id);
-      books.push(b);
+  if (req.user && req.user.id === id) {
+    try {
+      const books = []; //array de instancias de libros de la base de datos
+      for (const id of idBooks) {
+        console.log("entre");
+        const b = await bookSchema.findById(id);
+        books.push(b);
+      }
+      console.log(books);
+      const user = await User.findByIdAndUpdate(id, {
+        $set: { cart: { books: books, amounts: amounts } },
+      });
+      res.send(user);
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
     }
-    console.log(books);
-    const user = await User.findByIdAndUpdate(id, {
-      $set: { cart: { books: books, amounts: amounts } },
-    });
-    res.send(user);
-  } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "Not authorized to update shopping cart" });
   }
 });
 
+//Devuelve el carrito completo del usuario logueado -> PROTEGER, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
 userRouter.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -361,6 +475,7 @@ userRouter.get("/cart/:id", async (req, res) => {
   }
 });
 
+//Registra el pago de la compra -> PROTEGER, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -419,14 +534,17 @@ userRouter.put("/pay/:id", async (req, res) => {
   }
 });
 
-userRouter.put('/favorites', async (req,res) => {
-  const {id, books} = req.body;
+//Añade libros favoritos al usuario -> protegido, solo el usuario logueado puede agregar favoritos
+userRouter.put("/favorites", protect, async (req, res) => {
+  const { id, books } = req.body;
   try {
-    const user = await User.findById(user)
-    const newFavorites = user.favorites.concat(books)
+    const user = await User.findById(user);
+    const newFavorites = user.favorites.concat(books);
   } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en get a favorite" });
+    res
+      .status(400)
+      .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
   }
-})
+});
 
 module.exports = userRouter;

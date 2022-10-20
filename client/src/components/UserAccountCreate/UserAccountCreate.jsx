@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import imgLibritos from "../../sourceImg/imgLibritos.png";
+import axios from "axios";
+import { loging } from "../../redux/StoreUsers/usersActions";
 
 var errors = {};
 
@@ -23,24 +25,24 @@ function validar() {
 
 function validate(user) {
   errors.name = "A name is required";
-  errors.lastname = "A lastname is required";
+  errors.lastName = "A lastName is required";
   errors.username = "A username is required";
   errors.email = "A email is required";
   errors.dni = "A dni is required";
   errors.phone = "A phone is required";
   errors.address = "A address is required";
-  errors.birthday = "A birthday is required";
+  errors.birthdate = "A birthdate is required";
   errors.password = "A password is required";
   errors.confirmPassword = "Confirm password";
 
   if (user.name) delete errors.name;
-  if (user.lastname) delete errors.lastname;
+  if (user.lastName) delete errors.lastName;
   if (user.username) delete errors.username;
   if (user.email) delete errors.email;
   if (user.dni) delete errors.dni;
   if (user.phone) delete errors.phone;
   if (user.address) delete errors.address;
-  if (user.birthday) delete errors.birthday;
+  if (user.birthdate) delete errors.birthdate;
   if (user.password) delete errors.password;
   if (user.confirmPassword) delete errors.confirmPassword;
 
@@ -48,7 +50,7 @@ function validate(user) {
   if (user.phone.toString().length > 10) errors.phone = "Invalid phone";
 
   if (validar() === false) errors.name = "Invalid character";
-  if (validar() === false) errors.lastname = "Invalid character";
+  if (validar() === false) errors.lastName = "Invalid character";
 
   if (!user.email) errors.email = "Email is required";
   if (user.email.length < 6)
@@ -63,7 +65,7 @@ function validate(user) {
   // }
 
   if (validar() === false) errors.name = "Invalid character";
-  if (validar() === false) errors.lastname = "Invalid character";
+  if (validar() === false) errors.lastName = "Invalid character";
 
   if (!user.email) errors.email = "Email is required";
   if (user.email.length < 6)
@@ -76,8 +78,8 @@ function validate(user) {
 
   if (espacios(user.name) > 2 || user.name[0] === " ")
     errors.name = "Max 2 spaces";
-  if (espacios(user.lastname) > 2 || user.lastname[0] === " ")
-    errors.lastname = "Max 2 spaces";
+  if (espacios(user.lastName) > 2 || user.lastName[0] === " ")
+    errors.lastName = "Max 2 spaces";
   if (espacios(user.username) > 0 || user.username[0] === " ")
     errors.username = "Username invalid";
   return errors;
@@ -91,14 +93,14 @@ export default function AccountCreate() {
 
   const [user, setUser] = useState({
     name: "",
-    lastname: "",
+    lastName: "",
     username: "",
-    email: "",
-    dni: "",
-    phone: "",
-    address: "",
-    birthday: "",
     password: "",
+    email: "",
+    // dni: "",
+    // phone: "",
+    // address: "",
+    // birthdate: "",
     confirmPassword: "",
   });
 
@@ -106,7 +108,7 @@ export default function AccountCreate() {
     e.preventDefault();
     setUser({
       ...user,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value.toLowerCase(),
     });
     setErrors(
       validate({
@@ -122,9 +124,18 @@ export default function AccountCreate() {
       alert("Please complete all fields!");
     } else {
       //dispatch(postUser(User)); Acá hay que agregar para que mande el post
-      alert("Successfully created character, check your email!");
-      setUser({ user });
-      history.push("/");
+      // alert("Successfully created character, check your email!");
+      console.log(user);
+      axios
+        .post("/user/signup", user)
+        .then((el) => {
+          console.log(el);
+          window.sessionStorage.setItem("token", el.data.token);
+          dispatch(loging());
+        })
+        .catch((el) => console.log(el));
+      // setUser({ user });
+      // history.push("/");
     }
   }
 
@@ -137,7 +148,7 @@ export default function AccountCreate() {
       </div>
 
       <div className="contentCategoryx">
-        <div className="contentCategory">
+        <form className="contentCategory">
           <div className="titleFormx">
             <p>Create Account</p>
           </div>
@@ -150,6 +161,7 @@ export default function AccountCreate() {
                     {/* Input Name */}
                     <span> Name </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="name"
                       name="name"
@@ -165,22 +177,23 @@ export default function AccountCreate() {
                   </div>
 
                   <div className="divFormInputs">
-                    {/* Input Lastname */}
-                    <span> Lastname </span>
+                    {/* Input lastName */}
+                    <span> lastName </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
-                      id="lastname"
-                      name="lastname"
+                      id="lastName"
+                      name="lastName"
                       type="text"
-                      value={user.lastname}
+                      value={user.lastName}
                       className="input"
                       required
-                      placeholder="Lastname..."
+                      placeholder="lastName..."
                       pattern="^[A-Za-z\s]+$"
                       maxLength="20"
                     />
-                    {errors.lastname && (
-                      <p className="error">{errors.lastname}</p>
+                    {errors.lastName && (
+                      <p className="error">{errors.lastName}</p>
                     )}
                   </div>
                 </div>
@@ -189,6 +202,7 @@ export default function AccountCreate() {
                     {/* Input Username */}
                     <span> Username </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="username"
                       name="username"
@@ -209,6 +223,7 @@ export default function AccountCreate() {
                     {/* Input E-mail */}
                     <span> E-mail </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="email"
                       name="email"
@@ -223,10 +238,10 @@ export default function AccountCreate() {
                   </div>
                 </div>
                 <div className="formInputs">
-                  <div className="divFormInputs">
-                    {/* Input DNI */}
+                  {/* <div className="divFormInputs">
                     <span> DNI </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="dni"
                       name="dni"
@@ -239,12 +254,12 @@ export default function AccountCreate() {
                       maxLength="8"
                     />
                     {errors.dni && <p className="error">{errors.dni}</p>}
-                  </div>
+                  </div> */}
 
-                  <div className="divFormInputs">
-                    {/* Input Phone */}
+                  {/* <div className="divFormInputs">
                     <span> Phone </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="phone"
                       name="phone"
@@ -257,14 +272,14 @@ export default function AccountCreate() {
                       maxLength="10"
                     />
                     {errors.phone && <p className="error">{errors.phone}</p>}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="formInputs">
-                  <div className="divFormInputs">
-                    {/* Input Address */}
+                  {/* <div className="divFormInputs">
                     <span> Address </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="address"
                       name="address"
@@ -278,27 +293,27 @@ export default function AccountCreate() {
                     {errors.address && (
                       <p className="error">{errors.address}</p>
                     )}
-                  </div>
+                  </div> */}
 
-                  <div className="divFormInputs">
-                    {/* Input Birthday */}
-                    <span> Birthday </span>
+                  {/* <div className="divFormInputs">
+                    <span> birthdate </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
-                      id="birthday"
-                      name="birthday"
+                      id="birthdate"
+                      name="birthdate"
                       type="date"
-                      value={user.birthday}
+                      value={user.birthdate}
                       className="input"
                       required
                       placeholder="11/12/2000..."
                       pattern="^[A-Za-z]+$"
                       maxLength="20"
                     />
-                    {errors.birthday && (
-                      <p className="error">{errors.birthday}</p>
+                    {errors.birthdate && (
+                      <p className="error">{errors.birthdate}</p>
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="formInputs">
@@ -306,6 +321,7 @@ export default function AccountCreate() {
                     {/* Input Password */}
                     <span> Password </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="password"
                       name="password"
@@ -326,6 +342,7 @@ export default function AccountCreate() {
                     {/* Input Confirm Password */}
                     <span> Confirm Password </span>
                     <input
+                      autoComplete="off"
                       onChange={onInputChange}
                       id="confirmPassword"
                       name="confirmPassword"
@@ -360,7 +377,7 @@ export default function AccountCreate() {
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
