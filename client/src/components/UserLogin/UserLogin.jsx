@@ -123,7 +123,7 @@ return (
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
-            <h1>Login</h1>
+            <h1>Sign in</h1>
             <div className="social-container">
               <p className="social"><GoogleIcon/> </p>
             </div>
@@ -169,7 +169,7 @@ return (
             <a>Forgot your password?</a>
             </Link>   
 
-            <button disabled={false} type="submit">Sign In</button>
+            <button disabled={false} type="submit">Login</button>
                       {/* <input disabled={input.disabled} type="submit" value="LOGIN" /> */}
                 {/* falta configurar el disabled */}
 
