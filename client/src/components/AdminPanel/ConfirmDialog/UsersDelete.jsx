@@ -20,7 +20,7 @@ export default function UsersDelete(props) {
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
     
-  console.log(accessToken);
+  // console.log(accessToken);
   console.log(id);
 
   const handleDelete = (e) => {

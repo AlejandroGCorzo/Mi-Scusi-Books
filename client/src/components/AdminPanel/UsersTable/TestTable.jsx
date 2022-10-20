@@ -110,8 +110,9 @@ const headCells = [
   },
 ];
 
+// Table Head -> titulares
 function EnhancedTableHead(props) {
-  const { order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { order, orderBy, emailSelectUser, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -146,16 +147,26 @@ function EnhancedTableHead(props) {
   );
 }
 
+// ToolBar
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, openDelete, handleOpenDelete, handleCloseDelete, id } =
-    props;
+  const {
+    emailSelectUser, // email del usuario seleccionado
+    id, // id del usuario seleccionado
+    selectUser, // objeto del usuario seleccionado
+    loggedUser, // objeto del usuario loggeado
+    openDelete, // state para abrir o cerrar el dialog
+    handleOpenDelete, // fn para abrir el dialog
+    handleCloseDelete, // fn para cerrar el dialog
+    handleMakeAdmin, // fn para hacer admin
+    handleRemoveAdmin, // fn para remover admin
+  } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(emailSelectUser > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -164,30 +175,40 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {numSelected ? (
+      {emailSelectUser && id !== loggedUser.id ? (
         <>
-          <div>
-            <Button
-              onClick={alert("hola")}
-              variant="outlined"
-              style={{ "min-width": "122px" }}
-            >
-              Make admin
-            </Button>
-          </div>
+          <>
+            {selectUser.type !== "admin" ? (
+              <Button
+                onClick={(e) => handleMakeAdmin(e)}
+                variant="outlined"
+                style={{ "min-width": "122px" }}
+              >
+                Make admin
+              </Button>
+            ) : (
+              <Button
+                onClick={(e) => handleRemoveAdmin(e)}
+                variant="outlined"
+                style={{ "min-width": "140px" }}
+              >
+                Remove admin
+              </Button>
+            )}
+          </>
           <Typography
             sx={{ flex: "1 1 100%" }}
             color="inherit"
             variant="subtitle1"
             component="div"
           >
-            {numSelected ? `User: ${numSelected}` : null}
+            {emailSelectUser ? `User: ${emailSelectUser}` : null}
           </Typography>
-          <IconButton onClick={handleOpenDelete} title="Delete">
+          <IconButton onClick={(e) => handleOpenDelete(e)} title="Delete">
             <DeleteIcon />
           </IconButton>
           <UsersDelete
-            numSelected={numSelected}
+            emailSelectUser={emailSelectUser}
             openDialog={openDelete}
             handleClose={handleCloseDelete}
             id={id}
@@ -198,7 +219,7 @@ const EnhancedTableToolbar = (props) => {
               <BlockIcon />
             </IconButton>
             <UsersBlock
-              numSelected={numSelected}
+              emailSelectUser={emailSelectUser}
               openDialog={openBlock}
               handleClose={handleCloseblock}
             />
@@ -217,12 +238,25 @@ export default function TestUsers() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  
+  const { users } = useSelector((state) => state.users);
+  const { loggedUser } = useSelector((state) => state.users);
   console.log(selected);
-
+  
+  //////////////Make and remove admin//////////////////
+  const handleMakeAdmin = (e)=>{
+    alert("Make Admin")
+  };
+  
+  const handleRemoveAdmin = (e)=>{
+    alert("Remove Admin")
+  };
+  /////////////////////////////////////////////////////////////////
+  
+  //////////////Open and close confirm dialog//////////////////
   const [openDelete, setOpenDelete] = React.useState(false);
-
-  const handleOpenDelete = () => {
+  const handleOpenDelete = (e) => {
+    //e.stopPropagation()
     setOpenDelete(true);
   };
 
@@ -231,20 +265,25 @@ export default function TestUsers() {
     setSelected();
     setShowEmail();
   };
+  /////////////////////////////////////////////////////////////////
 
-  const { users } = useSelector((state) => state.users);
-
+  /////////////Pide la function de sort de mas arriba//////////////
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  /////////////////////////////////////////////////////////////////
 
-  const handleClick = (event, id, email) => {
+  /////////Set 'selected' con el id y email seleccionado//////////
+  const handleClick = (e, id, email) => {
+    //e.stopPropagation()
     id === selected ? setSelected() : setSelected(id);
     email === showEmail ? setShowEmail() : setShowEmail(email);
   };
-
+  /////////////////////////////////////////////////////////////////
+  
+  //////Functions para cambiar paginas y elementos por pagina//////
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -253,8 +292,9 @@ export default function TestUsers() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  /////////////////////////////////////////////////////////////////
 
-  const isSelected = (id) => id === selected;
+  const isSelected = (id) => id === selected;// Devuelve true o false -> completa el checkbox
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -264,11 +304,15 @@ export default function TestUsers() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
-          numSelected={showEmail /* .length */}
+          emailSelectUser={showEmail /* .length */}
           openDelete={openDelete}
           handleOpenDelete={handleOpenDelete}
           handleCloseDelete={handleCloseDelete}
           id={selected}
+          selectUser={users.find((u) => u._id === selected)}
+          loggedUser={loggedUser}
+          handleMakeAdmin={handleMakeAdmin}
+          handleRemoveAdmin={handleRemoveAdmin}
         />
         <TableContainer>
           <Table
@@ -277,7 +321,7 @@ export default function TestUsers() {
             size={"small"}
           >
             <EnhancedTableHead
-              numSelected={selected /* .length */}
+              emailSelectUser={selected /* .length */}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
@@ -295,7 +339,7 @@ export default function TestUsers() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, u._id, u.email)}
+                      onClick={(e) => handleClick(e, u._id, u.email)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
