@@ -161,15 +161,15 @@ export default function UserLogin() {
                 />
               </div>
               <div className="remember">
-                <a href="#/">Remember me</a>
+                <span>Remember me</span>
               </div>
             </div>
             <Link
               to={"/login/password_reset"}
               style={{ textDecoration: "none" }}
-            > 
-            <a href="#/">Forgot your password?</a>
-            </Link>   
+            >
+              <span>Forgot your password?</span>
+            </Link>
 
             <button disabled={false} type="submit">
               Login
@@ -179,7 +179,7 @@ export default function UserLogin() {
 
             <div className="accountMobile">
               <Link to={"/signup"}>
-                  <a href="#/">Don't have an account?!</a>
+                <span>Don't have an account?!</span>
               </Link>
             </div>
           </form>
