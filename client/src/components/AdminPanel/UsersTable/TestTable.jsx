@@ -20,8 +20,10 @@ import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-
 import UsersDelete from "../ConfirmDialog/UsersDelete";
+import UsersBlock from "../ConfirmDialog/UsersBlock";
+import { useDispatch } from "react-redux";
+import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -106,7 +108,7 @@ const headCells = [
     id: "type",
     numeric: false,
     disablePadding: true,
-    label: "Type",
+    label: "Rol",
   },
 ];
 
@@ -159,6 +161,9 @@ const EnhancedTableToolbar = (props) => {
     handleCloseDelete, // fn para cerrar el dialog
     handleMakeAdmin, // fn para hacer admin
     handleRemoveAdmin, // fn para remover admin
+    openBlock, // state para abrir o cerrar block dialog
+    handleOpenBlock, // fn para abrir dialog
+    handleCloseBlock, // fn para cerrar dialog
   } = props;
 
   return (
@@ -184,7 +189,7 @@ const EnhancedTableToolbar = (props) => {
                 variant="outlined"
                 style={{ "min-width": "122px" }}
               >
-                Make admin
+                Change rol
               </Button>
             ) : (
               <Button
@@ -213,17 +218,19 @@ const EnhancedTableToolbar = (props) => {
             handleClose={handleCloseDelete}
             id={id}
           />
-
-          {/* <>
-            <IconButton onClick={handleOpenBlock} title="Block">
+          <>
+            <IconButton onClick={e=>handleOpenBlock(e)} title="Block">
               <BlockIcon />
             </IconButton>
             <UsersBlock
               emailSelectUser={emailSelectUser}
-              openDialog={openBlock}
-              handleClose={handleCloseblock}
+              openBlock={openBlock}
+              handleCloseBlock={handleCloseBlock}
+              id={id}
+              //openDialog={openBlock}
+              //handleClose={handleCloseblock}
             />
-          </> */}
+          </>
         </>
       ) : null}
     </Toolbar>
@@ -244,19 +251,25 @@ export default function TestUsers() {
   console.log(selected);
   
   //////////////Make and remove admin//////////////////
+  const dispatch = useDispatch();
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+
   const handleMakeAdmin = (e)=>{
-    alert("Make Admin")
+    // alert("Make Admin")
+    dispatch(setUserChangeRol(selected, 'admin', accessToken))
   };
   
   const handleRemoveAdmin = (e)=>{
-    alert("Remove Admin")
+    //alert("Remove Admin")
+    dispatch(setUserChangeRol(selected, 'normal', accessToken))
   };
-  /////////////////////////////////////////////////////////////////
   
   //////////////Open and close confirm dialog//////////////////
   const [openDelete, setOpenDelete] = React.useState(false);
   const handleOpenDelete = (e) => {
-    //e.stopPropagation()
+    // e.stopPropagation()
     setOpenDelete(true);
   };
 
@@ -265,7 +278,20 @@ export default function TestUsers() {
     setSelected();
     setShowEmail();
   };
-  /////////////////////////////////////////////////////////////////
+
+  //////////////Open and close block confirm dialog//////////////////
+  const [openBlock, setOpenBlock] = React.useState(false);
+  const handleOpenBlock = (e) => {
+    // e.stopPropagation()
+    setOpenBlock(true);
+  };
+
+  const handleCloseBlock = () => {
+    setOpenBlock(false);
+    setSelected();
+    setShowEmail();
+  };
+
 
   /////////////Pide la function de sort de mas arriba//////////////
   const handleRequestSort = (event, property) => {
@@ -273,7 +299,6 @@ export default function TestUsers() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  /////////////////////////////////////////////////////////////////
 
   /////////Set 'selected' con el id y email seleccionado//////////
   const handleClick = (e, id, email) => {
@@ -281,7 +306,6 @@ export default function TestUsers() {
     id === selected ? setSelected() : setSelected(id);
     email === showEmail ? setShowEmail() : setShowEmail(email);
   };
-  /////////////////////////////////////////////////////////////////
   
   //////Functions para cambiar paginas y elementos por pagina//////
   const handleChangePage = (event, newPage) => {
@@ -292,7 +316,6 @@ export default function TestUsers() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  /////////////////////////////////////////////////////////////////
 
   const isSelected = (id) => id === selected;// Devuelve true o false -> completa el checkbox
 
@@ -313,6 +336,9 @@ export default function TestUsers() {
           loggedUser={loggedUser}
           handleMakeAdmin={handleMakeAdmin}
           handleRemoveAdmin={handleRemoveAdmin}
+          openBlock={openBlock}
+          handleOpenBlock={handleOpenBlock}
+          handleCloseBlock={handleCloseBlock}
         />
         <TableContainer>
           <Table
