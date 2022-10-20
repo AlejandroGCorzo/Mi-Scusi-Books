@@ -62,7 +62,7 @@ const userSchema = mongoose.Schema(
       ref: "Books",
     },
     favorites:{
-      type: [mongoose.Schema.Types.ObjectId],
+      type: Array,
       ref: "Books",
     },
     cart:{
