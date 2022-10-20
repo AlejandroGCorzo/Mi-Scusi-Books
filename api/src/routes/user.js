@@ -197,29 +197,30 @@ userRouter.get("/login_google", async (req, res) => {
 
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {
+  console.log("entre");
   const {
     name,
     lastName,
     username,
     password,
     email,
-    dni,
-    phone,
-    address,
-    birthdate,
+    // dni,
+    // phone,
+    // address,
+    // birthdate,
   } = req.body;
 
   if (
-    !firstName ||
+    !name ||
     !lastName ||
     !username ||
     !password ||
-    !email ||
-    !dni ||
-    !phone ||
-    !address.street ||
-    !address.number ||
-    !birthdate
+    !email
+    // || !dni ||
+    // !phone ||
+    // !address.street ||
+    // !address.number ||
+    // !birthdate
   ) {
     return res.status(400).json({ msg: "All fields are required" });
   }
@@ -238,14 +239,14 @@ userRouter.post("/signup", async (req, res) => {
       lastName,
       password: hashPassword,
       email,
-      dni,
-      phone,
-      address: {
-        street: address.street,
-        number: address.number,
-        floor: address.floor || 0,
-      },
-      birthdate,
+      // dni,
+      // phone,
+      // address: {
+      //   street: address.street,
+      //   number: address.number,
+      //   floor: address.floor || 0,
+      // },
+      // birthdate,
       loyaltyPoint: 0,
       state: "pending",
       type: "normal",
