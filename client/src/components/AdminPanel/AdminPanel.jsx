@@ -19,9 +19,12 @@ import { getUser } from "../../redux/StoreUsers/usersActions.js";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   const dispatch = useDispatch();
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(getUser(accessToken));
   }, [dispatch]);
 
   return (
