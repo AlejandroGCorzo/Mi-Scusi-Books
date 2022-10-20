@@ -87,6 +87,12 @@
   .contentCreateBook {
     width: 336px;
   }
+  .userLoginDiv{
+    width: 336px;
+  }
+  .userAccountContainer{
+    width: 336px;
+  }
 }
 
 .routesHeader {
