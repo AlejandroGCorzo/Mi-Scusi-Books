@@ -128,9 +128,6 @@
     .accountMobile{
         display: flex;
     }
-	.containerAccount input {
-		width: 100%;
-	}
 }
 
 @media (min-height: 0px) {

@@ -123,7 +123,7 @@ export default function UserLogin() {
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
-            <h1>Sign in</h1>
+            <h1>Login</h1>
             <div className="social-container">
               <p className="social">
                 <GoogleIcon />
@@ -161,15 +161,15 @@ export default function UserLogin() {
                 />
               </div>
               <div className="remember">
-                <span>Remember me</span>
+                <a href="#/">Remember me</a>
               </div>
             </div>
             <Link
               to={"/login/password_reset"}
               style={{ textDecoration: "none" }}
-            >
-              <span>Forgot your password?</span>
-            </Link>
+            > 
+            <a href="#/">Forgot your password?</a>
+            </Link>   
 
             <button disabled={false} type="submit">
               Login
@@ -179,7 +179,7 @@ export default function UserLogin() {
 
             <div className="accountMobile">
               <Link to={"/signup"}>
-                <span>Don't have an account?!</span>
+                  <a href="#/">Don't have an account?!</a>
               </Link>
             </div>
           </form>
