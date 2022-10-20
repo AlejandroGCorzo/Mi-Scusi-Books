@@ -7,7 +7,7 @@ import userIcon from "../../sourceImg/user.svg";
 import userShopping from "../../sourceImg/shopping-cart.svg";
 import { getLoggedUser, keepLog } from "../../redux/StoreUsers/usersActions.js";
 import { setEmptyLoggedUser } from "../../redux/StoreUsers/usersSlice.js";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 ////////////Material UI/////////////////////
@@ -45,23 +45,23 @@ export default function HeaderNav(onSearch) {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
-  const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
-    useAuth0();
+  // const { loginWithPopup, logout, isAuthenticated, getAccessTokenSilently } =
+  //   useAuth0();
 
-  const callProtectedApi = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get("/user/login", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+  // const callProtectedApi = async () => {
+  //   try {
+  //     const token = await getAccessTokenSilently();
+  //     const response = await axios.get("/user/login", {
+  //       headers: {
+  //         authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      return response.data;
-    } catch (error) {
-      console.log("error", error.message);
-    }
-  };
+  //     return response.data;
+  //   } catch (error) {
+  //     console.log("error", error.message);
+  //   }
+  // };
 
   const handleLoggin = async (e) => {
     e.preventDefault();
@@ -76,10 +76,11 @@ export default function HeaderNav(onSearch) {
 
   const handleLogOut = (e) => {
     e.preventDefault();
-    logout();
+    // logout();
     dispatch(setEmptyLoggedUser());
     window.localStorage.removeItem("token");
     window.sessionStorage.removeItem("token");
+    history.push("/");
   };
 
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function HeaderNav(onSearch) {
       <SearchBar onSearch={onSearch} />
 
       <div>
-        {isAuthenticated || loggedUser.id ? (
+        {loggedUser.id ? (
           <div className="iconsContainer">
             {/* <span onClick={handleLogOut}>Logout</span>
             <Link to="/userDetails">
