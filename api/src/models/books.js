@@ -54,7 +54,7 @@ const booksSchema = mongoose.Schema({
   },
   reviews: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "Reviews"
+    ref: "Review"
   },
   image: {
     type: String,

@@ -211,7 +211,7 @@ bookRouter.get("/allBooks", async (req, res) => {
   try {
     const books = await bookSchema
       .find()
-      .where({ deleted: false }).populate("reviews")
+      .where({ deleted: false })
       .select("-deleted");
     res.status(200).json(books);
   } catch (e) {
@@ -226,8 +226,8 @@ bookRouter.get("/:id", async (req, res, next) => {
   try {
     const book = await bookSchema
       .findById(id)
-      .where({ deleted: false }).populate("reviews")
-      .select("-deleted");
+      .where({ deleted: false })
+      .select("-deleted").populate("reviews");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
 
