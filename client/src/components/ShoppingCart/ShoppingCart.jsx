@@ -65,7 +65,7 @@ export default function ShoppingCart(props) {
 
   const handleClickBuy = async () => {
     const { data } = await CheckoutPayPal()
-    console.log(data)
+    console.log("hola", data)
     window.location.href = data
   }
 
