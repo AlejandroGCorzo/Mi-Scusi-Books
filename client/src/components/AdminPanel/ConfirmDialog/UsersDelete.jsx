@@ -24,7 +24,7 @@ export default function UsersDelete(props) {
   console.log(id);
 
   const handleDelete = (e) => {
-    dispatch(setUserDelete(id, "limited", accessToken));
+    dispatch(setUserDelete(id, "inactive", accessToken));
     dispatch(handleClose);
   };
 
