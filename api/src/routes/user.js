@@ -311,11 +311,9 @@ userRouter.get("/:id", protect, async (req, res) => {
   console.log("query id", id);
   if (id === req.user.id) {
     try {
-      const searchedUser = await User.findById(id)
-        .select(
-          "-password -type -cart -tenant -client_id -connection -transaction"
-        )
-        .populate("favorites");
+      const searchedUser = await User.findById(id).select(
+        "-password -type -cart -tenant -client_id -connection -transaction"
+      );
       if (!searchedUser)
         return res.status(400).send({ msg: "User not found!" });
       res.send(searchedUser);
@@ -445,7 +443,6 @@ userRouter.put("/cart/:id", protect, async (req, res) => {
     try {
       const books = []; //array de instancias de libros de la base de datos
       for (const id of idBooks) {
-        console.log("entre");
         const b = await bookSchema.findById(id);
         books.push(b);
       }
@@ -535,11 +532,56 @@ userRouter.put("/pay/:id", async (req, res) => {
 });
 
 //Añade libros favoritos al usuario -> protegido, solo el usuario logueado puede agregar favoritos
-userRouter.put("/favorites", protect, async (req, res) => {
-  const { id, books } = req.body;
+//Recibe el id de un usuario y el id de un libro, lo agrega a sus favoritos si es que aun no existe
+userRouter.put("/favorites/:idUser", protect, async (req, res) => {
+  const { idUser } = req.params;
+  const { idBook } = req.body;
+  if (!idUser || !idBook) return res.status(400).send({ msg: "Missing data!" });
   try {
-    const user = await User.findById(user);
-    const newFavorites = user.favorites.concat(books);
+    const user = await User.findById(idUser);
+    if (user.favorites.some((b) => b.id === idBook))
+      return res.send({ msg: "Already exist!" });
+    let book = await bookSchema.findById(idBook);
+    book = {
+      id: book.id,
+      name: book.name,
+      price: book.price,
+    };
+    const newFavorites = [...user.favorites, book];
+    await user.updateOne({ favorites: newFavorites });
+    res.send(newFavorites);
+  } catch (error) {
+    res
+      .status(400)
+      .send({ msg: error, otherMsg: "algo fallo en put a favorite" });
+  }
+});
+
+userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
+  const { id } = req.params;
+  const { idBook } = req.body;
+  if (!id || !idBook) return res.status(400).send("Missing data!");
+  try {
+    const user = await User.findById(id);
+    console.log(user);
+    const newFavorites = user.favorites.filter((b) => b.id !== idBook);
+    await user.updateOne({ favorites: newFavorites });
+    res.send(newFavorites);
+  } catch (error) {
+    res
+      .status(400)
+      .send({ msg: error, otherMsg: "algo fallo en put a favorite/delete" });
+  }
+});
+
+userRouter.get("/favorites/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!id) return res.status(400).send("Missing data!");
+    const user = await User.findById(id);
+    console.log(user);
+    if (!user) return res.status(404).send("User not found!");
+    return res.send(user.favorites);
   } catch (error) {
     res
       .status(400)
