@@ -107,6 +107,7 @@ export default function AccountCreate() {
           dispatch(loging());
         })
         .then(() => setOpen(true))
+        .then(() => setTimeout(()=>history.push('/'),2300))
         .catch((el) => console.log(el));
     }
   }
