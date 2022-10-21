@@ -335,18 +335,13 @@ bookRouter.put("/stock/:id", protect, async (req, res) => {
   
   if(req.user && (req.user.type === "admin" || req.user.type === "seller")){
     try{  
-      console.log(typeof amount);
       const book = await bookSchema.findById(id);
       if(!book){
         return res.status(400).json({msg: "Book not found"})
       }
 
-      // book.stock += Number(amount);
       const sumStock = book.stock + Number(amount)
-      console.log(typeof sumStock);
-      //const newStock = await book.save();
       const newStock = await bookSchema.findByIdAndUpdate(id, { $set: { stock: sumStock } });
-      console.log(newStock);
       return res.status(200).json({newStock});
     } catch(e){
       return res.status(400).send(e)
