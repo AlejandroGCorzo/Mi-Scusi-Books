@@ -139,15 +139,15 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="name"
+                // id="name"
                 name="name"
                 type="text"
                 value={user.name}
                 className="input"
-                required
+                // required
                 placeholder="Name..."
-                pattern="^[A-Za-z\s]+$"
-                maxLength="20"
+                // pattern="^[A-Za-z\s]+$"
+                maxLength="40"
               />
               {errors.name && <p className="error">{errors.name}</p>}
 
@@ -155,7 +155,7 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="lastName"
+                // id="lastName"
                 name="lastName"
                 type="text"
                 value={user.lastName}
@@ -163,7 +163,7 @@ export default function AccountCreate() {
                 required
                 placeholder="lastName..."
                 pattern="^[A-Za-z\s]+$"
-                maxLength="20"
+                maxLength="40"
               />
               {errors.lastName && <p className="error">{errors.lastName}</p>}
             </div>
@@ -172,7 +172,7 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="username"
+                // id="username"
                 name="username"
                 type="text"
                 value={user.username}
@@ -180,7 +180,7 @@ export default function AccountCreate() {
                 required
                 placeholder="Username..."
                 pattern="^[A-Za-z\s]+$"
-                maxLength="20"
+                maxLength="40"
               />
               {errors.username && <p className="error">{errors.username}</p>}
 
@@ -188,7 +188,7 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="email"
+                // id="email"
                 name="email"
                 type="text"
                 value={user.email}
@@ -205,14 +205,14 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="password"
+                // id="password"
                 name="password"
                 type="password"
                 value={user.password}
                 className="input"
                 required
                 placeholder="Password..."
-                maxLength="20"
+                maxLength="40"
               />
               {errors.password && <p className="error">{errors.password}</p>}
 
@@ -220,14 +220,14 @@ export default function AccountCreate() {
               <input
                 autoComplete="off"
                 onChange={onInputChange}
-                id="confirmPassword"
+                // id="confirmPassword"
                 name="confirmPassword"
                 type="password"
                 value={user.confirmPassword}
                 className="input"
                 required
                 placeholder="Confirm Password..."
-                maxLength="20"
+                maxLength="40"
               />
               {errors.confirmPassword && (
                 <p className="error">{errors.confirmPassword}</p>
