@@ -4,11 +4,10 @@ import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 // var errors = {};
 
@@ -67,6 +66,7 @@ export default function AccountCreate() {
   // // // // // // // // //
   const dispatch = useDispatch();
   const history = useHistory();
+
   // // // // // // // // //
   const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState({});
@@ -181,20 +181,36 @@ export default function AccountCreate() {
     if (Object.entries(errors).length !== 0) {
       alert("Please complete all fields!");
     } else {
-      console.log(user);
+      // console.log(user);
       axios
         .post("/user/signup", user)
         .then((el) => {
-          console.log(el);
+          // console.log(el);
           window.sessionStorage.setItem("token", el.data.token);
           dispatch(loging());
+          setOpen(true);
+          setTimeout(() => history.push("/"), 2300);
         })
-        .then(() => setOpen(true))
-        .then(() => setTimeout(()=>history.push('/'),2300))
         .catch((el) => console.log(el));
     }
   }
   // console.log(errors);
+  function handleClose() {
+    setOpen(false);
+  }
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{ width: "50px" }}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   return (
     <div className="userAccountContainer">
       <div className="containerAccount">
@@ -231,7 +247,7 @@ export default function AccountCreate() {
                 className="input"
                 // required
                 placeholder="lastName..."
-                pattern="^[A-Za-z\s]+$"
+                // pattern="^[A-Za-z\s]+$"
                 maxLength="40"
               />
               {errors.lastName && <p className="error">{errors.lastName}</p>}
@@ -248,7 +264,7 @@ export default function AccountCreate() {
                 className="input"
                 // required
                 placeholder="Username..."
-                pattern="^[A-Za-z\s]+$"
+                // pattern="^[A-Za-z\s]+$"
                 maxLength="40"
               />
               {errors.username && <p className="error">{errors.username}</p>}
