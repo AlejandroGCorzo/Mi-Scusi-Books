@@ -63,14 +63,9 @@ const userSchema = mongoose.Schema(
     },
     favorites:{
       type: Array,
-      ref: "Books",
     },
     cart:{
-      books:{
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "Books",
-      },
-      amounts: [Number]
+      type: Array
     }, 
     image: String
   }, { timestamps: false }
