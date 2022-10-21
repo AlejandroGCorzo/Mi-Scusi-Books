@@ -136,7 +136,7 @@ export default function AccountCreate() {
                 type="text"
                 value={user.lastName}
                 className="input"
-                required
+                // required
                 placeholder="lastName..."
                 pattern="^[A-Za-z\s]+$"
                 maxLength="40"
@@ -153,7 +153,7 @@ export default function AccountCreate() {
                 type="text"
                 value={user.username}
                 className="input"
-                required
+                // required
                 placeholder="Username..."
                 pattern="^[A-Za-z\s]+$"
                 maxLength="40"
@@ -169,7 +169,7 @@ export default function AccountCreate() {
                 type="text"
                 value={user.email}
                 className="input"
-                required
+                // required
                 placeholder="E-mail..."
                 maxLength="40"
               />
@@ -186,7 +186,7 @@ export default function AccountCreate() {
                 type="password"
                 value={user.password}
                 className="input"
-                required
+                // required
                 placeholder="Password..."
                 maxLength="40"
               />
@@ -201,7 +201,7 @@ export default function AccountCreate() {
                 type="password"
                 value={user.confirmPassword}
                 className="input"
-                required
+                // required
                 placeholder="Confirm Password..."
                 maxLength="40"
               />
