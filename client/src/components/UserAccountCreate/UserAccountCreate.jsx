@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
-import imgLibritos from "../../sourceImg/imgLibritos.png";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
-import EmailIcon from "@mui/icons-material/Email";
 var errors = {};
 
 function espacios(string) {
@@ -28,10 +26,6 @@ function validate(user) {
   errors.lastName = "A lastName is required";
   errors.username = "A username is required";
   errors.email = "A email is required";
-  // errors.dni = "A dni is required";
-  // errors.phone = "A phone is required";
-  // errors.address = "A address is required";
-  // errors.birthdate = "A birthdate is required";
   errors.password = "A password is required";
   errors.confirmPassword = "Confirm password";
 
@@ -39,10 +33,6 @@ function validate(user) {
   if (user.lastName) delete errors.lastName;
   if (user.username) delete errors.username;
   if (user.email) delete errors.email;
-  // if (user.dni) delete errors.dni;
-  // if (user.phone) delete errors.phone;
-  // if (user.address) delete errors.address;
-  // if (user.birthdate) delete errors.birthdate;
   if (user.password) delete errors.password;
   if (user.confirmPassword) delete errors.confirmPassword;
 
@@ -57,9 +47,6 @@ function validate(user) {
   if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Email is invalid";
   if (user.password !== user.confirmPassword)
     errors.confirmPassword = "Different password ";
-  // } else if (!usersEmail.includes(user.email)) {
-  //   errors.email = "That email doesn't exist";
-  // }
 
   if (espacios(user.name) > 2 || user.name[0] === " ")
     errors.name = "Max 2 spaces";
@@ -82,10 +69,7 @@ export default function AccountCreate() {
     username: "",
     password: "",
     email: "",
-    // dni: "",
-    // phone: "",
-    // address: "",
-    // birthdate: "",
+
     confirmPassword: "",
   });
 
@@ -108,8 +92,6 @@ export default function AccountCreate() {
     if (Object.entries(errors).length !== 0) {
       alert("Please complete all fields!");
     } else {
-      //dispatch(postUser(User)); Acá hay que agregar para que mande el post
-      // alert("Successfully created character, check your email!");
       console.log(user);
       axios
         .post("/user/signup", user)
@@ -119,8 +101,6 @@ export default function AccountCreate() {
           dispatch(loging());
         })
         .catch((el) => console.log(el));
-      // setUser({ user });
-      // history.push("/");
     }
   }
   console.log(errors);
@@ -196,87 +176,8 @@ export default function AccountCreate() {
 
               {errors.email && <p className="error">{errors.email}</p>}
             </div>
-            <div className="formInputs">
-              {/* <div className="divFormInputs">
-                    <span> DNI </span>
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="dni"
-                      name="dni"
-                      type="number"
-                      value={user.dni}
-                      className="input"
-                      required
-                      placeholder="DNI..."
-                      pattern="^[A-Za-z]+$"
-                      maxLength="8"
-                    />
-                    {errors.dni && <p className="error">{errors.dni}</p>}
-                  </div> */}
-
-              {/* <div className="divFormInputs">
-                    <span> Phone </span>
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="phone"
-                      name="phone"
-                      type="number"
-                      value={user.phone}
-                      className="input"
-                      required
-                      placeholder="Phone..."
-                      pattern="^[A-Za-z]+$"
-                      maxLength="10"
-                    />
-                    {errors.phone && <p className="error">{errors.phone}</p>}
-                  </div> */}
-            </div>
 
             <div className="formInputs">
-              {/* <div className="divFormInputs">
-                    <span> Address </span>
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="address"
-                      name="address"
-                      type="text"
-                      value={user.address}
-                      className="input"
-                      required
-                      placeholder="Address..."
-                      maxLength="40"
-                    />
-                    {errors.address && (
-                      <p className="error">{errors.address}</p>
-                    )}
-                  </div> */}
-
-              {/* <div className="divFormInputs">
-                    <span> birthdate </span>
-                    <input
-                      autoComplete="off"
-                      onChange={onInputChange}
-                      id="birthdate"
-                      name="birthdate"
-                      type="date"
-                      value={user.birthdate}
-                      className="input"
-                      required
-                      placeholder="11/12/2000..."
-                      pattern="^[A-Za-z]+$"
-                      maxLength="20"
-                    />
-                    {errors.birthdate && (
-                      <p className="error">{errors.birthdate}</p>
-                    )}
-                  </div> */}
-            </div>
-
-            <div className="formInputs">
-              {/* Input Password */}
               <input
                 autoComplete="off"
                 onChange={onInputChange}
