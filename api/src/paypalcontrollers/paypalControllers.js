@@ -29,6 +29,7 @@ const createOrder = async (req, res) => {
     console.log(params);
 
     // Generate an access token
+
     const {
       data: { access_token },
     } = await axios.post(
@@ -44,6 +45,22 @@ const createOrder = async (req, res) => {
         },
       }
     );
+
+    // const {
+    //   data: { access_token },
+    // } = await axios.post(
+    //   `${process.env.PAYPAL_API_URL}/v1/oauth2/token`,
+    //   params,
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/x-www-form-urlencoded",
+    //     },
+    //     auth: {
+    //       username: process.env.CLIENT_ID,
+    //       password: process.env.CLIENT_SECRET,
+    //     },
+    //   }
+    // );
 
     console.log(access_token);
 
