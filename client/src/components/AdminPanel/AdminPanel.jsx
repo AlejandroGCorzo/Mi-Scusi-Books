@@ -11,23 +11,24 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import TestUsers from "./UsersTable/UsersNewTable.jsx";
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
-
-import { keepLog } from "../../redux/StoreUsers/usersActions.js";
+import { getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const dispatch = useDispatch();
-  const accessToken =
-    window.localStorage.getItem("token") ||
-    window.sessionStorage.getItem("token");
+  // const dispatch = useDispatch();
+  // const accessToken =
+  //   window.localStorage.getItem("token") ||
+  //   window.sessionStorage.getItem("token");
 
-  useEffect(() => {
-    dispatch(getUser(accessToken));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getUser(accessToken));
+  //   dispatch(getBooks());
+  //   return (()=> dispatch(setEmptyUsers()))
+  // }, [dispatch]);
 
   return (
     <div
@@ -61,26 +62,23 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  //const dispatch = useDispatch()
-
-  //const accessToken = window.localStorage.getItem("token") ||window.sessionStorage.getItem("token");
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { loggedUser } = useSelector((state) => state.users);
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const { loggedUser } = useSelector((state) => state.users);
-  const history = useHistory();
-
   useEffect(() => {
-    //console.log('hola entre 1');
-    //if (accessToken) dispatch(keepLog(accessToken));
-    //console.log(loggedUser);
-    //if (loggedUser?.type !== "admin") history.push("/");
     if (loggedUser?.type === "normal") history.push("/"); 
-    //console.log('entre al if');
-    //console.log('hola entre');
-  }, []);
+    dispatch(getUser(accessToken));
+    dispatch(getBooks());
+    return (()=> dispatch(setEmptyUsers()))
+  }, [dispatch,loggedUser]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -114,9 +112,7 @@ export default function BasicTabs() {
             <UsersTable />
           </TabPanel>
         </ThemeProvider>
-      ) : (
-        <span>No sos admin</span>
-      )}
+      ) : null }
     </Box>
   );
 }
