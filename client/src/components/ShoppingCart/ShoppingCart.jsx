@@ -15,6 +15,7 @@ import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  console.log(children)
 
   return (
     <div
