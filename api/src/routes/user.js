@@ -67,11 +67,11 @@ userRouter.post("/login", async (req, res) => {
     let formatUser;
     if (user && (await bcrypt.compare(password, user.password))) {
       formatUser = {
-        id: user._id,
-        picture: user.picture,
-        userName: user.username,
-        type: user.type,
-        state: user.state,
+        // id: user._id,
+        // picture: user.picture,
+        // userName: user.username,
+        // type: user.type,
+        // state: user.state,
         token: generateToken(user._id),
       };
     }
@@ -88,7 +88,6 @@ userRouter.post("/login", async (req, res) => {
 
 //Loguear cuenta de google -> publica
 userRouter.get("/login_google", async (req, res) => {
-  
   const accesToken = req.headers.authorization.split(" ")[1];
   const tokenDecode = jwt.decode(accesToken);
 
@@ -102,33 +101,35 @@ userRouter.get("/login_google", async (req, res) => {
         state: "active",
         image: tokenDecode.picture,
       };
-      console.log('newUser')
+      // console.log('newUser')
       const googleUser = await User.create(newUser);
       const formatUser = {
-        id: googleUser._id,
-        type: googleUser.type,
-        picture: googleUser.image,
-        userName: googleUser.username,
-        state: googleUser.state,
+        // id: googleUser._id,
+        // type: googleUser.type,
+        // picture: googleUser.image,
+        // userName: googleUser.username,
+        // state: googleUser.state,
         token: generateToken(googleUser._id),
       };
 
-      return res.status(200).json(formatUser)
+      return res.status(200).json(formatUser);
     } else {
-      console.log('existe')
+      // console.log('existe')
       const formatUser = {
-        id: user._id,
-        type: user.type,
-        picture: user.image,
-        userName: user.username,
-        state: user.state,
+        // id: user._id,
+        // type: user.type,
+        // picture: user.image,
+        // userName: user.username,
+        // state: user.state,
         token: generateToken(user._id),
       };
 
       return res.status(200).json(formatUser);
     }
   } catch (e) {
-    return res.status(400).json({msg: "Something went wrong, try again later"})
+    return res
+      .status(400)
+      .json({ msg: "Something went wrong, try again later" });
   }
 });
 
@@ -213,7 +214,7 @@ userRouter.get("/login_google", async (req, res) => {
 //       };
 //       return res.send(formatUser);
 //     }
-//     console.log("entraste con correo");
+//   // console.log("entraste con correo");
 //     // console.log(userInfo);
 //     const user = await User.findOne({ email: userInfo.email });
 //     // console.log(user);
@@ -243,7 +244,7 @@ userRouter.get("/login_google", async (req, res) => {
 
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {
-  console.log("entre");
+  // console.log("entre");
   const {
     name,
     lastName,
@@ -322,10 +323,10 @@ userRouter.post("/signup", async (req, res) => {
   }
   // try {
   //   const { username } = req.body;
-  //   console.log(req.body);
+  // // console.log(req.body);
   //   const repeatedUsername = await User.findOne({ username: username });
   //   if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-  //   console.log("llegue");
+  // // console.log("llegue");
   //   const newUser = await User.create(req.body);
   //   res.send("User created successfully!");
   // } catch (e) {
@@ -353,8 +354,8 @@ userRouter.get("/:id", protect, async (req, res) => {
   if (!req.user) {
     return res.status(400).send("Not authorized");
   }
-  console.log("user id", req.user.id);
-  console.log("query id", id);
+  // console.log("user id", req.user.id);
+  // console.log("query id", id);
   if (id === req.user.id) {
     try {
       const searchedUser = await User.findById(id).select(
@@ -492,7 +493,7 @@ userRouter.put("/cart/:id", protect, async (req, res) => {
         const b = await bookSchema.findById(id);
         books.push(b);
       }
-      console.log(books);
+      // console.log(books);
       const user = await User.findByIdAndUpdate(id, {
         $set: { cart: { books: books, amounts: amounts } },
       });
@@ -609,7 +610,7 @@ userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
   if (!id || !idBook) return res.status(400).send("Missing data!");
   try {
     const user = await User.findById(id);
-    console.log(user);
+    // console.log(user);
     const newFavorites = user.favorites.filter((b) => b.id !== idBook);
     await user.updateOne({ favorites: newFavorites });
     res.send(newFavorites);
@@ -625,7 +626,7 @@ userRouter.get("/favorites/:id", async (req, res) => {
   try {
     if (!id) return res.status(400).send("Missing data!");
     const user = await User.findById(id);
-    console.log(user);
+    // console.log(user);
     if (!user) return res.status(404).send("User not found!");
     return res.send(user.favorites);
   } catch (error) {
