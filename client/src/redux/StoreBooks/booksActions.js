@@ -9,7 +9,8 @@ import {
   setFilters,
   setOrderBooks,
   currentPage,
-  filterDeleteBook
+  filterDeleteBook,
+  setStock
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -79,5 +80,16 @@ export const setBookDelete = (id) => {
   return async (dispatch) => {
     let json = await axios.put(`/books/delete/${id}`);
     return dispatch(filterDeleteBook(id));
+  };
+};
+
+export const setBookStock = (id, amount, token) => {
+  return async (dispatch) => {
+    let json = await axios.put(`/books/stock/${id}`,{amount}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(setStock({id,amount}));
   };
 };
