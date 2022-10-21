@@ -20,7 +20,7 @@ export default function FilterAuthor({
         ) : (
           booksFilter?.map((el) =>
             el.author.length > 1 ? (
-              <React.Fragment>
+              <div key={el.author[0]}>
                 <p
                   style={{ cursor: "pointer" }}
                   onClick={(e) => handleClick(e, "author", el.author[0])}
@@ -33,9 +33,10 @@ export default function FilterAuthor({
                 >
                   {el.author[1]}
                 </p>
-              </React.Fragment>
+              </div>
             ) : (
               <p
+                key={el.author[0]}
                 style={{ cursor: "pointer" }}
                 onClick={(e) => handleClick(e, "author", el.author[0])}
               >
