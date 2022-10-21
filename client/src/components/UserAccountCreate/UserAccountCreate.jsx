@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
@@ -8,91 +8,174 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-var errors = {};
 
-function espacios(string) {
-  var contador = 0;
-  for (var i = 0; i < string.length; i++) {
-    if (string[i] === " ") contador++;
-  }
 
-  return contador;
-}
+// var errors = {};
 
-function validar(valor) {
-  const input = document.getElementById(valor);
-  if (!input.checkValidity()) return false;
-  return true;
-}
+// function espacios(string) {
+//   var contador = 0;
+//   for (var i = 0; i < string.length; i++) {
+//     if (string[i] === " ") contador++;
+//   }
 
-function validate(user) {
-  errors.name = "A name is required";
-  errors.lastName = "A lastName is required";
-  errors.username = "A username is required";
-  errors.email = "A email is required";
-  errors.password = "A password is required";
-  errors.confirmPassword = "Confirm password";
+//   return contador;
+// }
 
-  if (user.name) delete errors.name;
-  if (user.lastName) delete errors.lastName;
-  if (user.username) delete errors.username;
-  if (user.email) delete errors.email;
-  if (user.password) delete errors.password;
-  if (user.confirmPassword) delete errors.confirmPassword;
+// function validar(valor) {
+//   const input = document.getElementById(valor);
+//   if (!input.checkValidity()) return false;
+//   return true;
+// }
 
-  if (validar("name") === false) errors.name = "Invalid character";
-  if (validar("lastName") === false) errors.lastName = "Invalid character";
+// function validate(user) {
+//   errors.name = "A name is required";
+//   errors.lastName = "A lastName is required";
+//   errors.username = "A username is required";
+//   errors.email = "A email is required";
+//   errors.password = "A password is required";
+//   errors.confirmPassword = "Confirm password";
 
-  if (!user.email) errors.email = "Email is required";
-  if (user.email.length < 6)
-    errors.email = "Email must contain at least 6 characters";
-  if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(user.email))
-    errors.email = "Email can contain only letters, numbers, -, _, or .";
-  if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Email is invalid";
-  if (user.password !== user.confirmPassword)
-    errors.confirmPassword = "Different password ";
+//   if (user.name) delete errors.name;
+//   if (user.lastName) delete errors.lastName;
+//   if (user.username) delete errors.username;
+//   if (user.email) delete errors.email;
+//   if (user.password) delete errors.password;
+//   if (user.confirmPassword) delete errors.confirmPassword;
 
-  if (espacios(user.name) > 2 || user.name[0] === " ")
-    errors.name = "Max 2 spaces";
-  if (espacios(user.lastName) > 2 || user.lastName[0] === " ")
-    errors.lastName = "Max 2 spaces";
-  if (espacios(user.username) > 0 || user.username[0] === " ")
-    errors.username = "Username invalid";
-  return errors;
-}
+//   if (validar("name") === false) errors.name = "Invalid character";
+//   if (validar("lastName") === false) errors.lastName = "Invalid character";
+
+//   if (!user.email) errors.email = "Email is required";
+//   if (user.email.length < 6)
+//     errors.email = "Email must contain at least 6 characters";
+//   if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(user.email))
+//     errors.email = "Email can contain only letters, numbers, -, _, or .";
+//   if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Email is invalid";
+//   if (user.password !== user.confirmPassword)
+//     errors.confirmPassword = "Different password ";
+
+//   if (espacios(user.name) > 2 || user.name[0] === " ")
+//     errors.name = "Max 2 spaces";
+//   if (espacios(user.lastName) > 2 || user.lastName[0] === " ")
+//     errors.lastName = "Max 2 spaces";
+//   if (espacios(user.username) > 0 || user.username[0] === " ")
+//     errors.username = "Username invalid";
+//   return errors;
+// }
 
 export default function AccountCreate() {
+  // // // // // // // // //
   const dispatch = useDispatch();
   const history = useHistory();
-
+  // // // // // // // // //
   const [open, setOpen] = useState(false);
-
   const [errors, setErrors] = useState({});
-
+  const [confirmPass, setConfirmPass] = useState("");
   const [user, setUser] = useState({
     name: "",
     lastName: "",
     username: "",
     password: "",
     email: "",
-
-    confirmPassword: "",
+    // confirmPassword: "",
   });
-
+  // // // // // // // // //
   function onInputChange(e) {
     e.preventDefault();
+    if (
+      e.target.name === "username" ||
+      e.target.name === "email" ||
+      e.target.name === "password"
+    ) {
+      setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+      });
+      validations(e.target.name, e.target.value);
+      return;
+    }
+    if (e.target.name === "confirmPass") {
+      setConfirmPass(e.target.value);
+      validations(e.target.name, e.target.value);
+      return;
+    }
     setUser({
       ...user,
       [e.target.name]: e.target.value.toLowerCase(),
     });
-    setErrors(
-      validate({
-        ...user,
-        [e.target.name]: e.target.value,
-      })
-    );
+    // setErrors(
+    //   validate({
+    //     ...user,
+    //     [e.target.name]: e.target.value,
+    //   })
+    // );
+    validations(e.target.name, e.target.value);
+  }
+  // useEffect(() => {}, [confirmPass]);
+  // // // // // // // // //
+  function validations(name, value) {
+    if (name === "name" || name === "lastName") {
+      if (!/^([a-z]+\s)*[a-z]+$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]:
+            "Name must be only words withouth numbers and only one whitespace between them.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
+
+    if (name === "username") {
+      if (!/^[a-zA-Z0-9]*$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]:
+            "Username must be only one word, numbers allowed, no whitespaces allowed.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
+    if (name === "password") {
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]:
+            "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
+    if (name === "confirmPass") {
+      if (user.password !== value)
+        return setErrors({
+          ...errors,
+          [name]: "Passwords must be the same.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
+    if (name === "email") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]: "Must be a valid Email.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
   }
 
+  // // // // // // // // //
   function onSubmit(e) {
     e.preventDefault();
     if (Object.entries(errors).length !== 0) {
@@ -111,23 +194,7 @@ export default function AccountCreate() {
         .catch((el) => console.log(el));
     }
   }
-  console.log(errors);
-  function handleClose(){
-    setOpen(false)
-  }
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-        style={{"width":"50px"}}
-      >
-        <CloseIcon fontSize="small"  />
-      </IconButton>
-    </React.Fragment>
-  );
+  // console.log(errors);
   return (
     <div className="userAccountContainer">
       <div className="containerAccount">
@@ -137,6 +204,7 @@ export default function AccountCreate() {
             <div className="formInputs">
               {/* Input Name */}
               <input
+                style={{ textTransform: "capitalize" }}
                 autoComplete="off"
                 onChange={onInputChange}
                 // id="name"
@@ -153,6 +221,7 @@ export default function AccountCreate() {
 
               {/* Input lastName */}
               <input
+                style={{ textTransform: "capitalize" }}
                 autoComplete="off"
                 onChange={onInputChange}
                 // id="lastName"
@@ -221,16 +290,16 @@ export default function AccountCreate() {
                 autoComplete="off"
                 onChange={onInputChange}
                 // id="confirmPassword"
-                name="confirmPassword"
+                name="confirmPass"
                 type="password"
-                value={user.confirmPassword}
+                value={confirmPass}
                 className="input"
                 // required
                 placeholder="Confirm Password..."
                 maxLength="40"
               />
-              {errors.confirmPassword && (
-                <p className="error">{errors.confirmPassword}</p>
+              {errors.confirmPass && (
+                <p className="error">{errors.confirmPass}</p>
               )}
             </div>
 
