@@ -15,6 +15,7 @@ import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  console.log(children)
 
   return (
     <div
@@ -65,7 +66,7 @@ export default function ShoppingCart(props) {
 
   const handleClickBuy = async () => {
     const { data } = await CheckoutPayPal()
-    console.log(data)
+    console.log("hola", data)
     window.location.href = data
   }
 
