@@ -167,6 +167,89 @@
   margin-bottom: 5px;
 }
 
+.titleFormDetails{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 25px;
+  font-weight: bold;
+  font-size: 25px;
+  color: #00cc77;
+  background-color: white;
+  border-radius: 8px 8px 0px 0px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.formBackDetails{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #00cc77;
+  background-color: white;
+  border-radius: 0px 0px 8px 8px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.contentVentana{
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background:rgba(0, 0, 0, 0.82);
+  position:fixed;
+  height:100%;
+  width:100%;
+  top: 0;
+  z-index: 15;
+}
+
+.ventana_flotante {
+  background: #FFFFFF;
+  border: 1px solid #DDDDDD;
+  border-radius: 8px;
+  width: 80%;
+  min-height: 480px;
+  max-height: 80%;
+  overflow: scroll;
+}
+
+.contentReviews{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: column;
+  border-top: 1px solid #e7e7e7;
+}
+
+.reviewText{
+  border-bottom: 1px solid #e7e7e7;
+  min-height: 150px;
+  width: 100%;
+  text-align: left;
+}
+
+.reviewText p{
+  margin-top: -10px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.contentLike{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.contentX{
+  background-color: white;
+  border: 1px solid white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
 @media (min-width: 768px) {
   .contentCreateBook {
     max-width: 514px;

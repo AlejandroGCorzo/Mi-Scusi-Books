@@ -188,7 +188,6 @@ export default function AccountCreate() {
                 className="input"
                 required
                 placeholder="Password..."
-                pattern="^[A-Za-z\s]+$"
                 maxLength="20"
               />
               {errors.password && <p className="error">{errors.password}</p>}
@@ -204,7 +203,6 @@ export default function AccountCreate() {
                 className="input"
                 required
                 placeholder="Confirm Password..."
-                pattern="^[A-Za-z\s]+$"
                 maxLength="20"
               />
               {errors.confirmPassword && (

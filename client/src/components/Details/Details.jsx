@@ -6,7 +6,10 @@ import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Checkbox from '@mui/material/Checkbox';
 
 import Box from '@mui/material/Box';
@@ -16,22 +19,38 @@ import "./Details.css";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-const labels = {
-  0.5: 'Useless',
-  1: 'Useless',
-  1.5: 'Poor',
-  2: 'Poor',
-  2.5: 'Ok!',
-  3: 'Ok!',
-  3.5: 'Good!',
-  4: 'Good!',
-  4.5: 'Excellent!',
-  5: 'Excellent!',
-};
+function textRating(value){
+  if(value <= 1) return 'Useless';
+  if(value > 1 && value <= 2 ) return 'Poor';
+  if(value > 2 && value <= 3 ) return 'Ok!';
+  if(value > 3 && value <= 4.5 ) return 'Good!';
+  if(value > 4.5 && value <= 5 ) return 'Excellent!';
+}
 
 const Details = (props) => {
   const dispatch = useDispatch();
-  var value = 2.5;
+
+
+/////////////////Simulacion del rating
+  var reviewsTest = [];
+  
+  reviewsTest.push(
+    {id:"5", coment: "Es una joyita. Está recién es mi segunda gpu la anterior era una gtx 750 de 2gb qué para juegos competitivos y no tan exigentes como el fortnite y el valorant andaba bien por encima de los 60 fps mi principal motivo para comprar la gtx 1660 super era jugar otros juegos más exigentes warzone forza horizon 5 battlefield 5 y escape from tarkov antes de comprarla había investigado si los componentes de mi pc acompañarían bien a la tarjeta gráfica i5 8400 16 gb de ram fuente de 550 watts corsair y todo el sistema operativo esta en un ssd. La instalación en el gabinete fue sencilla recomendadísimo para jugar en 1080p con todo en ultra va excelente tal vez los juegos más modernos no en ultra pero si en altos.", value: 5},
+    {id:"1", coment: "Buenardo", value: 4.5},
+    {id:"2", coment: "Godines", value: 4},
+    {id:"3", coment: "Buen Libro", value: 2.7},
+    {id:"4", coment: "Seeee", value: 5},
+  )
+
+  var totalRating = 0;
+
+  reviewsTest.forEach(e => {
+    totalRating += e.value;
+  })
+
+  var value = parseInt((totalRating / reviewsTest.length).toFixed(1));
+///////////////////////////////////////
+
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
@@ -43,6 +62,17 @@ const Details = (props) => {
       dispatch(setEmptyDetail());
     };
   }, [dispatch]);
+
+  function ocultar(){
+    var x = document.getElementById("idContentVentana");
+    
+    if (x.style.display == "none") {
+      x.style.display = "flex";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
 
   return (
     <div className="contentCategory">
@@ -58,8 +88,48 @@ const Details = (props) => {
           </div>
         ))}
       </div> */}
+      <div id="idContentVentana" className="contentVentana" style={{display:"none"}}> 
 
-      <div className="titleFormx">
+      <div className="ventana_flotante">
+        <div className="contentLike"><button className="contentX" onClick={() => ocultar()}>X</button></div>
+        <h3>Product Reviews</h3>
+        <div className="contentReviews">
+          {reviewsTest.map(e=>{
+            return(<div className="reviewText" key={e.id}>
+
+                <Box
+                  sx={{
+                    width: 200,
+                    display: 'flex',
+                    alignItems: 'center',
+                    margin: "25px",
+                    color:'#00cc77',
+                  }}
+                >
+                  <Rating
+                    name="text-feedback"
+                    value={e.value}                 //Acá hay que pasarle el valor del rating del libro
+                    readOnly
+                    precision={0.5}
+                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                  />
+
+                  <Box sx={{ ml: 2 }}>{textRating(e.value)}</Box>
+                </Box>
+              <p>{e.coment}</p>
+              
+              <div className="contentLike">
+                <Checkbox {...label} icon={<ThumbUpOffAltIcon className="favColor"/>} checkedIcon={<ThumbUpAltIcon className="favColor"/>} />
+              </div>
+
+              {/* <Checkbox {...label} icon={<ThumbDownOffAltIcon className="favColor"/>} checkedIcon={<ThumbDownAltIcon className="favColor"/>} /> */}
+            </div>)
+          })}
+        </div>
+      </div>
+      </div>
+      
+      <div className="titleFormDetails">
         <p>Book Information</p>
       </div>
 
@@ -76,16 +146,18 @@ const Details = (props) => {
             <div>
               <span className="bookName">{detail.name}</span>
             </div>
-
             <div className="detailsContainer">
               <div className="contentRating">
                 <Box
+                  onClick={() => ocultar()}
                   sx={{
                     width: 200,
                     display: 'flex',
                     alignItems: 'center',
                     color:'#00cc77',
+                    cursor: 'pointer',
                   }}
+                  
                 >
                   <Rating
                     name="text-feedback"
@@ -94,9 +166,10 @@ const Details = (props) => {
                     precision={0.5}
                     emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                   />
-                  <Box sx={{ ml: 2 }}>{labels[value]}</Box>
+                  <Box sx={{ ml: 2 }}>{textRating(value)}</Box>
                 </Box>
               </div>
+              
               <span className="detailsSpan">
                 <b>Author: </b>&nbsp;
                 {detail.author?.map((el) => (
@@ -159,9 +232,10 @@ const Details = (props) => {
         </div>
       </div>
 
-      <div className="formBackx">
+      <div className="formBackDetails">
         <p>@Mi Scusi Books</p>
       </div>
+
     </div>
   );
 };
