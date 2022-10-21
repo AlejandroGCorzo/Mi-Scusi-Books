@@ -5,14 +5,16 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import UsersTable from "./UsersTable/UsersTable.jsx";
-import BooksTable from "./BooksTable/BooksTable.jsx";
 import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import TestUsers from "./UsersTable/UsersNewTable.jsx";
+
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
+import BooksStock from "./BooksTable/BookStockTable.jsx";
+
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
@@ -95,8 +97,7 @@ export default function BasicTabs() {
             >
               <Tab label="Users New Table" {...a11yProps(0)} />
               <Tab label="Books New Table" {...a11yProps(1)} />
-              <Tab label="Books Old Table" {...a11yProps(2)} />
-              <Tab label="Users Old Table" {...a11yProps(3)} />
+              <Tab label="Books Stock" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -106,10 +107,7 @@ export default function BasicTabs() {
             <BookNewTable />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <BooksTable />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <UsersTable />
+            <BooksStock/>
           </TabPanel>
         </ThemeProvider>
       ) : null }

@@ -14,12 +14,16 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
-import { useSelector } from "react-redux";
+import BlockIcon from "@mui/icons-material/Block";
+import { useDispatch, useSelector } from "react-redux";
 
 import BooksDelete from "../ConfirmDialog/BooksDelete.jsx";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import { setBookStock } from "../../../redux/StoreBooks/booksActions.js";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -59,40 +63,10 @@ const headCells = [
     label: "Name",
   },
   {
-    id: "author",
+    id: "price",
     numeric: false,
     disablePadding: true,
-    label: "Author",
-  },
-  {
-    id: "format",
-    numeric: false,
-    disablePadding: true,
-    label: "Format",
-  },
-  {
-    id: "edition",
-    numeric: false,
-    disablePadding: true,
-    label: "Edition",
-  },
-  {
-    id: "language",
-    numeric: false,
-    disablePadding: true,
-    label: "Language",
-  },
-  {
-    id: "ISBN",
-    numeric: false,
-    disablePadding: true,
-    label: "ISBN",
-  },
-  {
-    id: "rating",
-    numeric: false,
-    disablePadding: true,
-    label: "Rating",
+    label: "Price",
   },
   {
     id: "stock",
@@ -101,10 +75,10 @@ const headCells = [
     label: "Stock",
   },
   {
-    id: "price",
+    id: "newStock",
     numeric: false,
     disablePadding: true,
-    label: "Price",
+    label: "Add new stock",
   },
 ];
 
@@ -151,7 +125,7 @@ const EnhancedTableToolbar = (props) => {
     handleOpenDelete,
     handleCloseDelete,
     id,
-    loggedUser,
+    handleSetStock,
   } = props;
 
   return (
@@ -179,9 +153,13 @@ const EnhancedTableToolbar = (props) => {
           {numSelected ? `Book: ${numSelected}` : null}
         </Typography>
       }
-      {loggedUser.type === 'admin' && numSelected ? (
+      {numSelected ? (
         <>
-            <IconButton onClick={handleOpenDelete} title="Delete">
+          <>
+            <Button onClick={(e)=> handleSetStock(e)} variant="outlined" style={{ "min-width": "140px" }}>
+              Update stock
+            </Button>
+            {/* <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
             <BooksDelete
@@ -189,14 +167,25 @@ const EnhancedTableToolbar = (props) => {
               openDialog={openDelete}
               handleClose={handleCloseDelete}
               id={id}
+            /> */}
+          </>
+          {/* <>
+            <IconButton onClick={handleOpenBlock} title="Block">
+              <BlockIcon />
+            </IconButton>
+            <UsersBlock
+              numSelected={numSelected}
+              openDialog={openBlock}
+              handleClose={handleCloseblock}
             />
+          </> */}
         </>
       ) : null}
     </Toolbar>
   );
 };
 
-export default function TestUsers() {
+export default function BooksStock() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("email");
   const [selected, setSelected] = React.useState();
@@ -206,8 +195,29 @@ export default function TestUsers() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   console.log(selected);
-  const { books } = useSelector((state) => state.books);
-  const { loggedUser } = useSelector((state) => state.users);
+
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+
+  //////////////////////////////////////////////////////////
+  const dispatch = useDispatch();
+
+  const [inputStock, setInputStock] = React.useState({
+    _id: 0,
+  });
+
+  const stockChange = (e) => {
+    setInputStock({ [e.target.name]: e.target.value });
+  };
+
+  console.log(accessToken);
+  console.log(inputStock[selected]);
+
+  const handleSetStock = (e) => {
+    dispatch(setBookStock(selected, inputStock[selected], accessToken));
+  };
+  //////////////////////////////////////////////////////////
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleOpenDelete = () => {
@@ -220,6 +230,7 @@ export default function TestUsers() {
     setShowEmail();
   };
 
+  const { books } = useSelector((state) => state.books);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -230,6 +241,7 @@ export default function TestUsers() {
   const handleClick = (event, id, name) => {
     id === selected ? setSelected() : setSelected(id);
     name === showEmail ? setShowEmail() : setShowEmail(name);
+    if (id !== selected) setInputStock({ _id: 0 });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -256,7 +268,7 @@ export default function TestUsers() {
           handleOpenDelete={handleOpenDelete}
           handleCloseDelete={handleCloseDelete}
           id={selected}
-          loggedUser={loggedUser}
+          handleSetStock={handleSetStock}
         />
         <TableContainer>
           <Table
@@ -315,14 +327,17 @@ export default function TestUsers() {
                           {b.name}
                         </Link>
                       </TableCell>
-                      <TableCell align="left">{b.author}</TableCell>
-                      <TableCell align="left">{b.format}</TableCell>
-                      <TableCell align="left">{b.edition}</TableCell>
-                      <TableCell align="left">{b.language}</TableCell>
-                      <TableCell align="left">{b.ISBN}</TableCell>
-                      <TableCell align="left">{b.rating}</TableCell>
-                      <TableCell align="left">{b.stock}</TableCell>
                       <TableCell align="left">${b.price}</TableCell>
+                      <TableCell align="left">{b.stock}</TableCell>
+                      <TableCell align="left">
+                        <input
+                          onChange={(e) => stockChange(e)}
+                          placeholder="Add new stock"
+                          type="number"
+                          name={b._id}
+                          value={inputStock._id}
+                        />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
