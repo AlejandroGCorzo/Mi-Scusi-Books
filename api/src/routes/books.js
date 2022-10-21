@@ -329,6 +329,27 @@ bookRouter.put("/:id", async (req, res, next) => {
   }
 });
 
+bookRouter.put("/stock/:id", protect, async (req, res) => {
+  const { id } = req.params;
+  const { amount } = req.body;
+  
+  if(req.user && (req.user.type === "admin" || req.user.type === "seller")){
+    try{  
+      const book = await bookSchema.findById(id);
+      console.log(book)
+      if(!book){
+        return res.status(400).json({msg: "Book not found"})
+      }
+
+      book.stock += amount;
+      const newStock = await book.save();
+
+      return res.status(200).json({newStock});
+    } catch(e){
+      return res.status(400).json({msg: "Try again later"})
+    }
+  }
+})
 //midleware error handling
 bookRouter.use((error, req, res, next) => {
   if (error.name === "CastError")
