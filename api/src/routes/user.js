@@ -99,7 +99,7 @@ userRouter.get("/login_google", async (req, res) => {
         lastName: tokenDecode.family_name,
         email: tokenDecode.email,
         state: "active",
-        image: tokenDecode.picture,
+        image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
       };
       // console.log('newUser')
       const googleUser = await User.create(newUser);

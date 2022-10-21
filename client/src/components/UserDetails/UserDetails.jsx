@@ -19,7 +19,7 @@ const UserDetails = (props) => {
     } else {
       dispatch(getUserDetails(props.match.params.id, token));
     }
-    console.log(profile.image)
+    console.log(profile.image);
     return () => {
       dispatch(clearUserDetail());
     };
@@ -38,7 +38,7 @@ const UserDetails = (props) => {
             <div className="contentCategoryDivx">
               <div className="categoryDivx">
                 <div className="userImage">
-                  <img src={profile?.image?.slice(0,profile.image.length-6)} referrerPolicy="no-referrer" />
+                  <img src={profile.image} referrerPolicy="no-referrer" />
                 </div>
 
                 <div className="userInfoContainer">
