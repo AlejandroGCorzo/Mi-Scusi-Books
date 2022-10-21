@@ -24,6 +24,7 @@ export default function FilterEditorial({
             ?.filter((item, index) => allEdit.indexOf(item) === index)
             .map((el) => (
               <p
+                key={el}
                 style={{ cursor: "pointer" }}
                 onClick={(e) => handleClick(e, "editorial", el)}
               >

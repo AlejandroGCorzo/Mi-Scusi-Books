@@ -25,6 +25,7 @@ export default function FilterFormat({
         ) : (
           allFormat?.map((el) => (
             <p
+              key={el}
               style={{ cursor: "pointer" }}
               onClick={(e) => handleClick(e, "format", el)}
             >
