@@ -12,7 +12,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import TestUsers from "./UsersTable/TestTable.jsx";
+import TestUsers from "./UsersTable/UsersNewTable.jsx";
 import BookNewTable from "./BooksTable/BookNewTable.jsx"
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 

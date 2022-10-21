@@ -25,6 +25,12 @@ import UsersBlock from "../ConfirmDialog/UsersBlock";
 import { useDispatch } from "react-redux";
 import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import SelectDialog from "../ConfirmDialog/SelectDialog.jsx";
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -166,6 +172,25 @@ const EnhancedTableToolbar = (props) => {
     handleCloseBlock, // fn para cerrar dialog
   } = props;
 
+  // const [age, setAge] = React.useState("");
+  const [newRol, setNewRol] = React.useState("");
+
+  const handleChange = (e) => {
+    setNewRol(e.target.value);
+    handleOpenDialog();
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setNewRol("");
+  };
+
   return (
     <Toolbar
       sx={{
@@ -182,25 +207,33 @@ const EnhancedTableToolbar = (props) => {
     >
       {emailSelectUser && id !== loggedUser.id ? (
         <>
-          <>
-            {selectUser.type !== "admin" ? (
-              <Button
-                onClick={(e) => handleMakeAdmin(e)}
-                variant="outlined"
-                style={{ "min-width": "122px" }}
-              >
-                Change rol
-              </Button>
-            ) : (
-              <Button
-                onClick={(e) => handleRemoveAdmin(e)}
-                variant="outlined"
-                style={{ "min-width": "140px" }}
-              >
-                Remove admin
-              </Button>
-            )}
-          </>
+          <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              Change Rol
+            </InputLabel>
+
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={newRol}
+              onChange={(e) => handleChange(e)}
+              autoWidth
+              label="Change Rol"
+              style={{ width: "130px" }}
+            >
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="normal">Normal</MenuItem>
+              <MenuItem value="seller">Seller</MenuItem>
+            </Select>
+            <SelectDialog
+              openDialog={openDialog}
+              handleCloseDialog={handleCloseDialog}
+              emailSelectUser={emailSelectUser}
+              id={id}
+              newRol={newRol}
+            />
+          </FormControl>
+
           <Typography
             sx={{ flex: "1 1 100%" }}
             color="inherit"
@@ -219,7 +252,7 @@ const EnhancedTableToolbar = (props) => {
             id={id}
           />
           <>
-            <IconButton onClick={e=>handleOpenBlock(e)} title="Block">
+            <IconButton onClick={(e) => handleOpenBlock(e)} title="Block">
               <BlockIcon />
             </IconButton>
             <UsersBlock
@@ -245,27 +278,27 @@ export default function TestUsers() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  
+
   const { users } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
   console.log(selected);
-  
+
   //////////////Make and remove admin//////////////////
   const dispatch = useDispatch();
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
 
-  const handleMakeAdmin = (e)=>{
+  const handleMakeAdmin = (e) => {
     // alert("Make Admin")
-    dispatch(setUserChangeRol(selected, 'admin', accessToken))
+    dispatch(setUserChangeRol(selected, "admin", accessToken));
   };
-  
-  const handleRemoveAdmin = (e)=>{
+
+  const handleRemoveAdmin = (e) => {
     //alert("Remove Admin")
-    dispatch(setUserChangeRol(selected, 'normal', accessToken))
+    dispatch(setUserChangeRol(selected, "normal", accessToken));
   };
-  
+
   //////////////Open and close confirm dialog//////////////////
   const [openDelete, setOpenDelete] = React.useState(false);
   const handleOpenDelete = (e) => {
@@ -292,7 +325,6 @@ export default function TestUsers() {
     setShowEmail();
   };
 
-
   /////////////Pide la function de sort de mas arriba//////////////
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -306,7 +338,7 @@ export default function TestUsers() {
     id === selected ? setSelected() : setSelected(id);
     email === showEmail ? setShowEmail() : setShowEmail(email);
   };
-  
+
   //////Functions para cambiar paginas y elementos por pagina//////
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -317,7 +349,7 @@ export default function TestUsers() {
     setPage(0);
   };
 
-  const isSelected = (id) => id === selected;// Devuelve true o false -> completa el checkbox
+  const isSelected = (id) => id === selected; // Devuelve true o false -> completa el checkbox
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =

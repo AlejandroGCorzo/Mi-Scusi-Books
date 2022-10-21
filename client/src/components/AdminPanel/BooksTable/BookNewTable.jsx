@@ -14,13 +14,11 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
-import BlockIcon from "@mui/icons-material/Block";
 import { useSelector } from "react-redux";
 
-import BooksDelete from "../ConfirmDialog/BooksDelete.jsx"
+import BooksDelete from "../ConfirmDialog/BooksDelete.jsx";
 import { Link } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
@@ -170,7 +168,7 @@ const EnhancedTableToolbar = (props) => {
           color="inherit"
           variant="subtitle1"
           component="div"
-          style={{'text-transform': 'capitalize'}}
+          style={{ "text-transform": "capitalize" }}
         >
           {numSelected ? `Book: ${numSelected}` : null}
         </Typography>
@@ -224,7 +222,7 @@ export default function TestUsers() {
   const handleCloseDelete = () => {
     setOpenDelete(false);
     setSelected();
-    setShowEmail()
+    setShowEmail();
   };
 
   const { books } = useSelector((state) => state.books);
@@ -296,7 +294,7 @@ export default function TestUsers() {
                       tabIndex={-1}
                       key={b._id}
                       selected={isItemSelected}
-                      style={{'text-transform': 'capitalize'}}
+                      style={{ "text-transform": "capitalize" }}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -313,8 +311,13 @@ export default function TestUsers() {
                         scope="row"
                         padding="none"
                       >
-                        <Link to={`/book_details/${b._id}`} style={{ textDecoration: "none"/* , color: "#000000" */ }}>
-                        {b.name}
+                        <Link
+                          to={`/book_details/${b._id}`}
+                          style={{
+                            textDecoration: "none" /* , color: "#000000" */,
+                          }}
+                        >
+                          {b.name}
                         </Link>
                       </TableCell>
                       <TableCell align="left">{b.author}</TableCell>
