@@ -484,21 +484,35 @@ userRouter.put("/type/:id", protect, async (req, res) => {
 });
 
 //Actualiza el carrito de compras -> protegida, solo el usuario logueado puede modificar su carrito
-userRouter.put("/cart/:id", protect, async (req, res) => {
-  const { id } = req.params;
-  const { idBooks, amounts } = req.body;
-  if (req.user && req.user.id === id) {
+//Recibe el id de un libro y su cantidad. Si el libro ya existe, va a modificar la cantidad.
+userRouter.put("/cart/:idUser", protect, async (req, res) => {
+  const { idUser } = req.params;
+  const { idBook, amount } = req.body;
+  if (req.user && req.user.id === idUser) {
     try {
-      const books = []; //array de instancias de libros de la base de datos
-      for (const id of idBooks) {
-        const b = await bookSchema.findById(id);
-        books.push(b);
+      const user = await User.findById(idUser);
+      // if (user.cart.some((b) => b.id === idBook)) {
+      const b = user.cart.find((b) => b.id === idBook);
+      if (b) {
+        console.log(b);
+        let book = b;
+        book.amount = amount;
+        const newCart = user.cart.filter((b) => b.id !== idBook);
+        newCart.push(book);
+        await user.updateOne({ cart: newCart });
+        return res.send(newCart);
       }
-      // console.log(books);
-      const user = await User.findByIdAndUpdate(id, {
-        $set: { cart: { books: books, amounts: amounts } },
-      });
-      res.send(user);
+      let book = await bookSchema.findById(idBook);
+      book = {
+        id: book.id,
+        name: book.name,
+        price: book.price,
+        image: book.image,
+        amount: amount,
+      };
+      const newCart = [...user.cart, book];
+      await user.updateOne({ cart: newCart });
+      res.send(newCart);
     } catch (error) {
       res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
     }
@@ -509,52 +523,80 @@ userRouter.put("/cart/:id", protect, async (req, res) => {
   }
 });
 
-//Devuelve el carrito completo del usuario logueado -> PROTEGER, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
-userRouter.get("/cart/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findById(id).populate("cart.books");
-    res.send(user.cart);
-  } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
+//Elimina un libro del carrito de compras -> protegida, solo el usuario logueado puede modificar su carrito
+//Recibe el id de un libro y lo elimina del carrito.
+userRouter.put("/cart/delete/:idUser", protect, async (req, res) => {
+  const { idUser } = req.params;
+  const { idBook } = req.body;
+  if (req.user && req.user.id === idUser) {
+    try {
+      const user = await User.findById(idUser);
+      const newCart = user.cart.filter((b) => b.id !== idBook);
+      await user.updateOne({ cart: newCart });
+      res.send(newCart);
+    } catch (error) {
+      res
+        .status(400)
+        .send({ msg: error, otherMsg: "algo fallo en cart/delete" });
+    }
+  } else {
+    return res
+      .status(400)
+      .json({ msg: "Not authorized to delete a book of the shopping cart" });
   }
 });
 
-//Registra el pago de la compra -> PROTEGER, SOLO USUSARIO LOGUEADO PUEDE PAGAR
-userRouter.put("/pay/:id", async (req, res) => {
+//Devuelve el carrito completo del usuario logueado -> PROTEGIDA, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
+userRouter.get("/cart/:id", protect, async (req, res) => {
   const { id } = req.params;
-  try {
-    const user = await User.findById(id);
-
-    if (!user.cart.books.length || !user.cart.amounts.length)
-      return res.status(400).send({ msg: "dangerous car" });
-
-    const books = [];
-    for (const id of user.cart.books) {
-      const book = await bookSchema.findById(id);
-      books.push(book);
+  if (req.user && req.user.id === id) {
+    try {
+      const user = await User.findById(id).populate("cart.books");
+      res.send(user.cart);
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
     }
-    const price = [];
-    for (const book of books) {
-      price.push(book.price);
-    }
-    const total = price.reduce((acc, curr) => acc + curr, 0);
-    const date = new Date().toDateString();
+  } else {
+    return res.status(400).json({ msg: "Not authorized to see shopping cart" });
+  }
+});
 
-    const bill = await billsSchema.create({
-      books: books,
-      amountBooks: user.cart.amounts,
-      price: price,
-      total: total,
-      date: date,
-      user: user._id,
-    });
+//Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
+userRouter.put("/pay/:id", protect, async (req, res) => {
+  const { id } = req.params;
+  if (req.user && req.user.id === id) {
+    try {
+      const user = await User.findById(id);
 
-    await transporter.sendMail({
-      from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
-      to: user.email,
-      subject: "Thanks for shopping!",
-      html: `
+      if (!user.cart.books.length || !user.cart.amounts.length)
+        return res.status(400).send({ msg: "dangerous car" });
+
+      const books = [];
+      for (const id of user.cart.books) {
+        const book = await bookSchema.findById(id);
+        books.push(book);
+      }
+      const price = [];
+      for (const book of books) {
+        price.push(book.price);
+      }
+      const total = price.reduce((acc, curr) => acc + curr, 0);
+      const date = new Date().toDateString();
+
+      const bill = await billsSchema.create({
+        books: books,
+        amountBooks: user.cart.amounts,
+        price: price,
+        total: total,
+        date: date,
+        user: user._id,
+      });
+
+      await transporter.sendMail({
+        from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
+        to: user.email,
+        subject: "Thanks for shopping!",
+        html: `
       <h2>Here is your bill! Dont demand us!</h2>
       <br>
       <p>Date: ${date}</p>
@@ -567,15 +609,18 @@ userRouter.put("/pay/:id", async (req, res) => {
       <br>
       <p>Mi Scusi Books staff.</p>
       `,
-    });
+      });
 
-    await User.findByIdAndUpdate(id, {
-      $set: { cart: { books: [], amounts: [] } },
-    });
+      await User.findByIdAndUpdate(id, {
+        $set: { cart: { books: [], amounts: [] } },
+      });
 
-    res.send(bill);
-  } catch (error) {
-    res.status(400).send({ msg: error, otherMsg: "algo fallo en pay" });
+      res.send(bill);
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en pay" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to pay" });
   }
 });
 
@@ -594,6 +639,7 @@ userRouter.put("/favorites/:idUser", protect, async (req, res) => {
       id: book.id,
       name: book.name,
       price: book.price,
+      image: book.image,
     };
     const newFavorites = [...user.favorites, book];
     await user.updateOne({ favorites: newFavorites });
@@ -608,32 +654,40 @@ userRouter.put("/favorites/:idUser", protect, async (req, res) => {
 userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { idBook } = req.body;
-  if (!id || !idBook) return res.status(400).send("Missing data!");
-  try {
-    const user = await User.findById(id);
-    // console.log(user);
-    const newFavorites = user.favorites.filter((b) => b.id !== idBook);
-    await user.updateOne({ favorites: newFavorites });
-    res.send(newFavorites);
-  } catch (error) {
-    res
-      .status(400)
-      .send({ msg: error, otherMsg: "algo fallo en put a favorite/delete" });
+  if (req.user && req.user.id === id) {
+    if (!id || !idBook) return res.status(400).send("Missing data!");
+    try {
+      const user = await User.findById(id);
+      // console.log(user);
+      const newFavorites = user.favorites.filter((b) => b.id !== idBook);
+      await user.updateOne({ favorites: newFavorites });
+      res.send(newFavorites);
+    } catch (error) {
+      res
+        .status(400)
+        .send({ msg: error, otherMsg: "algo fallo en put a favorite/delete" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to delete a favorite" });
   }
 });
 
-userRouter.get("/favorites/:id", async (req, res) => {
+userRouter.get("/favorites/:id", protect, async (req, res) => {
   const { id } = req.params;
-  try {
-    if (!id) return res.status(400).send("Missing data!");
-    const user = await User.findById(id);
-    // console.log(user);
-    if (!user) return res.status(404).send("User not found!");
-    return res.send(user.favorites);
-  } catch (error) {
-    res
-      .status(400)
-      .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
+  if (req.user && req.user.id === id) {
+    try {
+      if (!id) return res.status(400).send("Missing data!");
+      const user = await User.findById(id);
+      // console.log(user);
+      if (!user) return res.status(404).send("User not found!");
+      return res.send(user.favorites);
+    } catch (error) {
+      res
+        .status(400)
+        .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to see favorites" });
   }
 });
 

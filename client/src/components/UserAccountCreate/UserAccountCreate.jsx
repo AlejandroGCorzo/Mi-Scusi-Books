@@ -4,6 +4,10 @@ import { Link, useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 var errors = {};
 
 function espacios(string) {
@@ -61,6 +65,8 @@ export default function AccountCreate() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [open, setOpen] = useState(false);
+
   const [errors, setErrors] = useState({});
 
   const [user, setUser] = useState({
@@ -100,10 +106,28 @@ export default function AccountCreate() {
           window.sessionStorage.setItem("token", el.data.token);
           dispatch(loging());
         })
+        .then(() => setOpen(true))
+        .then(() => setTimeout(()=>history.push('/'),2300))
         .catch((el) => console.log(el));
     }
   }
   console.log(errors);
+  function handleClose(){
+    setOpen(false)
+  }
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{"width":"50px"}}
+      >
+        <CloseIcon fontSize="small"  />
+      </IconButton>
+    </React.Fragment>
+  );
   return (
     <div className="userAccountContainer">
       <div className="containerAccount">
@@ -218,6 +242,13 @@ export default function AccountCreate() {
                 Create
               </button>
             </div>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              message="User created!"
+              action={action}
+            />
           </form>
         </div>
       </div>
