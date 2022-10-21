@@ -336,7 +336,8 @@ userRouter.post("/signup", async (req, res) => {
 
 //Conseguir todos los usuarios activos -> protegida
 userRouter.get("/", protect, async (req, res) => {
-  if (req.user && req.user.type === "admin") {
+  // (req.user && req.user.type === "admin")
+  if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const allUsers = await User.find().where({ state: { $ne: "inactive" } });
       res.send(allUsers);
