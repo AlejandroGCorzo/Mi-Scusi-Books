@@ -100,7 +100,7 @@ export default function HeaderNav(onSearch) {
       <SearchBar onSearch={onSearch} />
 
       <div>
-        {loggedUser.id ? (
+        {JSON.stringify(loggedUser) !== "{}" ? (
           <div className="iconsContainer">
             {/* <span onClick={handleLogOut}>Logout</span>
             <Link to="/userDetails">
@@ -193,7 +193,7 @@ export default function HeaderNav(onSearch) {
                   Profile
                 </MenuItem>
               </Link>
-              {loggedUser.type === "admin" || loggedUser.type === 'seller' ? (
+              {loggedUser.type === "admin" || loggedUser.type === "seller" ? (
                 <Link
                   to="/admin_panel"
                   style={{ textDecoration: "none", color: "#5b5b5b" }}
