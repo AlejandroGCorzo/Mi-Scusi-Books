@@ -38,7 +38,7 @@ const UserDetails = (props) => {
             <div className="contentCategoryDivx">
               <div className="categoryDivx">
                 <div className="userImage">
-                  <img src={profile.image.slice(0,profile.image.length-6)} referrerPolicy="no-referrer" />
+                  <img src={profile?.image?.slice(0,profile.image.length-6)} referrerPolicy="no-referrer" />
                 </div>
 
                 <div className="userInfoContainer">
