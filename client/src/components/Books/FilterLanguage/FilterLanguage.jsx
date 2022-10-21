@@ -24,6 +24,7 @@ export default function FilterLanguage({
             ?.filter((item, index) => allLanguage.indexOf(item) === index)
             .map((el) => (
               <p
+                key={el}
                 style={{ cursor: "pointer" }}
                 onClick={(e) => handleClick(e, "language", el)}
               >
