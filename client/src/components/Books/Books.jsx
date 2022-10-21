@@ -16,7 +16,7 @@ import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
 import "./Books.css";
 import FilterStock from "./FilterStock/FilterStock.jsx";
-import Pages from "./Pagination/Pages.jsx";
+import Pages from "./Pages/Pages.jsx";
 
 export default function Books() {
   // // // // // //
