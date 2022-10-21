@@ -42,18 +42,18 @@ export default function UserLogin() {
   //   getAccessTokenSilently,
   // } = useAuth0();
 
-  const callProtectedApi = async () => {
-    try {
-      const token = {};
-      const response = await axios.get("/user/protected", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const callProtectedApi = async () => {
+  //   try {
+  //     const token = {};
+  //     const response = await axios.get("/user/protected", {
+  //       headers: {
+  //         authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   function handleInputChange(e) {
     e.preventDefault();
@@ -74,11 +74,11 @@ export default function UserLogin() {
     e.preventDefault();
     // const salt = await bcrypt.genSalt(10);
     // const hashedPassword = await bcrypt.hash(input.password, salt);
-    console.log(input);
+    // console.log(input);
     axios
       .post("/user/login", input)
       .then((el) => {
-        console.log(el.data);
+        // console.log(el.data);
         if (rememberMe) window.localStorage.setItem("token", el.data.token);
         else window.sessionStorage.setItem("token", el.data.token);
         dispatch(loging());
@@ -119,6 +119,22 @@ export default function UserLogin() {
   //   }
   //   return errors;
   // }
+
+  function googleSuccessData(response) {
+    // console.log(response.credential);
+    axios
+      .get(`/user/login_google`, {
+        headers: {
+          authorization: `Bearer ${response.credential}`,
+        },
+      })
+      .then((el) => {
+        window.localStorage.setItem("token", el.data.token);
+        dispatch(loging());
+        history.push("/");
+      })
+      .catch((e) => console.log(e));
+  }
 
   return (
     <div className="userLoginDiv">
@@ -178,9 +194,7 @@ export default function UserLogin() {
             </button>
             <GoogleLogin
               // buttonText="Sign in with Google"
-              onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
-              }}
+              onSuccess={googleSuccessData}
               onError={() => {
                 console.log("Login Failed");
               }}
