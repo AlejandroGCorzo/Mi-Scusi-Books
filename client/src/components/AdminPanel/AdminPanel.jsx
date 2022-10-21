@@ -13,8 +13,10 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import TestUsers from "./UsersTable/UsersNewTable.jsx";
-import BookNewTable from "./BooksTable/BookNewTable.jsx"
+import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
+
+import { keepLog } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,6 +61,9 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  //const dispatch = useDispatch()
+
+  //const accessToken = window.localStorage.getItem("token") ||window.sessionStorage.getItem("token");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -68,12 +73,18 @@ export default function BasicTabs() {
   const history = useHistory();
 
   useEffect(() => {
-    if (loggedUser?.type !== "admin") history.push("/");
+    //console.log('hola entre 1');
+    //if (accessToken) dispatch(keepLog(accessToken));
+    //console.log(loggedUser);
+    //if (loggedUser?.type !== "admin") history.push("/");
+    if (loggedUser?.type === "normal") history.push("/"); 
+    //console.log('entre al if');
+    //console.log('hola entre');
   }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
-      {loggedUser?.type === "admin" ? (
+      {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? (
         <ThemeProvider theme={colorMiScusi}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs

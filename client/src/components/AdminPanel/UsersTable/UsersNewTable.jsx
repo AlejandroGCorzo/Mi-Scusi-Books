@@ -205,7 +205,7 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {emailSelectUser && id !== loggedUser.id ? (
+      {loggedUser.type === 'admin' && emailSelectUser && id !== loggedUser.id ? (
         <>
           <FormControl sx={{ m: 1, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">

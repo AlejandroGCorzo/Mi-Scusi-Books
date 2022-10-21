@@ -145,8 +145,14 @@ function EnhancedTableHead(props) {
 }
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, openDelete, handleOpenDelete, handleCloseDelete, id } =
-    props;
+  const {
+    numSelected,
+    openDelete,
+    handleOpenDelete,
+    handleCloseDelete,
+    id,
+    loggedUser,
+  } = props;
 
   return (
     <Toolbar
@@ -173,9 +179,8 @@ const EnhancedTableToolbar = (props) => {
           {numSelected ? `Book: ${numSelected}` : null}
         </Typography>
       }
-      {numSelected ? (
+      {loggedUser.type === 'admin' && numSelected ? (
         <>
-          <>
             <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
@@ -185,17 +190,6 @@ const EnhancedTableToolbar = (props) => {
               handleClose={handleCloseDelete}
               id={id}
             />
-          </>
-          {/* <>
-            <IconButton onClick={handleOpenBlock} title="Block">
-              <BlockIcon />
-            </IconButton>
-            <UsersBlock
-              numSelected={numSelected}
-              openDialog={openBlock}
-              handleClose={handleCloseblock}
-            />
-          </> */}
         </>
       ) : null}
     </Toolbar>
@@ -211,8 +205,9 @@ export default function TestUsers() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  console.log(selected);
-
+  // console.log(selected);
+  const { books } = useSelector((state) => state.books);
+  const { loggedUser } = useSelector((state) => state.users);
   const [openDelete, setOpenDelete] = React.useState(false);
 
   const handleOpenDelete = () => {
@@ -225,7 +220,6 @@ export default function TestUsers() {
     setShowEmail();
   };
 
-  const { books } = useSelector((state) => state.books);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -262,6 +256,7 @@ export default function TestUsers() {
           handleOpenDelete={handleOpenDelete}
           handleCloseDelete={handleCloseDelete}
           id={selected}
+          loggedUser={loggedUser}
         />
         <TableContainer>
           <Table
