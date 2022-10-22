@@ -75,7 +75,7 @@ export default function validations(
     }
   }
   if (name === "email") {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+[^\.]$/.test(value))
       return setErrors({
         ...errors,
         [name]: "Must be a valid Email.",

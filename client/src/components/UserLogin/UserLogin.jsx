@@ -5,6 +5,16 @@ import { loging } from "../../redux/StoreUsers/usersActions.js";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import "./UserLogin.css";
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function UserLogin() {
   // // // // // // // // // // HOOKS
@@ -17,7 +27,7 @@ export default function UserLogin() {
   };
   const [rememberMe, setRememberMe] = useState(false);
   const [input, setInput] = useState(emptyInput);
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState({});
   // // // // // // // // // // USEEFFECT
   useEffect(() => {
     if (
@@ -29,11 +39,49 @@ export default function UserLogin() {
   // // // // // // // // // // FUNCTIONS
   function handleInputChange(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "email")
+      setInput({
+        ...input,
+        [e.target.name]: e.target.value.toLowerCase(),
+      });
+    else
+      setInput({
+        ...input,
+        [e.target.name]: e.target.value,
+      });
+    validations(e.target.name, e.target.value);
+    if (errors.msg) {
+      delete errors.msg;
+      setErrors({ ...errors });
+    }
   }
+  // // // // // // // // //
+
+  function validations(name, value) {
+    if (name === "email") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+[^\.]$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]: "Must be a valid Email.",
+        });
+      else {
+        delete errors[name];
+        return setErrors({ ...errors });
+      }
+    }
+    if (name === "password") {
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
+        return setErrors({
+          ...errors,
+          [name]:
+            "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
+        });
+      delete errors[name];
+      return setErrors({ ...errors });
+    }
+  }
+
+  // // // // // // // // //
 
   async function handleLogIn(e) {
     e.preventDefault();
@@ -46,8 +94,7 @@ export default function UserLogin() {
         history.push("/");
       })
       .catch((e) => {
-        console.log("error", e);
-        setErrors(`${JSON.parse(e.request.response).msg}`);
+        setErrors({ ...errors, ...JSON.parse(e.request.response) });
       });
   }
 
@@ -66,32 +113,72 @@ export default function UserLogin() {
       .catch((e) => console.log(e));
   }
   // // // // // // // // // // //
+  const [show, setShow] = useState(false);
+  // // // // // // // // // // //
   return (
     <div className="userLoginDiv">
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
             <h1>Login</h1>
-            <input
-              type="email"
-              name="email"
+            {/* E-mail Input */}
+            <TextField
+              sx={{ m: 0.5, width: "40ch" }}
+              className="textfield"
+              label="e-mail*"
               autoComplete="off"
-              placeholder="E-mail"
+              onChange={handleInputChange}
+              name="email"
+              type="text"
               value={input.email}
-              onChange={handleInputChange}
-              required
+              placeholder="e-mail"
+              inputProps={{ maxLength: 40 }}
+              error={errors.email ? true : false}
+              helperText={errors.email ? `${errors.email}` : null}
             />
-            <input
-              type="password"
-              name="password"
-              minLength={6}
-              maxLength={16}
-              placeholder="Password"
-              value={input.password}
-              onChange={handleInputChange}
-              required
-            />
-            <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span>
+
+            {/* Password Form Control */}
+            <FormControl sx={{ m: 0.5, width: "40ch" }} variant="outlined">
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={errors.password ? true : false}
+              >
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="passwordInput"
+                label="Password"
+                type={show ? "text" : "password"}
+                value={input.password}
+                placeholder="Password"
+                name="password"
+                onChange={handleInputChange}
+                error={errors.password ? true : false}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      className="loginButton"
+                      sx={{
+                        bgcolor: "white",
+                        ":hover": { bgcolor: "#00cc77" },
+                      }}
+                      aria-label="toggle password visibility"
+                      onClick={() => setShow(!show)}
+                      edge="end"
+                    >
+                      {show ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {errors.password ? (
+                <FormHelperText error>{errors.password}</FormHelperText>
+              ) : null}
+              {errors.msg ? (
+                <FormHelperText error>{errors.msg}</FormHelperText>
+              ) : null}
+            </FormControl>
+            
             <div className="labelsito">
               <div>
                 <input
@@ -109,7 +196,14 @@ export default function UserLogin() {
             >
               <span>Forgot your password?</span>
             </Link>
-            <button disabled={false} type="submit">
+            <button
+              disabled={
+                JSON.stringify(errors) !== "{}" ||
+                !input.email ||
+                !input.password
+              }
+              type="submit"
+            >
               Login
             </button>
             <GoogleLogin
