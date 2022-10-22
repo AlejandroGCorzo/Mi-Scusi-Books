@@ -100,7 +100,7 @@ export default function ShoppingCart(props) {
                 }}
             >
                 <BottomNavigationAction className="bottomNavigationActionx" label="Shopping Cart" icon={<ShoppingCartIcon />} />
-                <BottomNavigationAction className="bottomNavigationActionx" label="Favorites" icon={<FavoriteIcon />} />
+               { loggedUser.id ? <BottomNavigationAction className="bottomNavigationActionx" label="Favorites" icon={<FavoriteIcon />} /> : null}
             </BottomNavigation>
            
         </div>

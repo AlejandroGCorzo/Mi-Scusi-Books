@@ -16,9 +16,13 @@ export const usersSlice = createSlice({
     },
     getLoggedUserData: (state, action) => {
       state.loggedUser = action.payload;
+      state.shoppingCart = action.payload.cart || [];
+      state.favorites = action.payload.favorites || [];
     },
     setEmptyLoggedUser: (state) => {
       state.loggedUser = {};
+      state.shoppingCart = [];
+      state.favorites = [];
     },
     setUserDetails: (state, action) => {
       state.profile = action.payload;
@@ -28,6 +32,8 @@ export const usersSlice = createSlice({
     },
     keepUserLog: (state, action) => {
       state.loggedUser = action.payload;
+      state.shoppingCart = action.payload.cart || [];
+      state.favorites = action.payload.favorites || [];
     },
     setLogin: (state) => {
       state.login = !state.login;
@@ -70,6 +76,6 @@ export const {
   setChangeRol,
   setEmptyUsers,
   getFavorites,
-  getShoppingCart
+  getShoppingCart,
 } = usersSlice.actions;
 export default usersSlice.reducer;

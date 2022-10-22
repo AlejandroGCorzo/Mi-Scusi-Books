@@ -1,4 +1,5 @@
 import { Box, TablePagination } from "@mui/material";
+import { lineHeight } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "../../../redux/StoreBooks/booksActions";
 
@@ -19,7 +20,14 @@ export default function Pages({ count }) {
         page={page.currentPage}
         onPageChange={onPageChange}
         rowsPerPage={page.rows}
-        onRowsPerPageChange={onRowsChange}
+        onRowsPerPageChange={onRowsChange} 
+        labelRowsPerPage={"Books per page"} 
+        sx={{
+          "		.MuiTablePagination-selectLabel": {
+            fontSize: "1rem",
+            lineHeight: 1.5
+          }
+        }}
       />
     </Box>
   );

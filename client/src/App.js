@@ -12,8 +12,8 @@ import Category from "./components/Category/Category.jsx";
 import UserDetails from "./components/UserDetails/UserDetails";
 import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
-import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx"
-import AccountCreate from "./components/UserAccountCreate/UserAccountCreate.jsx";
+import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
+import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
 
 function App() {
   return (

@@ -77,11 +77,11 @@ export default function SearchBar() {
 
       </div>
       <div className="headerLow">
-        {/* {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? */}
-          <Link to="/create" style={{ textDecoration: "none" }}>
+        {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? 
+            <Link to="/create" style={{ textDecoration: "none" }}>
                 <p>Add Book</p>
             </Link>
-            {/* : null} */}
+          : null}
             <Link to="/books" style={{ textDecoration: "none" }}>
                 <p>All Books</p>
             </Link>

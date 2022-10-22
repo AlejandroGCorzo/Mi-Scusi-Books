@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 import { useDispatch, useSelector } from "react-redux";
 
-import BooksDelete from "../ConfirmDialog/BooksDelete.jsx";
+import UpdateStock from "../ConfirmDialog/UpdateStock.jsx";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { setBookStock } from "../../../redux/StoreBooks/booksActions.js";
@@ -122,6 +122,7 @@ const EnhancedTableToolbar = (props) => {
     handleCloseDelete,
     id,
     handleSetStock,
+    stock
   } = props;
 
   return (
@@ -152,9 +153,21 @@ const EnhancedTableToolbar = (props) => {
       {numSelected ? (
         <>
           <>
-            <Button onClick={(e)=> handleSetStock(e)} variant="outlined" style={{ "min-width": "140px" }}>
+            <Button
+              onClick={(e) => handleOpenDelete(e)}
+              variant="outlined"
+              style={{ "min-width": "140px" }}
+            >
               Update stock
             </Button>
+            <UpdateStock
+              numSelected={numSelected}
+              openDialog={openDelete}
+              handleClose={handleCloseDelete}
+              id={id}
+              handleSetStock={handleSetStock}
+              stock={stock}
+            />
             {/* <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
@@ -180,8 +193,6 @@ export default function BooksStock() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  console.log(selected);
-
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -196,9 +207,6 @@ export default function BooksStock() {
   const stockChange = (e) => {
     setInputStock({ [e.target.name]: e.target.value });
   };
-
-  console.log(accessToken);
-  console.log(inputStock[selected]);
 
   const handleSetStock = (e) => {
     dispatch(setBookStock(selected, inputStock[selected], accessToken));
@@ -255,6 +263,7 @@ export default function BooksStock() {
           handleCloseDelete={handleCloseDelete}
           id={selected}
           handleSetStock={handleSetStock}
+          stock={inputStock[selected]}
         />
         <TableContainer>
           <Table
@@ -347,6 +356,7 @@ export default function BooksStock() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Books per page:"
         />
       </Paper>
     </Box>

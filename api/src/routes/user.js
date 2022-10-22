@@ -52,6 +52,8 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       picture: user.image,
       userName: user.username,
       state: user.state,
+      favorites: user.favorites,
+      cart: user.cart
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -273,10 +275,18 @@ userRouter.post("/signup", async (req, res) => {
   }
 
   try {
-    const userFound = await User.findOne({ email });
-    if (userFound) {
-      return res.status(400).json({ msg: "Email already in use" });
-    }
+    const userFoundByMail = await User.findOne({ email });
+    const userFoundByUserName = await User.findOne({ username });
+    if (userFoundByMail && userFoundByUserName)
+      return res.status(400).json({
+        email: "Email already in use",
+        username: "Username already in use",
+      });
+    if (userFoundByMail)
+      return res.status(400).json({ email: "Email already in use." });
+    if (userFoundByUserName)
+      return res.status(400).json({ username: "Username already in use." });
+
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 

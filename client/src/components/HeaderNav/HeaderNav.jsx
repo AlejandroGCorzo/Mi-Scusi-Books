@@ -226,11 +226,11 @@ export default function HeaderNav(onSearch) {
                 <ShoppingCartIcon style={{ color: "white" }} />
               </Link>
             </p>
-            <p>
+            {/* <p>
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
                 <FavoriteIcon style={{ color: "white" }} />
               </Link>
-            </p>
+            </p> */}
             <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Log in
             </p>
