@@ -123,22 +123,22 @@ export default function UserLogin() {
             <h1>Login</h1>
             {/* E-mail Input */}
             <TextField
-              sx={{ m: 0.5, width: "40ch" }}
-              className="textfield"
-              label="e-mail*"
+              sx={{ m: 0.5}}
+              className="textfieldLogin"
+              label="E-mail*"
               autoComplete="off"
               onChange={handleInputChange}
               name="email"
               type="text"
               value={input.email}
-              placeholder="e-mail"
+              placeholder="E-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
             />
 
             {/* Password Form Control */}
-            <FormControl sx={{ m: 0.5, width: "40ch" }} variant="outlined">
+            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfieldLogin">
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.password ? true : false}
@@ -207,7 +207,6 @@ export default function UserLogin() {
               Login
             </button>
             <GoogleLogin
-              // buttonText="Sign in with Google"
               onSuccess={googleSuccessData}
               onError={() => {
                 console.log("Login Failed");
