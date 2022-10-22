@@ -23,6 +23,7 @@ import { Avatar } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
+import Badge from '@mui/material/Badge';
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -39,7 +40,7 @@ export default function HeaderNav(onSearch) {
 
   // const [reload, setReload] = useState(false);
 
-  const { loggedUser, login } = useSelector((state) => state.users);
+  const { loggedUser, login, shoppingCart, favorites } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
   const accessToken =
@@ -113,12 +114,16 @@ export default function HeaderNav(onSearch) {
             </p>
             <p>
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
+                <Badge badgeContent={shoppingCart.length} color="primary">
                 <ShoppingCartIcon style={{ color: "white" }} />
+                </Badge>
               </Link>
             </p>
             <p>
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
+                <Badge badgeContent={favorites.length} color="secondary">
                 <FavoriteIcon style={{ color: "white" }} />
+                </Badge>
               </Link>
             </p>
 
@@ -223,7 +228,9 @@ export default function HeaderNav(onSearch) {
             </p>
             <p>
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
+                <Badge badgeContent={shoppingCart.length} color="primary">
                 <ShoppingCartIcon style={{ color: "white" }} />
+                </Badge>
               </Link>
             </p>
             {/* <p>
