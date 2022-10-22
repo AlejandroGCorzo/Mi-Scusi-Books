@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import test from "../../sourceImg/book-1.png";
+import img from "../../sourceImg/logo3.png";
 import "./PaymentAcepted.css"
 
 export default function PaymentAcepted() {
@@ -17,7 +17,7 @@ export default function PaymentAcepted() {
     <>
       <section className="paymentAceptedModal">
         <div className="divPaymentModal">
-          <img src={test} alt="" className="imgPaymentModal"/>
+          <img src={img} alt="" className="imgPaymentModal"/>
         <h1>Payment Succesful!</h1>
         <h3>Thank you for purchasing</h3>
         <p>Check your email to view details</p>
