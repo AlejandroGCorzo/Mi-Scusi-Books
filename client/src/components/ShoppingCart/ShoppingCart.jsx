@@ -1,22 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import "./ShoppingCart.css";
+import CloseIcon from "@mui/icons-material/Close";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import { ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart } from "../../redux/StoreUsers/usersActions.js";
+import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart, setNotLogedShoppingCart } from "../../redux/StoreUsers/usersActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
+import { IconButton, Snackbar } from "@mui/material";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   // console.log(children)
-
+  
   return (
     <div
       role="tabpanel"
@@ -46,7 +48,7 @@ export default function ShoppingCart(props) {
 
   const [value, setValue] = React.useState( valueIndex );
   const dispatch = useDispatch();
-
+  const history = useHistory()
   //Cuando tengamos las rutas acá deberian ir los favoritos y añadidos al carrito por ahora solo le paso el topten.
   const {shoppingCart} = useSelector((state) => state.users);
   const {favorites} = useSelector((state) => state.users);
@@ -54,6 +56,8 @@ export default function ShoppingCart(props) {
   const accessToken =
   window.localStorage.getItem("token") ||
   window.sessionStorage.getItem("token");
+  const cartToken = window.sessionStorage.getItem('cart')
+  const [open, setOpen] = useState(false)
   ////////////////////////////////////////////////////////////////////////////////
 
   var totalShopping = 0;
@@ -61,10 +65,23 @@ export default function ShoppingCart(props) {
 
   useEffect(() => {
     if (accessToken) {
-      dispatch(keepLog(accessToken));
+      // dispatch(keepLog(accessToken));  
+      dispatch(fetchFavorites(loggedUser.id));
+      dispatch(fetchShoppingCart(loggedUser.id));
     }
-    dispatch(fetchFavorites(loggedUser.id));
-    dispatch(fetchShoppingCart(loggedUser.id));
+    if(accessToken && cartToken && shoppingCart.length === 0){
+      dispatch(setNotLogedShoppingCart(cartToken))
+    }
+    if(cartToken && !accessToken){
+      dispatch(setNotLogedShoppingCart(cartToken))
+    }
+
+    return () => {
+      if(accessToken){
+        window.sessionStorage.removeItem('cart');
+        
+      }
+    }
   }, [dispatch, login]);
 
   shoppingCart?.forEach(e => {
@@ -82,8 +99,34 @@ export default function ShoppingCart(props) {
   }
 
   function deleteCar(libroID){
-    dispatch(deleteCart(loggedUser.id, libroID, accessToken));
+    if(accessToken){
+      dispatch(deleteCart(loggedUser.id, libroID, accessToken));
+    } else if(cartToken){
+      const cart = JSON.parse(window.sessionStorage.getItem('cart'));
+      cart.books = cart.books.filter(el => el.id !== libroID);
+      window.sessionStorage.removeItem('cart');
+      window.sessionStorage.setItem('cart', JSON.stringify(cart)) 
+      dispatch(setNotLogedShoppingCart(JSON.stringify(cart)))
+    }
   }
+
+  function handleClose(){
+    setOpen(false)
+  }
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{ width: "50px" }}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <div className="contentCategory">
@@ -177,7 +220,12 @@ export default function ShoppingCart(props) {
                 <span>Total with shipping: ${(totalShopping + envio).toFixed(2)}</span>
             </div>
             {/* <Link to="/" style={{ textDecoration: "none" }}> */}
-              <button className="buttonBack" onClick={handleClickBuy}>Buy</button>
+            {
+              loggedUser.id ? 
+                <button className="buttonBack" onClick={handleClickBuy}>Buy</button>
+              : 
+                <button className="buttonBack" onClick={() => history.push("/login")}>Log In</button>
+            }
             {/* </Link> */}
           </div>: 
           <Link to="/" style={{ textDecoration: "none" }}>
@@ -185,6 +233,13 @@ export default function ShoppingCart(props) {
           </Link>}
         </div>
     </Box>
+    <Snackbar
+      open={open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+      message="Book added to cart"
+      action={action}
+    />
     </div>
   );
 }

@@ -61,6 +61,9 @@ export const usersSlice = createSlice({
     getFavorites: (state, action) => {
       state.favorites = action.payload;
     },
+    notLogedCart: (state, action) => {
+      state.shoppingCart = action.payload;
+    }
   },
 });
 
@@ -77,5 +80,6 @@ export const {
   setEmptyUsers,
   getFavorites,
   getShoppingCart,
+  notLogedCart
 } = usersSlice.actions;
 export default usersSlice.reducer;
