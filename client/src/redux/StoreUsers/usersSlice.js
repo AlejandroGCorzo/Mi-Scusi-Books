@@ -7,6 +7,8 @@ export const usersSlice = createSlice({
     loggedUser: {},
     profile: {},
     login: false,
+    shoppingCart: [],
+    favorites: [],
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -47,6 +49,12 @@ export const usersSlice = createSlice({
     setEmptyUsers: (state) => {
       state.users = [];
     },
+    getShoppingCart: (state, action) => {
+      state.shoppingCart = action.payload;
+    },
+    getFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
   },
 });
 
@@ -60,6 +68,8 @@ export const {
   setLogin,
   filterDeleteUser,
   setChangeRol,
-  setEmptyUsers
+  setEmptyUsers,
+  getFavorites,
+  getShoppingCart
 } = usersSlice.actions;
 export default usersSlice.reducer;

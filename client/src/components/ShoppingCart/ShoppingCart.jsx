@@ -11,11 +11,11 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import { ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getBooks, fetchTopTen } from "../../redux/StoreBooks/booksActions.js";
+import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart } from "../../redux/StoreUsers/usersActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  console.log(children)
+  // console.log(children)
 
   return (
     <div
@@ -48,26 +48,41 @@ export default function ShoppingCart(props) {
   const dispatch = useDispatch();
 
   //Cuando tengamos las rutas acá deberian ir los favoritos y añadidos al carrito por ahora solo le paso el topten.
-  const shoppingCart = useSelector((state) => state.books.topTen);
-  const favorites = useSelector((state) => state.books.topTen);
+  const {shoppingCart} = useSelector((state) => state.users);
+  const {favorites} = useSelector((state) => state.users);
+  const { loggedUser, login } = useSelector((state) => state.users);
+  const accessToken =
+  window.localStorage.getItem("token") ||
+  window.sessionStorage.getItem("token");
   ////////////////////////////////////////////////////////////////////////////////
 
   var totalShopping = 0;
   const envio = 8;
 
   useEffect(() => {
-    dispatch(getBooks());
-    dispatch(fetchTopTen());
-  }, [dispatch]);
+    if (accessToken) {
+      dispatch(keepLog(accessToken));
+    }
+    dispatch(fetchFavorites(loggedUser.id));
+    dispatch(fetchShoppingCart(loggedUser.id));
+  }, [dispatch, login]);
 
-  shoppingCart.forEach(e => {
-    totalShopping += e.price;
+  shoppingCart?.forEach(e => {
+     totalShopping += e.price;
   });
 
   const handleClickBuy = async () => {
     const { data } = await CheckoutPayPal()
-    console.log("hola", data)
+    // console.log("hola", data)
     window.location.href = data
+  }
+
+  function deleteFav(libroID){
+    dispatch(deleteFavorites(loggedUser.id, libroID, accessToken));
+  }
+
+  function deleteCar(libroID){
+    dispatch(deleteCart(loggedUser.id, libroID, accessToken));
   }
 
   return (
@@ -80,8 +95,6 @@ export default function ShoppingCart(props) {
                 showLabels
                 value={value}
                 className="bottomNavigation"
-                textColor="primary"
-                indicatorColor="primary"
                 onChange={(event, newValue) => {
                     setValue(newValue);
                 }}
@@ -95,8 +108,8 @@ export default function ShoppingCart(props) {
         <div className="contentShoppingDetail">
             <div className="itemsShoppingDetail">
             <TabPanel value={value} index={0} className="tabPanel">
-                  {shoppingCart.map((el) => (
-                    <div className="conteinerShopping" key={el._id}>
+                  {shoppingCart?.map((el) => (
+                    <div className="conteinerShopping" key={el.id}>
                         <div className="contenedorx">
                           <div className="contentImage">
                             <img src={el.image} alt="" />
@@ -110,11 +123,11 @@ export default function ShoppingCart(props) {
                               : el.price}
                             </span>
                           </div>
-                          <Link to={`/book_details/${el._id}`} style={{ textDecoration: "none" }}>
+                          <Link to={`/book_details/${el.id}`} style={{ textDecoration: "none" }}>
                               <button className="buttonView">View</button>
                           </Link>
                           <div>
-                            <button className="buttonDelete">Delete</button>
+                            <button className="buttonDelete" onClick={() => deleteCar(el.id)} >Delete</button>
                           </div>
                               
                           
@@ -125,8 +138,8 @@ export default function ShoppingCart(props) {
                 </TabPanel>
 
                 <TabPanel value={value} index={1} className="tabPanel">
-                  {favorites.map((el) => (
-                    <div className="conteinerShopping" key={el._id}>
+                  {favorites?.map((el) => (
+                    <div className="conteinerShopping" key={el.id}>
                         <div className="contenedorx">
                           <div className="contentImage">
                             <img src={el.image} alt="" />
@@ -140,12 +153,12 @@ export default function ShoppingCart(props) {
                               : el.price}
                             </span>
                           </div>
-                          <Link to={`/book_details/${el._id}`} style={{ textDecoration: "none" }}>
+                          <Link to={`/book_details/${el.id}`} style={{ textDecoration: "none" }}>
                               <button className="buttonView">Buy</button>
                           </Link>
                           
                           <div>
-                            <button className="buttonDelete">Delete</button>
+                            <button className="buttonDelete" onClick={() => deleteFav(el.id)} >Delete</button>
                           </div>
                           
                         </div>
