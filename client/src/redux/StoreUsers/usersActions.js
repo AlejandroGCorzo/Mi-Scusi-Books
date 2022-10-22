@@ -8,7 +8,8 @@ import {
   setLogin,
   setChangeRol,
   getFavorites,
-  getShoppingCart
+  getShoppingCart,
+  notLogedCart
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -144,4 +145,10 @@ export const deleteFavorites = (id, idBook, token) => {
   };
 };
 
+export const setNotLogedShoppingCart = (cart) => {
+  return (dispatch) => {
+    const jsonCart = JSON.parse(cart)
+    return dispatch(notLogedCart(jsonCart.books))
+  }
+}
 /////////////////FAVORITOS Y CARRITO//////////////////////////
