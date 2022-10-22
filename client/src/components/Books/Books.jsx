@@ -98,6 +98,9 @@ export default function Books() {
             setStoreFilters={setStoreFilters}
           />
         </div>
+        <div className="divPagination">
+          <Pages count={booksFilter.length}/>
+        </div>
       </div>
       <div className="resultsMain">
         <div className="filtersResults">
@@ -193,7 +196,9 @@ export default function Books() {
         </div>
       </div>
       <p></p>
-      <Pages count={booksFilter.length}/>
+      <div className="divPaginationBottom">
+        <Pages count={booksFilter.length}/>
+      </div>
     </div>
   );
 }
