@@ -124,25 +124,25 @@
 
 @media (min-height: 0px){
     .itemsShoppingDetail{
-        max-height: 480px;
+        height: 480px;
     }
 }
 
 @media (min-height: 768px){
     .itemsShoppingDetail{
-        max-height: 768px;
+        height: 768px;
     }
 }
 
 @media (min-height: 1080px){
     .itemsShoppingDetail{
-        max-height: 1450px;
+        height: 1450px;
     }
 }
 
 @media (min-height: 1920px){
     .itemsShoppingDetail{
-        max-height: 1760px;
+        height: 1760px;
     }
 }
 

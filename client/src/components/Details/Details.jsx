@@ -11,7 +11,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Checkbox from '@mui/material/Checkbox';
-
+import { fetchShoppingCart, fetchFavorites, addFavorites, deleteFavorites, addCart, keepLog } from "../../redux/StoreUsers/usersActions.js";
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
@@ -29,7 +29,12 @@ function textRating(value){
 
 const Details = (props) => {
   const dispatch = useDispatch();
-
+  const {shoppingCart} = useSelector((state) => state.users);
+  const {favorites} = useSelector((state) => state.users);
+  const { loggedUser, login } = useSelector((state) => state.users);
+  const accessToken =
+  window.localStorage.getItem("token") ||
+  window.sessionStorage.getItem("token");
 
 /////////////////Simulacion del rating
   var reviewsTest = [];
@@ -54,6 +59,10 @@ const Details = (props) => {
   const { detail } = useSelector((state) => state.books);
 
   useEffect(() => {
+    if (accessToken) {
+      dispatch(keepLog(accessToken));
+    }
+    dispatch(fetchFavorites(loggedUser.id));
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
@@ -61,7 +70,7 @@ const Details = (props) => {
     return () => {
       dispatch(setEmptyDetail());
     };
-  }, [dispatch]);
+  }, [dispatch, login]);
 
   function ocultar(){
     var x = document.getElementById("idContentVentana");
@@ -73,6 +82,31 @@ const Details = (props) => {
     }
   }
 
+  function queDibujo(libroID){
+    let asd = favorites.filter(e => e.id === libroID)
+
+    if(asd.length > 0) {
+      return (<div onClick={() => deleteFav(detail._id)}>
+      <button className="buttonFav"  {...label}><Favorite className="favColor"/></button>
+    </div>)
+    }else{
+      return (<div onClick={() => addFavorite(detail._id)}>
+      <button className="buttonFav"  {...label}><FavoriteBorder className="favColor"/></button>
+    </div>)
+    }
+  }
+  
+  function addFavorite(libroID){
+    dispatch(addFavorites(loggedUser.id, libroID, accessToken));
+  }
+
+  function deleteFav(libroID){
+    dispatch(deleteFavorites(loggedUser.id, libroID, accessToken));
+  }
+
+  function addToCart(libroID){
+    dispatch(addCart(loggedUser.id, libroID, 2, accessToken));
+  }
 
   return (
     <div className="contentCategory">
@@ -94,7 +128,7 @@ const Details = (props) => {
         <div className="contentLike"><button className="contentX" onClick={() => ocultar()}>X</button></div>
         <h3>Product Reviews</h3>
         <div className="contentReviews">
-          {reviewsTest.map(e=>{
+          {reviewsTest?.map(e=>{
             return(<div className="reviewText" key={e.id}>
 
                 <Box
@@ -121,8 +155,6 @@ const Details = (props) => {
               <div className="contentLike">
                 <Checkbox {...label} icon={<ThumbUpOffAltIcon className="favColor"/>} checkedIcon={<ThumbUpAltIcon className="favColor"/>} />
               </div>
-
-              {/* <Checkbox {...label} icon={<ThumbDownOffAltIcon className="favColor"/>} checkedIcon={<ThumbDownAltIcon className="favColor"/>} /> */}
             </div>)
           })}
         </div>
@@ -134,9 +166,11 @@ const Details = (props) => {
       </div>
 
       <div className="contentBookDetailDiv">
+
         <div className="contentFav">
-          <Checkbox {...label} icon={<FavoriteBorder className="favColor"/>} checkedIcon={<Favorite className="favColor"/>} />
+          {queDibujo(detail._id)}
         </div>
+
         <div className="categoryBookDetails">
           <div className="whiteBox">
             <img src={detail.image} className="bookImage" />
@@ -216,7 +250,7 @@ const Details = (props) => {
                 <button className="buttonBookDetail">
                   <b>Buy</b>
                 </button>
-                <button className="buttonBookDetail">
+                <button className="buttonBookDetail" onClick={() => addToCart(detail._id)} >
                   <b>Add to cart</b>
                 </button>
 

@@ -299,10 +299,7 @@ userRouter.post("/signup", async (req, res) => {
       type: "normal",
       votedBooks: [],
       favorites: [],
-      cart: {
-        books: [],
-        ammounts: [],
-      },
+      cart: [],
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
     };
     const user = await User.create(newUser);

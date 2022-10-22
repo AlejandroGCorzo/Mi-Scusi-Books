@@ -215,6 +215,12 @@
   overflow: scroll;
 }
 
+.buttonFav{
+  background-color: white;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
 .contentReviews{
   display: flex;
   flex-wrap: wrap;
@@ -251,7 +257,7 @@
 }
 
 @media (min-width: 768px) {
-  .contentCreateBook {
+  .contentDetailsBook {
     max-width: 514px;
   }
 }
