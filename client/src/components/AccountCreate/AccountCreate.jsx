@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import "./UserAccountCreate.css";
-import axios from "axios";
-import { loging } from "../../redux/StoreUsers/usersActions";
-// // // // // // // // // // // // // // // MUI IMPORT
+import "./AccountCreate.css";
+// // // // // FUNCTIONS IMPORT // // // //
+import { validations, onSubmit } from "./Functions/exporter.js";
+// // // // // MUI IMPORT // // // // //
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -16,7 +16,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
+// // // // // // // // // //
 export default function AccountCreate() {
   // // // // // // // // //
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export default function AccountCreate() {
     password: "",
     email: "",
   });
-  // // // // // // // // // ON CHANGE
+  // // // // ON CHANGE // // // //
   function onInputChange(e) {
     e.preventDefault();
     if (
@@ -44,120 +44,46 @@ export default function AccountCreate() {
         ...user,
         [e.target.name]: e.target.value,
       });
-      validations(e.target.name, e.target.value);
+      validations(
+        e.target.name,
+        e.target.value,
+        user,
+        errors,
+        setErrors,
+        confirmPass
+      );
       return;
     }
     if (e.target.name === "confirmPass") {
       setConfirmPass(e.target.value);
-      validations(e.target.name, e.target.value);
+      validations(
+        e.target.name,
+        e.target.value,
+        user,
+        errors,
+        setErrors,
+        confirmPass
+      );
       return;
     }
     setUser({
       ...user,
       [e.target.name]: e.target.value.toLowerCase(),
     });
-    validations(e.target.name, e.target.value.toLowerCase());
+    validations(
+      e.target.name,
+      e.target.value.toLowerCase(),
+      user,
+      errors,
+      setErrors,
+      confirmPass
+    );
   }
-  // // // // // // // // // VALIDACIÓN DE ERRORES
-  function validations(name, value) {
-    if (name === "name" || name === "lastName") {
-      if (!/^([a-z]+\s)*[a-z]+$/.test(value))
-        return setErrors({
-          ...errors,
-          [name]:
-            "Name must be only words withouth numbers and only one whitespace between them.",
-        });
-      else {
-        delete errors[name];
-        return setErrors({ ...errors });
-      }
-    }
-
-    if (name === "username") {
-      if (!/^[a-zA-Z0-9]*$/.test(value))
-        return setErrors({
-          ...errors,
-          [name]:
-            "Username must be only one word, numbers allowed, no whitespaces allowed.",
-        });
-      else {
-        delete errors[name];
-        return setErrors({ ...errors });
-      }
-    }
-    if (name === "password" || name === "confirmPass") {
-      if (name === "password") {
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
-          return setErrors({
-            ...errors,
-            [name]:
-              "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
-            confirmPass: "Passwords must be the same.",
-          });
-        else {
-          if (user.password !== confirmPass)
-            return setErrors({
-              ...errors,
-              [name]: "Passwords must be the same.",
-              confirmPass: "Passwords must be the same.",
-            });
-          delete errors[name];
-          return setErrors({ ...errors });
-        }
-      }
-      if (name === "confirmPass") {
-        if (user.password !== value)
-          return setErrors({
-            ...errors,
-            [name]: "Passwords must be the same.",
-            password: "Passwords must be the same.",
-          });
-        else {
-          delete errors[name];
-          if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
-            return setErrors({
-              ...errors,
-              password:
-                "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
-            });
-          else {
-            delete errors.password;
-          }
-          return setErrors({ ...errors });
-        }
-      }
-    }
-    if (name === "email") {
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-        return setErrors({
-          ...errors,
-          [name]: "Must be a valid Email.",
-        });
-      else {
-        delete errors[name];
-        return setErrors({ ...errors });
-      }
-    }
-  }
-
   // // // // // // // // //
-  function onSubmit(e) {
-    e.preventDefault();
-    axios
-      .post("/user/signup", user)
-      .then((el) => {
-        window.sessionStorage.setItem("token", el.data.token);
-        dispatch(loging());
-        setOpen(true);
-        setTimeout(() => history.push("/"), 2300);
-      })
-      .catch((el) =>
-        setErrors({ ...errors, ...JSON.parse(el.request.response) })
-      );
-  }
   function handleClose() {
     setOpen(false);
   }
+  // // // // // // // // //
   const action = (
     <React.Fragment>
       <IconButton
@@ -171,12 +97,12 @@ export default function AccountCreate() {
       </IconButton>
     </React.Fragment>
   );
-
-  // // // // // // // // // // // CONTROLADORES MUI
+  // // // // CONTROLADORES MUI // // // //
   const [show, setShow] = useState({
     password: false,
     confirmPass: false,
   });
+
   const handleClickShowPassword = (name) => {
     console.log(name);
     setShow({
@@ -184,13 +110,16 @@ export default function AccountCreate() {
       [name]: !show[name],
     });
   };
-  // // // // // // // // // // // // // // // //
-
+  // // // // // // // // //
   return (
     <div className="userAccountContainer">
       <div className="containerAccount">
         <div className="sign-in-containerAccount">
-          <form onSubmit={onSubmit}>
+          <form
+            onSubmit={(e) =>
+              onSubmit(e, dispatch, history, user, setOpen, setErrors, errors)
+            }
+          >
             <h2>Create Account</h2>
 
             {/* Name Input */}
