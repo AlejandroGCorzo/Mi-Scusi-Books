@@ -111,16 +111,19 @@ export default function AccountCreate() {
     <div className="userAccountContainer">
       <div className="containerAccount">
         <div className="sign-in-containerAccount">
+          <div className="contentTitleAccount">
+            <h2>Create Account</h2>
+          </div>
+          
           <form
             onSubmit={(e) =>
               onSubmit(e, dispatch, history, user, setOpen, setErrors, errors)
             }
           >
-            <h2>Create Account</h2>
-
+          
             {/* Name Input */}
             <TextField
-              sx={{ m: 0.5, width: "50ch" }}
+              sx={{ m: 0.5}}
               className="textfieldWithCap"
               label="Name*"
               autoComplete="off"
@@ -136,7 +139,7 @@ export default function AccountCreate() {
 
             {/* lastName Input */}
             <TextField
-              sx={{ m: 0.5, width: "50ch" }}
+              sx={{ m: 0.5 }}
               className="textfieldWithCap"
               label="Last name*"
               autoComplete="off"
@@ -152,7 +155,7 @@ export default function AccountCreate() {
 
             {/* Username Input */}
             <TextField
-              sx={{ m: 0.5, width: "50ch" }}
+              sx={{ m: 0.5}}
               className="textfield"
               label="Username*"
               autoComplete="off"
@@ -168,22 +171,22 @@ export default function AccountCreate() {
 
             {/* E-mail Input */}
             <TextField
-              sx={{ m: 0.5, width: "50ch" }}
+              sx={{ m: 0.5 }}
               className="textfield"
-              label="e-mail*"
+              label="E-mail*"
               autoComplete="off"
               onChange={onInputChange}
               name="email"
               type="text"
               value={user.email}
-              placeholder="e-mail"
+              placeholder="E-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
             />
 
             {/* Password Form Control */}
-            <FormControl sx={{ m: 0.5, width: "50ch" }} variant="outlined">
+            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.password ? true : false}
@@ -221,7 +224,7 @@ export default function AccountCreate() {
             </FormControl>
 
             {/* Confirm Password Form Control */}
-            <FormControl sx={{ m: 0.5, width: "50ch" }} variant="outlined">
+            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.confirmPass ? true : false}

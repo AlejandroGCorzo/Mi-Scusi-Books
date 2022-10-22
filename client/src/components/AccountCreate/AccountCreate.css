@@ -83,10 +83,16 @@
   height: 100%;
   text-align: center;
   border-radius: 8px;
+  margin-top: 20px;
+}
+
+.contentTitleAccount{
+  border-bottom: 1px solid #e7e7e7;
+  width: 100%;
+  color:#00cc77;
 }
 
 .containerAccount input {
-  background-color: #eee;
   border: none;
   padding: 12px 15px;
   /* width: 80%; */
@@ -94,15 +100,17 @@
 }
 
 #passwordInput {
-  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.textfield div {
-  width: 100%;
+.textfield{
+  width: 70%;
 }
 
-.textfieldWithCap div {
-  width: 100%;
+.textfieldWithCap{
+  width: 70%;
 }
 
 .textfieldWithCap input {
@@ -151,6 +159,13 @@
   }
   .accountMobile {
     display: flex;
+  }
+  .textfield{
+    width: 80%;
+  }
+  
+  .textfieldWithCap{
+    width: 80%;
   }
 }
 
