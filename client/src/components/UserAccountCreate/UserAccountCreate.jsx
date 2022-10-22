@@ -1,72 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
-import Button from "@mui/material/Button";
+// // // // // // // // // // // // // // // MUI IMPORT
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
-// var errors = {};
-
-// function espacios(string) {
-//   var contador = 0;
-//   for (var i = 0; i < string.length; i++) {
-//     if (string[i] === " ") contador++;
-//   }
-
-//   return contador;
-// }
-
-// function validar(valor) {
-//   const input = document.getElementById(valor);
-//   if (!input.checkValidity()) return false;
-//   return true;
-// }
-
-// function validate(user) {
-//   errors.name = "A name is required";
-//   errors.lastName = "A lastName is required";
-//   errors.username = "A username is required";
-//   errors.email = "A email is required";
-//   errors.password = "A password is required";
-//   errors.confirmPassword = "Confirm password";
-
-//   if (user.name) delete errors.name;
-//   if (user.lastName) delete errors.lastName;
-//   if (user.username) delete errors.username;
-//   if (user.email) delete errors.email;
-//   if (user.password) delete errors.password;
-//   if (user.confirmPassword) delete errors.confirmPassword;
-
-//   if (validar("name") === false) errors.name = "Invalid character";
-//   if (validar("lastName") === false) errors.lastName = "Invalid character";
-
-//   if (!user.email) errors.email = "Email is required";
-//   if (user.email.length < 6)
-//     errors.email = "Email must contain at least 6 characters";
-//   if (!/^\S[^`~,¡!#$%^&*()+={}[/|¿?"'<>;:]{0,}$/.test(user.email))
-//     errors.email = "Email can contain only letters, numbers, -, _, or .";
-//   if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Email is invalid";
-//   if (user.password !== user.confirmPassword)
-//     errors.confirmPassword = "Different password ";
-
-//   if (espacios(user.name) > 2 || user.name[0] === " ")
-//     errors.name = "Max 2 spaces";
-//   if (espacios(user.lastName) > 2 || user.lastName[0] === " ")
-//     errors.lastName = "Max 2 spaces";
-//   if (espacios(user.username) > 0 || user.username[0] === " ")
-//     errors.username = "Username invalid";
-//   return errors;
-// }
 
 export default function AccountCreate() {
   // // // // // // // // //
   const dispatch = useDispatch();
   const history = useHistory();
-
   // // // // // // // // //
   const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState({});
@@ -77,9 +31,8 @@ export default function AccountCreate() {
     username: "",
     password: "",
     email: "",
-    // confirmPassword: "",
   });
-  // // // // // // // // //
+  // // // // // // // // // ON CHANGE
   function onInputChange(e) {
     e.preventDefault();
     if (
@@ -103,16 +56,9 @@ export default function AccountCreate() {
       ...user,
       [e.target.name]: e.target.value.toLowerCase(),
     });
-    // setErrors(
-    //   validate({
-    //     ...user,
-    //     [e.target.name]: e.target.value,
-    //   })
-    // );
-    validations(e.target.name, e.target.value);
+    validations(e.target.name, e.target.value.toLowerCase());
   }
-  // useEffect(() => {}, [confirmPass]);
-  // // // // // // // // //
+  // // // // // // // // // VALIDACIÓN DE ERRORES
   function validations(name, value) {
     if (name === "name" || name === "lastName") {
       if (!/^([a-z]+\s)*[a-z]+$/.test(value))
@@ -139,27 +85,46 @@ export default function AccountCreate() {
         return setErrors({ ...errors });
       }
     }
-    if (name === "password") {
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
-        return setErrors({
-          ...errors,
-          [name]:
-            "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
-        });
-      else {
-        delete errors[name];
-        return setErrors({ ...errors });
+    if (name === "password" || name === "confirmPass") {
+      if (name === "password") {
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
+          return setErrors({
+            ...errors,
+            [name]:
+              "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
+            confirmPass: "Passwords must be the same.",
+          });
+        else {
+          if (user.password !== confirmPass)
+            return setErrors({
+              ...errors,
+              [name]: "Passwords must be the same.",
+              confirmPass: "Passwords must be the same.",
+            });
+          delete errors[name];
+          return setErrors({ ...errors });
+        }
       }
-    }
-    if (name === "confirmPass") {
-      if (user.password !== value)
-        return setErrors({
-          ...errors,
-          [name]: "Passwords must be the same.",
-        });
-      else {
-        delete errors[name];
-        return setErrors({ ...errors });
+      if (name === "confirmPass") {
+        if (user.password !== value)
+          return setErrors({
+            ...errors,
+            [name]: "Passwords must be the same.",
+            password: "Passwords must be the same.",
+          });
+        else {
+          delete errors[name];
+          if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
+            return setErrors({
+              ...errors,
+              password:
+                "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
+            });
+          else {
+            delete errors.password;
+          }
+          return setErrors({ ...errors });
+        }
       }
     }
     if (name === "email") {
@@ -178,23 +143,18 @@ export default function AccountCreate() {
   // // // // // // // // //
   function onSubmit(e) {
     e.preventDefault();
-    if (Object.entries(errors).length !== 0) {
-      alert("Please complete all fields!");
-    } else {
-      // console.log(user);
-      axios
-        .post("/user/signup", user)
-        .then((el) => {
-          // console.log(el);
-          window.sessionStorage.setItem("token", el.data.token);
-          dispatch(loging());
-          setOpen(true);
-          setTimeout(() => history.push("/"), 2300);
-        })
-        .catch((el) => console.log(el));
-    }
+    axios
+      .post("/user/signup", user)
+      .then((el) => {
+        window.sessionStorage.setItem("token", el.data.token);
+        dispatch(loging());
+        setOpen(true);
+        setTimeout(() => history.push("/"), 2300);
+      })
+      .catch((el) =>
+        setErrors({ ...errors, ...JSON.parse(el.request.response) })
+      );
   }
-  // console.log(errors);
   function handleClose() {
     setOpen(false);
   }
@@ -211,120 +171,183 @@ export default function AccountCreate() {
       </IconButton>
     </React.Fragment>
   );
+
+  // // // // // // // // // // // CONTROLADORES MUI
+  const [show, setShow] = useState({
+    password: false,
+    confirmPass: false,
+  });
+  const handleClickShowPassword = (name) => {
+    console.log(name);
+    setShow({
+      ...show,
+      [name]: !show[name],
+    });
+  };
+  // // // // // // // // // // // // // // // //
+
   return (
     <div className="userAccountContainer">
       <div className="containerAccount">
         <div className="sign-in-containerAccount">
           <form onSubmit={onSubmit}>
             <h2>Create Account</h2>
-            <div className="formInputs">
-              {/* Input Name */}
-              <input
-                style={{ textTransform: "capitalize" }}
-                autoComplete="off"
-                onChange={onInputChange}
-                // id="name"
-                name="name"
-                type="text"
-                value={user.name}
-                className="input"
-                // required
-                placeholder="Name..."
-                // pattern="^[A-Za-z\s]+$"
-                maxLength="40"
-              />
-              {errors.name && <p className="error">{errors.name}</p>}
 
-              {/* Input lastName */}
-              <input
-                style={{ textTransform: "capitalize" }}
-                autoComplete="off"
-                onChange={onInputChange}
-                // id="lastName"
-                name="lastName"
-                type="text"
-                value={user.lastName}
-                className="input"
-                // required
-                placeholder="lastName..."
-                // pattern="^[A-Za-z\s]+$"
-                maxLength="40"
-              />
-              {errors.lastName && <p className="error">{errors.lastName}</p>}
-            </div>
-            <div className="formInputs">
-              {/* Input Username */}
-              <input
-                autoComplete="off"
-                onChange={onInputChange}
-                // id="username"
-                name="username"
-                type="text"
-                value={user.username}
-                className="input"
-                // required
-                placeholder="Username..."
-                // pattern="^[A-Za-z\s]+$"
-                maxLength="40"
-              />
-              {errors.username && <p className="error">{errors.username}</p>}
+            {/* Name Input */}
+            <TextField
+              sx={{ m: 0.5, width: "50ch" }}
+              className="textfieldWithCap"
+              label="Name*"
+              autoComplete="off"
+              onChange={onInputChange}
+              name="name"
+              type="text"
+              value={user.name}
+              placeholder="Name"
+              inputProps={{ maxLength: 40 }}
+              error={errors.name ? true : false}
+              helperText={errors.name ? `${errors.name}` : null}
+            />
 
-              {/* Input E-mail */}
-              <input
-                autoComplete="off"
-                onChange={onInputChange}
-                // id="email"
-                name="email"
-                type="text"
-                value={user.email}
-                className="input"
-                // required
-                placeholder="E-mail..."
-                maxLength="40"
-              />
+            {/* lastName Input */}
+            <TextField
+              sx={{ m: 0.5, width: "50ch" }}
+              className="textfieldWithCap"
+              label="Last name*"
+              autoComplete="off"
+              onChange={onInputChange}
+              name="lastName"
+              type="text"
+              value={user.lastName}
+              placeholder="Last name"
+              inputProps={{ maxLength: 40 }}
+              error={errors.lastName ? true : false}
+              helperText={errors.lastName ? `${errors.lastName}` : null}
+            />
 
-              {errors.email && <p className="error">{errors.email}</p>}
-            </div>
+            {/* Username Input */}
+            <TextField
+              sx={{ m: 0.5, width: "50ch" }}
+              className="textfield"
+              label="Username*"
+              autoComplete="off"
+              onChange={onInputChange}
+              name="username"
+              type="text"
+              value={user.username}
+              placeholder="Username"
+              inputProps={{ maxLength: 40 }}
+              error={errors.username ? true : false}
+              helperText={errors.username ? `${errors.username}` : null}
+            />
 
-            <div className="formInputs">
-              <input
-                autoComplete="off"
-                onChange={onInputChange}
-                // id="password"
-                name="password"
-                type="password"
+            {/* E-mail Input */}
+            <TextField
+              sx={{ m: 0.5, width: "50ch" }}
+              className="textfield"
+              label="E-mail*"
+              autoComplete="off"
+              onChange={onInputChange}
+              name="email"
+              type="text"
+              value={user.email}
+              placeholder="E-mail"
+              inputProps={{ maxLength: 40 }}
+              error={errors.email ? true : false}
+              helperText={errors.email ? `${errors.email}` : null}
+            />
+
+            {/* Password Form Control */}
+            <FormControl sx={{ m: 0.5, width: "50ch" }} variant="outlined">
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={errors.password ? true : false}
+              >
+                Password*
+              </InputLabel>
+              <OutlinedInput
+                id="passwordInput"
+                label="Password*"
+                type={show.password ? "text" : "password"}
                 value={user.password}
-                className="input"
-                // required
-                placeholder="Password..."
-                maxLength="40"
-              />
-              {errors.password && <p className="error">{errors.password}</p>}
-
-              {/* Input Confirm Password */}
-              <input
-                autoComplete="off"
+                placeholder="Password"
+                name="password"
                 onChange={onInputChange}
-                // id="confirmPassword"
-                name="confirmPass"
-                type="password"
-                value={confirmPass}
-                className="input"
-                // required
-                placeholder="Confirm Password..."
-                maxLength="40"
+                error={errors.password ? true : false}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      sx={{
+                        bgcolor: "white",
+                        ":hover": { bgcolor: "#00cc77" },
+                      }}
+                      aria-label="toggle password visibility"
+                      onClick={() => handleClickShowPassword("password")}
+                      edge="end"
+                    >
+                      {show.password ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
-              {errors.confirmPass && (
-                <p className="error">{errors.confirmPass}</p>
-              )}
-            </div>
+              {errors.password ? (
+                <FormHelperText error>{errors.password}</FormHelperText>
+              ) : null}
+            </FormControl>
 
+            {/* Confirm Password Form Control */}
+            <FormControl sx={{ m: 0.5, width: "50ch" }} variant="outlined">
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={errors.confirmPass ? true : false}
+              >
+                Confirm Password*
+              </InputLabel>
+              <OutlinedInput
+                id="passwordInput"
+                label="Confirm Password*"
+                type={show.confirmPass ? "text" : "password"}
+                value={confirmPass}
+                placeholder="Confirm Password"
+                name="confirmPass"
+                onChange={onInputChange}
+                error={errors.confirmPass ? true : false}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      sx={{
+                        bgcolor: "white",
+                        ":hover": { bgcolor: "#00cc77" },
+                      }}
+                      aria-label="toggle password visibility"
+                      onClick={() => handleClickShowPassword("confirmPass")}
+                      edge="end"
+                    >
+                      {show.confirmPass ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {errors.confirmPass ? (
+                <FormHelperText error>{errors.confirmPass}</FormHelperText>
+              ) : null}
+            </FormControl>
+            {/* BUTTONS */}
             <div className="formInputsx">
-              <Link to="/login">
-                <button className="bottoms">Cancel</button>
-              </Link>
-              <button type="submit" className="bottoms">
-                Create
+              <button
+                type="submit"
+                className="bottoms"
+                disabled={
+                  JSON.stringify(errors) !== "{}" ||
+                  !user.name ||
+                  !user.lastName ||
+                  !user.username ||
+                  !user.email ||
+                  !user.password ||
+                  !confirmPass
+                }
+              >
+                Create Account!
               </button>
             </div>
             <Snackbar
