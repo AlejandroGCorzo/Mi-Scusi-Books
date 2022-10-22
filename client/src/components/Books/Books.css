@@ -23,13 +23,22 @@
 }
 
 .divLinkCategories {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   color: black;
-  width: fit-content;
+  width: 100%;
   font-size: 14px;
   align-self: flex-start;
   margin-bottom: 30px;
 }
 
+.divPaginationBottom{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
 .filtersResults {
   width: 22vw;
   display: flex;
