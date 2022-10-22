@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./UserAccountCreate.css";
 import axios from "axios";
 import { loging } from "../../redux/StoreUsers/usersActions";
@@ -334,13 +334,7 @@ export default function AccountCreate() {
             </FormControl>
             {/* BUTTONS */}
             <div className="formInputsx">
-              {/* <Link to="/login">
-                <button style={{ width: "200px" }} className="bottoms">
-                  Cancel
-                </button>
-              </Link> */}
               <button
-                // style={{ width: "300px", cursor: "pointer" }}
                 type="submit"
                 className="bottoms"
                 disabled={
