@@ -6,7 +6,9 @@ import {
   keepUserLog,
   filterDeleteUser,
   setLogin,
-  setChangeRol
+  setChangeRol,
+  getFavorites,
+  getShoppingCart
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -81,3 +83,65 @@ export const setUserChangeRol = (id, type, token) => {
     return dispatch(setChangeRol({id,type}));
   };
 };
+
+/////////////////FAVORITOS Y CARRITO//////////////////////////
+export const fetchShoppingCart = (id) => {
+  return async function (dispatch) {
+    const shoppingCart = await axios.get(`/user/cart/${id}`);
+    dispatch(getShoppingCart(shoppingCart.data));
+  };
+};
+
+export const addCart = (id, idBook, amount, token) => {
+  return async (dispatch) => {
+    const shoppingCart = await axios.put(`/user/cart/${id}`, {idBook, amount}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(shoppingCart.data);
+    return dispatch(getShoppingCart(shoppingCart.data));
+  };
+};
+
+export const deleteCart = (id, idBook, token) => {
+  return async (dispatch) => {
+    const shoppingCart = await axios.put(`/user/cart/delete/${id}`, {idBook}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getShoppingCart(shoppingCart.data));
+  };
+};
+
+export const fetchFavorites = (id) => {
+  return async function (dispatch) {
+    const favorites = await axios.get(`/user/favorites/${id}`);
+    dispatch(getFavorites(favorites.data));
+  };
+};
+
+export const addFavorites = (id, idBook, token) => {
+  return async (dispatch) => {
+    const favorites = await axios.put(`/user/favorites/${id}`, {idBook}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getFavorites(favorites.data));
+  };
+};
+
+export const deleteFavorites = (id, idBook, token) => {
+  return async (dispatch) => {
+    const favorites = await axios.put(`/user/favorites/delete/${id}`, {idBook}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getFavorites(favorites.data));
+  };
+};
+
+/////////////////FAVORITOS Y CARRITO//////////////////////////
