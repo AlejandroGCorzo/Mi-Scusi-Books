@@ -76,8 +76,8 @@ const Details = (props) => {
   useEffect(() => {
     if (accessToken) {
       dispatch(keepLog(accessToken));
+      dispatch(fetchFavorites(loggedUser.id));
     }
-    dispatch(fetchFavorites(loggedUser.id));
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
@@ -128,8 +128,30 @@ const Details = (props) => {
   }
 
   function addToCart(libroID) {
-    dispatch(addCart(loggedUser.id, libroID, 2, accessToken));
-    setOpen(true)
+    if(accessToken){
+      dispatch(addCart(loggedUser.id, libroID, 1, accessToken));
+      setOpen(true)
+    } else {
+      const localCart = {
+        books: []
+      };
+      const cart = JSON.parse(window.sessionStorage.getItem('cart'));
+      console.log(cart)
+      if(cart){
+        localCart.books = [...cart.books]
+      }
+      const book = {
+        id: detail._id,
+        name: detail.name,
+        price: detail.price,
+        image: detail.image,
+        amount: 1
+      }
+      localCart.books.push(book);
+      window.sessionStorage.removeItem('cart');
+      window.sessionStorage.setItem('cart', JSON.stringify(localCart))
+      setOpen(true)
+    }
   }
 
   const [open, setOpen] = useState(false);
