@@ -94,7 +94,6 @@ export default function UserLogin() {
         history.push("/");
       })
       .catch((e) => {
-        // console.log("error", e);
         setErrors({ ...errors, ...JSON.parse(e.request.response) });
       });
   }
@@ -179,26 +178,7 @@ export default function UserLogin() {
                 <FormHelperText error>{errors.msg}</FormHelperText>
               ) : null}
             </FormControl>
-            {/* <input
-              type="email"
-              name="email"
-              autoComplete="off"
-              placeholder="E-mail"
-              value={input.email}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              minLength={6}
-              maxLength={16}
-              placeholder="Password"
-              value={input.password}
-              onChange={handleInputChange}
-              required
-            />
-            <span>{errors && <p style={{ color: "red" }}>{errors}</p>}</span> */}
+            
             <div className="labelsito">
               <div>
                 <input
