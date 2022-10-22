@@ -346,6 +346,7 @@ export default function TestUsers() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage='Books per page:'
         />
       </Paper>
     </Box>
