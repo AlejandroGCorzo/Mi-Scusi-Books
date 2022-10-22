@@ -35,11 +35,7 @@ export default function AccountCreate() {
   // // // // ON CHANGE // // // //
   function onInputChange(e) {
     e.preventDefault();
-    if (
-      e.target.name === "username" ||
-      e.target.name === "email" ||
-      e.target.name === "password"
-    ) {
+    if (e.target.name === "username" || e.target.name === "password") {
       setUser({
         ...user,
         [e.target.name]: e.target.value,
@@ -174,13 +170,13 @@ export default function AccountCreate() {
             <TextField
               sx={{ m: 0.5, width: "50ch" }}
               className="textfield"
-              label="E-mail*"
+              label="e-mail*"
               autoComplete="off"
               onChange={onInputChange}
               name="email"
               type="text"
               value={user.email}
-              placeholder="E-mail"
+              placeholder="e-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
