@@ -331,9 +331,9 @@ const Details = (props) => {
                   : detail.price}
               </span>
               <div className="buttonsContainer">
-                <button className="buttonBookDetail">
+                {/* <button className="buttonBookDetail">
                   <b>Buy</b>
-                </button>
+                </button> */}
                 <button
                   className="buttonBookDetail"
                   onClick={() => addToCart(detail._id)}
