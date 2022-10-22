@@ -34,7 +34,7 @@ export default function SelectDialog(props) {
       onClose={handleCloseDialog}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">{"Delete User"}</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">{"Change user rol"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
           If you want to make user {emailSelectUser} {newRol} please click

@@ -472,6 +472,7 @@ export default function TestUsers() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage='Users per page:'
         />
       </Paper>
     </Box>

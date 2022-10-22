@@ -9,43 +9,41 @@ import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 import { useDispatch } from "react-redux";
-import { setUserDelete } from "../../../redux/StoreUsers/usersActions";
+import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
 
-
-export default function UsersBlock(props) {
+export default function UpdateStock(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { emailSelectUser, openBlock, handleCloseBlock, id } = props;
-
+  const { openDialog, handleClose, id, handleSetStock, numSelected, stock } = props;
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
 
-  const handleBlock = (e) => {
-    dispatch(setUserDelete(id, "limited", accessToken));
-    dispatch(handleCloseBlock);
+  const handleUpdateStock = (e) => {
+    //dispatch(setUserChangeRol(id, newRol, accessToken));
+    handleSetStock()
+    handleClose();
   };
 
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={openBlock}
-      onClose={handleCloseBlock}
+      open={openDialog}
+      onClose={handleClose}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">{"Block User"}</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">{"Add stock"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          If you want to block user {emailSelectUser} please click CONFIRM,
-          otherwise click CANCEL.
+          Add {stock} units to {numSelected}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={(e) => handleBlock(e)}>
+        <Button autoFocus onClick={(e) => handleUpdateStock(e)}>
           CONFIRM
         </Button>
-        <Button onClick={handleCloseBlock} autoFocus>
+        <Button onClick={(e) => handleClose(e)} autoFocus>
           CANCEL
         </Button>
       </DialogActions>
