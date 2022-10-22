@@ -16,7 +16,7 @@ export default function Book({ _id, image, name, editorial, author, price }) {
             <b>{name}</b>
           </p>
         </Link>
-        <p style={{ textTransform: "capitalize" }} className="authorBook">
+        <p style={{ textTransform: "capitalize", fontSize: "13px" }} className="authorBook">
           {author.join(" & ")}
         </p>
         {/* <p style={{ textTransform: "capitalize" }} className="authorBook">

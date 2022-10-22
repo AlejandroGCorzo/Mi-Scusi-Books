@@ -155,7 +155,7 @@ export default function Books() {
           {/* <div className="titleResults"></div> */}
           <p className="orderSelect">
             <label>
-              <b>Order by</b>
+              <b>Order by </b>
             </label>
             <select
               value={selectOrder}

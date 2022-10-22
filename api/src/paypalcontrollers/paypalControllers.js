@@ -26,7 +26,7 @@ const createOrder = async (req, res) => {
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
 
-    console.log(params);
+    // console.log(params);
 
     // Generate an access token
 
@@ -65,7 +65,6 @@ const createOrder = async (req, res) => {
     console.log(access_token);
 
     // make a request
-    console.log('hasta aca si llego');
     const response = await axios.post(
       `${process.env.PAYPAL_API_URL}/v2/checkout/orders`,
       order,
@@ -75,7 +74,6 @@ const createOrder = async (req, res) => {
         },
       }
     );
-      console.log('aca se rompe');
     // console.log(response.data);
 
     return res.json(response.data.links[1].href);
