@@ -39,6 +39,7 @@
   display: flex;
   justify-content: flex-end;
 }
+
 .filtersResults {
   width: 22vw;
   display: flex;
@@ -99,9 +100,11 @@
 
 .divFilters p {
   padding: -15px;
+  font-size: 0.8em;
 }
 
 .divFilters label {
+  font-size: 0.8em;
   display: block;
   text-align: left;
   padding-left: 8%;
