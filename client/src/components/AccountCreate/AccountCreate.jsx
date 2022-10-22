@@ -170,13 +170,13 @@ export default function AccountCreate() {
             <TextField
               sx={{ m: 0.5, width: "50ch" }}
               className="textfield"
-              label="e-mail*"
+              label="E-mail*"
               autoComplete="off"
               onChange={onInputChange}
               name="email"
               type="text"
               value={user.email}
-              placeholder="e-mail"
+              placeholder="E-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}

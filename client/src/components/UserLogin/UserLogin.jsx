@@ -125,13 +125,13 @@ export default function UserLogin() {
             <TextField
               sx={{ m: 0.5, width: "40ch" }}
               className="textfield"
-              label="e-mail*"
+              label="E-mail"
               autoComplete="off"
               onChange={handleInputChange}
               name="email"
               type="text"
               value={input.email}
-              placeholder="e-mail"
+              placeholder="E-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
