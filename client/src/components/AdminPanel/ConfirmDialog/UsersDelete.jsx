@@ -10,12 +10,13 @@ import Button from "@mui/material/Button";
 
 import { useDispatch } from "react-redux";
 import { setUserDelete } from "../../../redux/StoreUsers/usersActions";
+import { snackUserDelete } from "../../../redux/StoreSnackbar/snackActions";
 
 export default function UsersDelete(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { emailSelectUser, openDialog, handleClose, id, setRender } = props;
+  const { emailSelectUser, openDialog, handleClose, id } = props;
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -26,7 +27,7 @@ export default function UsersDelete(props) {
   const handleDelete = (e) => {
     dispatch(setUserDelete(id, "inactive", accessToken));
     dispatch(handleClose);
-    dispatch(setRender(true));
+    dispatch(snackUserDelete(true))
   };
 
   return (

@@ -17,7 +17,12 @@ import BooksStock from "./BooksTable/BookStockTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
-import SimpleSnackbar from "./Snackbar/Snackbar.jsx";
+import SnackRol from "./Snackbar/SnackRol.jsx";
+import SnackBlock from "./Snackbar/SnackBlock.jsx";
+import SnackDeleteUser from "./Snackbar/SnackDeleteUser.jsx";
+import SnackDeleteBook from "./Snackbar/SnackDeleteBook.jsx";
+import SnackStock from "./Snackbar/SnackStock.jsx";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,15 +107,17 @@ export default function BasicTabs() {
           </Box>
           <TabPanel value={value} index={0}>
             <TestUsers />
-            <SimpleSnackbar/>
+            <SnackRol/>
+            <SnackBlock/>
+            <SnackDeleteUser/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <BookNewTable />
-            <SimpleSnackbar/>
+            <SnackDeleteBook/>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <BooksStock/>
-            <SimpleSnackbar/>
+            <SnackStock/>
           </TabPanel>
         </ThemeProvider>
       ) : null }

@@ -9,7 +9,6 @@ export const usersSlice = createSlice({
     login: false,
     shoppingCart: [],
     favorites: [],
-    snackbar: false
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -65,9 +64,6 @@ export const usersSlice = createSlice({
     notLogedCart: (state, action) => {
       state.shoppingCart = action.payload;
     },
-    snackbarBoolean: (state, action) =>{
-      state.snackbar = action.payload
-    }
   },
 });
 
@@ -85,6 +81,5 @@ export const {
   getFavorites,
   getShoppingCart,
   notLogedCart,
-  snackbarBoolean
 } = usersSlice.actions;
 export default usersSlice.reducer;
