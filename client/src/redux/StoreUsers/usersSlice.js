@@ -64,6 +64,9 @@ export const usersSlice = createSlice({
     notLogedCart: (state, action) => {
       state.shoppingCart = action.payload;
     },
+    paymentCompleted: (state) => {
+      state.shoppingCart = [];
+    }
   },
 });
 
@@ -81,5 +84,6 @@ export const {
   getFavorites,
   getShoppingCart,
   notLogedCart,
+  paymentCompleted
 } = usersSlice.actions;
 export default usersSlice.reducer;

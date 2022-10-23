@@ -45,6 +45,7 @@ const generateToken = (id) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
+    console.log('user keeplog', user)
     // console.log("back", user);
     const formatUser = {
       id: user._id,
@@ -536,12 +537,12 @@ userRouter.put("/type/:id", protect, async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { type: type } });
       await transporter.sendMail({
-        from: `"Type changed" <${process.env.GMAIL_USER}>`,
+        from: `"Rol changed" <${process.env.GMAIL_USER}>`,
         to: user.email,
-        subject: "Type changed",
+        subject: "Rol changed",
         html: `
-        <h2>Your user type has been changed.</h2>
-        <p>New type: ${type}</p>
+        <h2>Your user rol has been changed.</h2>
+        <p>New rol: ${type}</p>
         <br>
         <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
         <br>
@@ -638,34 +639,66 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 });
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
-userRouter.put("/pay/:id", protect, async (req, res) => {
-  const { id } = req.params;
-  if (req.user && req.user.id === id) {
-    try {
-      const user = await User.findById(id);
+userRouter.put("/pay", protect, async (req, res) => {
+ 
+  const reduceStock = async (id, amount) => {
+    try{
+      const reduce = await bookSchema.findByIdAndUpdate(id, {
+        $inc: {
+          stock: - amount
+        }
+      })
+    } catch(e){
+      console.log('error substracting stock')
+    }
+  }
 
-      if (!user.cart.books.length || !user.cart.amounts.length)
-        return res.status(400).send({ msg: "dangerous car" });
+  console.log('inicio pay', req.user._id)
+  if (req.user) {
+    try {
+      const user = await User.findById(req.user._id);
+      // if (!user.cart.books.length || !user.cart.amounts.length){
+      //   return res.status(400).send({ msg: "dangerous car" });
+      // }
+      const substractStock = [];
+      for(let i = 0; i < user.cart.length; i++){
+         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount))
+      }
+      await Promise.all(substractStock)
+    
 
       const books = [];
-      for (const id of user.cart.books) {
-        const book = await bookSchema.findById(id);
-        books.push(book);
+      const booksNames = [];
+      const booksAmount = [];
+      for (const book of user.cart) {
+        books.push(book.id);
+        booksNames.push(book.name)
+        booksAmount.push(book.amount)
       }
+
       const price = [];
-      for (const book of books) {
+      for (const book of user.cart) {
         price.push(book.price);
       }
-      const total = price.reduce((acc, curr) => acc + curr, 0);
+      console.log('antes del total', booksAmount, price)
+      let total = 0;
+      for(let i = 0; i < price.length; i++){
+        const subTotal = price[i] * booksAmount[i];
+        total = total + subTotal
+      }
+      // const total = price.reduce((acc, curr) => acc + curr, 0);
       const date = new Date().toDateString();
-
       const bill = await billsSchema.create({
         books: books,
-        amountBooks: user.cart.amounts,
+        amountBooks: booksAmount,
         price: price,
-        total: total,
+        total: total + 8,
         date: date,
         user: user._id,
+      });
+      
+      await User.findByIdAndUpdate(user._id, {
+        $set: { cart: [] },
       });
 
       await transporter.sendMail({
@@ -676,19 +709,15 @@ userRouter.put("/pay/:id", protect, async (req, res) => {
       <h2>Here is your bill! Dont demand us!</h2>
       <br>
       <p>Date: ${date}</p>
-      <p>Books: ${books.map((b) => b.name)}</p>
-      <p>Amounts: ${user.cart.amounts}</p>
-      <p>Price p/u: ${price}</p>
+      <p>Books: ${booksNames.map((b) => b)}</p>
+      <p>Amounts: ${booksAmount(e => e)}</p>
+      <p>Price p/u: ${price.map(e => e)}</p>
       <p>Total: ${total}</p>
       <br>
       <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
       <br>
       <p>Mi Scusi Books staff.</p>
       `,
-      });
-
-      await User.findByIdAndUpdate(id, {
-        $set: { cart: { books: [], amounts: [] } },
       });
 
       res.send(bill);

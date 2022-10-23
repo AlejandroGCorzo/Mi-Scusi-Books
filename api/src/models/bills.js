@@ -2,18 +2,18 @@ const mongoose = require('mongoose');
 
 const billsSchema = mongoose.Schema({
 
-    books:{
+    books:[{
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Books" 
-    },
-    amountBooks:{
+    }],
+    amountBooks:[{
         type:[Number],
         require:true
-    },
-    price:{
+    }],
+    price:[{
        type:[Number],
        require: true
-    },
+    }],
     total:{
        type:Number,
        require:true
