@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const protect = async (req, res, next) => {
   // console.log('headers', req.headers)
+  console.log('aca header', req.headers.authorization)
   let accessToken;
   if (
     req.headers.authorization &&

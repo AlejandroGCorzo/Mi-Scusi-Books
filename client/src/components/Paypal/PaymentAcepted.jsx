@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { payAccepted } from "../../redux/StoreUsers/usersActions";
 import img from "../../sourceImg/logo3.png";
 import "./PaymentAcepted.css"
 
@@ -8,10 +9,11 @@ export default function PaymentAcepted() {
   const dispatch = useDispatch();
   const history = useHistory();
   //traer al cart
-
-  // useEffect(() {
-  //   dispatch(())
-  // })
+  
+  useEffect(() => {
+    const accessToken = window.localStorage.getItem('token') || window.sessionStorage.getItem('token')
+    dispatch(payAccepted(accessToken))
+  }, [])
 
   return (
     <>

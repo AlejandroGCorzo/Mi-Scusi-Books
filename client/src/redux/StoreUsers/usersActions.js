@@ -10,6 +10,7 @@ import {
   getFavorites,
   getShoppingCart,
   notLogedCart,
+  paymentCompleted
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -149,6 +150,24 @@ export const setNotLogedShoppingCart = (cart) => {
   return (dispatch) => {
     const jsonCart = JSON.parse(cart)
     return dispatch(notLogedCart(jsonCart.books))
+  }
+}
+
+export const payAccepted = (token) => {
+  console.log('entre al action', token)
+  return async (dispatch) => {
+    console.log('en el dispatch')
+    try{
+      const pay = await axios.put("/user/pay",{}, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      console.log('paydata', pay.data)
+      return dispatch(paymentCompleted())
+    } catch(e){
+      console.log(e)
+    }
   }
 }
 /////////////////FAVORITOS Y CARRITO//////////////////////////
