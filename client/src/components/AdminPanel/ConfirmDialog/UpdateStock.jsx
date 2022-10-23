@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 
 import { useDispatch } from "react-redux";
 import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
+import { snackbarChange } from "../../../redux/StoreUsers/usersActions";
 
 export default function UpdateStock(props) {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function UpdateStock(props) {
     //dispatch(setUserChangeRol(id, newRol, accessToken));
     handleSetStock()
     handleClose();
+    dispatch(snackbarChange(true))
   };
 
   return (

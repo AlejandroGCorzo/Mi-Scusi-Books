@@ -9,7 +9,6 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import TestUsers from "./UsersTable/UsersNewTable.jsx";
 
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
@@ -18,6 +17,7 @@ import BooksStock from "./BooksTable/BookStockTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
+import SimpleSnackbar from "./Snackbar/Snackbar.jsx";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,12 +102,15 @@ export default function BasicTabs() {
           </Box>
           <TabPanel value={value} index={0}>
             <TestUsers />
+            <SimpleSnackbar/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <BookNewTable />
+            <SimpleSnackbar/>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <BooksStock/>
+            <SimpleSnackbar/>
           </TabPanel>
         </ThemeProvider>
       ) : null }
