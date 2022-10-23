@@ -113,12 +113,38 @@ userRouter.post("/login", async (req, res) => {
 });
 
 //Loguear cuenta de google -> publica
-userRouter.get("/login_google", async (req, res) => {
+userRouter.post("/login_google", async (req, res) => {
   const accesToken = req.headers.authorization.split(" ")[1];
   const tokenDecode = jwt.decode(accesToken);
-
+  const {cart, amounts} = req.body;
+ 
   try {
     let user = await User.findOne({ email: tokenDecode.email });
+    
+    let newCart = [];
+    if (cart?.length) {
+      const extension = [];
+      for (const idBook of cart) {
+        let book = await bookSchema.findById(idBook);
+        book = {
+          id: book.id,
+          name: book.name,
+          price: book.price,
+          image: book.image,
+          amount: amounts[cart.indexOf(idBook)],
+        };
+        extension.push(book);
+      }
+      // console.log("nuevo carro : ", extension);
+      // console.log("viejo carro : ", user.cart);
+      const total = user ? extension.concat(user.cart) : extension;
+      for (const book of total) {
+        if (newCart.some((b) => b.id === book.id)) continue;
+        newCart.push(book);
+      }
+      // console.log("carro final: ", newCart);
+      console.log(newCart)
+    }
     if (!user) {
       const newUser = {
         firstName: tokenDecode.given_name,
@@ -126,6 +152,7 @@ userRouter.get("/login_google", async (req, res) => {
         email: tokenDecode.email,
         state: "active",
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
+        cart: newCart
       };
       // console.log('newUser')
       const googleUser = await User.create(newUser);
@@ -140,6 +167,7 @@ userRouter.get("/login_google", async (req, res) => {
 
       return res.status(200).json(formatUser);
     } else {
+      await user.updateOne({ cart: newCart });
       // console.log('existe')
       const formatUser = {
         // id: user._id,
