@@ -105,7 +105,9 @@ export default function ShoppingCart(props) {
       const cart = JSON.parse(window.sessionStorage.getItem('cart'));
       cart.books = cart.books.filter(el => el.id !== libroID);
       window.sessionStorage.removeItem('cart');
-      window.sessionStorage.setItem('cart', JSON.stringify(cart)) 
+      if(cart.books.length > 0){
+        window.sessionStorage.setItem('cart', JSON.stringify(cart)) 
+      }
       dispatch(setNotLogedShoppingCart(JSON.stringify(cart)))
     }
   }
