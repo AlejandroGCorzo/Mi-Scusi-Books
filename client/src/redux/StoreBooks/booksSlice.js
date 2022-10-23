@@ -31,6 +31,10 @@ export const booksSlice = createSlice({
     getBooksFiltered: (state, action) => {
       state.booksFilter = [...action.payload];
     },
+    setEmptyFilters: (state) => {
+      state.storeFilters = {};
+      state.booksFilter = [...state.books]
+    },
     setOrderBooks: (state, action) => {
       switch (action.payload) {
         case "highest": {
@@ -111,6 +115,7 @@ export const {
   currentPage,
   filterDeleteBook,
   setStock,
+  setEmptyFilters
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

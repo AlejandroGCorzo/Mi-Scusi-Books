@@ -8,7 +8,7 @@ export default function Pages({ count }) {
   const { page } = useSelector((state) => state.books);
   function onRowsChange(e) {
     const rows = parseInt(e.target.value, 10);
-    dispatch(setCurrentPage({ ...page, rows: rows }));
+    dispatch(setCurrentPage({ ...page, currentPage: 0, rows: rows }));
   }
   function onPageChange(e, newPage) {
     dispatch(setCurrentPage({ ...page, currentPage: newPage }));
