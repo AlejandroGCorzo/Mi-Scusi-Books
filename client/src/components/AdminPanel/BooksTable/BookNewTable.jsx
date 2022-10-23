@@ -205,7 +205,7 @@ export default function TestUsers() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  console.log(selected);
+  //console.log(selected);
   const { books } = useSelector((state) => state.books);
   const { loggedUser } = useSelector((state) => state.users);
   const [openDelete, setOpenDelete] = React.useState(false);

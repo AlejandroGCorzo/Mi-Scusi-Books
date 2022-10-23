@@ -9,7 +9,7 @@ import {
   setChangeRol,
   getFavorites,
   getShoppingCart,
-  notLogedCart
+  notLogedCart,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {

@@ -8,9 +8,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-
 import { useDispatch } from "react-redux";
 import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
+import { snackbarChange } from "../../../redux/StoreSnackbar/snackActions";
+
 
 export default function SelectDialog(props) {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function SelectDialog(props) {
   const handleChangeRol = (e) => {
     dispatch(setUserChangeRol(id, newRol, accessToken));
     handleCloseDialog();
-    //<Alert variant="outlined" severity="success">{emailSelectUser} now has {newRol} rol!!</Alert>;
+    dispatch(snackbarChange(true))
   };
 
   return (

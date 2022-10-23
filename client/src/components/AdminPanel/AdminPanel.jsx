@@ -9,7 +9,6 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import { ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import TestUsers from "./UsersTable/UsersNewTable.jsx";
 
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
@@ -18,6 +17,12 @@ import BooksStock from "./BooksTable/BookStockTable.jsx";
 import { getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
+import SnackRol from "./Snackbar/SnackRol.jsx";
+import SnackBlock from "./Snackbar/SnackBlock.jsx";
+import SnackDeleteUser from "./Snackbar/SnackDeleteUser.jsx";
+import SnackDeleteBook from "./Snackbar/SnackDeleteBook.jsx";
+import SnackStock from "./Snackbar/SnackStock.jsx";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,12 +107,17 @@ export default function BasicTabs() {
           </Box>
           <TabPanel value={value} index={0}>
             <TestUsers />
+            <SnackRol/>
+            <SnackBlock/>
+            <SnackDeleteUser/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <BookNewTable />
+            <SnackDeleteBook/>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <BooksStock/>
+            <SnackStock/>
           </TabPanel>
         </ThemeProvider>
       ) : null }

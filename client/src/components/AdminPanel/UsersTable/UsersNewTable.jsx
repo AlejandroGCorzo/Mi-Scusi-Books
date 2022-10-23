@@ -281,7 +281,7 @@ export default function TestUsers() {
 
   const { users } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
-  console.log(selected);
+  //console.log(selected);
 
   //////////////Make and remove admin//////////////////
   const dispatch = useDispatch();

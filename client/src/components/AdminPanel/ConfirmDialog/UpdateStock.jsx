@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 import { useDispatch } from "react-redux";
-import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
+import { snackBookStock } from "../../../redux/StoreSnackbar/snackActions";
 
 export default function UpdateStock(props) {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ export default function UpdateStock(props) {
     //dispatch(setUserChangeRol(id, newRol, accessToken));
     handleSetStock()
     handleClose();
+    dispatch(snackBookStock(true))
   };
 
   return (
