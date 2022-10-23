@@ -40,11 +40,11 @@ export default function UsersDelete(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>
-          CANCEL
-        </Button>
         <Button onClick={(e) => handleDelete(e)} autoFocus>
           CONFIRM
+        </Button>
+        <Button autoFocus onClick={handleClose}>
+          CANCEL
         </Button>
       </DialogActions>
     </Dialog>
