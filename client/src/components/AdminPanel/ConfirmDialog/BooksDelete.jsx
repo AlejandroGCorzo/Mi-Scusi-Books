@@ -7,9 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
 import { useDispatch } from "react-redux";
 import { setBookDelete } from "../../../redux/StoreBooks/booksActions";
+import { snackBookDelete } from "../../../redux/StoreSnackbar/snackActions";
 
 export default function UsersDelete(props) {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ export default function UsersDelete(props) {
   const handleDelete = (e) => {
     dispatch(setBookDelete(id));
     dispatch(handleClose);
+    dispatch(snackBookDelete(true))
   };
 
   return (
@@ -34,7 +35,7 @@ export default function UsersDelete(props) {
       <DialogTitle id="responsive-dialog-title">{"Delete Book"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          If you want to delete book {numSelected} please click CONFIRM,
+          If you want to delete book "{numSelected}" please click CONFIRM,
           otherwise click CANCEL.
         </DialogContentText>
       </DialogContent>

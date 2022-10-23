@@ -10,7 +10,6 @@ import {
   getFavorites,
   getShoppingCart,
   notLogedCart,
-  snackbarBoolean
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -153,9 +152,3 @@ export const setNotLogedShoppingCart = (cart) => {
   }
 }
 /////////////////FAVORITOS Y CARRITO//////////////////////////
-
-export const snackbarChange = (boolean) => {
-  return (dispatch) => {
-    return dispatch(snackbarBoolean(boolean))
-  }
-}

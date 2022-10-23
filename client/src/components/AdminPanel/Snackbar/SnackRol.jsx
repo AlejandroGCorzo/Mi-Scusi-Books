@@ -4,23 +4,20 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
-import { snackbarChange } from "../../../redux/StoreUsers/usersActions";
+import { snackbarChange } from "../../../redux/StoreSnackbar/snackActions";
+import Alert from "@mui/material/Alert";
 
-export default function SimpleSnackbar() {
-  const [open, setOpen] = React.useState(false);
-
+export default function SnackRol() {
   const handleClick = () => {
-    //setOpen(true);
     dispatch(snackbarChange(true));
   };
 
   const handleClose = () => {
-    //setOpen(false);
     dispatch(snackbarChange(false));
   };
 
   const dispatch = useDispatch();
-  const { snackbar } = useSelector((state) => state.users);
+  const { userRol } = useSelector((state) => state.snack);
 
   const action = (
     <IconButton
@@ -37,12 +34,16 @@ export default function SimpleSnackbar() {
     <div>
       <Button onClick={(e) => handleClick(e)}>Changes Saved!</Button>
       <Snackbar
-        open={snackbar}
+        open={userRol}
         autoHideDuration={3000}
         onClose={handleClose}
         message="Changes Saved!!"
         action={action}
-      />
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Rol changed succesfuly!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
