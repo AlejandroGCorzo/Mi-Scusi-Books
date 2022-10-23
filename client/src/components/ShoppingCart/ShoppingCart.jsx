@@ -61,7 +61,7 @@ export default function ShoppingCart(props) {
   ////////////////////////////////////////////////////////////////////////////////
 
   var totalShopping = 0;
-  const envio = 8;
+  var envio = 8;
 
   useEffect(() => {
     if (accessToken) {
@@ -85,7 +85,8 @@ export default function ShoppingCart(props) {
   }, [dispatch, login]);
 
   shoppingCart?.forEach(e => {
-     totalShopping += e.price;
+    totalShopping += (e.price * e.amount);
+    // if(e.format !== "digital") envio = 8;
   });
 
   const handleClickBuy = async () => {
@@ -159,6 +160,9 @@ export default function ShoppingCart(props) {
                         <div className="contenedorx">
                           <div className="contentImage">
                             <img src={el.image} alt="" />
+                          </div>
+                          <div className="amountContent">
+                            <span>Amount: {el.amount}</span>
                           </div>
                           <div className="contenedorItems">
                           <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>

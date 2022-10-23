@@ -40,6 +40,7 @@ function textRating(value) {
 
 const Details = (props) => {
   const dispatch = useDispatch();
+  const [count, setCount] = useState(1);
   const { shoppingCart } = useSelector((state) => state.users);
   const { favorites } = useSelector((state) => state.users);
   const { loggedUser, login } = useSelector((state) => state.users);
@@ -136,7 +137,7 @@ const Details = (props) => {
 
   function addToCart(libroID) {
     if(accessToken){
-      dispatch(addCart(loggedUser.id, libroID, 1, accessToken));
+      dispatch(addCart(loggedUser.id, libroID, count, accessToken));
       setMsg("Book added to cart!")
       setOpen(true)
     } else {
@@ -153,7 +154,7 @@ const Details = (props) => {
         name: detail.name,
         price: detail.price,
         image: detail.image,
-        amount: 1
+        amount: count
       }
       localCart.books = localCart.books.filter(b => b.id !== book.id)
       localCart.books.push(book);
@@ -341,6 +342,11 @@ const Details = (props) => {
                   ? detail.price + ".00"
                   : detail.price}
               </span>
+              <div className="contLibros">
+                {count === 1 ? <button>-</button>:<button onClick={() => setCount(count - 1)}>-</button>}
+                <p>{count}</p>
+                {count === detail.stock ? <button>+</button>:<button onClick={() => setCount(count + 1)}>+</button>}
+             </div>
               <div className="buttonsContainer">
                 {/* <button className="buttonBookDetail">
                   <b>Buy</b>

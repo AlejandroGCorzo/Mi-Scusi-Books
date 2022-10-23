@@ -120,7 +120,12 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
-  }
+}
+
+.amountContent{
+    font-size: 20px;
+    margin-top: 80px;
+}
 
 @media (min-height: 0px){
     .itemsShoppingDetail{
