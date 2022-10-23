@@ -93,6 +93,9 @@
   .userAccountContainer{
     width: 336px;
   }
+  .contentResults{
+    width: 336px;
+  }
 }
 
 .routesHeader {
