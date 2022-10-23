@@ -147,6 +147,7 @@ const Details = (props) => {
         image: detail.image,
         amount: 1
       }
+      localCart.books = localCart.books.filter(b => b.id !== book.id)
       localCart.books.push(book);
       window.sessionStorage.removeItem('cart');
       window.sessionStorage.setItem('cart', JSON.stringify(localCart))
