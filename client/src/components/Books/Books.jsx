@@ -6,6 +6,7 @@ import {
   getCategories,
   setStoreFilters,
   orderFilteredBooks,
+  setCurrentPage,
 } from "../../redux/StoreBooks/booksActions.js";
 import Book from "../Book/Book.jsx";
 import UrlBreadcrumb from "./UrlBreadcrumb/UrlBreadcrumb.jsx";
@@ -46,6 +47,7 @@ export default function Books() {
 
   // // // // // // USE EFFECT
   useEffect(() => {
+    dispatch(setCurrentPage({currentPage: 0, rows: 10}))
     if (!theme && !category && !subcategory) {
       dispatch(bookFiltered(storeFilters));
     }

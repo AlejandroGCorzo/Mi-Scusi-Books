@@ -18,6 +18,7 @@ import {
   deleteFavorites,
   addCart,
   keepLog,
+  setNotLogedShoppingCart,
 } from "../../redux/StoreUsers/usersActions.js";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
@@ -151,6 +152,7 @@ const Details = (props) => {
       localCart.books.push(book);
       window.sessionStorage.removeItem('cart');
       window.sessionStorage.setItem('cart', JSON.stringify(localCart))
+      dispatch(setNotLogedShoppingCart(JSON.stringify(localCart)))
       setOpen(true)
     }
   }

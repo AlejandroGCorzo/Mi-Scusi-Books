@@ -20,6 +20,7 @@ export default function UserLogin() {
   // // // // // // // // // // HOOKS
   const history = useHistory();
   const dispatch = useDispatch();
+  let localCart = window.sessionStorage.getItem('cart');
   // // // // // // // // // // STATES
   const emptyInput = {
     email: "",
@@ -85,12 +86,22 @@ export default function UserLogin() {
 
   async function handleLogIn(e) {
     e.preventDefault();
+    let cart = [],
+        amounts = [];
+    if(localCart){
+      localCart = JSON.parse(localCart)
+      console.log(localCart)
+      cart = localCart?.books.map(el => el.id);
+      amounts = localCart?.books.map(el => el.amount)
+    }
+
     axios
-      .post("/user/login", input)
+      .post("/user/login", {...input, cart, amounts})
       .then((el) => {
         if (rememberMe) window.localStorage.setItem("token", el.data.token);
         else window.sessionStorage.setItem("token", el.data.token);
         dispatch(loging());
+        window.sessionStorage.removeItem('cart');
         history.push("/");
       })
       .catch((e) => {
@@ -99,8 +110,17 @@ export default function UserLogin() {
   }
 
   function googleSuccessData(response) {
+    let cart = [],
+        amounts = [];
+    if(localCart){
+      localCart = JSON.parse(localCart)
+      console.log(localCart)
+      cart = localCart?.books.map(el => el.id);
+      amounts = localCart?.books.map(el => el.amount)
+    }
+
     axios
-      .get(`/user/login_google`, {
+      .post(`/user/login_google`, {cart, amounts},{
         headers: {
           authorization: `Bearer ${response.credential}`,
         },
@@ -108,6 +128,7 @@ export default function UserLogin() {
       .then((el) => {
         window.localStorage.setItem("token", el.data.token);
         dispatch(loging());
+        window.sessionStorage.removeItem('cart')
         history.push("/");
       })
       .catch((e) => console.log(e));
