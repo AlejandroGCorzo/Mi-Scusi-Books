@@ -46,7 +46,8 @@ const Details = (props) => {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
-
+  const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState('');
   /////////////////Simulacion del rating
   var reviewsTest = [];
 
@@ -121,7 +122,12 @@ const Details = (props) => {
   }
 
   function addFavorite(libroID) {
-    dispatch(addFavorites(loggedUser.id, libroID, accessToken));
+    if(!accessToken){
+      setMsg("Please log in to add favorites")
+      setOpen(true)
+    } else {
+      dispatch(addFavorites(loggedUser.id, libroID, accessToken));
+    }
   }
 
   function deleteFav(libroID) {
@@ -131,6 +137,7 @@ const Details = (props) => {
   function addToCart(libroID) {
     if(accessToken){
       dispatch(addCart(loggedUser.id, libroID, 1, accessToken));
+      setMsg("Book added to cart!")
       setOpen(true)
     } else {
       const localCart = {
@@ -153,11 +160,12 @@ const Details = (props) => {
       window.sessionStorage.removeItem('cart');
       window.sessionStorage.setItem('cart', JSON.stringify(localCart))
       dispatch(setNotLogedShoppingCart(JSON.stringify(localCart)))
+      setMsg("Book added to cart!")
       setOpen(true)
     }
   }
 
-  const [open, setOpen] = useState(false);
+  
   function handleClose() {
     setOpen(false);
   }
@@ -363,7 +371,7 @@ const Details = (props) => {
         open={open}
         autoHideDuration={2000}
         onClose={handleClose}
-        message="Book added to cart!"
+        message={msg}
         action={action}
       />
     </div>
