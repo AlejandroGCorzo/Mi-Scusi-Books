@@ -1,45 +1,46 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { snackbarChange } from "../../../redux/StoreUsers/usersActions";
 
 export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
-    setOpen(true);
+    //setOpen(true);
+    dispatch(snackbarChange(true));
   };
 
   const handleClose = () => {
-    setOpen(false);
+    //setOpen(false);
+    dispatch(snackbarChange(false));
   };
 
+  const dispatch = useDispatch();
+  const { snackbar } = useSelector((state) => state.users);
+
   const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={(e) => handleClose(e)}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
   );
 
   return (
     <div>
-      <Button onClick={handleClick}>Open simple snackbar</Button>
+      <Button onClick={(e) => handleClick(e)}>Changes Saved!</Button>
       <Snackbar
-        open={open}
-        autoHideDuration={6000}
+        open={snackbar}
+        autoHideDuration={3000}
         onClose={handleClose}
-        message="Note archived"
+        message="Changes Saved!!"
         action={action}
       />
     </div>
