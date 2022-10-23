@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { createOrder, captureOrder, cancelOrder } = require("../paypalcontrollers/PaypalControllers")
+const { createOrder, captureOrder, cancelOrder } = require("../paypalcontrollers/paypalControllers")
 const paypalRouter = Router();
 
 paypalRouter.post("/create-order", createOrder);
