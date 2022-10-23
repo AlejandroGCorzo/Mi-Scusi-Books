@@ -71,6 +71,7 @@ export default function Books() {
       );
     }
     dispatch(getCategories());
+    window.scrollTo(0, 0);
     return setSelectOrder("Select");
   }, [dispatch, theme, category, subcategory, render]);
   // // // // // // // FUNCIONES
