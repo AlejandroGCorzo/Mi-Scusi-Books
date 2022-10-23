@@ -27,8 +27,8 @@ const createOrder = async (req, res) => {
         locale: "en-US",
         landing_page: "NO_PREFERENCE",
         user_action: "PAY_NOW",
-        return_url: "http://localhost:9000/payment/capture-order",
-        cancel_url: "http://localhost:9000/payment/cancel-order",
+        return_url:  `${process.env.BACK_URL}/payment/capture-order`,
+        cancel_url: `${process.env.BACK_URL}/payment/cancel-order`,
       },
     };
 
