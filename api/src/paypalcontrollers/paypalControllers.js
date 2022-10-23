@@ -110,7 +110,7 @@ const captureOrder = async (req, res) => {
 
     console.log(response.data);
 
-    res.redirect("http://localhost:3000/order-successfully");
+    res.redirect(`${process.env.FRONT_URL}/order-successfully`);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -118,7 +118,7 @@ const captureOrder = async (req, res) => {
 };
 
 const cancelOrder = (req, res) => {
-  res.redirect("http://localhost:3000/");
+  res.redirect(`${process.env.FRONT_URL}`);
 };
 
 module.exports = { createOrder, captureOrder, cancelOrder };
