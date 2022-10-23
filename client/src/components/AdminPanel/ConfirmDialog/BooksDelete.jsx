@@ -17,7 +17,7 @@ export default function UsersDelete(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { numSelected, openDialog, handleClose, id } = props;
 
-  console.log(id);
+  //console.log(id);
 
   const handleDelete = (e) => {
     dispatch(setBookDelete(id));
