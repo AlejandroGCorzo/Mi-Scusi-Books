@@ -256,6 +256,24 @@
   font-size: 20px;
 }
 
+.contLibros{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100px;
+  margin-top: 8px;
+  margin-bottom: -5px;
+}
+
+.contLibros button{
+  height: auto;
+}
+
+.contLibros p{
+  margin-top: -5px;
+}
+
 @media (min-width: 768px) {
   .contentDetailsBook {
     max-width: 514px;
