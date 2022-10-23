@@ -1,14 +1,24 @@
 const axios = require("axios");
+const User = require("../models/user");
+
 
 const createOrder = async (req, res) => {
+  const { id } = req.body
+  
   try {
+    const cart = await User.findById(id).select("cart");
+    console.log('user cart', cart)
+    const price = cart.cart.reduce((acc, el) => {
+      return acc += el.price * el.amount
+    }, 0)
+    console.log(price)
     const order = {
       intent: "CAPTURE",
       purchase_units: [
         {
           amount: {
             currency_code: "USD",
-            value: "105.70",
+            value: `${price + 8}`,
           },
         },
       ],

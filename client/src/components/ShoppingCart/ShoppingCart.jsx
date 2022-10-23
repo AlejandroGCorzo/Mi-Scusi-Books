@@ -89,7 +89,8 @@ export default function ShoppingCart(props) {
   });
 
   const handleClickBuy = async () => {
-    const { data } = await CheckoutPayPal()
+    
+    const { data } = await CheckoutPayPal(loggedUser.id)
     // console.log("hola", data)
     window.location.href = data
   }
