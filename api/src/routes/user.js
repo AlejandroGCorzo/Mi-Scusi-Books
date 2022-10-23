@@ -45,7 +45,7 @@ const generateToken = (id) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    console.log('user keeplog', user)
+    
     // console.log("back", user);
     const formatUser = {
       id: user._id,
@@ -515,7 +515,7 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
         <h2>Your user status has been changed.</h2>
         <p>New status: ${state}</p>
         <br>
-        <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+        <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
         <br>
         <p>Mi Scusi Books staff.</p>
         `,
@@ -544,7 +544,7 @@ userRouter.put("/type/:id", protect, async (req, res) => {
         <h2>Your user rol has been changed.</h2>
         <p>New rol: ${type}</p>
         <br>
-        <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+        <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
         <br>
         <p>Mi Scusi Books staff.</p>
         `,
@@ -640,7 +640,7 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
- 
+ console.log('entre a la ruta')
   const reduceStock = async (id, amount) => {
     try{
       const reduce = await bookSchema.findByIdAndUpdate(id, {
@@ -688,6 +688,7 @@ userRouter.put("/pay", protect, async (req, res) => {
       }
       // const total = price.reduce((acc, curr) => acc + curr, 0);
       const date = new Date().toDateString();
+      console.log('antes de bill')
       const bill = await billsSchema.create({
         books: books,
         amountBooks: booksAmount,
@@ -696,25 +697,26 @@ userRouter.put("/pay", protect, async (req, res) => {
         date: date,
         user: user._id,
       });
-      
+      console.log('despues de bill')
       await User.findByIdAndUpdate(user._id, {
         $set: { cart: [] },
       });
+      console.log('despues de user')
 
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
         to: user.email,
         subject: "Thanks for shopping!",
         html: `
-      <h2>Here is your bill! Dont demand us!</h2>
+      <h2>Thanks for buying</h2>
       <br>
       <p>Date: ${date}</p>
-      <p>Books: ${booksNames.map((b) => b)}</p>
-      <p>Amounts: ${booksAmount(e => e)}</p>
-      <p>Price p/u: ${price.map(e => e)}</p>
+      <p>Books: ${booksNames}</p>
+      <p>Amounts: ${booksAmount}</p>
+      <p>Price p/u: ${price}</p>
       <p>Total: ${total}</p>
       <br>
-      <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
       <br>
       <p>Mi Scusi Books staff.</p>
       `,

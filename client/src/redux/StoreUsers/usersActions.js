@@ -153,14 +153,21 @@ export const setNotLogedShoppingCart = (cart) => {
   }
 }
 
-export const payAccepted = (id, token) => {
+export const payAccepted = (token) => {
+  console.log('entre al action', token)
   return async (dispatch) => {
-    const pay = await axios.put(`/user/pay`, {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    })
-    return dispatch(paymentCompleted())
+    console.log('en el dispatch')
+    try{
+      const pay = await axios.put("/user/pay",{}, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      console.log('paydata', pay.data)
+      return dispatch(paymentCompleted())
+    } catch(e){
+      console.log(e)
+    }
   }
 }
 /////////////////FAVORITOS Y CARRITO//////////////////////////

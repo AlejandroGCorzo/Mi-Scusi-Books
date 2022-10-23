@@ -8,10 +8,10 @@ import "./PaymentAcepted.css"
 export default function PaymentAcepted() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const accessToken = window.localStorage.getItem('token') || window.sessionStorage.getItem('token')
   //traer al cart
-
+  
   useEffect(() => {
+    const accessToken = window.localStorage.getItem('token') || window.sessionStorage.getItem('token')
     dispatch(payAccepted(accessToken))
   }, [])
 
