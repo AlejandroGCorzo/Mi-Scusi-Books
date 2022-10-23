@@ -19,17 +19,19 @@ export default function UrlBreadcrumb({
             <Breadcrumbs aria-label="breadcrumb">
               <Link
                 to="/books"
-                onClick={(e) => {
+                onClick={() => {
                   dispatch(setStoreFilters({ category: [] }));
                 }}
+                style={{textDecoration: 'none'}}
               >
                 Books
               </Link>
               <Link
                 to={`/books/${theme.replace(/\s/g, "_")}`}
-                onClick={(e) => {
+                onClick={() => {
                   dispatch(setStoreFilters({ category: [theme] }));
                 }}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 {theme}
               </Link>
@@ -38,51 +40,55 @@ export default function UrlBreadcrumb({
                   /\s/g,
                   "_"
                 )}`}
-                onClick={(e) => {
+                onClick={() => {
                   dispatch(setStoreFilters({ category: [theme, category] }));
                 }}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 {category}
               </Link>
-              <Typography color="text.primary">{subcategory}</Typography>
+              <Typography>{subcategory}</Typography>
             </Breadcrumbs>
           ) : (
             <Breadcrumbs aria-label="breadcrumb">
               <Link
                 to="/books"
-                onClick={(e) => {
+                onClick={() => {
                   dispatch(setStoreFilters({ category: [] }));
                 }}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 Books
               </Link>
               <Link
                 to={`/books/${theme.replace(/\s/g, "_")}`}
-                onClick={(e) => {
+                onClick={() => {
                   dispatch(setStoreFilters({ category: [theme] }));
                 }}
+                style={{textDecoration: 'none', color: 'black'}}
               >
                 {theme}
               </Link>
-              <Typography color="text.primary">{category}</Typography>
+              <Typography>{category}</Typography>
             </Breadcrumbs>
           )
         ) : (
           <Breadcrumbs aria-label="breadcrumb">
             <Link
               to="/books"
-              onClick={(e) => {
+              onClick={() => {
                 dispatch(setStoreFilters({ category: [] }));
               }}
+              style={{textDecoration: 'none', color: 'black'}}
             >
               Books
             </Link>
-            <Typography color="text.primary">{theme}</Typography>
+            <Typography>{theme}</Typography>
           </Breadcrumbs>
         )
       ) : (
         <Breadcrumbs aria-label="breadcrumb">
-          <Typography color="text.primary">Books</Typography>
+          <Typography>Books</Typography>
         </Breadcrumbs>
       )}
     </div>

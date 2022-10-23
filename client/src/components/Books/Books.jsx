@@ -15,11 +15,13 @@ import FilterAuthor from "./FilterAuthor/FilterAuthor.jsx";
 import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
 import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
+import MenuMobile from "./MenuMobile/MenuMobile.jsx"
 import "./Books.css";
 import FilterStock from "./FilterStock/FilterStock.jsx";
 import Pages from "./Pages/Pages.jsx";
 
 export default function Books() {
+
   // // // // // //
   const history = useHistory();
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ export default function Books() {
   // // // // // // PAGINATO
   
   // const booksPerPage = 10;   
-  const lastIndex = page.currentPage * page.rows + page.rows;
+  const lastIndex = (page.currentPage * page.rows) + page.rows;
   const firstIndex = lastIndex - page.rows;
   // const totalPages = Math.ceil(booksFilter.length / booksPerPage);
   let booksToShow = booksFilter.slice(firstIndex, lastIndex);
@@ -90,6 +92,7 @@ export default function Books() {
   // // // // // //
   return (
     <div className="contentResults">
+
       <div className="divLinkCategories">
         <div className="linkCategories">
           <UrlBreadcrumb
@@ -104,11 +107,30 @@ export default function Books() {
           <Pages count={booksFilter.length}/>
         </div>
       </div>
+
+      <div className="menuMobile">
+        <MenuMobile
+            theme={theme}
+            category={category}
+            subcategory={subcategory}
+            categories={categories}
+            history={history}
+            dispatch={dispatch}
+            setStoreFilters={setStoreFilters}
+            booksFilter={booksFilter}
+            handleClick={handleClick}
+            storeFilters={storeFilters}
+            handleDel={handleDel}
+        />
+      </div>
+
       <div className="resultsMain">
+        
         <div className="filtersResults">
           <div className="titleResults">
             <p>FILTERS</p>
           </div>
+
           <FilterCategories
             theme={theme}
             category={category}
@@ -153,12 +175,12 @@ export default function Books() {
           {/*  */}
           {/* MODIFICADO HASTA ACÁ */}
         </div>
+
         <div className="sectionBooksResults">
-          {/* <div className="titleResults"></div> */}
-          <p className="orderSelect">
-            <label>
-              <b>Order by </b>
-            </label>
+
+          <div className="orderSelect">
+            <p>Order by </p>
+
             <select
               value={selectOrder}
               className="selectResults"
@@ -176,7 +198,8 @@ export default function Books() {
               <option value="A">Title (A-Z)</option>
               <option value="Z">Title (Z-A)</option>
             </select>
-          </p>
+          </div>
+
           {booksToShow.length > 0 ? (
             booksToShow.map((el) => {
               return (
@@ -195,12 +218,14 @@ export default function Books() {
           ) : (
             <p>No books found.</p>
           )}
+          
         </div>
       </div>
       <p></p>
       <div className="divPaginationBottom">
         <Pages count={booksFilter.length}/>
       </div>
+      
     </div>
   );
 }

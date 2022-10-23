@@ -56,28 +56,24 @@ export default function FilterCategories({
                 Object.keys(categories[theme][category])
                   ?.sort()
                   .map((el) => (
-                    <label key={el}>
-                      <input
-                        type="checkbox"
-                        value={el}
-                        onChange={(e) => {
-                          e.preventDefault();
-                          dispatch(
-                            setStoreFilters({
-                              category: [theme, category, el],
-                            })
-                          );
-                          history.push(
-                            `/books/${theme.replace(
-                              /\s/g,
-                              "_"
-                            )}/${category.replace(/\s/g, "_")}/${el.replace(
-                              /\s/g,
-                              "_"
-                            )}`
-                          );
-                        }}
-                      />
+                    <label key={el} onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(
+                        setStoreFilters({
+                          category: [theme, category, el],
+                        })
+                      );
+                      history.push(
+                        `/books/${theme.replace(
+                          /\s/g,
+                          "_"
+                        )}/${category.replace(/\s/g, "_")}/${el.replace(
+                          /\s/g,
+                          "_"
+                        )}`
+                      );
+                    }}>
+                      
                       {`${el}(${categories[theme][category][el]})`}
                     </label>
                   ))
@@ -88,21 +84,17 @@ export default function FilterCategories({
               Object.keys(categories[theme])
                 ?.sort()
                 .map((el) => (
-                  <label key={el}>
-                    <input
-                      type="checkbox"
-                      value={el}
-                      onChange={(e) => {
-                        e.preventDefault();
-                        dispatch(setStoreFilters({ category: [theme, el] }));
-                        history.push(
-                          `/books/${theme.replace(/\s/g, "_")}/${el.replace(
-                            /\s/g,
-                            "_"
-                          )}`
-                        );
-                      }}
-                    />
+                  <label key={el} onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(setStoreFilters({ category: [theme, el] }));
+                    history.push(
+                      `/books/${theme.replace(/\s/g, "_")}/${el.replace(
+                        /\s/g,
+                        "_"
+                      )}`
+                    );
+                  }}>
+
                     {`${el}(${sumInObj(categories[theme][el])})`}
                   </label>
                 ))
@@ -111,16 +103,12 @@ export default function FilterCategories({
             Object.keys(categories)
               ?.sort()
               .map((el) => (
-                <label key={el}>
-                  <input
-                    type="checkbox"
-                    value={el}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      dispatch(setStoreFilters({ category: [el] }));
-                      history.push(`/books/${el.replace(/\s/g, "_")}`);
-                    }}
-                  />
+                <label key={el} onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(setStoreFilters({ category: [el] }));
+                  history.push(`/books/${el.replace(/\s/g, "_")}`);
+                }}>
+
                   {`${el}(${sumInObj(categories[el])})`}
                 </label>
               ))
