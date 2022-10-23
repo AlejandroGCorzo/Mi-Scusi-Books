@@ -7,18 +7,18 @@ const createOrder = async (req, res) => {
   
   try {
     const cart = await User.findById(id).select("cart");
-    console.log('user cart', cart)
-    const price = cart.cart.reduce((acc, el) => {
+    let price = cart.cart.reduce((acc, el) => {
       return acc += el.price * el.amount
     }, 0)
-    console.log(price)
+
+    price = Math.round(price * 100) / 100
     const order = {
       intent: "CAPTURE",
       purchase_units: [
         {
           amount: {
             currency_code: "USD",
-            value: `${price + 8}`,
+            value: `${price}`,
           },
         },
       ],
@@ -31,7 +31,6 @@ const createOrder = async (req, res) => {
         cancel_url: `${process.env.BACK_URL}/payment/cancel-order`,
       },
     };
-
     // format the body
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
@@ -39,7 +38,6 @@ const createOrder = async (req, res) => {
     // console.log(params);
 
     // Generate an access token
-
     const {
       data: { access_token },
     } = await axios.post(
@@ -71,8 +69,6 @@ const createOrder = async (req, res) => {
     //     },
     //   }
     // );
-
-    console.log(access_token);
 
     // make a request
     const response = await axios.post(
