@@ -53,7 +53,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       userName: user.username,
       state: user.state,
       favorites: user.favorites,
-      cart: user.cart
+      cart: user.cart,
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -63,10 +63,34 @@ userRouter.get("/keepLog", protect, async (req, res) => {
 
 //Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, cart, amounts } = req.body; //cart es un array
   try {
     const user = await User.findOne({ email });
     let formatUser;
+    if (cart?.length) {
+      const extension = [];
+      for (const idBook of cart) {
+        let book = await bookSchema.findById(idBook);
+        book = {
+          id: book.id,
+          name: book.name,
+          price: book.price,
+          image: book.image,
+          amount: amounts[cart.indexOf(idBook)],
+        };
+        extension.push(book);
+      }
+      console.log("nuevo carro : ", extension);
+      console.log("viejo carro : ", user.cart);
+      const total = extension.concat(user.cart);
+      const newCart = [];
+      for (const book of total) {
+        if (newCart.some((b) => b.id === book.id)) continue;
+        newCart.push(book);
+      }
+      console.log("carro final: ", newCart);
+      await user.updateOne({ cart: newCart });
+    }
     if (user && (await bcrypt.compare(password, user.password))) {
       formatUser = {
         // id: user._id,
@@ -257,6 +281,8 @@ userRouter.post("/signup", async (req, res) => {
     // phone,
     // address,
     // birthdate,
+    cart,
+    amounts,
   } = req.body;
 
   if (
@@ -290,6 +316,21 @@ userRouter.post("/signup", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
+    const newCart = [];
+    if (cart?.length) {
+      for (const idBook of cart) {
+        let book = await bookSchema.findById(idBook);
+        book = {
+          id: book.id,
+          name: book.name,
+          price: book.price,
+          image: book.image,
+          amount: amounts[cart.indexOf(idBook)],
+        };
+        newCart.push(book)
+      }
+    }
+
     const newUser = {
       username,
       firstName: name,
@@ -309,7 +350,7 @@ userRouter.post("/signup", async (req, res) => {
       type: "normal",
       votedBooks: [],
       favorites: [],
-      cart: [],
+      cart: newCart,
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
     };
     const user = await User.create(newUser);
