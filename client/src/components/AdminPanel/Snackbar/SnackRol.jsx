@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,9 +7,6 @@ import { snackbarChange } from "../../../redux/StoreSnackbar/snackActions";
 import Alert from "@mui/material/Alert";
 
 export default function SnackRol() {
-  const handleClick = () => {
-    dispatch(snackbarChange(true));
-  };
 
   const handleClose = () => {
     dispatch(snackbarChange(false));
@@ -32,7 +28,6 @@ export default function SnackRol() {
 
   return (
     <div>
-      <Button onClick={(e) => handleClick(e)}>Changes Saved!</Button>
       <Snackbar
         open={userRol}
         autoHideDuration={3000}

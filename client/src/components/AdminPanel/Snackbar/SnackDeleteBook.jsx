@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,9 +7,6 @@ import { snackBookDelete } from "../../../redux/StoreSnackbar/snackActions";
 import Alert from "@mui/material/Alert";
 
 export default function SnackDeleteBook() {
-  const handleClick = () => {
-    dispatch(snackBookDelete(true));
-  };
 
   const handleClose = () => {
     dispatch(snackBookDelete(false));
@@ -32,7 +28,6 @@ export default function SnackDeleteBook() {
 
   return (
     <div>
-      <Button onClick={(e) => handleClick(e)}>Changes Saved!</Button>
       <Snackbar
         open={bookDelete}
         autoHideDuration={3000}
