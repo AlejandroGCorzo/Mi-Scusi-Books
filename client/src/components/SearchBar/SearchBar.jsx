@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./SearchBar.css";
 import Search from "../../sourceImg/search.svg";
-import { getBookByName } from "../../redux/StoreBooks/booksSlice";
+import { getBookByName, setEmptyFilters } from "../../redux/StoreBooks/booksSlice";
 import {
   getBookName,
   bookFiltered,
@@ -45,6 +45,11 @@ export default function SearchBar() {
     setFilter(e.target.value);
   }
 
+  function handleClick(e){
+    dispatch(setEmptyFilters());
+    history.push("/books");
+  }
+
   return (
     <div>
       <div className="search">
@@ -82,9 +87,10 @@ export default function SearchBar() {
                 <p>Add Book</p>
             </Link>
           : null}
-            <Link to="/books" style={{ textDecoration: "none" }}>
+            {/* <Link to="/books" style={{ textDecoration: "none" }}>
                 <p>All Books</p>
-            </Link>
+            </Link> */}
+            <p onClick={handleClick} style={{cursor: "pointer"}}>All Books</p>
             <Link to="/categories" style={{ textDecoration: "none" }}>
                 <p>Categories</p>
           </Link>
