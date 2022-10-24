@@ -118,7 +118,7 @@ export default function UserLogin() {
       cart = localCart?.books.map(el => el.id);
       amounts = localCart?.books.map(el => el.amount)
     }
-
+    console.log('cart', cart)
     axios
       .post(`/user/login_google`, {cart, amounts},{
         headers: {

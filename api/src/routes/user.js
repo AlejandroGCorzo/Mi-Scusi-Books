@@ -68,7 +68,7 @@ userRouter.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     let formatUser;
-    if (cart?.length) {
+    if (cart.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
@@ -118,12 +118,12 @@ userRouter.post("/login_google", async (req, res) => {
   const accesToken = req.headers.authorization.split(" ")[1];
   const tokenDecode = jwt.decode(accesToken);
   const {cart, amounts} = req.body;
- 
+  console.log('cart en back', cart)
   try {
     let user = await User.findOne({ email: tokenDecode.email });
     
     let newCart = [];
-    if (cart?.length) {
+    if (cart.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
@@ -168,7 +168,9 @@ userRouter.post("/login_google", async (req, res) => {
 
       return res.status(200).json(formatUser);
     } else {
-      await user.updateOne({ cart: newCart });
+      if(newCart.length > 0){
+        await user.updateOne({$set:{ cart: newCart }});
+      }
       // console.log('existe')
       const formatUser = {
         // id: user._id,
