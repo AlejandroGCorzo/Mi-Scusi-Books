@@ -11,7 +11,7 @@ export const booksSlice = createSlice({
     results: [],
     bookByName: {},
     topTen: [],
-    page: { currentPage: 0, rows: 10 },
+    page: { currentPage: 0, rows: 25 },
   },
   reducers: {
     getAllBooks: (state, action) => {
