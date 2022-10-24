@@ -19,6 +19,7 @@ export default function Pages({ count }) {
         count={count}
         page={page.currentPage}
         onPageChange={onPageChange}
+        rowsPerPageOptions={[25, 50, 100]}
         rowsPerPage={page.rows}
         onRowsPerPageChange={onRowsChange} 
         labelRowsPerPage={"Books per page"} 
