@@ -100,8 +100,8 @@ export default function BasicTabs() {
               indicatorColor="primary"
               centered
             >
-              <Tab label="Users New Table" {...a11yProps(0)} />
-              <Tab label="Books New Table" {...a11yProps(1)} />
+              <Tab label="Users Panel" {...a11yProps(0)} />
+              <Tab label="Books Panel" {...a11yProps(1)} />
               <Tab label="Books Stock" {...a11yProps(2)} />
             </Tabs>
           </Box>

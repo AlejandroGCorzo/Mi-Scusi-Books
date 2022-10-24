@@ -17,7 +17,7 @@ export default function UsersDelete(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { numSelected, openDialog, handleClose, id } = props;
 
-  console.log(id);
+  //console.log(id);
 
   const handleDelete = (e) => {
     dispatch(setBookDelete(id));
@@ -40,11 +40,11 @@ export default function UsersDelete(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>
-          CANCEL
-        </Button>
         <Button onClick={(e) => handleDelete(e)} autoFocus>
           CONFIRM
+        </Button>
+        <Button autoFocus onClick={handleClose}>
+          CANCEL
         </Button>
       </DialogActions>
     </Dialog>
