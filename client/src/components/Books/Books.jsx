@@ -49,7 +49,7 @@ export default function Books() {
 
   // // // // // // USE EFFECT
   useEffect(() => {
-    dispatch(setCurrentPage({currentPage: 0, rows: 10}))
+    dispatch(setCurrentPage({currentPage: 0, rows: 25}))
     if (!theme && !category && !subcategory) {
       dispatch(bookFiltered(storeFilters));
     }
