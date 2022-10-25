@@ -65,10 +65,11 @@ userRouter.get("/keepLog", protect, async (req, res) => {
 //Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
   const { email, password, cart, amounts } = req.body; //cart es un array
+  console.log(email, password);
   try {
     const user = await User.findOne({ email });
     let formatUser;
-    if (cart.length > 0) {
+    if (cart?.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
@@ -81,8 +82,8 @@ userRouter.post("/login", async (req, res) => {
         };
         extension.push(book);
       }
-      console.log("nuevo carro : ", extension);
-      console.log("viejo carro : ", user.cart);
+      // console.log("nuevo carro : ", extension);
+      // console.log("viejo carro : ", user.cart);
       const total = extension.concat(user.cart);
       const newCart = [];
       for (const book of total) {
@@ -106,10 +107,10 @@ userRouter.post("/login", async (req, res) => {
     if (!formatUser)
       return res
         .status(400)
-        .json({ msg: "Your password or email is incorrect." });
+        .json({ msg: "1Your password or email is incorrect." });
     res.status(200).json(formatUser);
   } catch (e) {
-    res.status(400).json({ msg: "Your password or email is incorrect." });
+    res.status(400).json({ msg: "2Your password or email is incorrect." });
   }
 });
 
@@ -123,7 +124,7 @@ userRouter.post("/login_google", async (req, res) => {
     let user = await User.findOne({ email: tokenDecode.email });
     
     let newCart = [];
-    if (cart.length > 0) {
+    if (cart?.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
