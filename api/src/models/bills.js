@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const billsSchema = mongoose.Schema({
 
-    books:[{
+    books:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Books" 
-    }],
+    },
     amountBooks:[Number],
     price:[{
        type:[Number],
