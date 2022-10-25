@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../sourceImg/logo3.png";
-import Loader from "../Loader/Loader";
+import "./About.css"
 
 export default function About() {
   return (
