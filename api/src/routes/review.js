@@ -1,17 +1,32 @@
 const { Router } = require("express");
+const books = require('../models/books');
 const Review = require("../models/review");
-const { protect } = require("../middleware/protect");
+const { protect } = require("../middleware/protect");const user = require('../models/user');
+const User = require('../models/user');
+
 const reviewRouter = Router();
 
-reviewRouter.post("/", async (req, res) => {
-  const { text, user } = req.body;
+reviewRouter.post('/', async (req, res) => {
+  const { text, idUser, idBook, rating } = req.body;
 
   try {
     const review = await Review.create({
       text,
-      votes: { upvotes: 0, downvotes: 0 },
-      user: user,
-    });
+      votes: {
+        upvotes: 0,
+        downvotes: 0
+      },
+      user: idUser
+    })
+    const user = await User.findById(idUser)
+    const votedBooks = user.votedBooks
+    votedBooks.push(idBook)
+    await user.updateOne({votedBooks : votedBooks})
+
+    const book = await books.findById(idBook)
+    const bookRating = book.rating
+    bookRating.push(rating)
+    await book.updateOne({rating : bookRating})
 
     res.status(200).json(review);
   } catch (e) {

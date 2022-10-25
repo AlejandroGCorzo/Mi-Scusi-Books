@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./AccountCreate.css";
@@ -21,6 +21,7 @@ export default function AccountCreate() {
   // // // // // // // // //
   const dispatch = useDispatch();
   const history = useHistory();
+  let localCart = window.sessionStorage.getItem("cart");
   // // // // // // // // //
   const [open, setOpen] = useState(false);
   const [errors, setErrors] = useState({});
@@ -31,7 +32,26 @@ export default function AccountCreate() {
     username: "",
     password: "",
     email: "",
+    cart: [],
+    amounts: [],
   });
+
+  useEffect(() => {
+    let cart = [],
+      amounts = [];
+    if (localCart) {
+      localCart = JSON.parse(localCart);
+      console.log(localCart);
+      cart = localCart?.books.map((el) => el.id);
+      amounts = localCart?.books.map((el) => el.amount);
+    }
+    setUser({
+      ...user,
+      cart,
+      amounts
+    });
+  });
+
   // // // // ON CHANGE // // // //
   function onInputChange(e) {
     e.preventDefault();
@@ -114,16 +134,15 @@ export default function AccountCreate() {
           <div className="contentTitleAccount">
             <h2>Create Account</h2>
           </div>
-          
+
           <form
             onSubmit={(e) =>
               onSubmit(e, dispatch, history, user, setOpen, setErrors, errors)
             }
           >
-          
             {/* Name Input */}
             <TextField
-              sx={{ m: 0.5}}
+              sx={{ m: 0.5 }}
               className="textfieldWithCap"
               label="Name*"
               autoComplete="off"
@@ -155,7 +174,7 @@ export default function AccountCreate() {
 
             {/* Username Input */}
             <TextField
-              sx={{ m: 0.5}}
+              sx={{ m: 0.5 }}
               className="textfield"
               label="Username*"
               autoComplete="off"
@@ -186,7 +205,11 @@ export default function AccountCreate() {
             />
 
             {/* Password Form Control */}
-            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
+            <FormControl
+              sx={{ m: 0.5 }}
+              variant="outlined"
+              className="textfield"
+            >
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.password ? true : false}
@@ -224,7 +247,11 @@ export default function AccountCreate() {
             </FormControl>
 
             {/* Confirm Password Form Control */}
-            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
+            <FormControl
+              sx={{ m: 0.5 }}
+              variant="outlined"
+              className="textfield"
+            >
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.confirmPass ? true : false}

@@ -147,6 +147,7 @@ userRouter.post("/login_google", async (req, res) => {
       console.log(newCart)
     }
     if (!user) {
+      console.log(newCart);
       const newUser = {
         firstName: tokenDecode.given_name,
         lastName: tokenDecode.family_name,
