@@ -14,6 +14,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
+import About from "./components/About/About.jsx"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" component={UserLogin} />
         <Route path="/signup" component={AccountCreate} />
         <Route path="/create" component={CreateBook} />
+        <Route path="/about" component={About} />
         <Switch>
           <Route
             exact
