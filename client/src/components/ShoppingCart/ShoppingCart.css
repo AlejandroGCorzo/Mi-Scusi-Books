@@ -113,8 +113,8 @@
 }
 
 .buttonDelete {
-    background-color: #cc0000;
-    border: 1px solid #ff0000;
+    background-color: rgb(202, 45, 45);
+    border: 1px solid rgb(202, 45, 45);
     height: 40px;
     width: 100px;
     border-radius: 5px;

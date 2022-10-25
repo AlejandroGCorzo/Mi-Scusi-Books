@@ -40,7 +40,7 @@
 
 .synopsisText::-webkit-scrollbar-thumb {
   width: 1px;
-  background-color: #00cc77;
+  background-color: #2cc485;
   border-radius: 15px;
 }
 
@@ -93,8 +93,8 @@
 
 .buttonBookDetail {
   font-size: 25px;
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   height: 50px;
   width: 250px;
   border-radius: 5px;
@@ -102,6 +102,18 @@
   margin-top: 7px;
   margin-bottom: 7px;
   cursor: pointer;
+}
+
+.buttonOutStock {
+  font-size: 25px;
+  background-color: #d6d6d6;
+  border: 1px solid #d6d6d6;
+  height: 50px;
+  width: 250px;
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  margin-top: 7px;
+  margin-bottom: 7px;
 }
 
 .buttonsContainer {
@@ -147,7 +159,7 @@
 }
 
 .estrellasRating {
-  color:#00cc77;
+  color:#2cc485;
 }
 .contentFav {
   display: flex;
@@ -158,10 +170,10 @@
   margin-top: 10px;
   margin-bottom: -15px;
   cursor: pointer;
-  color:#00cc77;
+  color: rgb(202, 45, 45);
 }
 .favColor {
-  color:#00cc77;
+  color: rgb(202, 45, 45);
 }
 .contentRating{
   margin-bottom: 5px;
@@ -174,7 +186,7 @@
   margin-top: 25px;
   font-weight: bold;
   font-size: 25px;
-  color: #00cc77;
+  color: #28cbb5;
   background-color: white;
   border-radius: 8px 8px 0px 0px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -185,7 +197,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: #00cc77;
+  color: #2cc485;
   background-color: white;
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);

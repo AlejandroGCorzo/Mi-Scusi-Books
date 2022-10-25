@@ -48,7 +48,7 @@ const Details = (props) => {
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   const [open, setOpen] = useState(false);
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState("");
   /////////////////Simulacion del rating
   var reviewsTest = [];
 
@@ -123,9 +123,9 @@ const Details = (props) => {
   }
 
   function addFavorite(libroID) {
-    if(!accessToken){
-      setMsg("Please log in to add favorites")
-      setOpen(true)
+    if (!accessToken) {
+      setMsg("Please log in to add favorites");
+      setOpen(true);
     } else {
       dispatch(addFavorites(loggedUser.id, libroID, accessToken));
     }
@@ -136,37 +136,36 @@ const Details = (props) => {
   }
 
   function addToCart(libroID) {
-    if(accessToken){
+    if (accessToken) {
       dispatch(addCart(loggedUser.id, libroID, count, accessToken));
-      setMsg("Book added to cart!")
-      setOpen(true)
+      setMsg("Book added to cart!");
+      setOpen(true);
     } else {
       const localCart = {
-        books: []
+        books: [],
       };
-      const cart = JSON.parse(window.sessionStorage.getItem('cart'));
-      console.log(cart)
-      if(cart){
-        localCart.books = [...cart.books]
+      const cart = JSON.parse(window.sessionStorage.getItem("cart"));
+      console.log(cart);
+      if (cart) {
+        localCart.books = [...cart.books];
       }
       const book = {
         id: detail._id,
         name: detail.name,
         price: detail.price,
         image: detail.image,
-        amount: count
-      }
-      localCart.books = localCart.books.filter(b => b.id !== book.id)
+        amount: count,
+      };
+      localCart.books = localCart.books.filter((b) => b.id !== book.id);
       localCart.books.push(book);
-      window.sessionStorage.removeItem('cart');
-      window.sessionStorage.setItem('cart', JSON.stringify(localCart))
-      dispatch(setNotLogedShoppingCart(JSON.stringify(localCart)))
-      setMsg("Book added to cart!")
-      setOpen(true)
+      window.sessionStorage.removeItem("cart");
+      window.sessionStorage.setItem("cart", JSON.stringify(localCart));
+      dispatch(setNotLogedShoppingCart(JSON.stringify(localCart)));
+      setMsg("Book added to cart!");
+      setOpen(true);
     }
   }
 
-  
   function handleClose() {
     setOpen(false);
   }
@@ -342,21 +341,51 @@ const Details = (props) => {
                   ? detail.price + ".00"
                   : detail.price}
               </span>
-              <div className="contLibros">
-                {count === 1 ? <button>-</button>:<button onClick={() => setCount(count - 1)}>-</button>}
-                <p>{count}</p>
-                {count === detail.stock ? <button>+</button>:<button onClick={() => setCount(count + 1)}>+</button>}
-             </div>
+              {detail.stock > 0 ? (
+                <div className="contLibros">
+                  {count === 1 ? (
+                    <button>-</button>
+                  ) : (
+                    <button onClick={() => setCount(count - 1)}>-</button>
+                  )}
+                  <p>{count}</p>
+                  {count === detail.stock ? (
+                    <button>+</button>
+                  ) : (
+                    <button onClick={() => setCount(count + 1)}>+</button>
+                  )}
+                </div>
+              ) : (
+                <div className="contLibros">
+                  {count === 1 ? (
+                    <button>-</button>
+                  ) : (
+                    <button onClick={() => setCount(count - 1)} disabled>-</button>
+                  )}
+                  <p>{count}</p>
+                  {count === detail.stock ? (
+                    <button disabled>+</button>
+                  ) : (
+                    <button onClick={() => setCount(count + 1)} disabled>+</button>
+                  )}
+                </div>
+              )}
               <div className="buttonsContainer">
                 {/* <button className="buttonBookDetail">
                   <b>Buy</b>
                 </button> */}
-                <button
-                  className="buttonBookDetail"
-                  onClick={() => addToCart(detail._id)}
-                >
-                  <b>Add to cart</b>
-                </button>
+                {detail.stock > 0 ? (
+                  <button
+                    className="buttonBookDetail"
+                    onClick={() => addToCart(detail._id)}
+                  >
+                    <b>Add to cart</b>
+                  </button>
+                ) : (
+                  <button className="buttonOutStock" type="button" disabled>
+                    <b>Out of stock</b>
+                  </button>
+                )}
 
                 {/* <button className="buttonBookDetail">Add to Cart</button> */}
               </div>
