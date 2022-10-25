@@ -31,7 +31,7 @@
   width: 100%;
   margin-top: 10px;
   height: 20px;
-  color: #1f1f1f;
+  color: #34495e;
 }
 
 .contentCategoryx {
@@ -56,7 +56,7 @@
 }
 
 .contentCategoryDivx p {
-  color: #00cc77;
+  color: #34495e;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
@@ -79,7 +79,7 @@
   margin-top: 25px;
   font-weight: bold;
   font-size: 25px;
-  color: #00cc77;
+  color: #34495e;
   background-color: white;
   border-radius: 8px 8px 0px 0px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -90,7 +90,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: #00cc77;
+  color: #28cbb5;
   background-color: white;
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -106,8 +106,8 @@
 
 .buttonBackx {
   color: white;
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   border-radius: 8px;
   height: 45px;
   width: 250px;
@@ -121,7 +121,7 @@
   border: 1px solid white;
   justify-content: flex-end;
   font-size: 25px;
-  color: #00cc77;
+  color: #28cbb5;
   cursor: pointer;
 }
 

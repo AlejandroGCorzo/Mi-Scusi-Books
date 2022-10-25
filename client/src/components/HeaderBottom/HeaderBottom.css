@@ -3,11 +3,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #00cc77;
+  background-color: #28cbb5;
   width: 100%;
   height: auto;
   color: white;
   bottom: 0;
+  box-shadow: 0px 0px 10px rgba(7, 63, 68, 0.4);
 }
 
 .headerBottom p {

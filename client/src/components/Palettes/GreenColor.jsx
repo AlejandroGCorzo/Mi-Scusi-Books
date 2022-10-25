@@ -3,10 +3,10 @@ import { createTheme } from '@mui/material/styles';
 const colorMiScusi = createTheme({
     palette: {
       primary: {
-        main: '#00cc77',
+        main: '#2cc485',
       },
       secondary: {
-        main: '#f44336',
+        main: '#34495e',
       },
     },
 });

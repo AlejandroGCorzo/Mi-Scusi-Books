@@ -56,9 +56,9 @@
 select,
 option {
   padding: 5px;
-  border: 2px solid rgb(121, 121, 121);
+  border: 2px solid #34495eb8;
   border-radius: 5px;
-  color: #4f504f;
+  color: #34495e;
 }
 
 .divInputForm select {
@@ -67,7 +67,7 @@ option {
 
 .divInputForm span {
   font-size: 15px;
-  color: #00cc77;
+  color: #28cbb5;
   font-weight: bold;
   padding-bottom: 5px;
 }
@@ -78,8 +78,8 @@ option {
 
 .btnAdd {
   margin: 5px 0px 0px 77px;
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   height: 28px;
   width: 50px;
   border-radius: 5px;
@@ -90,15 +90,15 @@ option {
 .textareaAutosize {
   margin-top: 10px;
   border-radius: 8px;
-  border: 2px solid rgb(121, 121, 121);
-  color: #4f504f;
+  border: 2px solid #34495eb8;
+  color: #34495e;
 }
 
 .textareaAutosizex {
   margin-top: 10px;
   border-radius: 8px;
-  border: 2px solid rgb(121, 121, 121);
-  color: #4f504f;
+  border: 2px solid #34495eb8;
+  color: #34495e;
   width: 100%;
 }
 
@@ -107,13 +107,13 @@ option {
   justify-content: flex-start;
   align-items: center;
   font-size: 15px;
-  color: #00cc77;
+  color: #28cbb5;
   font-weight: bold;
   padding-bottom: 5px;
   margin-top: 15px;
   width: 100%;
   border-radius: 8px;
-  border: 2px solid rgb(121, 121, 121);
+  border: 2px solid #34495eb8;
   padding: 5px;
 }
 
@@ -122,7 +122,7 @@ option {
   justify-content: flex-start;
   align-items: center;
   font-size: 15px;
-  color: #00cc77;
+  color: #28cbb5;
   font-weight: bold;
   margin-top: 5px;
   padding: 5px;
@@ -132,14 +132,14 @@ option {
 .contentTitles {
   display: flex;
   margin-left: 10px;
-  color: black;
+  color: #34495e;
   text-transform: capitalize;
   font-weight: normal;
 }
 
 .btnDeletePreview {
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   height: 35px;
   width: 130px;
   border-radius: 5px;
@@ -150,8 +150,8 @@ option {
 .deleteAuthor {
   padding: 3px;
   margin-left: 20px;
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   height: 30px;
   width: 60px;
   border-radius: 5px;
@@ -187,7 +187,7 @@ option {
 }
 
 .contentBookDiv p {
-  color: #00cc77;
+  color: #34495e;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
@@ -205,8 +205,8 @@ option {
 
 .buttonDeleteBook {
   color: white;
-  background-color: #00cc77;
-  border: 1px solid #00cc77;
+  background-color: #2cc485;
+  border: 1px solid #2cc485;
   border-radius: 8px;
   height: 45px;
   font-weight: bold;

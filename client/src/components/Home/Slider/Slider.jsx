@@ -52,9 +52,7 @@ export default function SliderImg({ books }) {
               <div className="card-top">
                 <img src={el.image} alt="" />
               </div>
-
-              <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
-
+              <b><span style={{ textTransform: "uppercase" }}>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span></b>
               <Link
                 to={`/book_details/${el._id}`}
                 style={{ textDecoration: "none" }}
