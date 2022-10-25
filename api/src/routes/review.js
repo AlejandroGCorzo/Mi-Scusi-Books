@@ -16,17 +16,25 @@ reviewRouter.post('/', async (req, res) => {
         upvotes: 0,
         downvotes: 0
       },
-      user: idUser
+      user: idUser,
+      book: idBook
     })
     const user = await User.findById(idUser)
+    if(user.votedBooks.includes(idBook)){
+      return res.status(400).send('Already reviewed!')
+    }
     const votedBooks = user.votedBooks
     votedBooks.push(idBook)
     await user.updateOne({votedBooks : votedBooks})
 
     const book = await books.findById(idBook)
+    
     const bookRating = book.rating
     bookRating.push(rating)
-    await book.updateOne({rating : bookRating})
+
+    const bookReviews = book.reviews
+    bookReviews.push(review)
+    await book.updateOne({rating : bookRating, reviews : bookReviews})
 
     res.status(200).json(review);
   } catch (e) {
