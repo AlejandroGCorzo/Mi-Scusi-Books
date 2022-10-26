@@ -29,7 +29,7 @@ export default function AccountCreate() {
   const [user, setUser] = useState({
     name: "",
     lastName: "",
-    username: "",
+    // username: "",
     password: "",
     email: "",
     cart: [],
@@ -48,7 +48,7 @@ export default function AccountCreate() {
     setUser({
       ...user,
       cart,
-      amounts
+      amounts,
     });
   });
 
@@ -173,7 +173,7 @@ export default function AccountCreate() {
             />
 
             {/* Username Input */}
-            <TextField
+            {/* <TextField
               sx={{ m: 0.5 }}
               className="textfield"
               label="Username*"
@@ -186,7 +186,7 @@ export default function AccountCreate() {
               inputProps={{ maxLength: 40 }}
               error={errors.username ? true : false}
               helperText={errors.username ? `${errors.username}` : null}
-            />
+            /> */}
 
             {/* E-mail Input */}
             <TextField
@@ -296,7 +296,7 @@ export default function AccountCreate() {
                   JSON.stringify(errors) !== "{}" ||
                   !user.name ||
                   !user.lastName ||
-                  !user.username ||
+                  // !user.username ||
                   !user.email ||
                   !user.password ||
                   !confirmPass
