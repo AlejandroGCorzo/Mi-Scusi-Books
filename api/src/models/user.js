@@ -59,7 +59,8 @@ const userSchema = mongoose.Schema(
     cart:{
       type: Array
     }, 
-    image: String
+    image: String,
+    resetToken: String
   }, { timestamps: false }
 );
 
