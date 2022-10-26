@@ -8,9 +8,9 @@ const billsSchema = mongoose.Schema({
     },
     amountBooks:[Number],
     price:{
-        type:[Number],
-        require: true
-     },
+       type:[Number],
+       require: true
+    },
     total:{
        type:Number,
        require:true

@@ -16,6 +16,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import AlertDialogSlide from "./SlideAlert/SlideAlert";
 // // // // // // // // // //
 export default function AccountCreate() {
   // // // // // // // // //
@@ -29,7 +30,6 @@ export default function AccountCreate() {
   const [user, setUser] = useState({
     name: "",
     lastName: "",
-    username: "",
     password: "",
     email: "",
     cart: [],
@@ -50,12 +50,13 @@ export default function AccountCreate() {
       cart,
       amounts
     });
-  });
+  }, []);
 
   // // // // ON CHANGE // // // //
   function onInputChange(e) {
     e.preventDefault();
-    if (e.target.name === "username" || e.target.name === "password") {
+    //e.target.name === "username" ||
+    if ( e.target.name === "password") {
       setUser({
         ...user,
         [e.target.name]: e.target.value,
@@ -173,7 +174,7 @@ export default function AccountCreate() {
             />
 
             {/* Username Input */}
-            <TextField
+            {/* <TextField
               sx={{ m: 0.5 }}
               className="textfield"
               label="Username*"
@@ -186,7 +187,7 @@ export default function AccountCreate() {
               inputProps={{ maxLength: 40 }}
               error={errors.username ? true : false}
               helperText={errors.username ? `${errors.username}` : null}
-            />
+            /> */}
 
             {/* E-mail Input */}
             <TextField
@@ -296,7 +297,6 @@ export default function AccountCreate() {
                   JSON.stringify(errors) !== "{}" ||
                   !user.name ||
                   !user.lastName ||
-                  !user.username ||
                   !user.email ||
                   !user.password ||
                   !confirmPass
@@ -305,13 +305,17 @@ export default function AccountCreate() {
                 Create Account!
               </button>
             </div>
-            <Snackbar
+            <AlertDialogSlide 
+              open={open}
+              setOpen={setOpen}
+            />
+            {/* <Snackbar
               open={open}
               autoHideDuration={6000}
               onClose={handleClose}
               message="User created!"
               action={action}
-            />
+            /> */}
           </form>
         </div>
       </div>

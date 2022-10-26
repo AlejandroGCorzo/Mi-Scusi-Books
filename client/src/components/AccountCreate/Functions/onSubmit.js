@@ -14,12 +14,18 @@ export default function onSubmit(
   axios
     .post("/user/signup", user)
     .then((el) => {
-      window.sessionStorage.setItem("token", el.data.token);
-      dispatch(loging());
-      setOpen(true);
-      setTimeout(() => history.push("/"), 2300);
+      // if(el.data.msg){
+      //   alert(el.data.msg)
+      // } else {
+      //   window.sessionStorage.setItem("token", el.data.token);
+      //   dispatch(loging());
+      //   setOpen(true);
+      //   setTimeout(() => history.push("/"), 2300);
+      // }
+      setOpen(true)
     })
-    .catch((el) =>
-      setErrors({ ...errors, ...JSON.parse(el.request.response) })
+    .catch((el) =>{
+      console.log(el)
+      setErrors({ ...errors, ...JSON.parse(el.request.response) })}
     );
 }

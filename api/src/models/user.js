@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
-    username: {
-      type: String,
-    },
     password: {
       type: String,
     },
@@ -26,20 +23,6 @@ const userSchema = mongoose.Schema(
     phone: {
       type: Number,
       default: 0,
-    },
-    address: {
-      street: {
-        type: String,
-        default: "empty",
-      },
-      number: {
-        type: Number,
-        default: 0,
-      },
-      floor: {
-        type: Number,
-        default: 0,
-      },
     },
     birthdate: {
       type: String,

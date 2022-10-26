@@ -152,8 +152,8 @@ userRouter.post("/login_google", async (req, res) => {
     if (!user) {
       console.log(newCart);
       const newUser = {
-        firstName: tokenDecode.given_name,
-        lastName: tokenDecode.family_name,
+        firstName: tokenDecode.given_name.toLowerCase(),
+        lastName: tokenDecode.family_name.toLowerCase(),
         email: tokenDecode.email,
         state: "active",
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
@@ -200,7 +200,6 @@ userRouter.post("/signup", async (req, res) => {
   const {
     name,
     lastName,
-    username,
     password,
     email,
     // dni,
@@ -214,7 +213,7 @@ userRouter.post("/signup", async (req, res) => {
   if (
     !name ||
     !lastName ||
-    !username ||
+    // !username ||
     !password ||
     !email
     // || !dni ||
@@ -228,16 +227,16 @@ userRouter.post("/signup", async (req, res) => {
 
   try {
     const userFoundByMail = await User.findOne({ email });
-    const userFoundByUserName = await User.findOne({ username });
-    if (userFoundByMail && userFoundByUserName)
-      return res.status(400).json({
-        email: "Email already in use",
-        username: "Username already in use",
-      });
+    // const userFoundByUserName = await User.findOne({ username });
+      // if (userFoundByMail && userFoundByUserName)
+      //   return res.status(400).json({
+      //     email: "Email already in use",
+      //     username: "Username already in use",
+      //   });
     if (userFoundByMail)
       return res.status(400).json({ email: "Email already in use." });
-    if (userFoundByUserName)
-      return res.status(400).json({ username: "Username already in use." });
+    // if (userFoundByUserName)
+    //   return res.status(400).json({ username: "Username already in use." });
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -258,7 +257,6 @@ userRouter.post("/signup", async (req, res) => {
     }
 
     const newUser = {
-      username,
       firstName: name,
       lastName,
       password: hashPassword,
@@ -275,21 +273,23 @@ userRouter.post("/signup", async (req, res) => {
       state: "pending",
       type: "normal",
       votedBooks: [],
+      votedReviews: [],
       favorites: [],
       cart: newCart,
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
     };
     const user = await User.create(newUser);
-    formatUser = {
-      id: user._id,
-      picture: user.picture,
-      userName: user.username,
-      type: user.type,
-      state: user.state,
-      token: generateToken(user._id),
-    };
+    // formatUser = {
+    //   id: user._id,
+    //   picture: user.picture,
+    //   userName: user.username,
+    //   type: user.type,
+    //   state: user.state,
+    //   token: generateToken(user._id),
+    // };
 
-    return res.status(200).json(formatUser);
+    // return res.status(200).json(formatUser);
+    return res.status(200).json({msg: "Thank you for signing up with us. Please check your email"})
   } catch (e) {
     return res
       .status(400)
