@@ -8,20 +8,22 @@ const reviewRouter = Router();
 
 reviewRouter.post("/", async (req, res) => {
   const { text, idUser, idBook, rating } = req.body;
-
   try {
+    const user = await User.findById(idUser)
+    console.log(user.username);
     const review = await Review.create({
-      text,
+      text : text,
       votes: {
         upvotes: 0,
         downvotes: 0,
       },
-      user: idUser,
+      user: user.username? user.username : user.firstName,
       book: idBook,
-    });
-    const user = await User.findById(idUser);
-    if (user.votedBooks.includes(idBook)) {
-      return res.status(400).send("Already reviewed!");
+      rating : rating
+    })
+    console.log('llegue');
+    if(user.votedBooks.includes(idBook)){
+      return res.status(400).send('Already reviewed!')
     }
     const votedBooks = user.votedBooks;
     votedBooks.push(idBook);

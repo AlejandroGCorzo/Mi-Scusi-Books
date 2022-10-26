@@ -30,7 +30,7 @@ billsRouter.post("/", protect, async (req, res) => {
       total = total + price[i] * amountBooks[i];
     }
 
-    const date = new Date().toDateString();
+    const date = new Date()
 
     const bill = await billsSchema.create({
       books: books,
@@ -81,6 +81,7 @@ billsRouter.get("/", protect, async (req, res) => {
         amountBooks: b.amountBooks,
         price: b.price,
         total: b.total,
+        date: b.date.toDateString(),
         user: {
           username: b.user.username,
           firstName: b.user.firstName,
