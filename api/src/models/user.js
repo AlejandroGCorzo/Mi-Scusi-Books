@@ -61,6 +61,15 @@ const userSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Books",
     },
+    votedReviews:[
+      {
+        review: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Review",
+        },
+        vote: String
+      }
+    ],
     favorites:{
       type: Array,
     },
