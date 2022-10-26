@@ -352,35 +352,17 @@ const Details = (props) => {
               </span>
               {detail.stock > 0 ? (
                 <div className="contLibros">
-                  {count === 1 ? (
-                    <button>-</button>
-                  ) : (
-                    <button onClick={() => setCount(count - 1)}>-</button>
-                  )}
+                  {count === 1 ? (<button disabled>-</button>) 
+                  : (<button onClick={() => setCount(count - 1)}>-</button>)}
                   <p>{count}</p>
-                  {count === detail.stock ? (
-                    <button>+</button>
-                  ) : (
-                    <button onClick={() => setCount(count + 1)}>+</button>
-                  )}
+                  {count === detail.stock ? (<button disabled>+</button>) 
+                  : (<button onClick={() => setCount(count + 1)}>+</button>)}
                 </div>
               ) : (
                 <div className="contLibros">
-                  {count === 1 ? (
-                    <button>-</button>
-                  ) : (
-                    <button onClick={() => setCount(count - 1)} disabled>
-                      -
-                    </button>
-                  )}
-                  <p>{count}</p>
-                  {count === detail.stock ? (
-                    <button disabled>+</button>
-                  ) : (
-                    <button onClick={() => setCount(count + 1)} disabled>
-                      +
-                    </button>
-                  )}
+                <button disabled>-</button>
+                <p>0</p>
+                <button disabled>+</button>
                 </div>
               )}
               <div className="buttonsContainer">
