@@ -97,6 +97,9 @@
   .contentResults{
     width: 336px;
   }
+  .adminContainer{
+    width: 336px;
+  }
 }
 
 .routesHeader {
