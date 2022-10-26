@@ -3,6 +3,7 @@ const bookSchema = require("../models/books");
 const Category = require("../models/category");
 const bookRouter = Router();
 const { protect } = require("../middleware/protect");
+const User = require("../models/user");
 const filterTypeOne = [
   "name",
   "editorial",
@@ -73,7 +74,6 @@ bookRouter.post("/", async (req, res) => {
         edition,
         language,
         ISBN,
-        rating: 0,
         stock,
         reviews: [],
         image,
@@ -92,6 +92,21 @@ bookRouter.post("/", async (req, res) => {
     return res.status(200).json(addBook);
   } catch (e) {
     return res.status(400).json({ msg: e + "" });
+  }
+});
+
+//get top 10 best selling books
+bookRouter.get("/", async (req, res) => {
+  try {
+    let data = await bookSchema
+      .find()
+      .where({ deleted: false })
+      .sort({ unitSold: -1 })
+      .limit(10)
+      .select("-deleted");
+    res.json(data);
+  } catch (e) {
+    res.status(400).send({ msg: e.message });
   }
 });
 
@@ -230,7 +245,6 @@ bookRouter.get("/:id", async (req, res, next) => {
       .select("-deleted").populate("reviews");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
-
     res.status(200).json(book);
   } catch (e) {
     next(e);

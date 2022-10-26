@@ -286,6 +286,10 @@
   margin-top: -5px;
 }
 
+.noReviews {
+  margin-left: 35%;
+}
+
 @media (min-width: 768px) {
   .contentDetailsBook {
     max-width: 514px;
