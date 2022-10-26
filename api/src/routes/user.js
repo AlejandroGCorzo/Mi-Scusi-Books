@@ -55,6 +55,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       state: user.state,
       favorites: user.favorites,
       cart: user.cart,
+      votedBooks: user.votedBooks
     };
     res.status(200).json(formatUser);
   } catch (e) {
