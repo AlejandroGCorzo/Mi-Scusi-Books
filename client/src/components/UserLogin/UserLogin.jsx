@@ -15,12 +15,13 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Box from "@mui/material/Box";
 
 export default function UserLogin() {
   // // // // // // // // // // HOOKS
   const history = useHistory();
   const dispatch = useDispatch();
-  let localCart = window.sessionStorage.getItem('cart');
+  let localCart = window.sessionStorage.getItem("cart");
   // // // // // // // // // // STATES
   const emptyInput = {
     email: "",
@@ -87,21 +88,21 @@ export default function UserLogin() {
   async function handleLogIn(e) {
     e.preventDefault();
     let cart = [],
-        amounts = [];
-    if(localCart){
-      localCart = JSON.parse(localCart)
-      console.log(localCart)
-      cart = localCart?.books.map(el => el.id);
-      amounts = localCart?.books.map(el => el.amount)
+      amounts = [];
+    if (localCart) {
+      localCart = JSON.parse(localCart);
+      console.log(localCart);
+      cart = localCart?.books.map((el) => el.id);
+      amounts = localCart?.books.map((el) => el.amount);
     }
 
     axios
-      .post("/user/login", {...input, cart, amounts})
+      .post("/user/login", { ...input, cart, amounts })
       .then((el) => {
         if (rememberMe) window.localStorage.setItem("token", el.data.token);
         else window.sessionStorage.setItem("token", el.data.token);
         dispatch(loging());
-        window.sessionStorage.removeItem('cart');
+        window.sessionStorage.removeItem("cart");
         history.push("/");
       })
       .catch((e) => {
@@ -111,24 +112,28 @@ export default function UserLogin() {
 
   function googleSuccessData(response) {
     let cart = [],
-        amounts = [];
-    if(localCart){
-      localCart = JSON.parse(localCart)
-      console.log(localCart)
-      cart = localCart?.books.map(el => el.id);
-      amounts = localCart?.books.map(el => el.amount)
+      amounts = [];
+    if (localCart) {
+      localCart = JSON.parse(localCart);
+      console.log(localCart);
+      cart = localCart?.books.map((el) => el.id);
+      amounts = localCart?.books.map((el) => el.amount);
     }
-    console.log('cart', cart)
+    console.log("cart", cart);
     axios
-      .post(`/user/login_google`, {cart, amounts},{
-        headers: {
-          authorization: `Bearer ${response.credential}`,
-        },
-      })
+      .post(
+        `/user/login_google`,
+        { cart, amounts },
+        {
+          headers: {
+            authorization: `Bearer ${response.credential}`,
+          },
+        }
+      )
       .then((el) => {
         window.localStorage.setItem("token", el.data.token);
         dispatch(loging());
-        window.sessionStorage.removeItem('cart')
+        window.sessionStorage.removeItem("cart");
         history.push("/");
       })
       .catch((e) => console.log(e));
@@ -136,6 +141,11 @@ export default function UserLogin() {
   // // // // // // // // // // //
   const [show, setShow] = useState(false);
   // // // // // // // // // // //
+
+  // // // // // // // // // // //
+  // Funciones para forgot password
+  // // // // // // // // // // //
+
   return (
     <div className="userLoginDiv">
       <div className="container" id="container">
@@ -144,7 +154,7 @@ export default function UserLogin() {
             <h1>Login</h1>
             {/* E-mail Input */}
             <TextField
-              sx={{ m: 0.5}}
+              sx={{ m: 0.5 }}
               className="textfieldLogin"
               label="E-mail*"
               autoComplete="off"
@@ -159,7 +169,11 @@ export default function UserLogin() {
             />
 
             {/* Password Form Control */}
-            <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfieldLogin">
+            <FormControl
+              sx={{ m: 0.5 }}
+              variant="outlined"
+              className="textfieldLogin"
+            >
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 error={errors.password ? true : false}
@@ -199,7 +213,7 @@ export default function UserLogin() {
                 <FormHelperText error>{errors.msg}</FormHelperText>
               ) : null}
             </FormControl>
-            
+
             <div className="labelsito">
               <div>
                 <input
@@ -212,7 +226,7 @@ export default function UserLogin() {
               </div>
             </div>
             <Link
-              to={"/login/password_reset"}
+            to={"/forgotPassword"}
               style={{ textDecoration: "none" }}
             >
               <span>Forgot your password?</span>

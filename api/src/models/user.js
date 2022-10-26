@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema(
   {
     username: {
-      type: String,
+      type: String
     },
     password: {
       type: String,
@@ -28,6 +28,10 @@ const userSchema = mongoose.Schema(
       default: 0,
     },
     address: {
+      city: {
+        type: String,
+        default: 'empty'
+      },
       street: {
         type: String,
         default: "empty",
@@ -76,7 +80,8 @@ const userSchema = mongoose.Schema(
     cart:{
       type: Array
     }, 
-    image: String
+    image: String,
+    resetToken: String
   }, { timestamps: false }
 );
 
