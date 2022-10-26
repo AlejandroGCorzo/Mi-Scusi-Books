@@ -75,6 +75,8 @@ const Details = (props) => {
   ///////////////////////////////////////
 
   const { detail } = useSelector((state) => state.books);
+  const rating =
+    detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length;
 
   useEffect(() => {
     if (accessToken) {
@@ -210,45 +212,52 @@ const Details = (props) => {
           </div>
           <h3>Product Reviews</h3>
           <div className="contentReviews">
-            {reviewsTest?.map((e) => {
-              return (
-                <div className="reviewText" key={e.id}>
-                  <Box
-                    sx={{
-                      width: 200,
-                      display: "flex",
-                      alignItems: "center",
-                      margin: "25px",
-                      color: "#00cc77",
-                    }}
-                  >
-                    <Rating
-                      name="text-feedback"
-                      value={e.value} //Acá hay que pasarle el valor del rating del libro
-                      readOnly
-                      precision={0.5}
-                      emptyIcon={
-                        <StarIcon
-                          style={{ opacity: 0.55 }}
-                          fontSize="inherit"
-                        />
-                      }
-                    />
+            {detail.reviews?.length > 0 ? (
+              detail.reviews?.map((e, i) => {
+                return (
+                  <div className="reviewText" key={e._id}>
+                    <Box
+                      sx={{
+                        width: 200,
+                        display: "flex",
+                        alignItems: "center",
+                        margin: "25px",
+                        color: "#00cc77",
+                      }}
+                    >
+                      <Rating
+                        name="text-feedback"
+                        value={detail.rating[i + 1]} //Acá hay que pasarle el valor del rating del libro
+                        readOnly
+                        precision={0.5}
+                        emptyIcon={
+                          <StarIcon
+                            style={{ opacity: 0.55 }}
+                            fontSize="inherit"
+                          />
+                        }
+                      />
 
-                    <Box sx={{ ml: 2 }}>{textRating(e.value)}</Box>
-                  </Box>
-                  <p>{e.coment}</p>
+                      <Box sx={{ ml: 2 }}>{textRating(e.value)}</Box>
+                    </Box>
+                    <p>{e.user ? e.user : "Algun usuario de google"}</p>
+                    <p>{e.text}</p>
 
-                  <div className="contentLike">
-                    <Checkbox
-                      {...label}
-                      icon={<ThumbUpOffAltIcon className="favColor" />}
-                      checkedIcon={<ThumbUpAltIcon className="favColor" />}
-                    />
+                    <div className="contentLike">
+                      <Checkbox
+                        {...label}
+                        icon={<ThumbUpOffAltIcon className="favColor" />}
+                        checkedIcon={<ThumbUpAltIcon className="favColor" />}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="noReviews">
+                <h3>No reviews available, be the first one!</h3>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -343,31 +352,17 @@ const Details = (props) => {
               </span>
               {detail.stock > 0 ? (
                 <div className="contLibros">
-                  {count === 1 ? (
-                    <button>-</button>
-                  ) : (
-                    <button onClick={() => setCount(count - 1)}>-</button>
-                  )}
+                  {count === 1 ? (<button disabled>-</button>) 
+                  : (<button onClick={() => setCount(count - 1)}>-</button>)}
                   <p>{count}</p>
-                  {count === detail.stock ? (
-                    <button>+</button>
-                  ) : (
-                    <button onClick={() => setCount(count + 1)}>+</button>
-                  )}
+                  {count === detail.stock ? (<button disabled>+</button>) 
+                  : (<button onClick={() => setCount(count + 1)}>+</button>)}
                 </div>
               ) : (
                 <div className="contLibros">
-                  {count === 1 ? (
-                    <button>-</button>
-                  ) : (
-                    <button onClick={() => setCount(count - 1)} disabled>-</button>
-                  )}
-                  <p>{count}</p>
-                  {count === detail.stock ? (
-                    <button disabled>+</button>
-                  ) : (
-                    <button onClick={() => setCount(count + 1)} disabled>+</button>
-                  )}
+                <button disabled>-</button>
+                <p>0</p>
+                <button disabled>+</button>
                 </div>
               )}
               <div className="buttonsContainer">

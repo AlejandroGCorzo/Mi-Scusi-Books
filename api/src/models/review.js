@@ -10,9 +10,7 @@ const reviewSchema = mongoose.Schema({
     downvotes: Number
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+    type: String,
   },
   rating: Number,
   book: {

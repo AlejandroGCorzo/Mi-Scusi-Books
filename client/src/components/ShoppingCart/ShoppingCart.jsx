@@ -12,7 +12,8 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import { ThemeProvider } from "@mui/material/styles";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart, setNotLogedShoppingCart } from "../../redux/StoreUsers/usersActions.js";
+import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart, setNotLogedShoppingCart, addCart } from "../../redux/StoreUsers/usersActions.js";
+import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
 import { IconButton, Snackbar } from "@mui/material";
 function TabPanel(props) {
@@ -45,25 +46,31 @@ TabPanel.propTypes = {
 export default function ShoppingCart(props) {
   var valueIndex = 0;
   if(props.match.params.type === 'favorite') valueIndex = 1;
-
   const [value, setValue] = React.useState( valueIndex );
+
+  if(props.match.params.type === 'cart' && value === 1) setValue(0);
+  if(props.match.params.type === 'favorite' && value === 0) setValue(1);
+
   const dispatch = useDispatch();
   const history = useHistory()
   //Cuando tengamos las rutas acá deberian ir los favoritos y añadidos al carrito por ahora solo le paso el topten.
   const {shoppingCart} = useSelector((state) => state.users);
   const {favorites} = useSelector((state) => state.users);
+  const { books } = useSelector((state) => state.books);
   const { loggedUser, login } = useSelector((state) => state.users);
   const accessToken =
   window.localStorage.getItem("token") ||
   window.sessionStorage.getItem("token");
   const cartToken = window.sessionStorage.getItem('cart')
   const [open, setOpen] = useState(false)
+  const [msg, setMsg] = useState("");
   ////////////////////////////////////////////////////////////////////////////////
 
   var totalShopping = 0;
   var envio = 8;
 
   useEffect(() => {
+    dispatch(getBooks());
     if (accessToken) {
       // dispatch(keepLog(accessToken));  
       dispatch(fetchFavorites(loggedUser.id));
@@ -90,9 +97,7 @@ export default function ShoppingCart(props) {
   });
 
   const handleClickBuy = async () => {
-    
     const { data } = await CheckoutPayPal(loggedUser.id)
-    // console.log("hola", data)
     window.location.href = data
   }
 
@@ -116,6 +121,43 @@ export default function ShoppingCart(props) {
 
   function handleClose(){
     setOpen(false)
+  }
+
+  function udapteAmount(datBook){
+    var newValue = document.getElementById(datBook.id).value;
+    const maxStock = books.filter(e => e._id === datBook.id);
+
+    if(newValue <= 0 || newValue > maxStock[0].stock){
+      setMsg(`Not enough stock! (Max ${maxStock[0].stock})`)
+      setOpen(true)
+      return "";
+    }
+
+    if (accessToken) {
+      dispatch(addCart(loggedUser.id, datBook.id, newValue, accessToken));
+    }else{
+      const localCart = {
+        books: [],
+      };
+      const cart = JSON.parse(window.sessionStorage.getItem("cart"));
+      if (cart) {
+        localCart.books = [...cart.books];
+      }
+      const bookNew = {
+        id: datBook.id,
+        name: datBook.name,
+        price: datBook.price,
+        image: datBook.image,
+        amount: newValue,
+      };
+      localCart.books = localCart.books.filter((b) => b.id !== bookNew.id);
+      localCart.books.push(bookNew);
+      window.sessionStorage.removeItem("cart");
+      window.sessionStorage.setItem("cart", JSON.stringify(localCart));
+      dispatch(setNotLogedShoppingCart(JSON.stringify(localCart)));
+    }
+    setMsg("Updated!")
+    setOpen(true)
   }
 
   const action = (
@@ -146,8 +188,8 @@ export default function ShoppingCart(props) {
                     setValue(newValue);
                 }}
             >
-                <BottomNavigationAction className="bottomNavigationActionx" label="Shopping Cart" icon={<ShoppingCartIcon />} />
-               { loggedUser.id ? <BottomNavigationAction className="bottomNavigationActionx" label="Favorites" icon={<FavoriteIcon />} /> : null}
+                <BottomNavigationAction onClick={() => history.push("/shopping/cart")} className="bottomNavigationActionx" label="Shopping Cart" icon={<ShoppingCartIcon />} />
+               { loggedUser.id ? <BottomNavigationAction onClick={() => history.push("/shopping/favorite")} className="bottomNavigationActionx" label="Favorites" icon={<FavoriteIcon />} /> : null}
             </BottomNavigation>
            
         </div>
@@ -162,7 +204,14 @@ export default function ShoppingCart(props) {
                             <img src={el.image} alt="" />
                           </div>
                           <div className="amountContent">
-                            <span>Amount: {el.amount}</span>
+                            <div>
+                              <span>Amount: </span>
+                              <input id={el.id} type="number" className="input"
+                                placeholder={el.amount} min={1} max={10}/>
+                            </div>
+                            <div>
+                                <button className="buttonUdapte" onClick={() => udapteAmount(el)}>Udapte</button>
+                            </div>
                           </div>
                           <div className="contenedorItems">
                           <span>{el.name[0].toLocaleUpperCase() + el.name.slice(1)}</span>
@@ -221,19 +270,19 @@ export default function ShoppingCart(props) {
 
         <div className="formBackx">
           {value === 0 ?
+          
           <div className="contBuy">
             <div className="textBuy">
                 <span>Shipment: ${envio}</span>
                 <span>Total with shipping: ${(totalShopping + envio).toFixed(2)}</span>
             </div>
-            {/* <Link to="/" style={{ textDecoration: "none" }}> */}
-            {
-              loggedUser.id ? 
+            <div>
+            {loggedUser.id ? 
                 <button className="buttonBack" onClick={handleClickBuy}>Buy</button>
-              : 
+                : 
                 <button className="buttonBack" onClick={() => history.push("/login")}>Log In</button>
             }
-            {/* </Link> */}
+            </div>
           </div>: 
           <Link to="/" style={{ textDecoration: "none" }}>
               <button className="buttonBack">Back</button>
@@ -244,7 +293,7 @@ export default function ShoppingCart(props) {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
-      message="Book added to cart"
+      message={msg}
       action={action}
     />
     </div>

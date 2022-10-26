@@ -55,6 +55,8 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       state: user.state,
       favorites: user.favorites,
       cart: user.cart,
+      votedBooks: user.votedBooks,
+      votedReviews: user.votedReviews
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -65,10 +67,11 @@ userRouter.get("/keepLog", protect, async (req, res) => {
 //Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
   const { email, password, cart, amounts } = req.body; //cart es un array
+  console.log(email, password);
   try {
     const user = await User.findOne({ email });
     let formatUser;
-    if (cart.length > 0) {
+    if (cart?.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
@@ -81,8 +84,8 @@ userRouter.post("/login", async (req, res) => {
         };
         extension.push(book);
       }
-      console.log("nuevo carro : ", extension);
-      console.log("viejo carro : ", user.cart);
+      // console.log("nuevo carro : ", extension);
+      // console.log("viejo carro : ", user.cart);
       const total = extension.concat(user.cart);
       const newCart = [];
       for (const book of total) {
@@ -106,10 +109,10 @@ userRouter.post("/login", async (req, res) => {
     if (!formatUser)
       return res
         .status(400)
-        .json({ msg: "Your password or email is incorrect." });
+        .json({ msg: "1Your password or email is incorrect." });
     res.status(200).json(formatUser);
   } catch (e) {
-    res.status(400).json({ msg: "Your password or email is incorrect." });
+    res.status(400).json({ msg: "2Your password or email is incorrect." });
   }
 });
 
@@ -123,7 +126,7 @@ userRouter.post("/login_google", async (req, res) => {
     let user = await User.findOne({ email: tokenDecode.email });
     
     let newCart = [];
-    if (cart.length > 0) {
+    if (cart?.length > 0) {
       const extension = [];
       for (const idBook of cart) {
         let book = await bookSchema.findById(idBook);
@@ -147,6 +150,7 @@ userRouter.post("/login_google", async (req, res) => {
       console.log(newCart)
     }
     if (!user) {
+      console.log(newCart);
       const newUser = {
         firstName: tokenDecode.given_name,
         lastName: tokenDecode.family_name,
@@ -189,115 +193,6 @@ userRouter.post("/login_google", async (req, res) => {
       .json({ msg: "Something went wrong, try again later" });
   }
 });
-
-//VIEJO, ESPERAR PARA BORRARLO
-// userRouter.get("/login_google", async (req, res) => {
-//   try {
-//     const accesToken = req.headers.authorization.split(" ")[1];
-//     const response = await axios.get(
-//       "https://miscusibooks.us.auth0.com/userinfo",
-//       {
-//         headers: {
-//           authorization: `Bearer ${accesToken}`,
-//         },
-//       }
-//     );
-//     const userInfo = response.data;
-//     if (userInfo.sub.includes("google")) {
-//       let user = await User.findOne({ email: userInfo.email });
-//       if (!user) {
-//         user = await User.create({
-//           email: userInfo.email,
-//           userName: userInfo.nickname,
-//           firstName: userInfo.given_name,
-//           lastName: userInfo.family_name,
-//           image: userInfo.picture,
-//         });
-//       }
-//       const formatUser = {
-//         id: user._id,
-//         type: user.type,
-//         picture: user.image,
-//         userName: user.username,
-//         state: user.state,
-//         token: generateToken(user._id),
-//       };
-//       return res.status(200).json(formatUser);
-//     }
-//   } catch (e) {
-//     return res.status(400).json({ msg: e.message });
-//   }
-// });
-
-// userRouter.get("/detail", async (req, res) => {
-//   try {
-//     const accesToken = req.headers.authorization.split(" ")[1];
-//     const response = await axios.get(
-//       "https://miscusibooks.us.auth0.com/userinfo",
-//       {
-//         headers: {
-//           authorization: `Bearer ${accesToken}`,
-//         },
-//       }
-//     );
-//     const userInfo = response.data;
-//     if (userInfo.sub.includes("google")) {
-//       let user = await User.findOne({ email: userInfo.email });
-//       if (!user) {
-//         user = await User.create({
-//           email: userInfo.email,
-//           userName: userInfo.nickname,
-//           firstName: userInfo.given_name,
-//           lastName: userInfo.family_name,
-//           image: userInfo.picture
-//         });
-//       }
-//       const formatUser = {
-//         id: user._id,
-//         sub: userInfo.sub,
-//         email: user.email,
-//         picture: user.image,
-//         nickname: userInfo.nickname,
-//         userName: user.username,
-//         firstName: user.firstName,
-//         lastName: user.lastName,
-//         dni: user.dni,
-//         phone: user.phone,
-//         address: user.address,
-//         birthdate: user.birthdate,
-//         type: user.type,
-//         state: user.state,
-//         loyaltyPoint: user.loyaltyPoint,
-//       };
-//       return res.send(formatUser);
-//     }
-//   // console.log("entraste con correo");
-//     // console.log(userInfo);
-//     const user = await User.findOne({ email: userInfo.email });
-//     // console.log(user);
-//     const formatUser = {
-//       id: user._id,
-//       sub: userInfo.sub,
-//       email: user.email,
-//       picture: userInfo.picture,
-//       nickname: userInfo.nickname,
-//       userName: user.username,
-//       firstName: user.firstName,
-//       lastName: user.lastName,
-//       dni: user.dni,
-//       phone: user.phone,
-//       address: user.address,
-//       birthdate: user.birthdate,
-//       type: user.type,
-//       state: user.state,
-//       loyaltyPoint: user.loyaltyPoint,
-//     };
-//     // console.log(formatUser);
-//     res.send(formatUser);
-//   } catch (e) {
-//     res.send(e.message);
-//   }
-// });
 
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {

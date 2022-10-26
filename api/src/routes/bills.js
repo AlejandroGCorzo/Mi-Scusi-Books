@@ -8,11 +8,11 @@ const { protect } = require("../middleware/protect");
 
 const billsRouter = Router();
 
-billsRouter.post("/", async (req, res) => {
+billsRouter.post("/", protect, async (req, res) => {
   const { id, books, amountBooks, send } = req.body;
   try {
     const user = await User.findById(id);
-    if(!user) return res.status(400).send({msg : "User not found!"})
+    if (!user) return res.status(400).send({ msg: "User not found!" });
 
     const booksDB = [];
     for (const id of books) {
@@ -21,17 +21,16 @@ billsRouter.post("/", async (req, res) => {
     }
 
     const price = [];
-    for (const book of booksDB){
-        price.push(book.price)
+    for (const book of booksDB) {
+      price.push(book.price);
     }
-    
-    let total = 0;
-    for(let i = 0; i<price.length; i++){
-        total = total + price[i] * amountBooks[i]
-    }
-    console.log(total);
 
-    const date =  new Date().toDateString()
+    let total = 0;
+    for (let i = 0; i < price.length; i++) {
+      total = total + price[i] * amountBooks[i];
+    }
+
+    const date = new Date()
 
     const bill = await billsSchema.create({
       books: books,
@@ -39,14 +38,14 @@ billsRouter.post("/", async (req, res) => {
       price: price,
       total: total,
       date: date,
-      user: user
+      user: user,
     });
     if (send) {
-        await transporter.sendMail({
-            from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
-            to: user.email,
-            subject: "Thanks for shopping!",
-            html: `
+      await transporter.sendMail({
+        from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
+        to: user.email,
+        subject: "Thanks for shopping!",
+        html: `
             <h2>Here is your bill! Dont demand us!</h2>
             <br>
             <p>Date: ${date}</p>
@@ -59,11 +58,43 @@ billsRouter.post("/", async (req, res) => {
             <br>
             <p>Mi Scusi Books staff.</p>
             `,
-          });
+      });
     }
-    res.send(bill)
+    res.send(bill);
   } catch (error) {
     res.status(400).send({ error: error });
+  }
+});
+
+billsRouter.get("/", protect, async (req, res) => {
+  try {
+    const bills = await billsSchema.find().populate("books").populate("user");
+    const allBills = bills.map((b) => {
+      return {
+        _id: b._id,
+        books: b.books.map((book) => {
+          return {
+            name: book.name,
+            format: book.format,
+          };
+        }),
+        amountBooks: b.amountBooks,
+        price: b.price,
+        total: b.total,
+        date: b.date.toDateString(),
+        user: {
+          username: b.user.username,
+          firstName: b.user.firstName,
+          lastName: b.user.lastName,
+          email: b.user.email,
+          phone: b.user.phone,
+          address: b.user.address,
+        },
+      };
+    });
+    res.send(allBills);
+  } catch (error) {
+    res.status(400).send({ msg: "Algo fallo en get a bills", error });
   }
 });
 
