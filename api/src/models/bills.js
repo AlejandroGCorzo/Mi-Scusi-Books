@@ -7,10 +7,10 @@ const billsSchema = mongoose.Schema({
         ref:"Books" 
     },
     amountBooks:[Number],
-    price:[{
+    price:{
        type:[Number],
        require: true
-    }],
+    },
     total:{
        type:Number,
        require:true

@@ -20,18 +20,18 @@ export default function validations(
     }
   }
 
-  if (name === "username") {
-    if (!/^[a-zA-Z0-9]*$/.test(value))
-      return setErrors({
-        ...errors,
-        [name]:
-          "Username must be only one word, numbers allowed, no whitespaces allowed.",
-      });
-    else {
-      delete errors[name];
-      return setErrors({ ...errors });
-    }
-  }
+  // if (name === "username") {
+  //   if (!/^[a-zA-Z0-9]*$/.test(value))
+  //     return setErrors({
+  //       ...errors,
+  //       [name]:
+  //         "Username must be only one word, numbers allowed, no whitespaces allowed.",
+  //     });
+  //   else {
+  //     delete errors[name];
+  //     return setErrors({ ...errors });
+  //   }
+  // }
   if (name === "password" || name === "confirmPass") {
     if (name === "password") {
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
