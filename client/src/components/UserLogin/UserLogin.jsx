@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Box from "@mui/material/Box";
+import AlertDialogSlide from "../AccountCreate/SlideAlert/SlideAlert.jsx";
 
 export default function UserLogin() {
   // // // // // // // // // // HOOKS
@@ -30,6 +31,7 @@ export default function UserLogin() {
   const [rememberMe, setRememberMe] = useState(false);
   const [input, setInput] = useState(emptyInput);
   const [errors, setErrors] = useState({});
+  const [open, setOpen] = useState(false)
   // // // // // // // // // // USEEFFECT
   useEffect(() => {
     if (
@@ -99,11 +101,15 @@ export default function UserLogin() {
     axios
       .post("/user/login", { ...input, cart, amounts })
       .then((el) => {
-        if (rememberMe) window.localStorage.setItem("token", el.data.token);
-        else window.sessionStorage.setItem("token", el.data.token);
-        dispatch(loging());
-        window.sessionStorage.removeItem("cart");
-        history.push("/");
+        if(el.data.msg){
+          setOpen(true);
+        } else {
+          if (rememberMe) window.localStorage.setItem("token", el.data.token);
+          else window.sessionStorage.setItem("token", el.data.token);
+          dispatch(loging());
+          window.sessionStorage.removeItem("cart");
+          history.push("/");
+        }
       })
       .catch((e) => {
         setErrors({ ...errors, ...JSON.parse(e.request.response) });
@@ -151,6 +157,7 @@ export default function UserLogin() {
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
+           
             <h1>Login</h1>
             {/* E-mail Input */}
             <TextField
@@ -266,6 +273,10 @@ export default function UserLogin() {
               </Link>
             </div>
           </div>
+          <AlertDialogSlide 
+              open={open}
+              setOpen={setOpen}
+            />
         </div>
       </div>
     </div>

@@ -11,6 +11,11 @@
   box-shadow: 0px 0px 10px rgba(7, 63, 68, 0.4);
 }
 
-.headerBottom p {
+  /* .headerBottom p {
+    color: white;
+  } */
+
+.aboutText{
   color: white;
+  margin-top: 1em;
 }

@@ -6,7 +6,7 @@ export default function headerBottom() {
   return (
     <div className="headerBottom">
       <Link to="/about" style={{ textDecoration: "none" }}>
-        <p>About</p>
+        <p className="aboutText">About</p>
       </Link>
     </div>
   );

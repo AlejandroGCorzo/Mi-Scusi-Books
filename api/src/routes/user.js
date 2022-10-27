@@ -109,6 +109,11 @@ userRouter.post("/login", async (req, res) => {
   console.log(email, password);
   try {
     const user = await User.findOne({ email });
+
+    if(user.state === "pending"){
+      return res.status(200).json({msg: "Pleace validate your account"})
+    }
+    
     let formatUser;
     if (cart?.length > 0) {
       const extension = [];
@@ -269,7 +274,7 @@ userRouter.post("/signup", async (req, res) => {
       resetToken: "",
     };
     const user = await User.create(newUser);
-    console.log('user', user)
+        
     await transporter.sendMail({
       from: `"Miscusi Mail Verification" <${process.env.GMAIL_USER}>`,
       to: user.email,
@@ -283,6 +288,7 @@ userRouter.post("/signup", async (req, res) => {
       <p>Mi Scusi Books staff.</p>
       `,
     });
+
     return res.status(200).json({msg: "Thank you for signing up with us. Please check your email"})
   } catch (e) {
     return res

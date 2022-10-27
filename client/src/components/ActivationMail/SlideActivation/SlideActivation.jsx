@@ -39,13 +39,12 @@ export default function SlideActivation() {
         <DialogTitle>{"Welcome to MiScusi Books !"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            We've sent you an email for confirmation. 
-            Please check your inbox.
+            Your account has been activated. Thank you for joining us !
           </DialogContentText>
         </DialogContent>
         <DialogActions>
          {/*<Button onClick={handleClose}>Disagree</Button>*/}
-          <Button onClick={handleClose}>Ok</Button>
+          <Button onClick={handleClose}>Lets browse</Button>
         </DialogActions>
       </Dialog>
     </div>

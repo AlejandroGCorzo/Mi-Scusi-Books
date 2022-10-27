@@ -5,6 +5,25 @@
   margin: 15px;
 }
 
+.infoTitle{
+  color: #34495e;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 1em 0 1em  0;
+}
+
+.titleFormx{
+  background-color: #fff;
+  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;    
+  border-radius: 8px 8px 0 0;
+  color: #34495e;
+  margin-top: 25px;
+}
+
 .CreateBookConfirmationStack {
   justify-content: center;
 }
