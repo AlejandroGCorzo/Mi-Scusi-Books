@@ -209,7 +209,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={(e) => handleChange(e)}
               autoWidth
               label="Change Rol"
-              style={{ width: "130px" }}
+              style={{ width: "130px"}}
             >
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="normal">Normal</MenuItem>
