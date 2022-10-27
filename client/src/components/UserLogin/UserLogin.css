@@ -81,6 +81,7 @@
 .container button.ghost {
   background-color: transparent;
   border-color: #ffffff;
+  cursor: pointer;
 }
 
 .loginButton {
