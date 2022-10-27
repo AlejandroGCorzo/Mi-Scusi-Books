@@ -195,7 +195,7 @@ export default function UserLogin() {
                       className="loginButton"
                       sx={{
                         bgcolor: "white",
-                        ":hover": { bgcolor: "#00cc77" },
+                        ":hover": { bgcolor: "#287ccb" },
                       }}
                       aria-label="toggle password visibility"
                       onClick={() => setShow(!show)}

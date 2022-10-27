@@ -41,8 +41,8 @@
 
 .formInputsx button {
   border-radius: 8px;
-  border: 1px solid #00cc77;
-  background-color: #00cc77;
+  border: 1px solid #287ccb;
+  background-color: #287ccb;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -89,7 +89,7 @@
 .contentTitleAccount{
   border-bottom: 1px solid #e7e7e7;
   width: 100%;
-  color:#00cc77;
+  color:#287ccb;
 }
 
 .containerAccount input {

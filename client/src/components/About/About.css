@@ -1,14 +1,9 @@
-::before,
-::after {
+.containerMembers div::before, .containerMembers div::after{
 	content: "";
 }
 
 body {
-	background: #deebef;
 	color: #34495e;
-	font-family: 'Lato', 'Arial', sans-serif;
-	font-weight: 400;
-	line-height: 1.2;
 }
 
 .containerMembers {
@@ -17,13 +12,13 @@ body {
 	flex-wrap: wrap;
 }
 
-ul {
+.containerMembers ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-a {
+.containerMembers a {
 	color: #2c3e50;
 	text-decoration: none;
 }

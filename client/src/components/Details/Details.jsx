@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { getDetail, getBooks } from "../../redux/StoreBooks/booksActions.js";
+import { getDetail, getBooks, addReview, addVote, removeVote } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -28,7 +28,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Details.css";
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+const label = {};
 
 function textRating(value) {
   if (value <= 1) return "Useless";
@@ -41,41 +41,20 @@ function textRating(value) {
 const Details = (props) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
-  const { shoppingCart } = useSelector((state) => state.users);
   const { favorites } = useSelector((state) => state.users);
-  const { loggedUser, login } = useSelector((state) => state.users);
+  const { loggedUser, login, votedReviews } = useSelector((state) => state.users);
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   const [open, setOpen] = useState(false);
+  const [renderDown, setRenderDown] = useState(false);
+  const [renderUp, setRenderUp] = useState(false);
+  const [render, setRender] = useState(false);
   const [msg, setMsg] = useState("");
-  /////////////////Simulacion del rating
-  var reviewsTest = [];
-
-  reviewsTest.push(
-    {
-      id: "5",
-      coment:
-        "Es una joyita. Está recién es mi segunda gpu la anterior era una gtx 750 de 2gb qué para juegos competitivos y no tan exigentes como el fortnite y el valorant andaba bien por encima de los 60 fps mi principal motivo para comprar la gtx 1660 super era jugar otros juegos más exigentes warzone forza horizon 5 battlefield 5 y escape from tarkov antes de comprarla había investigado si los componentes de mi pc acompañarían bien a la tarjeta gráfica i5 8400 16 gb de ram fuente de 550 watts corsair y todo el sistema operativo esta en un ssd. La instalación en el gabinete fue sencilla recomendadísimo para jugar en 1080p con todo en ultra va excelente tal vez los juegos más modernos no en ultra pero si en altos.",
-      value: 5,
-    },
-    { id: "1", coment: "Buenardo", value: 4.5 },
-    { id: "2", coment: "Godines", value: 4 },
-    { id: "3", coment: "Buen Libro", value: 2.7 },
-    { id: "4", coment: "Seeee", value: 5 }
-  );
-
-  var totalRating = 0;
-
-  reviewsTest.forEach((e) => {
-    totalRating += e.value;
-  });
-
-  var value = parseInt((totalRating / reviewsTest.length).toFixed(1));
-  ///////////////////////////////////////
-
+  const [value, setValue] = React.useState(0);
   const { detail } = useSelector((state) => state.books);
-  const rating =
+
+  var rating =
     detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length;
 
   useEffect(() => {
@@ -83,6 +62,7 @@ const Details = (props) => {
       dispatch(keepLog(accessToken));
       dispatch(fetchFavorites(loggedUser.id));
     }
+    setRender(true);
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
@@ -91,6 +71,32 @@ const Details = (props) => {
       dispatch(setEmptyDetail());
     };
   }, [dispatch, login]);
+  
+  ////////////////////////////////////////////
+  var oneStar = 0;
+  var twoStar = 0;
+  var threStar = 0;
+  var forStar = 0;
+  var fiveStar = 0;
+  var contador = 0;
+  var meterCount = [];
+
+  detail.rating?.forEach(e => {
+    if(e === 1) oneStar += 1;
+    if(e === 2) twoStar += 1;
+    if(e === 3) threStar += 1;
+    if(e === 4) forStar += 1;
+    if(e === 5) fiveStar += 1;
+    contador += 1;
+  })
+
+  meterCount.push(oneStar = (oneStar * 100) / contador,
+  twoStar = (twoStar * 100) / contador,
+  threStar = (threStar * 100) / contador,
+  forStar = (forStar * 100) / contador,
+  fiveStar = (fiveStar * 100) / contador);
+
+////////////////////////////////////////////
 
   function ocultar() {
     var x = document.getElementById("idContentVentana");
@@ -102,9 +108,68 @@ const Details = (props) => {
     }
   }
 
+  function sendReview(libroID){
+    if (accessToken) {
+      dispatch(addReview(document.getElementById("texto").value, loggedUser.id, libroID, value));
+    }
+  }
+
+  function sendVote(id, libroID, vote, tipo){
+
+    if (!accessToken) {
+      setMsg("Please log in to add vote");
+      setOpen(true);
+    } else {
+
+      dispatch(addVote(id, libroID, vote, accessToken));
+
+      if(tipo === "down"){
+
+        if(renderDown === false){
+          setRenderDown(true);
+        }else{
+          setRenderDown(false);
+        }
+
+      }else{
+        if(renderUp === false){
+          setRenderUp(true);
+        }else{
+          setRenderUp(false);
+        }
+      }
+    }
+    
+  }
+
+  function sendRemoveVote(id, libroID, vote, tipo){
+    
+    if (!accessToken) {
+      setMsg("Please log in to add vote");
+      setOpen(true);
+    } else {
+      dispatch(removeVote(id, libroID, vote, accessToken));
+      if(tipo === "down"){
+        if(renderDown === false){
+          setRenderDown(true);
+        }else{
+          setRenderDown(false);
+        }
+      }else{
+        if(renderUp === false){
+          setRenderUp(true);
+        }else{
+          setRenderUp(false);
+        }
+      }
+      
+
+    }
+    
+  }
+
   function queDibujo(libroID) {
     let asd = favorites.filter((e) => e.id === libroID);
-
     if (asd.length > 0) {
       return (
         <div onClick={() => deleteFav(detail._id)}>
@@ -123,6 +188,62 @@ const Details = (props) => {
       );
     }
   }
+
+  function queLikeDibujo(id, libroID) {
+    let buttonUpvote = votedReviews?.filter((e) => (e.review === id && e.vote === "upvote"));
+
+    if (buttonUpvote.length > 0) {
+      return (
+        <div >
+          {renderUp === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
+            <ThumbUpAltIcon className="favColor" />
+          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
+            <ThumbUpOffAltIcon className="favColor" />
+          </button>}
+        </div>
+      );
+    }else{
+      return (
+        <div >
+          {renderUp === false ?
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
+            <ThumbUpOffAltIcon className="favColor" />
+          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
+            <ThumbUpAltIcon className="favColor" />
+          </button>}
+        </div>
+      );
+    }
+  }
+
+  function queLikeDibujoB(id, libroID) {
+    let downButton = votedReviews?.filter((e) => (e.review === id && e.vote === "downvote"));
+
+    if (downButton.length > 0) {
+      return (
+        <div >
+          {renderDown === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
+            <ThumbDownAltIcon className="favColor" />
+          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
+            <ThumbDownOffAltIcon className="favColor" />
+          </button>}
+        </div>
+      );
+    }else{
+      return (
+        <div >
+          {renderDown === false ?
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
+            <ThumbDownOffAltIcon className="favColor" />
+          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
+            <ThumbDownAltIcon className="favColor" />
+          </button>}
+        </div>
+      );
+    }
+
+  }
+  
 
   function addFavorite(libroID) {
     if (!accessToken) {
@@ -147,7 +268,6 @@ const Details = (props) => {
         books: [],
       };
       const cart = JSON.parse(window.sessionStorage.getItem("cart"));
-      console.log(cart);
       if (cart) {
         localCart.books = [...cart.books];
       }
@@ -171,6 +291,7 @@ const Details = (props) => {
   function handleClose() {
     setOpen(false);
   }
+
   const action = (
     <React.Fragment>
       <IconButton
@@ -184,6 +305,53 @@ const Details = (props) => {
       </IconButton>
     </React.Fragment>
   );
+
+  function viewRating(value){
+    return(
+      <Box
+      style={{
+        width: 200,
+        display: "flex",
+        alignItems: "center",
+        color: "#287ccb",
+        cursor: "pointer",
+      }}
+    >
+      <Rating
+        name="text-feedback"
+        value={value} //Acá hay que pasarle el valor del rating del libro
+        readOnly
+        precision={0.5}
+        emptyIcon={
+          <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+        }
+      />
+      <Box sx={{ ml: 2 }}>{textRating(value)}</Box>
+    </Box>)
+  }
+
+  const Stats = (valor, i) => {
+
+    return (
+        <div className="stats" key={i}>
+          <div>
+          <meter
+            min="0"
+            max="100"
+            value={valor}
+          />
+          </div>
+
+          <div className="detailsMeter">
+            {i + 1}
+          </div>
+          <div className="detailsMeter">
+            <StarIcon style={{ opacity: 0.25 }} fontSize="inherit" />
+          </div>
+        </div>
+    );
+  };
+
 
   return (
     <div className="contentCategory">
@@ -205,12 +373,44 @@ const Details = (props) => {
         style={{ display: "none" }}
       >
         <div className="ventana_flotante">
-          <div className="contentLike">
+
+          <div className="contentRatingViews">
+            <h3>Product Reviews</h3>
             <button className="contentX" onClick={() => ocultar()}>
               X
             </button>
           </div>
-          <h3>Product Reviews</h3>
+
+          <div className="newRating">
+            <div className="calification">
+
+              <div className="contentCalification">
+                <div>
+                  <p>{rating}</p>
+                </div>
+                
+                <div className="textCalification">
+                  <div>
+                    <Rating
+                      name="text-feedback"
+                      value={rating}
+                      readOnly
+                      precision={0.5}
+                      emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
+                  </div>
+                  <div>
+                    <span>{contador} califitacions</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contentMeter">
+                {meterCount?.map((e, i) => {
+                  return(Stats(e, i))
+                })}
+              </div>
+            </div>
+
           <div className="contentReviews">
             {detail.reviews?.length > 0 ? (
               detail.reviews?.map((e, i) => {
@@ -222,34 +422,22 @@ const Details = (props) => {
                         display: "flex",
                         alignItems: "center",
                         margin: "25px",
-                        color: "#00cc77",
+                        color: "#287ccb",
                       }}
                     >
-                      <Rating
-                        name="text-feedback"
-                        value={detail.rating[i]} //Acá hay que pasarle el valor del rating del libro
-                        readOnly
-                        precision={0.5}
-                        emptyIcon={
-                          <StarIcon
-                            style={{ opacity: 0.55 }}
-                            fontSize="inherit"
-                          />
-                        }
-                      />
-
-                      <Box sx={{ ml: 2 }}>{textRating(e.value)}</Box>
+                        {viewRating(detail.rating[i])}
                     </Box>
-                    <p>{e.user ? e.user : "Algun usuario de google"}</p>
+
+                    <p>{e.user ? e.user : "Some google user"}</p>
                     <p>{e.text}</p>
 
                     <div className="contentLike">
-                      <Checkbox
-                        {...label}
-                        icon={<ThumbUpOffAltIcon className="favColor" />}
-                        checkedIcon={<ThumbUpAltIcon className="favColor" />}
-                      />
+                      {queLikeDibujo(e._id, detail._id)}
+                      {e.votes.upvotes}
+                      {queLikeDibujoB(e._id, detail._id)}
+                      {e.votes.downvotes}
                     </div>
+
                   </div>
                 );
               })
@@ -260,8 +448,10 @@ const Details = (props) => {
             )}
           </div>
         </div>
-      </div>
 
+        </div>
+      </div>
+      
       <div className="titleFormDetails">
         <p>Book Information</p>
       </div>
@@ -279,28 +469,9 @@ const Details = (props) => {
               <span className="bookName">{detail.name}</span>
             </div>
             <div className="detailsContainer">
-              <div className="contentRating">
-                <Box
-                  onClick={() => ocultar()}
-                  sx={{
-                    width: 200,
-                    display: "flex",
-                    alignItems: "center",
-                    color: "#00cc77",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Rating
-                    name="text-feedback"
-                    value={value} //Acá hay que pasarle el valor del rating del libro
-                    readOnly
-                    precision={0.5}
-                    emptyIcon={
-                      <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                    }
-                  />
-                  <Box sx={{ ml: 2 }}>{textRating(value)}</Box>
-                </Box>
+
+              <div className="contentRating" onClick={() => ocultar()}>
+                  {viewRating(rating)}
               </div>
 
               <span className="detailsSpan">
@@ -366,9 +537,6 @@ const Details = (props) => {
                 </div>
               )}
               <div className="buttonsContainer">
-                {/* <button className="buttonBookDetail">
-                  <b>Buy</b>
-                </button> */}
                 {detail.stock > 0 ? (
                   <button
                     className="buttonBookDetail"
@@ -381,8 +549,6 @@ const Details = (props) => {
                     <b>Out of stock</b>
                   </button>
                 )}
-
-                {/* <button className="buttonBookDetail">Add to Cart</button> */}
               </div>
             </div>
           </div>
@@ -392,6 +558,28 @@ const Details = (props) => {
           <p className="synopsisTitle">Synopsis</p>
           <span className="synopsisText">{detail.synopsis}</span>
         </div>
+
+        {accessToken ?
+          <div className="amountContent">
+            <span>Review</span>
+            <Rating
+                name="simple-controlled"
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+              />
+            <div>
+              <textarea id={"texto"} rows="5" cols="50" placeholder="Review..." name="comentario"></textarea>
+            </div>
+            
+            <div>
+              {value !== 0 
+              ? <button className="buttonUdapte" onClick={() => sendReview(detail._id)}>Send!</button>
+              : <button className="buttonUdapteDisable" disabled>Send!</button>}
+            </div>
+         </div>
+         : ""}
       </div>
 
       <div className="formBackDetails">

@@ -67,7 +67,7 @@ option {
 
 .divInputForm span {
   font-size: 15px;
-  color: #28cbb5;
+  color: #287ccb;
   font-weight: bold;
   padding-bottom: 5px;
 }
@@ -78,8 +78,8 @@ option {
 
 .btnAdd {
   margin: 5px 0px 0px 77px;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   height: 28px;
   width: 50px;
   border-radius: 5px;
@@ -107,7 +107,7 @@ option {
   justify-content: flex-start;
   align-items: center;
   font-size: 15px;
-  color: #28cbb5;
+  color: #287ccb;
   font-weight: bold;
   padding-bottom: 5px;
   margin-top: 15px;
@@ -122,7 +122,7 @@ option {
   justify-content: flex-start;
   align-items: center;
   font-size: 15px;
-  color: #28cbb5;
+  color: #287ccb;
   font-weight: bold;
   margin-top: 5px;
   padding: 5px;
@@ -138,8 +138,8 @@ option {
 }
 
 .btnDeletePreview {
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   height: 35px;
   width: 130px;
   border-radius: 5px;
@@ -150,8 +150,8 @@ option {
 .deleteAuthor {
   padding: 3px;
   margin-left: 20px;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   height: 30px;
   width: 60px;
   border-radius: 5px;
@@ -205,8 +205,8 @@ option {
 
 .buttonDeleteBook {
   color: white;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   border-radius: 8px;
   height: 45px;
   font-weight: bold;

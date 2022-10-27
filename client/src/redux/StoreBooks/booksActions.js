@@ -93,3 +93,34 @@ export const setBookStock = (id, amount, token) => {
     return dispatch(setStock({id,amount}));
   };
 };
+
+/////////////////////////REVIEWS///////////////////////
+export const addReview = (text, idUser, idBook, rating) => {
+  return async (dispatch) => {
+    const asd = await axios.post("/review", { text, idUser, idBook, rating });
+    return dispatch(getDetail(idBook));
+  };
+};
+
+export const addVote = (id, idBook, vote, token) => {
+  return async (dispatch) => {
+    const asd = await axios.put(`/review/vote/${id}`, { vote}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getDetail(idBook));
+  };
+};
+
+export const removeVote = (id, idBook, vote, token) => {
+  return async (dispatch) => {
+    const asd = await axios.put(`/review/vote/remove/${id}`, { vote}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(asd.data);
+    return dispatch(getDetail(idBook));
+  };
+};

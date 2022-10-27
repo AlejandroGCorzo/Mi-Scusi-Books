@@ -11,8 +11,8 @@
 }
 
 .userImage img {
-  border-radius: 50px;
-  height: 100px;
+  border-radius: 10vh;
+  height: 50vh;
 }
 
 .userInfoContainer {
@@ -26,24 +26,33 @@
   margin-right: 10px;
 }
 
-.userInfoContainer span {
+.userInfoContainer input,
+.userInfoContainer p {
+  width: 20vw;
+}
+
+.userDetailsNames input {
+  text-transform: capitalize;
+}
+
+/* .userInfoContainer span {
   border: 1px solid #c5c5c5;
   width: 100%;
   margin-top: 10px;
   height: 20px;
   color: #34495e;
-}
+} */
 
-.contentCategoryx {
+/* .contentCategoryx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 95%;
   min-width: 336px;
   transform: scale(1);
-}
+} */
 
-.contentCategoryDivx {
+/* .contentCategoryDivx {
   background-color: white;
   display: flex;
   flex-wrap: wrap;
@@ -60,9 +69,9 @@
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
-}
+} */
 
-.categoryDivx {
+/* .categoryDivx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -70,9 +79,9 @@
   width: 336px;
   margin-top: 15px;
   text-align: left;
-}
+} */
 
-.titleFormx {
+/* .titleFormx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -84,13 +93,13 @@
   border-radius: 8px 8px 0px 0px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
-}
+} */
 
 .formBackx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: #28cbb5;
+  color: #287ccb;
   background-color: white;
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -106,8 +115,8 @@
 
 .buttonBackx {
   color: white;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   border-radius: 8px;
   height: 45px;
   width: 250px;
@@ -121,7 +130,7 @@
   border: 1px solid white;
   justify-content: flex-end;
   font-size: 25px;
-  color: #28cbb5;
+  color: #287ccb;
   cursor: pointer;
 }
 

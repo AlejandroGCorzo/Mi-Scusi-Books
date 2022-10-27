@@ -23,12 +23,12 @@
 }
 
 .slick-prev:before {
-  color: #28cbb5;
+  color: #287ccb;
   font-size: 28px;
 }
 
 .slick-next:before {
-  color: #28cbb5;
+  color: #287ccb;
   font-size: 28px;
 }
 
@@ -59,8 +59,8 @@
 }
 
 .buttonBuy {
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   height: 35px;
   width: 75px;
   border-radius: 5px;
