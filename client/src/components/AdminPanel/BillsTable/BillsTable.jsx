@@ -132,6 +132,7 @@ const BillsTable = () => {
     firstName: e.user.firstName,
     lastName: e.user.lastName,
     totalPrice: e.total,
+    date: e.date
   }));
   //console.log(data2);
   // `$ ${e.total}`
