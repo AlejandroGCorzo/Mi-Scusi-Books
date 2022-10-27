@@ -10,7 +10,8 @@ export const usersSlice = createSlice({
     shoppingCart: [],
     favorites: [],
     bills: [],
-    forgotPassword : ''
+    forgotPassword : '',
+    votedReviews: [],
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -20,11 +21,13 @@ export const usersSlice = createSlice({
       state.loggedUser = action.payload;
       state.shoppingCart = action.payload.cart || [];
       state.favorites = action.payload.favorites || [];
+      state.votedReviews = action.payload.votedReviews || [];
     },
     setEmptyLoggedUser: (state) => {
       state.loggedUser = {};
       state.shoppingCart = [];
       state.favorites = [];
+      state.votedReviews = [];
     },
     setUserDetails: (state, action) => {
       state.profile = action.payload;
@@ -36,6 +39,7 @@ export const usersSlice = createSlice({
       state.loggedUser = action.payload;
       state.shoppingCart = action.payload.cart || [];
       state.favorites = action.payload.favorites || [];
+      state.votedReviews = action.payload.votedReviews || [];
     },
     setLogin: (state) => {
       state.login = !state.login;

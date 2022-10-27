@@ -23,7 +23,7 @@
 }
 
 .contentCategoryDiv p {
-  color: #28cbb5;
+  color: #287ccb;
   font-weight: bold;
   font-size: 15px;
   margin-bottom: -2px;
@@ -67,7 +67,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  color: #2cc485;
+  color: #287ccb;
   background-color: white;
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -84,8 +84,8 @@
 
 .buttonBack {
   color: white;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   border-radius: 8px;
   height: 45px;
   width: 250px;

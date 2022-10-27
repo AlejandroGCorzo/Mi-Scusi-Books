@@ -14,7 +14,6 @@
 .synopsisTitle {
   font-size: 8vh;
   font-weight: bold;
-  width: 100%;
 }
 
 .synopsisText {
@@ -29,8 +28,7 @@
   scroll-behavior: smooth;
   background-color: #eff0ef87;
   border: 1px solid #c7c7c7;
-  margin-bottom: 10px;
-  height: auto;
+  height: 20%;
   min-height: 200px;
 }
 
@@ -40,7 +38,7 @@
 
 .synopsisText::-webkit-scrollbar-thumb {
   width: 1px;
-  background-color: #2cc485;
+  background-color: #287ccb;
   border-radius: 15px;
 }
 
@@ -93,8 +91,8 @@
 
 .buttonBookDetail {
   font-size: 25px;
-  background-color: #2cc485;
-  border: 1px solid #2cc485;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
   height: 50px;
   width: 250px;
   border-radius: 5px;
@@ -159,7 +157,7 @@
 }
 
 .estrellasRating {
-  color:#2cc485;
+  color:#287ccb;
 }
 .contentFav {
   display: flex;
@@ -170,10 +168,10 @@
   margin-top: 10px;
   margin-bottom: -15px;
   cursor: pointer;
-  color: rgb(202, 45, 45);
+  color: #287ccb;
 }
 .favColor {
-  color: rgb(202, 45, 45);
+  color: #287ccb;
 }
 .contentRating{
   margin-bottom: 5px;
@@ -186,7 +184,7 @@
   margin-top: 25px;
   font-weight: bold;
   font-size: 25px;
-  color: #28cbb5;
+  color: #287ccb;
   background-color: white;
   border-radius: 8px 8px 0px 0px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -197,7 +195,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: #2cc485;
+  color: #287ccb;
   background-color: white;
   border-radius: 0px 0px 8px 8px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -206,11 +204,13 @@
 }
 
 .contentVentana{
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   background:rgba(0, 0, 0, 0.82);
   position:fixed;
+  min-width: 336px;
   height:100%;
   width:100%;
   top: 0;
@@ -218,14 +218,47 @@
 }
 
 .ventana_flotante {
+  justify-content: space-around;
+  flex-direction: row;
   background: #FFFFFF;
   border: 1px solid #DDDDDD;
   border-radius: 8px;
-  width: 80%;
-  min-height: 480px;
-  max-height: 80%;
-  overflow: scroll;
+  width: 60%;
+  min-height: 580px;
+  max-height: 90%;
+  overflow-y: scroll;
+  min-width: 336px;
 }
+
+
+.ventana_flotante::-webkit-scrollbar {
+  appearance: none;
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+}
+
+.ventana_flotante::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.ventana_flotante::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.ventana_flotante::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.ventana_flotante::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 8px;
+  border: 2px solid #f1f2f3;
+}
+
+.ventana_flotante::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
 
 .buttonFav{
   background-color: white;
@@ -239,6 +272,7 @@
   align-items: flex-start;
   flex-direction: column;
   border-top: 1px solid #e7e7e7;
+  width: 50%;
 }
 
 .reviewText{
@@ -259,6 +293,35 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   width: 100%;
+}
+
+.contentRatingViews{
+  position:absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width:60%;
+  background-color: white;
+  z-index: 15;
+  border-radius: 8px 8px 0px 0px;
+  border-bottom: 1px solid #e7e7e7;
+  min-width: 336px;
+}
+
+.contentRatingViews h3{
+  margin-left: 25px;
+}
+
+.contentRatingViews button{
+  margin-right: 5px;
+  border-radius: 8px;
+}
+
+.contentRating{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: column;
+
 }
 
 .contentX{
@@ -286,8 +349,74 @@
   margin-top: -5px;
 }
 
-.noReviews {
-  margin-left: 35%;
+.newRating{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.calification{
+  margin-top: -48px;
+  width: 50%;
+}
+
+.stats{
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.detailsMeter{
+  width: 20px;
+}
+
+.stats meter{
+  display: flex;
+  flex-wrap: wrap;
+  width: 200px;
+}
+
+.stats meter::-webkit-meter-optimum-value {
+  background: #287ccb; /* Green */
+}
+
+.contentMeter{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column-reverse;
+  margin-top: -50px;
+}
+
+.calification p{
+  font-weight: 600;
+  font-size: 60px;
+  margin-right: 25px;
+}
+
+.textCalification{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.contentCalification{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+}
+
+
+.buttonUdapteDisable {
+  border: 1px solid #8d8d8d;
+  height: 25px;
+  width: 80px;
+  border-radius: 5px;
+  color:#8d8d8d;
 }
 
 @media (min-width: 768px) {
