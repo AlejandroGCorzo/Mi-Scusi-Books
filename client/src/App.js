@@ -15,6 +15,8 @@ import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
 import About from "./components/About/About.jsx"
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import NewPassword from "./components/ForgotPassword/NewPassword";
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
         <Route path="/order-successfully" component={PaymentAcepted} />
+        <Route path="/forgotPassword" component={ForgotPassword} />
+        <Route path="/newPassword" component={NewPassword} />
       </React.Fragment>
     </div>
   );

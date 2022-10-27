@@ -10,7 +10,10 @@ import {
   getFavorites,
   getShoppingCart,
   notLogedCart,
-  paymentCompleted
+  paymentCompleted,
+  allBills,
+  forgotPassword,
+  changePassword
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -171,3 +174,32 @@ export const payAccepted = (token) => {
   }
 }
 /////////////////FAVORITOS Y CARRITO//////////////////////////
+
+export const getAllBills = (token) => {
+  return async (dispatch) => {
+    let json = await axios.get("/bills/", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(allBills(json.data));
+  };
+}
+
+export const putForgotPassword = (email) => {
+  return async (dispatch) =>  {
+    const response = await axios.put('/user/forgot_password', {email})
+    return dispatch(forgotPassword(response.data))
+  }
+}
+
+export const putNewPassword = (newPassword, token) => {
+  return async (dispatch) => {
+    const response = await axios.put('/user/new_password', {newPassword},{
+      headers: {
+        reset: token
+      }
+    })
+    return dispatch(changePassword(response.data))
+  }
+}

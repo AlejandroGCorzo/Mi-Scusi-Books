@@ -40,12 +40,74 @@ const generateToken = (id) => {
     expiresIn: "30d",
   });
 };
+const generateResetToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_RESET, {
+    expiresIn: "30m",
+  });
+};
+
+//Enviar link de resetear contraseña
+userRouter.put("/forgot_password", async (req, res) => {
+  const { email } = req.body;
+  const error = "Something goes wrong";
+  const message = "Check your email for a link to reset your password!";
+  try {
+    // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
+    const user = await User.findOne().where({ email: email });
+    // user.resetToken = resetToken
+    if (!user)
+      return res
+        .status(400)
+        .send("No se encontro usuario (NO TE OLVIDES DE CAMBIARME)");
+    const resetToken = generateResetToken(email);
+    await user.updateOne({ resetToken: resetToken });
+    const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
+    await transporter.sendMail({
+      from: `"Mi Scusi Books!" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Change your password!",
+      html: `
+      <h4>Please click on the following link to reset your password!</h4>
+      <br>
+      <a href=${verificationLink}>Change your password!</a>
+      <br>
+      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `,
+    });
+    res.send(resetToken);
+  } catch (e) {
+    res.status(400).send(error);
+  }
+});
+
+userRouter.put("/new_password", async (req, res) => {
+  const { newPassword } = req.body;
+  const { reset } = req.headers;
+  const error = "Something goes wrong";
+  if (!newPassword || !reset) return res.status(400).send("Missing data!");
+  try {
+    const jwtPayload = jwt.verify(reset, process.env.JWT_SECRET_RESET);
+    const user = await User.findOne().where({ resetToken: reset });
+    if (!user) return res.status(400).send(error);
+    console.log('antes de salt');
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+
+    await user.updateOne({ password: hashPassword, resetToken: "" });
+    res.send("Password successfully changed!");
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(error);
+  }
+});
 
 //Mantener usuario logueado -> potegida
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    
+
     // console.log("back", user);
     const formatUser = {
       id: user._id,
@@ -56,7 +118,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       favorites: user.favorites,
       cart: user.cart,
       votedBooks: user.votedBooks,
-      votedReviews: user.votedReviews
+      votedReviews: user.votedReviews,
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -109,10 +171,10 @@ userRouter.post("/login", async (req, res) => {
     if (!formatUser)
       return res
         .status(400)
-        .json({ msg: "1Your password or email is incorrect." });
+        .json({ msg: "Your password or email is incorrect." });
     res.status(200).json(formatUser);
   } catch (e) {
-    res.status(400).json({ msg: "2Your password or email is incorrect." });
+    res.status(400).json({ msg: "Your password or email is incorrect." });
   }
 });
 
@@ -120,11 +182,11 @@ userRouter.post("/login", async (req, res) => {
 userRouter.post("/login_google", async (req, res) => {
   const accesToken = req.headers.authorization.split(" ")[1];
   const tokenDecode = jwt.decode(accesToken);
-  const {cart, amounts} = req.body;
-  console.log('cart en back', cart)
+  const { cart, amounts } = req.body;
+  console.log("cart en back", cart);
   try {
     let user = await User.findOne({ email: tokenDecode.email });
-    
+
     let newCart = [];
     if (cart?.length > 0) {
       const extension = [];
@@ -147,17 +209,17 @@ userRouter.post("/login_google", async (req, res) => {
         newCart.push(book);
       }
       // console.log("carro final: ", newCart);
-      console.log(newCart)
+      console.log(newCart);
     }
     if (!user) {
       console.log(newCart);
       const newUser = {
-        firstName: tokenDecode.given_name,
-        lastName: tokenDecode.family_name,
+        firstName: tokenDecode.given_name.toLowerCase(),
+        lastName: tokenDecode.family_name.toLowerCase(),
         email: tokenDecode.email,
         state: "active",
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
-        cart: newCart
+        cart: newCart,
       };
       // console.log('newUser')
       const googleUser = await User.create(newUser);
@@ -172,8 +234,8 @@ userRouter.post("/login_google", async (req, res) => {
 
       return res.status(200).json(formatUser);
     } else {
-      if(newCart.length > 0){
-        await user.updateOne({$set:{ cart: newCart }});
+      if (newCart.length > 0) {
+        await user.updateOne({ $set: { cart: newCart } });
       }
       // console.log('existe')
       const formatUser = {
@@ -200,7 +262,6 @@ userRouter.post("/signup", async (req, res) => {
   const {
     name,
     lastName,
-    username,
     password,
     email,
     // dni,
@@ -214,7 +275,7 @@ userRouter.post("/signup", async (req, res) => {
   if (
     !name ||
     !lastName ||
-    !username ||
+    // !username ||
     !password ||
     !email
     // || !dni ||
@@ -228,16 +289,16 @@ userRouter.post("/signup", async (req, res) => {
 
   try {
     const userFoundByMail = await User.findOne({ email });
-    const userFoundByUserName = await User.findOne({ username });
-    if (userFoundByMail && userFoundByUserName)
-      return res.status(400).json({
-        email: "Email already in use",
-        username: "Username already in use",
-      });
+    // const userFoundByUserName = await User.findOne({ username });
+      // if (userFoundByMail && userFoundByUserName)
+      //   return res.status(400).json({
+      //     email: "Email already in use",
+      //     username: "Username already in use",
+      //   });
     if (userFoundByMail)
       return res.status(400).json({ email: "Email already in use." });
-    if (userFoundByUserName)
-      return res.status(400).json({ username: "Username already in use." });
+    // if (userFoundByUserName)
+    //   return res.status(400).json({ username: "Username already in use." });
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -253,12 +314,11 @@ userRouter.post("/signup", async (req, res) => {
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
         };
-        newCart.push(book)
+        newCart.push(book);
       }
     }
 
     const newUser = {
-      username,
       firstName: name,
       lastName,
       password: hashPassword,
@@ -275,21 +335,24 @@ userRouter.post("/signup", async (req, res) => {
       state: "pending",
       type: "normal",
       votedBooks: [],
+      votedReviews: [],
       favorites: [],
       cart: newCart,
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
+      resetToken: "",
     };
     const user = await User.create(newUser);
-    formatUser = {
-      id: user._id,
-      picture: user.picture,
-      userName: user.username,
-      type: user.type,
-      state: user.state,
-      token: generateToken(user._id),
-    };
+    // formatUser = {
+    //   id: user._id,
+    //   picture: user.picture,
+    //   userName: user.username,
+    //   type: user.type,
+    //   state: user.state,
+    //   token: generateToken(user._id),
+    // };
 
-    return res.status(200).json(formatUser);
+    // return res.status(200).json(formatUser);
+    return res.status(200).json({msg: "Thank you for signing up with us. Please check your email"})
   } catch (e) {
     return res
       .status(400)
@@ -537,20 +600,20 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
- console.log('entre a la ruta')
+  console.log("entre a la ruta");
   const reduceStock = async (id, amount) => {
-    try{
+    try {
       const reduce = await bookSchema.findByIdAndUpdate(id, {
         $inc: {
-          stock: - amount
-        }
-      })
-    } catch(e){
-      console.log('error substracting stock')
+          stock: -amount,
+        },
+      });
+    } catch (e) {
+      console.log("error substracting stock");
     }
-  }
+  };
 
-  console.log('inicio pay', req.user._id)
+  console.log("inicio pay", req.user._id);
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
@@ -558,34 +621,33 @@ userRouter.put("/pay", protect, async (req, res) => {
       //   return res.status(400).send({ msg: "dangerous car" });
       // }
       const substractStock = [];
-      for(let i = 0; i < user.cart.length; i++){
-         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount))
+      for (let i = 0; i < user.cart.length; i++) {
+        substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
       }
-      await Promise.all(substractStock)
-    
+      await Promise.all(substractStock);
 
       const books = [];
       const booksNames = [];
       const booksAmount = [];
       for (const book of user.cart) {
         books.push(book.id);
-        booksNames.push(book.name)
-        booksAmount.push(book.amount)
+        booksNames.push(book.name);
+        booksAmount.push(book.amount);
       }
 
       const price = [];
       for (const book of user.cart) {
         price.push(book.price);
       }
-      console.log('antes del total', booksAmount, price)
+      console.log("antes del total", booksAmount, price);
       let total = 0;
-      for(let i = 0; i < price.length; i++){
+      for (let i = 0; i < price.length; i++) {
         const subTotal = price[i] * booksAmount[i];
-        total = total + subTotal
+        total = total + subTotal;
       }
       // const total = price.reduce((acc, curr) => acc + curr, 0);
       const date = new Date().toDateString();
-      console.log('antes de bill')
+      console.log("antes de bill");
       const bill = await billsSchema.create({
         books: books,
         amountBooks: booksAmount,
@@ -594,11 +656,11 @@ userRouter.put("/pay", protect, async (req, res) => {
         date: date,
         user: user._id,
       });
-      console.log('despues de bill')
+      console.log("despues de bill");
       await User.findByIdAndUpdate(user._id, {
         $set: { cart: [] },
       });
-      console.log('despues de user')
+      console.log("despues de user");
 
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,

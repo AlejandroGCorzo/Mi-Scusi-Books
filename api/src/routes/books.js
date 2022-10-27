@@ -76,6 +76,7 @@ bookRouter.post("/", async (req, res) => {
         ISBN,
         stock,
         reviews: [],
+        rating: [],
         image,
         unitSold: 0,
         deleted: false,

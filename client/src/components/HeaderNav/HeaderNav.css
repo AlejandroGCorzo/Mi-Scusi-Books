@@ -11,7 +11,7 @@
   box-shadow: 0px 0px 10px rgba(7, 63, 68, 0.4);
 }
 
-.logo p {
+.logo /* p */ {
   margin-left: 10px;
   color: white;
 }
@@ -22,7 +22,7 @@
   flex-direction: row;
 }
 
-.iconsContainer p {
+.iconsContainer /* p */ {
   margin-left: 10px;
   margin-right: 10px;
   color: white;
@@ -97,6 +97,9 @@
   .contentResults{
     width: 336px;
   }
+  .adminContainer{
+    width: 336px;
+  }
 }
 
 .routesHeader {
@@ -105,9 +108,17 @@
   justify-content: center;
 }
 
-.routesHeader p {
+.routesHeader /* p */ {
   color: white;
   font-weight: bold;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.noRomper{
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 15px;
 }
