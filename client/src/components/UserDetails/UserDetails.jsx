@@ -42,12 +42,30 @@ export default function UserDetails(props) {
   }, [dispatch]);
   // // // // // // // // // // // //
   function handleTextChange(e) {
-    setChanges({ ...changes, [e.target.name]: e.target.value });
-    validations(e.target.name, e.target.value, errors, setErrors);
+    if (
+      e.target.name === "firstName" ||
+      e.target.name === "lastName" ||
+      e.target.name === "email"
+    ) {
+      setChanges({ ...changes, [e.target.name]: e.target.value.toLowerCase() });
+      validations(
+        e.target.name,
+        e.target.value.toLowerCase(),
+        errors,
+        setErrors
+      );
+    } else {
+      setChanges({ ...changes, [e.target.name]: e.target.value });
+      validations(e.target.name, e.target.value, errors, setErrors);
+    }
   }
   function handleClick(boolean) {
     setEdit(boolean);
-    boolean ? setChanges({ ...profile }) : setChanges({});
+    if (boolean) setChanges({ ...profile });
+    else {
+      setChanges({});
+      setErrors({});
+    }
   }
   return (
     <>
@@ -70,6 +88,7 @@ export default function UserDetails(props) {
               changes={changes}
               handleTextChange={handleTextChange}
               handleClick={handleClick}
+              errors={errors}
             />
           </TabPanel>
           <TabPanel value="2">Item Two</TabPanel>
