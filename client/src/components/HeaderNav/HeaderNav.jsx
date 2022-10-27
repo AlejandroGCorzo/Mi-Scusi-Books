@@ -107,19 +107,19 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
-            <p>
+            <p className="noRomper">
               <Link to="/" style={{ textDecoration: "none" }}>
                 <HomeIcon style={{ color: "white" }} />
               </Link>
             </p>
-            <p>
+            <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={shoppingCart.length} color="primary">
                 <ShoppingCartIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
             </p>
-            <p>
+            <p className="noRomper">
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={favorites.length} color="secondary">
                 <FavoriteIcon style={{ color: "white" }} />
@@ -221,12 +221,12 @@ export default function HeaderNav(onSearch) {
           </div>
         ) : (
           <div className="iconsContainer">
-            <p>
+            <p className="noRomper">
               <Link to="/" style={{ textDecoration: "none" }}>
                 <HomeIcon style={{ color: "white" }} />
               </Link>
             </p>
-            <p>
+            <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={shoppingCart.length} color="primary">
                 <ShoppingCartIcon style={{ color: "white" }} />
@@ -238,7 +238,7 @@ export default function HeaderNav(onSearch) {
                 <FavoriteIcon style={{ color: "white" }} />
               </Link>
             </p> */}
-            <p onClick={handleLoggin} style={{ cursor: "pointer" }}>
+            <p className="noRomper" onClick={handleLoggin} style={{ cursor: "pointer" }}>
               Log in
             </p>
 
