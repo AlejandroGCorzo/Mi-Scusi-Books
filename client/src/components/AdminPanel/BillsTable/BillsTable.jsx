@@ -6,6 +6,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { Badge, Dropdown, Menu, Space, Table } from "antd";
 
 import { useSelector } from "react-redux";
+import { capitalize } from "@mui/material";
 
 const menu = (
   <Menu
@@ -66,7 +67,7 @@ const BillsTable = () => {
       })
     }
 
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    return <Table columns={columns} dataSource={data} pagination={false} style={{textTransform: 'capitalize'}} />;
   };
 
   const columns = [
@@ -143,6 +144,7 @@ const BillsTable = () => {
         expandedRowRender={expandedRowRender}
         dataSource={data2}
         size="small"
+        style={{textTransform: 'capitalize'}}
       />
     </>
   );
