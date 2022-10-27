@@ -10,6 +10,7 @@ export const usersSlice = createSlice({
     shoppingCart: [],
     favorites: [],
     bills: [],
+    forgotPassword : ''
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -70,6 +71,12 @@ export const usersSlice = createSlice({
     },
     allBills: (state, action) => {
       state.bills = action.payload;
+    },
+    forgotPassword: (state, action) => {
+      state.forgotPassword = action.payload
+    },
+    changePassword: (state, action) => {
+      state.forgotPassword = action.payload
     }
   },
 });
@@ -89,6 +96,8 @@ export const {
   getShoppingCart,
   notLogedCart,
   paymentCompleted,
-  allBills
+  allBills,
+  forgotPassword,
+  changePassword
 } = usersSlice.actions;
 export default usersSlice.reducer;

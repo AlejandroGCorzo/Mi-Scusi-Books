@@ -227,7 +227,7 @@ const Details = (props) => {
                     >
                       <Rating
                         name="text-feedback"
-                        value={detail.rating[i + 1]} //Acá hay que pasarle el valor del rating del libro
+                        value={detail.rating[i]} //Acá hay que pasarle el valor del rating del libro
                         readOnly
                         precision={0.5}
                         emptyIcon={

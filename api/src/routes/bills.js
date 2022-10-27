@@ -5,11 +5,12 @@ const billsSchema = require("../models/bills");
 const axios = require("axios");
 const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
+const { findByIdAndUpdate } = require("../models/bills");
 
 const billsRouter = Router();
 
 billsRouter.post("/", protect, async (req, res) => {
-  const { id, books, amountBooks, send } = req.body;
+  const { id, books, amountBooks, send, status } = req.body;
   try {
     const user = await User.findById(id);
     if (!user) return res.status(400).send({ msg: "User not found!" });
@@ -30,7 +31,7 @@ billsRouter.post("/", protect, async (req, res) => {
       total = total + price[i] * amountBooks[i];
     }
 
-    const date = new Date()
+    const date = new Date();
 
     const bill = await billsSchema.create({
       books: books,
@@ -39,6 +40,7 @@ billsRouter.post("/", protect, async (req, res) => {
       total: total,
       date: date,
       user: user,
+      status: "Finished",
     });
     if (send) {
       await transporter.sendMail({
@@ -54,7 +56,7 @@ billsRouter.post("/", protect, async (req, res) => {
             <p>Price p/u: ${price}</p>
             <p>Total: ${total}</p>
             <br>
-            <img src='https://images-ext-1.discordapp.net/external/G8qNtU8aJFTwa8CDP8DsnMUzNal_UKtyBr9EAfGORaE/https/ih1.redbubble.net/image.2829385981.5739/st%2Csmall%2C507x507-pad%2C600x600%2Cf8f8f8.jpg?width=473&height=473' alt='MiScusi.jpeg' />
+            <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
             <br>
             <p>Mi Scusi Books staff.</p>
             `,
@@ -90,11 +92,38 @@ billsRouter.get("/", protect, async (req, res) => {
           phone: b.user.phone,
           address: b.user.address,
         },
+        status: b.status,
       };
     });
     res.send(allBills);
   } catch (error) {
     res.status(400).send({ msg: "Algo fallo en get a bills", error });
+  }
+});
+
+billsRouter.put("/status/:id", protect, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+    const bill = await billsSchema.findByIdAndUpdate(id, { status });
+    // console.log(bill.user.valueOf());
+    const user = await User.findById(bill.user.valueOf())
+    if (!bill) return res.status(404).send("Bill not found!");
+    await transporter.sendMail({
+      from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Bill status!",
+      html: `
+            <h2>Your bill status is now: ${bill.status}</h2>
+            <br>
+            <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
+            <br>
+            <p>Mi Scusi Books staff.</p>
+            `,
+    });
+    res.send("Status changed!");
+  } catch (error) {
+    res.status(400).send({ msg: "Algo fallo en put a bills", error });
   }
 });
 
