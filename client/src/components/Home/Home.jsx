@@ -29,7 +29,7 @@ export default function Home() {
     <div className="homePage">
       <div className="promotions">
         <div className="textoPromotions">
-          <h3>Mi Scusi Books</h3>
+          <h3 className="titleShell">Mi Scusi Books</h3>
           <p>
             At Mi Scusi Books we have the best books on the market, check our
             catalog to see the best deals we have for you!

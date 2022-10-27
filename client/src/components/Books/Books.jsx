@@ -129,7 +129,7 @@ export default function Books() {
         
         <div className="filtersResults">
           <div className="titleResults">
-            <p>FILTERS</p>
+            <p className="filterMenu">FILTERS</p>
           </div>
 
           <FilterCategories
