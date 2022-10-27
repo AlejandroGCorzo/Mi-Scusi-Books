@@ -20,6 +20,7 @@ import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
 import { getAllBills } from "../../redux/StoreUsers/usersActions.js";
 import BillsTable from "./BillsTable/BillsTable.jsx";
 import BillTable2 from "./BillsTable/BillsTable2"
+import BillTable3 from "./BillsTable/BillsTable3"
 import SnackRol from "./Snackbar/SnackRol.jsx";
 import SnackBlock from "./Snackbar/SnackBlock.jsx";
 import SnackDeleteUser from "./Snackbar/SnackDeleteUser.jsx";
@@ -110,6 +111,7 @@ export default function BasicTabs() {
               <Tab label="Books Stock" {...a11yProps(2)} />
               <Tab label="Bills Panel" {...a11yProps(3)} />
               <Tab label="Bills Panel 2" {...a11yProps(4)} />
+              <Tab label="Bills Panel 3" {...a11yProps(5)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -131,6 +133,9 @@ export default function BasicTabs() {
           </TabPanel>
           <TabPanel value={value} index={4}>
             <BillTable2/>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <BillTable3/>
           </TabPanel>
         </ThemeProvider>
       ) : null }
