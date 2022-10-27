@@ -71,6 +71,7 @@ billsRouter.post("/", protect, async (req, res) => {
 billsRouter.get("/", protect, async (req, res) => {
   try {
     const bills = await billsSchema.find().populate("books").populate("user");
+    console.log(bills);
     const allBills = bills.map((b) => {
       return {
         _id: b._id,
@@ -85,14 +86,12 @@ billsRouter.get("/", protect, async (req, res) => {
         total: b.total,
         date: b.date.toDateString(),
         user: {
-          username: b.user.username,
           firstName: b.user.firstName,
           lastName: b.user.lastName,
           email: b.user.email,
           phone: b.user.phone,
-          address: b.user.address,
         },
-        status: b.status,
+        status: b.status || 'no status',
       };
     });
     res.send(allBills);

@@ -83,18 +83,22 @@ export default function BillTable2() {
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection={false}
-        style={{ textTransform: "capitalize" }}
+        style={{ textTransform: "capitalize", backgroundColor: "#949494" }}
         autoHeight={true}
         autoPageSize={true}
-
         rowThreshold={0}
-          getDetailPanelContent={({ row }) => (
-            <Box sx={{ p: 2 }}>{`Order #${row.id}`}</Box>
-          )}
-          getDetailPanelHeight={() => 50}
-          detailPanelExpandedRowIds={detailPanelExpandedRowIds}
-          onDetailPanelExpandedRowIdsChange={handleDetailPanelExpandedRowIdsChange}
-          
+        getDetailPanelContent={({ row }) => (
+          <Box
+            sx={{ p: 2 }}
+            style={{ textTransform: "capitalize", backgroundColor: "#949494" }}
+          >{`Order #${row.id}`}</Box>
+        )}
+        getDetailPanelHeight={() => 50}
+        detailPanelExpandedRowIds={detailPanelExpandedRowIds}
+        onDetailPanelExpandedRowIdsChange={
+          handleDetailPanelExpandedRowIdsChange
+        }
+
         //disableColumnSelector -> saca el esconder columnas
         //experimentalFeatures={{columnGrouping: true}}
       />

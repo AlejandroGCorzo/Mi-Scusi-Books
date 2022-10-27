@@ -6,13 +6,20 @@
 @import '~antd/dist/antd.compact.less';
 @import "~antd/lib/style/themes/default.less"; */
 
-/* *,
+*,
 *::before,
 *::after {
   box-sizing: revert;
 }
 
+<<<<<<< HEAD
   
+=======
+/* body {
+  color: #34495e;
+} */
+
+>>>>>>> e082259 (merge commit)
 .ant-table-expand-icon-col {
   width: 0px;
 }
@@ -23,6 +30,6 @@ body {
     font-family: "Lato", "Arial", sans-serif;
     font-weight: 400;
     line-height: 1.2;
-} */
+}
 
 /* @import "~antd/dist/antd.css"; */
