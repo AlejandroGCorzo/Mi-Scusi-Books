@@ -12,10 +12,7 @@
   box-sizing: revert;
 }
 
-body {
-  color: #34495e;
-}
-
+  
 .ant-table-expand-icon-col {
   width: 0px;
 }
