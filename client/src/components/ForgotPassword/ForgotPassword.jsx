@@ -1,15 +1,25 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { putForgotPassword } from "../../redux/StoreUsers/usersActions";
 
 export default function ForgotPassword() {
+  const dispatch = useDispatch();
   const [input, setInput] = useState("");
+
+  const {forgotPassword} = useSelector((state)=>state.users)
+  useEffect(()=>{
+  },[dispatch])
+
   const handleInput = (e) => {
     setInput(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(putForgotPassword(input))
   };
+
   return (
     <div>
       <h1>Olvidaste tu clave pa?</h1>
@@ -27,6 +37,11 @@ export default function ForgotPassword() {
         <button type="submit">Submit</button>
       </form>
       <Link to={"/NewPassword"}>Al ingreso de nueva contraseña</Link>
+      <div>
+        {
+          forgotPassword? <h1>{forgotPassword}</h1> : <></>
+        }
+      </div>
     </div>
   );
 }

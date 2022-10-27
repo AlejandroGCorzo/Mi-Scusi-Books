@@ -23,6 +23,9 @@ const billsSchema = mongoose.Schema({
     date:{
         type:Date,
         require:true
+    },
+    status:{
+        type:String
     }
 })
 

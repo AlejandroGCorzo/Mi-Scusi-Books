@@ -55,51 +55,53 @@ userRouter.put("/forgot_password", async (req, res) => {
     // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
-    console.log(user);
     if (!user)
-    return res
-    .status(400)
-    .send("No se encontro usuario (NO TE OLVIDES DE CAMBIARME)");
+      return res
+        .status(400)
+        .send("No se encontro usuario (NO TE OLVIDES DE CAMBIARME)");
     const resetToken = generateResetToken(email);
-    await user.updateOne({resetToken : resetToken})
-    const verificationLink = `${process.env.BACK_URL}/${resetToken}`;
-    // await transporter.sendMail({
-    //   from: `"Mi Scusi Books!" <${process.env.GMAIL_USER}>`,
-    //   to: user.email,
-    //   subject: "Change your password!",
-    //   html: `
-    //   <h4>Please click on the following link to reset your password!</h4>
-    //   <br>
-    //   <a href=${verificationLink}>Change your password!</a>
-    //   <br>
-    //   <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
-    //   <br>
-    //   <p>Mi Scusi Books staff.</p>
-    //   `,
-    // });
+    await user.updateOne({ resetToken: resetToken });
+    const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
+    await transporter.sendMail({
+      from: `"Mi Scusi Books!" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Change your password!",
+      html: `
+      <h4>Please click on the following link to reset your password!</h4>
+      <br>
+      <a href=${verificationLink}>Change your password!</a>
+      <br>
+      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `,
+    });
     res.send(resetToken);
   } catch (e) {
     res.status(400).send(error);
   }
 });
 
-userRouter.put("/new_password", async (req,res)=>{
-  const {newPassword} = req.body;
-  const {reset} = req.headers
+userRouter.put("/new_password", async (req, res) => {
+  const { newPassword } = req.body;
+  const { reset } = req.headers;
   const error = "Something goes wrong";
-  console.log(reset);
-  if(!newPassword || ! reset) return res.status(400).send('Missing data!')
-try {
-  const jwtPayload = jwt.verify(reset, process.env.JWT_SECRET_RESET)
-  const user = await User.findOne().where({resetToken : reset})
-  if(!user) return res.status(400).send(error)
-  await user.updateOne({password : newPassword, resetToken : ''})
-  res.send("Password successfully changed!")
-} catch (e) {
-  res.status(400).send(error)
-}
+  if (!newPassword || !reset) return res.status(400).send("Missing data!");
+  try {
+    const jwtPayload = jwt.verify(reset, process.env.JWT_SECRET_RESET);
+    const user = await User.findOne().where({ resetToken: reset });
+    if (!user) return res.status(400).send(error);
+    console.log('antes de salt');
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
 
-})
+    await user.updateOne({ password: hashPassword, resetToken: "" });
+    res.send("Password successfully changed!");
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(error);
+  }
+});
 
 //Mantener usuario logueado -> potegida
 userRouter.get("/keepLog", protect, async (req, res) => {
@@ -169,10 +171,10 @@ userRouter.post("/login", async (req, res) => {
     if (!formatUser)
       return res
         .status(400)
-        .json({ msg: "1Your password or email is incorrect." });
+        .json({ msg: "Your password or email is incorrect." });
     res.status(200).json(formatUser);
   } catch (e) {
-    res.status(400).json({ msg: "2Your password or email is incorrect." });
+    res.status(400).json({ msg: "Your password or email is incorrect." });
   }
 });
 
