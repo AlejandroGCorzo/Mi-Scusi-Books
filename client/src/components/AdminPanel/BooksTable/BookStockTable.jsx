@@ -327,6 +327,7 @@ export default function BooksStock() {
                       <TableCell align="left">{b.stock}</TableCell>
                       <TableCell align="left">
                         <input
+                          style={{"-webkit-appearance": "auto"}}
                           onChange={(e) => stockChange(e)}
                           placeholder="Add new stock"
                           type="number"
@@ -358,6 +359,16 @@ export default function BooksStock() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage="Books per page:"
+          sx={{
+            ".MuiTablePagination-selectLabel": {
+              fontSize: "1rem",
+              marginTop: "12px",
+              lineHeight: 1.5
+            },
+            "	.MuiTablePagination-displayedRows": {
+              marginTop: "12px"
+            }
+          }}
         />
       </Paper>
     </Box>

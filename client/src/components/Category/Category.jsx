@@ -136,7 +136,7 @@ export default function Category() {
   return (
     <div className="contentCategory">
       <div className="titleForm">
-        <p>Categories</p>
+        <p className="titleFormText">Categories</p>
       </div>
 
       <div className="contentCategoryDiv">
@@ -151,7 +151,7 @@ export default function Category() {
                     onClickCategoryGeneral(e, el.split(" ").join("_"))
                   }
                 >
-                  <p>
+                  <p className="categoryText">
                     {el[0].toLocaleUpperCase() + el.slice(1)}
                     {numTotalGeneral(el)}
                   </p>

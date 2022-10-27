@@ -22,7 +22,11 @@
   margin-right: 10px;
 }
 
-.contentCategoryDiv p {
+.contentCategoryDiv::before,
+.contentCategoryDiv::after{
+  content:""
+}
+.categoryText {
   color: #287ccb;
   font-weight: bold;
   font-size: 15px;
@@ -59,9 +63,10 @@
   margin-right: 10px;
 }
 
-.titleForm p {
-  margin-left: 20px;
+.titleFormText {
+  margin: 1em 0 1em 20px;
 }
+
 
 .formBack {
   display: flex;
@@ -100,11 +105,13 @@
 }
 
 .buttonCategory {
+  display: flex;
   background-color: white;
   border: 1px solid white;
   cursor: pointer;
   text-align: left;
 }
+
 
 @media (min-height: 0px) {
   .contentCategoryDiv {
@@ -144,12 +151,13 @@
   }
 }
 
-@media (min-width: 1920px) {
+/* @media (min-width: 1920px) {
   .categoryDiv {
-    margin-top: 150px;
+    margin-top: 270px;
+    margin-bottom: 170px;
     transform: scale(1.3);
   }
-}
+} */
 
 @media (min-width: 2560px) {
   .categoryDiv {
