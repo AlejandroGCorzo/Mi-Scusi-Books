@@ -108,6 +108,7 @@ export default function BasicTabs() {
               <Tab label="Users Panel" {...a11yProps(0)} />
               <Tab label="Books Panel" {...a11yProps(1)} />
               <Tab label="Books Stock" {...a11yProps(2)} />
+              <Tab label="Bills Panel" {...a11yProps(3)} />
               <Tab label="Bills Panel 2" {...a11yProps(4)} />
             </Tabs>
           </Box>
