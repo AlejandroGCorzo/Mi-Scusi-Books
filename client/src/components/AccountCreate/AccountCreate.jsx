@@ -48,7 +48,7 @@ export default function AccountCreate() {
     setUser({
       ...user,
       cart,
-      amounts
+      amounts,
     });
   }, []);
 
