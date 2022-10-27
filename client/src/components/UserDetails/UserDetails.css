@@ -26,8 +26,13 @@
   margin-right: 10px;
 }
 
-.userInfoContainer input {
+.userInfoContainer input,
+.userInfoContainer p {
   width: 20vw;
+}
+
+.userDetailsNames input {
+  text-transform: capitalize;
 }
 
 /* .userInfoContainer span {

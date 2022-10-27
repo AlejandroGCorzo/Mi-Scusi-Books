@@ -6,6 +6,7 @@ export default function Profile({
   changes,
   handleTextChange,
   handleClick,
+  errors,
 }) {
   return (
     <>
@@ -15,15 +16,19 @@ export default function Profile({
         </div>
         <div className="userInfoContainer">
           <TextField
+            className="userDetailsNames"
             label="First Name"
             value={edit ? changes.firstName : profile.firstName}
             variant={edit ? "outlined" : "filled"}
             name="firstName"
             onChange={handleTextChange}
             InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: !edit }}
+            InputProps={{ readOnly: !edit, maxLength: 10 }}
+            error={errors.firstName ? true : false}
+            helperText={errors.firstName ? `${errors.firstName}` : null}
           />
           <TextField
+            className="userDetailsNames"
             label="Last Name"
             value={edit ? changes.lastName : profile.lastName}
             variant={edit ? "outlined" : "filled"}
@@ -31,6 +36,8 @@ export default function Profile({
             name="lastName"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
+            error={errors.lastName ? true : false}
+            helperText={errors.lastName ? `${errors.lastName}` : null}
           />
           <TextField
             label="Email"
@@ -40,6 +47,8 @@ export default function Profile({
             name="email"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
+            error={errors.email ? true : false}
+            helperText={errors.email ? `${errors.email}` : null}
           />
           <TextField
             label="DNI"
