@@ -27,15 +27,15 @@ const generateResetToken = (id) => {
 userRouter.put("/forgot_password", async (req, res) => {
   const { email } = req.body;
   const error = "Something goes wrong";
-  const message = "Check your email for a link to reset your password!";
+  const message = "Check your email for instructions!";
   try {
     // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
     if (!user)
       return res
-        .status(400)
-        .send("No se encontro usuario (NO TE OLVIDES DE CAMBIARME)");
+        
+        .send("Something goes wrong!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
     const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
@@ -53,7 +53,7 @@ userRouter.put("/forgot_password", async (req, res) => {
       <p>Mi Scusi Books staff.</p>
       `,
     });
-    res.send(resetToken);
+    res.send(message);
   } catch (e) {
     res.status(400).send(error);
   }

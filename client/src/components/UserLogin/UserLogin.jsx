@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { loging } from "../../redux/StoreUsers/usersActions.js";
 import { GoogleLogin } from "@react-oauth/google";
@@ -13,10 +13,19 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Box from "@mui/material/Box";
 import AlertDialogSlide from "../AccountCreate/SlideAlert/SlideAlert.jsx";
+import { putForgotPassword } from "../../redux/StoreUsers/usersActions";
 
 export default function UserLogin() {
   // // // // // // // // // // HOOKS
@@ -31,7 +40,7 @@ export default function UserLogin() {
   const [rememberMe, setRememberMe] = useState(false);
   const [input, setInput] = useState(emptyInput);
   const [errors, setErrors] = useState({});
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   // // // // // // // // // // USEEFFECT
   useEffect(() => {
     if (
@@ -101,7 +110,7 @@ export default function UserLogin() {
     axios
       .post("/user/login", { ...input, cart, amounts })
       .then((el) => {
-        if(el.data.msg){
+        if (el.data.msg) {
           setOpen(true);
         } else {
           if (rememberMe) window.localStorage.setItem("token", el.data.token);
@@ -151,13 +160,45 @@ export default function UserLogin() {
   // // // // // // // // // // //
   // Funciones para forgot password
   // // // // // // // // // // //
+  const {forgotPassword} = useSelector((state)=>state.users)
+  const [openDialog, setOpenDIalog] = useState(false);
+  const [errorForgot, setErrorForgot] = useState(
+    "Please enter a valid email address"
+  );
+  const [forgotPasswordInput, setForgotPasswordInput] = useState("");
+  const [verifyEmail, setVerifyEmail] = useState(false);
+
+  const handleForgotPasswordInput = (e) => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+[^\.]$/.test(e.target.value))
+      setErrorForgot("Please enter a valid email address");
+    else setErrorForgot("");
+    setForgotPasswordInput(e.target.value);
+  };
+
+  const handleForgotPasswordSubmit = (e) => {
+    e.preventDefault();
+    dispatch(putForgotPassword(forgotPasswordInput));
+    // setVerifyEmail(true)
+    // setTimeout(()=>setOpenDIalog(false),2000)
+    setTimeout(()=>setVerifyEmail(true),1500)
+    setTimeout(()=>setOpenDIalog(false),10000)
+  };
+
+  const handleClickOpenDialog = () => {
+    setOpenDIalog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDIalog(false);
+    setVerifyEmail(false);
+    setForgotPasswordInput("");
+  };
 
   return (
     <div className="userLoginDiv">
       <div className="container" id="container">
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogIn}>
-           
             <h1>Login</h1>
             {/* E-mail Input */}
             <TextField
@@ -233,11 +274,66 @@ export default function UserLogin() {
               </div>
             </div>
             <Link
-            to={"/forgotPassword"}
               style={{ textDecoration: "none" }}
+              onClick={handleClickOpenDialog}
             >
               <span>Forgot your password?</span>
             </Link>
+            <div>
+              <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Forgot Password?</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Enter your email address and we will send you an email with
+                    instructions.
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                    variant="standard"
+                    value={forgotPasswordInput}
+                    onChange={(e) => handleForgotPasswordInput(e)}
+                  />
+                  {/* <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={forgotPassword?.length}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop> */}
+                  {errorForgot.length > 0 ? (
+                    <p style={{ color: "red" }}>{errorForgot}</p>
+                  ) : (
+                    <></>
+                  )}
+                  {verifyEmail ? (
+                    <p style={{ color: "blue" }}>
+                      {forgotPassword}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDialog}>Close</Button>
+                  <Button
+                    disabled={errorForgot.length > 0 ? true : false}
+                    onClick={handleForgotPasswordSubmit}
+                  >
+                    Submit
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+            {/* <Link to={"/forgotPassword"} style={{ textDecoration: "none" }}>
+              <span>Forgot your password?</span>
+            </Link> */}
             <button
               disabled={
                 JSON.stringify(errors) !== "{}" ||
@@ -273,10 +369,7 @@ export default function UserLogin() {
               </Link>
             </div>
           </div>
-          <AlertDialogSlide 
-              open={open}
-              setOpen={setOpen}
-            />
+          <AlertDialogSlide open={open} setOpen={setOpen} />
         </div>
       </div>
     </div>
