@@ -15,6 +15,7 @@ import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
 import About from "./components/About/About.jsx"
+import ActivationMail from "./components/ActivationMail/ActivationMail";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
         <Route path="/order-successfully" component={PaymentAcepted} />
+        <Route exact path="/activation-mail/:id" component={ActivationMail} />
       </React.Fragment>
     </div>
   );

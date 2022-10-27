@@ -183,3 +183,15 @@ export const getAllBills = (token) => {
     return dispatch(allBills(json.data));
   };
 }
+
+export const activateAccount = (id) => {
+  return async () => {
+    try{
+      const user = await axios.put(`/user/activation-mail/${id}`);
+      return user.data
+    } catch(e){
+      return e
+    }
+  }
+
+}
