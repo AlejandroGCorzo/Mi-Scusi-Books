@@ -203,3 +203,15 @@ export const putNewPassword = (newPassword, token) => {
     return dispatch(changePassword(response.data))
   }
 }
+
+export const activateAccount = (id) => {
+  return async () => {
+    try{
+      const user = await axios.put(`/user/activation-mail/${id}`);
+      return user.data
+    } catch(e){
+      return e
+    }
+  }
+
+}

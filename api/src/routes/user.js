@@ -9,29 +9,6 @@ const jwt = require("jsonwebtoken");
 const userRouter = Router();
 const bcrypt = require("bcrypt");
 require("dotenv").config();
-//create user
-
-// {
-//   sub: 'auth0|63474946bce9a900112d95f3',
-//   nickname: 'nanzerjano',
-//   name: 'nanzerjano@hotmail.com',
-//   picture: 'https://s.gravatar.com/avatar/3caa95d2ff0861b0f2235c0e3ff9deb4?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fna.png',
-//   updated_at: '2022-10-13T12:57:47.498Z',
-//   email: 'nanzerjano@hotmail.com'
-// }
-
-// {
-//   sub: 'google-oauth2|104303008364141128609',
-//   given_name: 'Juan Franco',
-//   family_name: 'Ledesma',
-//   nickname: 'juanfledesma18',
-//   name: 'Juan Franco Ledesma',
-//   picture: 'https://lh3.googleusercontent.com/a/ALm5wu1jcBn1YNLdkNcMJkDoc3beLt4cOiWPqJHi9bBYug=s96-c',
-//   locale: 'es-419',
-//   updated_at: '2022-10-14T13:17:19.982Z',
-//   email: 'juanfledesma18@gmail.com',
-//   email_verified: true
-// }
 
 // // // // // FUNCION GENERAR TOKEN // // // //
 
@@ -107,8 +84,7 @@ userRouter.put("/new_password", async (req, res) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-
-    // console.log("back", user);
+    
     const formatUser = {
       id: user._id,
       type: user.type,
@@ -119,6 +95,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       cart: user.cart,
       votedBooks: user.votedBooks,
       votedReviews: user.votedReviews,
+      loyaltyPoint: user.loyaltyPoint
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -128,10 +105,15 @@ userRouter.get("/keepLog", protect, async (req, res) => {
 
 //Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
-  const { email, password, cart, amounts } = req.body; //cart es un array
+  const { email, password, cart, amounts } = req.body;
   console.log(email, password);
   try {
     const user = await User.findOne({ email });
+
+    if(user.state === "pending"){
+      return res.status(200).json({msg: "Pleace validate your account"})
+    }
+    
     let formatUser;
     if (cart?.length > 0) {
       const extension = [];
@@ -146,8 +128,6 @@ userRouter.post("/login", async (req, res) => {
         };
         extension.push(book);
       }
-      // console.log("nuevo carro : ", extension);
-      // console.log("viejo carro : ", user.cart);
       const total = extension.concat(user.cart);
       const newCart = [];
       for (const book of total) {
@@ -159,15 +139,9 @@ userRouter.post("/login", async (req, res) => {
     }
     if (user && (await bcrypt.compare(password, user.password))) {
       formatUser = {
-        // id: user._id,
-        // picture: user.picture,
-        // userName: user.username,
-        // type: user.type,
-        // state: user.state,
         token: generateToken(user._id),
       };
     }
-    // console.log(user);
     if (!formatUser)
       return res
         .status(400)
@@ -201,15 +175,12 @@ userRouter.post("/login_google", async (req, res) => {
         };
         extension.push(book);
       }
-      // console.log("nuevo carro : ", extension);
-      // console.log("viejo carro : ", user.cart);
       const total = user ? extension.concat(user.cart) : extension;
       for (const book of total) {
         if (newCart.some((b) => b.id === book.id)) continue;
         newCart.push(book);
       }
-      // console.log("carro final: ", newCart);
-      console.log(newCart);
+      console.log(newCart)
     }
     if (!user) {
       console.log(newCart);
@@ -221,14 +192,8 @@ userRouter.post("/login_google", async (req, res) => {
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
         cart: newCart,
       };
-      // console.log('newUser')
       const googleUser = await User.create(newUser);
       const formatUser = {
-        // id: googleUser._id,
-        // type: googleUser.type,
-        // picture: googleUser.image,
-        // userName: googleUser.username,
-        // state: googleUser.state,
         token: generateToken(googleUser._id),
       };
 
@@ -237,13 +202,7 @@ userRouter.post("/login_google", async (req, res) => {
       if (newCart.length > 0) {
         await user.updateOne({ $set: { cart: newCart } });
       }
-      // console.log('existe')
       const formatUser = {
-        // id: user._id,
-        // type: user.type,
-        // picture: user.image,
-        // userName: user.username,
-        // state: user.state,
         token: generateToken(user._id),
       };
 
@@ -258,16 +217,11 @@ userRouter.post("/login_google", async (req, res) => {
 
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {
-  // console.log("entre");
   const {
     name,
     lastName,
     password,
     email,
-    // dni,
-    // phone,
-    // address,
-    // birthdate,
     cart,
     amounts,
   } = req.body;
@@ -275,30 +229,16 @@ userRouter.post("/signup", async (req, res) => {
   if (
     !name ||
     !lastName ||
-    // !username ||
     !password ||
     !email
-    // || !dni ||
-    // !phone ||
-    // !address.street ||
-    // !address.number ||
-    // !birthdate
   ) {
     return res.status(400).json({ msg: "All fields are required" });
   }
 
   try {
     const userFoundByMail = await User.findOne({ email });
-    // const userFoundByUserName = await User.findOne({ username });
-      // if (userFoundByMail && userFoundByUserName)
-      //   return res.status(400).json({
-      //     email: "Email already in use",
-      //     username: "Username already in use",
-      //   });
     if (userFoundByMail)
       return res.status(400).json({ email: "Email already in use." });
-    // if (userFoundByUserName)
-    //   return res.status(400).json({ username: "Username already in use." });
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -323,14 +263,6 @@ userRouter.post("/signup", async (req, res) => {
       lastName,
       password: hashPassword,
       email,
-      // dni,
-      // phone,
-      // address: {
-      //   street: address.street,
-      //   number: address.number,
-      //   floor: address.floor || 0,
-      // },
-      // birthdate,
       loyaltyPoint: 0,
       state: "pending",
       type: "normal",
@@ -342,38 +274,50 @@ userRouter.post("/signup", async (req, res) => {
       resetToken: "",
     };
     const user = await User.create(newUser);
-    // formatUser = {
-    //   id: user._id,
-    //   picture: user.picture,
-    //   userName: user.username,
-    //   type: user.type,
-    //   state: user.state,
-    //   token: generateToken(user._id),
-    // };
+        
+    await transporter.sendMail({
+      from: `"Miscusi Mail Verification" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: "Mail Verification",
+      html: `
+      <h2>Welcome to Miscusi Books.</h2>
+      <p>Click the link below to verify your e-mail and start browsing our web !</p>
+      <br>
+      <a href=${process.env.FRONT_URL}/activation-mail/${user._id}> Verify e-mail </a>
+      <br>
+      <p>Mi Scusi Books staff.</p>
+      `,
+    });
 
-    // return res.status(200).json(formatUser);
     return res.status(200).json({msg: "Thank you for signing up with us. Please check your email"})
   } catch (e) {
     return res
       .status(400)
       .json({ msg: "Something went wrong creating the user, try again later" });
   }
-  // try {
-  //   const { username } = req.body;
-  // // console.log(req.body);
-  //   const repeatedUsername = await User.findOne({ username: username });
-  //   if (repeatedUsername) return res.status(400).send("Username alredy exist!");
-  // // console.log("llegue");
-  //   const newUser = await User.create(req.body);
-  //   res.send("User created successfully!");
-  // } catch (e) {
-  //   res.status(400).send({ error: e });
-  // }
 });
+
+//Validate user email -> publico
+userRouter.put("/activation-mail/:id", async(req, res) => {
+  const { id } = req.params;
+
+  try{
+    const user = await User.findByIdAndUpdate(id, {
+      $set:{
+        state: "active"
+      }
+    })
+  
+    if(user){
+      return res.status(200).json({msg:"Mail activated"})
+    }
+  } catch (e){
+    return res.status(400).json({msg: "Try again later"})
+  }
+})
 
 //Conseguir todos los usuarios activos -> protegida
 userRouter.get("/", protect, async (req, res) => {
-  // (req.user && req.user.type === "admin")
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const allUsers = await User.find().where({ state: { $ne: "inactive" } });
@@ -392,8 +336,6 @@ userRouter.get("/:id", protect, async (req, res) => {
   if (!req.user) {
     return res.status(400).send("Not authorized");
   }
-  // console.log("user id", req.user.id);
-  // console.log("query id", id);
   if (id === req.user.id) {
     try {
       const searchedUser = await User.findById(id).select(
@@ -528,7 +470,6 @@ userRouter.put("/cart/:idUser", protect, async (req, res) => {
   if (req.user && req.user.id === idUser) {
     try {
       const user = await User.findById(idUser);
-      // if (user.cart.some((b) => b.id === idBook)) {
       const b = user.cart.find((b) => b.id === idBook);
       if (b) {
         console.log(b);
@@ -617,9 +558,6 @@ userRouter.put("/pay", protect, async (req, res) => {
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
-      // if (!user.cart.books.length || !user.cart.amounts.length){
-      //   return res.status(400).send({ msg: "dangerous car" });
-      // }
       const substractStock = [];
       for (let i = 0; i < user.cart.length; i++) {
         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
@@ -645,7 +583,6 @@ userRouter.put("/pay", protect, async (req, res) => {
         const subTotal = price[i] * booksAmount[i];
         total = total + subTotal;
       }
-      // const total = price.reduce((acc, curr) => acc + curr, 0);
       const date = new Date().toDateString();
       console.log("antes de bill");
       const bill = await billsSchema.create({
@@ -724,7 +661,6 @@ userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
     if (!id || !idBook) return res.status(400).send("Missing data!");
     try {
       const user = await User.findById(id);
-      // console.log(user);
       const newFavorites = user.favorites.filter((b) => b.id !== idBook);
       await user.updateOne({ favorites: newFavorites });
       res.send(newFavorites);
@@ -744,7 +680,6 @@ userRouter.get("/favorites/:id", protect, async (req, res) => {
     try {
       if (!id) return res.status(400).send("Missing data!");
       const user = await User.findById(id);
-      // console.log(user);
       if (!user) return res.status(404).send("User not found!");
       return res.send(user.favorites);
     } catch (error) {

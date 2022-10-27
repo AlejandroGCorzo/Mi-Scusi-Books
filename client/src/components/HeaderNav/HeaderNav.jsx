@@ -94,7 +94,7 @@ export default function HeaderNav(onSearch) {
     <div className="header">
       <Link to="/" style={{ textDecoration: "none" }}>
         <div className="logo">
-          <p>Mi Scusi Books</p>
+          <p className="titleNav">Mi Scusi Books</p>
         </div>
       </Link>
 
