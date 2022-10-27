@@ -131,8 +131,6 @@ const BillsTable = () => {
     email: e.user.email,
     firstName: e.user.firstName,
     lastName: e.user.lastName,
-    street: e.user.address.street,
-    floor: e.user.address.floor,
     totalPrice: e.total,
   }));
   //console.log(data2);

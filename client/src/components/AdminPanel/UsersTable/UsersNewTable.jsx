@@ -93,28 +93,16 @@ const headCells = [
     label: "Phone",
   },
   {
-    id: "street",
-    numeric: false,
-    disablePadding: true,
-    label: "Street",
-  },
-  {
-    id: "number",
-    numeric: false,
-    disablePadding: true,
-    label: "Number",
-  },
-  {
-    id: "floor",
-    numeric: false,
-    disablePadding: true,
-    label: "Floor",
-  },
-  {
     id: "type",
     numeric: false,
     disablePadding: true,
     label: "Rol",
+  },
+  {
+    id: "state",
+    numeric: false,
+    disablePadding: true,
+    label: "State",
   },
 ];
 
@@ -205,7 +193,9 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {loggedUser.type === 'admin' && emailSelectUser && id !== loggedUser.id ? (
+      {loggedUser.type === "admin" &&
+      emailSelectUser &&
+      id !== loggedUser.id ? (
         <>
           <FormControl sx={{ m: 1, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
@@ -439,15 +429,13 @@ export default function TestUsers() {
                         align="left"
                         style={{ "text-transform": "capitalize" }}
                       >
-                        {u.address.street}
+                        {u.type}
                       </TableCell>
-                      <TableCell align="left">{u.address.number}</TableCell>
-                      <TableCell align="left">{u.address.floor}</TableCell>
                       <TableCell
                         align="left"
                         style={{ "text-transform": "capitalize" }}
                       >
-                        {u.type}
+                        {u.state}
                       </TableCell>
                     </TableRow>
                   );
@@ -472,7 +460,7 @@ export default function TestUsers() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage='Users per page:'
+          labelRowsPerPage="Users per page:"
         />
       </Paper>
     </Box>
