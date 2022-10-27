@@ -84,15 +84,15 @@ export default function SearchBar() {
       <div className="headerLow">
         {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? 
             <Link to="/create" style={{ textDecoration: "none" }}>
-                <p>Add Book</p>
+                <p className="noRomper">Add Book</p>
             </Link>
           : null}
             {/* <Link to="/books" style={{ textDecoration: "none" }}>
                 <p>All Books</p>
             </Link> */}
-            <p onClick={handleClick} style={{cursor: "pointer"}}>All Books</p>
+            <p className="noRomper" onClick={handleClick} style={{cursor: "pointer"}}>All Books</p>
             <Link to="/categories" style={{ textDecoration: "none" }}>
-                <p>Categories</p>
+                <p className="noRomper">Categories</p>
           </Link>
           </div>
     </div>
