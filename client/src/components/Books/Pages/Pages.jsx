@@ -24,9 +24,13 @@ export default function Pages({ count }) {
         onRowsPerPageChange={onRowsChange} 
         labelRowsPerPage={"Books per page"} 
         sx={{
-          "		.MuiTablePagination-selectLabel": {
+          ".MuiTablePagination-selectLabel": {
             fontSize: "1rem",
+            marginTop: "12px",
             lineHeight: 1.5
+          },
+          "	.MuiTablePagination-displayedRows": {
+            marginTop: "12px"
           }
         }}
       />
