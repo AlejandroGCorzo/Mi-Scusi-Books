@@ -18,12 +18,14 @@ import About from "./components/About/About.jsx"
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
+import ChatBot from "./components/ChatBot/ChatBot"
 
 function App() {
   return (
     <div className="App">
       <React.Fragment>
         <Nav onSearch="" />
+        <ChatBot />
         <Route exact path="/" component={Home} />
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
