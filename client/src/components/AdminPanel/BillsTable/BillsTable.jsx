@@ -74,7 +74,6 @@ const BillsTable = () => {
         },
       ]}
     />
-
   );
 
   const expandedRowRender = (row) => {
