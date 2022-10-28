@@ -82,7 +82,7 @@ const BillsTable = () => {
 
     const columns = [
       {
-        title: "Book",
+        title: "Books",
         dataIndex: "book",
         key: "book",
       },
