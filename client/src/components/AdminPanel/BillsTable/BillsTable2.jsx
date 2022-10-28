@@ -77,20 +77,20 @@ export default function BillTable2() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <DataGridPro
+      <DataGrid
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection={false}
-        style={{ textTransform: "capitalize", backgroundColor: "#949494" }}
+        style={{ textTransform: "capitalize", backgroundColor: "white" }}
         autoHeight={true}
         autoPageSize={true}
         rowThreshold={0}
         getDetailPanelContent={({ row }) => (
           <Box
             sx={{ p: 2 }}
-            style={{ textTransform: "capitalize", backgroundColor: "#949494" }}
+            style={{ textTransform: "capitalize", backGroundColor: "white" }}
           >{`Order #${row.id}`}</Box>
         )}
         getDetailPanelHeight={() => 50}
