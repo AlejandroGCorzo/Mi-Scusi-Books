@@ -114,7 +114,7 @@ export default function HeaderNav(onSearch) {
             </p>
             <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
-                <Badge badgeContent={shoppingCart.length} color="primary">
+                <Badge badgeContent={shoppingCart.length} color="secondary">
                 <ShoppingCartIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
@@ -228,7 +228,7 @@ export default function HeaderNav(onSearch) {
             </p>
             <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
-                <Badge badgeContent={shoppingCart.length} color="primary">
+                <Badge badgeContent={shoppingCart.length} color="secondary">
                 <ShoppingCartIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
