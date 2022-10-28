@@ -1,13 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Concert+One&family=Courgette&family=Dangrek&family=Fredoka+One&family=Itim&family=Neucha&family=Pangolin&family=Patrick+Hand&family=Sniglet&display=swap");
+
 .loader {
   position: relative;
-  margin-top: 5em;
+  margin-top: 10em;
 }
 
 .loader span {
   position: absolute;
   color: #fff;
+  font-family: 'Itim', cursive;
   transform: translate(-50%, -50%);
-  font-size: 4em;
+  font-size: 5em;
   letter-spacing: 5px;
 }
 
@@ -18,7 +21,7 @@
 
 .loader span:nth-child(2) {
   color: #34495e;
-  text-shadow: -1px 0 rgb(128, 198, 255), 0 5px rgb(128, 198, 255);
+  text-shadow: -1px 0 rgb(128, 198, 255), 0 4px rgb(128, 198, 255);
   -webkit-text-stroke: 1px #34495e;
   animation: uiverse723 3s ease-in-out infinite;
 }
