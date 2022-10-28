@@ -1,17 +1,27 @@
 import React from "react";
 import "./NewPassword.css";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { putNewPassword } from "../../redux/StoreUsers/usersActions";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Snackbar, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { validations } from "../AccountCreate/Functions/validations";
 
 export default function NewPassword() {
   const dispatch = useDispatch();
-  const { forgotPassword } = useSelector((state) => state.users);
-
-  useEffect(() => {}, [dispatch]);
+  const history = useHistory();
+  const { changePassword } = useSelector((state) => state.users);
+  const msg = changePassword
+  useEffect(() => {
+    if (changePassword) {
+      history.push("/login");
+    };
+    return () => {
+      dispatch(putNewPassword(""));
+    };
+  }, [dispatch]);
 
   const querystring = window.location.search;
 
@@ -21,45 +31,63 @@ export default function NewPassword() {
 
   const [input, setInput] = useState({
     newPassword: "",
-    confirmNewPassword: "",
   });
   const [error, setError] = useState({
     newPassword: "",
-    confirmNewPassword: "",
-    confirmPass:""
   });
+  const [open, setOpen] = useState(false);
 
   const handleInput = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
-    if(e.target.name === 'newPassword' || e.target.name === 'confirmPass'){
-      if(e.target.name === 'newPassword'){
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(e.target.value))
-        return setError({
-          ...error,
-          [e.target.name]:
-            "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.",
-          confirmPass: "Passwords must be the same.",
-        });
-      else {
-        if (input.newPassword !== input.confirmNewPassword)
-          return setError({
-            ...error,
-            [e.target.name]: "Passwords must be the same.",
-            confirmPass: "Passwords must be the same.",
-          });
-        delete error[e.target.name];
-        return setError({ ...error });
-      }
-      }
-    }
+    validate({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  function validate({ newPassword, confirmNewPassword }) {
+    let errors = {};
+    //NewPassword
+
+    if (!newPassword) errors.newPassword = "Please complete all fields";
+    else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(newPassword)
+    )
+      errors.newPassword =
+        "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number, no whitespaces allowed.";
+    else if (newPassword !== confirmNewPassword)
+      errors.newPassword = "Passwords must be the same.";
+    else delete errors.newPassword;
+
+    setError(errors);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(putNewPassword(input.newPassword, token));
+    setTimeout(()=>setOpen(true),500)
+    setTimeout(()=>history.push('/login'),2500)
   };
+
+  function handleClose() {
+    setOpen(false);
+  }
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{ width: "50px" }}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   return (
     <div className="containerNewPassword">
       <div className="boxNewPassword">
@@ -79,62 +107,41 @@ export default function NewPassword() {
             value={input.newPassword}
             onChange={(e) => handleInput(e)}
           />
-          {error.newPassword?.length > 0 ? <p>{error.newPassword}</p> : <></>}
+          {/* {error.newPassword?.length > 0 ? <p>{error.newPassword}</p> : <></>} */}
         </div>
         <div className="textFieldNewPassword">
           <TextField
             sx={{ m: 0.5 }}
-            label="Repeat new password*"
+            label="Confirm new password*"
             autoComplete="off"
             name="confirmNewPassword"
             className="newPassword"
             type="text"
-            placeholder="Repeat new password"
+            placeholder="Confirm new password"
             inputProps={{ maxLength: 40 }}
             value={input.confirmNewPassword}
             onChange={(e) => handleInput(e)}
           />
-          {error.confirmNewPassword?.length > 0 ? (
-            <p>{error.confirmNewPassword}</p>
-          ) : (
-            <></>
-          )}
+          {error.newPassword?.length > 0 ? <p>{error.newPassword}</p> : <></>}
         </div>
-            {error.confirm?.length > 0 ? (
-            <p>{error.confirm}</p>
-          ) : (
-            <></>
-          )}
+        {error.confirm?.length > 0 ? <p>{error.confirm}</p> : <></>}
         <div className="newPasswordButton">
-          <Button disabled={error.newPassword || error.confirmNewPassword} variant="outlined">Submit</Button>
+          <Button
+            disabled={!input.newPassword || error.newPassword ? true : false}
+            variant="outlined"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit
+          </Button>
         </div>
       </div>
-
-      {/* <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label>Ingresa tu nueva contraseña</label>
-          <input
-            name="newPassword"
-            value={input.newPassword}
-            onChange={(e) => handleInput(e)}
-            // placeholder="password"
-            type="password"
-          ></input>
-        </div>
-        <div>
-          <label>Repetila por si las dudas</label>
-          <input
-            name="confirmNewPassword"
-            value={input.confirmNewPassword}
-            onChange={(e) => handleInput(e)}
-            // placeholder="password"
-            type="password"
-          ></input>
-        </div>
-        <hr />
-        <button type="submit">Submit</button>
-      </form> */}
-      <div>{forgotPassword ? <h1>{forgotPassword}</h1> : <></>}</div>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message='Redirecting...'
+        action={action}
+      />
     </div>
   );
 }

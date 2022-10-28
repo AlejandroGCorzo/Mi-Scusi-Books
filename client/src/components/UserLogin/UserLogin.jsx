@@ -19,8 +19,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Box from "@mui/material/Box";
@@ -180,7 +178,7 @@ export default function UserLogin() {
     dispatch(putForgotPassword(forgotPasswordInput));
     // setVerifyEmail(true)
     // setTimeout(()=>setOpenDIalog(false),2000)
-    setTimeout(()=>setVerifyEmail(true),1500)
+    setTimeout(()=>setVerifyEmail(true),1000)
     setTimeout(()=>setOpenDIalog(false),10000)
   };
 
