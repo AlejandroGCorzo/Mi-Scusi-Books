@@ -68,7 +68,6 @@ userRouter.put("/new_password", async (req, res) => {
     const jwtPayload = jwt.verify(reset, process.env.JWT_SECRET_RESET);
     const user = await User.findOne().where({ resetToken: reset });
     if (!user) return res.status(400).send(error);
-    console.log('antes de salt');
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(newPassword, salt);
 

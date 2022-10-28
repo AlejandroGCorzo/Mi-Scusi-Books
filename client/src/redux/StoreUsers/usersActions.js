@@ -13,7 +13,7 @@ import {
   paymentCompleted,
   allBills,
   forgotPassword,
-  changePassword
+  changePassword,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -65,12 +65,16 @@ export const keepLog = (token) => {
 
 export const setUserDelete = (id, state, token) => {
   return async (dispatch) => {
-    let json = await axios.put(`/user/sanction/${id}`, {state}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return dispatch(filterDeleteUser({id,state}));
+    let json = await axios.put(
+      `/user/sanction/${id}`,
+      { state },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return dispatch(filterDeleteUser({ id, state }));
   };
 };
 
@@ -80,12 +84,16 @@ export const loging = () => (dispatch) => {
 
 export const setUserChangeRol = (id, type, token) => {
   return async (dispatch) => {
-    let json = await axios.put(`/user/type/${id}`, {type}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return dispatch(setChangeRol({id,type}));
+    let json = await axios.put(
+      `/user/type/${id}`,
+      { type },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return dispatch(setChangeRol({ id, type }));
   };
 };
 
@@ -99,11 +107,15 @@ export const fetchShoppingCart = (id) => {
 
 export const addCart = (id, idBook, amount, token) => {
   return async (dispatch) => {
-    const shoppingCart = await axios.put(`/user/cart/${id}`, {idBook, amount}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const shoppingCart = await axios.put(
+      `/user/cart/${id}`,
+      { idBook, amount },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(shoppingCart.data);
     return dispatch(getShoppingCart(shoppingCart.data));
   };
@@ -111,11 +123,15 @@ export const addCart = (id, idBook, amount, token) => {
 
 export const deleteCart = (id, idBook, token) => {
   return async (dispatch) => {
-    const shoppingCart = await axios.put(`/user/cart/delete/${id}`, {idBook}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const shoppingCart = await axios.put(
+      `/user/cart/delete/${id}`,
+      { idBook },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return dispatch(getShoppingCart(shoppingCart.data));
   };
 };
@@ -129,50 +145,62 @@ export const fetchFavorites = (id) => {
 
 export const addFavorites = (id, idBook, token) => {
   return async (dispatch) => {
-    const favorites = await axios.put(`/user/favorites/${id}`, {idBook}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const favorites = await axios.put(
+      `/user/favorites/${id}`,
+      { idBook },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return dispatch(getFavorites(favorites.data));
   };
 };
 
 export const deleteFavorites = (id, idBook, token) => {
   return async (dispatch) => {
-    const favorites = await axios.put(`/user/favorites/delete/${id}`, {idBook}, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    const favorites = await axios.put(
+      `/user/favorites/delete/${id}`,
+      { idBook },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return dispatch(getFavorites(favorites.data));
   };
 };
 
 export const setNotLogedShoppingCart = (cart) => {
   return (dispatch) => {
-    const jsonCart = JSON.parse(cart)
-    return dispatch(notLogedCart(jsonCart.books))
-  }
-}
+    const jsonCart = JSON.parse(cart);
+    return dispatch(notLogedCart(jsonCart.books));
+  };
+};
 
 export const payAccepted = (token) => {
-  console.log('entre al action', token)
+  console.log("entre al action", token);
   return async (dispatch) => {
-    console.log('en el dispatch')
-    try{
-      const pay = await axios.put("/user/pay",{}, {
-        headers: {
-          authorization: `Bearer ${token}`
+    console.log("en el dispatch");
+    try {
+      const pay = await axios.put(
+        "/user/pay",
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         }
-      })
-      console.log('paydata', pay.data)
-      return dispatch(paymentCompleted())
-    } catch(e){
-      console.log(e)
+      );
+      console.log("paydata", pay.data);
+      return dispatch(paymentCompleted());
+    } catch (e) {
+      console.log(e);
     }
-  }
-}
+  };
+};
 /////////////////FAVORITOS Y CARRITO//////////////////////////
 
 export const getAllBills = (token) => {
@@ -184,34 +212,43 @@ export const getAllBills = (token) => {
     });
     return dispatch(allBills(json.data));
   };
-}
+};
 
 export const putForgotPassword = (email) => {
-  return async (dispatch) =>  {
-    const response = await axios.put('/user/forgot_password', {email})
-    return dispatch(forgotPassword(response.data))
-  }
-}
+  return async (dispatch) => {
+    if (email === "") {
+      return dispatch(forgotPassword(""));
+    }
+    const response = await axios.put("/user/forgot_password", { email });
+    return dispatch(forgotPassword(response.data));
+  };
+};
 
 export const putNewPassword = (newPassword, token) => {
   return async (dispatch) => {
-    const response = await axios.put('/user/new_password', {newPassword},{
-      headers: {
-        reset: token
+    if (newPassword === "") {
+      return dispatch(changePassword(""));
+    }
+    const response = await axios.put(
+      "/user/new_password",
+      { newPassword },
+      {
+        headers: {
+          reset: token,
+        },
       }
-    })
-    return dispatch(changePassword(response.data))
-  }
-}
+    );
+    return dispatch(changePassword(response.data));
+  };
+};
 
 export const activateAccount = (id) => {
   return async () => {
-    try{
+    try {
       const user = await axios.put(`/user/activation-mail/${id}`);
-      return user.data
-    } catch(e){
-      return e
+      return user.data;
+    } catch (e) {
+      return e;
     }
-  }
-
-}
+  };
+};
