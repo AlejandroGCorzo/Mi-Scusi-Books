@@ -13,7 +13,7 @@ import {
   paymentCompleted,
   allBills,
   forgotPassword,
-  changePassword,
+  changePassword
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -252,3 +252,5 @@ export const activateAccount = (id) => {
     }
   };
 };
+
+}
