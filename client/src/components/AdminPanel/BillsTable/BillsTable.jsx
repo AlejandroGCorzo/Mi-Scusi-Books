@@ -1,34 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 //import 'antd/dist/antd.css';
 //import 'antd/dist/antd.less';
 import "./index.css";
 import { DownOutlined } from "@ant-design/icons";
 import { Badge, Dropdown, Menu, Space, Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector } from "react-redux";
-import { capitalize } from "@mui/material";
+// const handleMenuClick = (e) => {
+//   console.log('click', e);
+// };
 
-const menu = (
-  <Menu
-    items={[
-      {
-        key: "1",
-        label: "Cancel",
-      },
-      {
-        key: "2",
-        label: "Aprove",
-      },
-      {
-        key: "3",
-        label: "Pending",
-      },
-    ]}
-  />
-);
+// const menu = (
+//   <Menu
+//     onClick={(e)=>handleMenuClick(e)}
+//     items={[
+//       {
+//         key: "cancelled",
+//         label: "Cancelled",
+//       },
+//       {
+//         key: "approved",
+//         label: "Approved",
+//       },
+//     ]}
+//   />
+// );
 
 const BillsTable = () => {
+
+  const accessToken =
+  window.localStorage.getItem("token") ||
+  window.sessionStorage.getItem("token");
+  const dispatch = useDispatch()
   const { bills } = useSelector((state) => state.users);
+  const [render, setRender] = useState(true)
+
+  console.log(render);
+  const handleMenuClick = (e) => {
+    console.log('click', e);
+    setRender(render === true ? false : true)
+  };
+  
+const menu = (
+    <Menu
+      onClick={(e)=>handleMenuClick(e)}
+      items={[
+        {
+          key: "cancelled",
+          label: "Cancelled",
+        },
+        {
+          key: "approved",
+          label: "Approved",
+        },
+      ]}
+    />
+  );
 
   const expandedRowRender = (row) => {
     //console.log('row', row.id);
@@ -53,31 +80,50 @@ const BillsTable = () => {
       },
     ];
 
-    const datito = bills.find(e => e._id === row.id);
+    const datito = bills.find((e) => e._id === row.id);
     //console.log('datito', datito)
 
     let data = [];
-    for(let i = 0; i < datito.books.length; i++){
+    for (let i = 0; i < datito.books.length; i++) {
       data.push({
         key: datito._id,
         id: datito._id,
         book: datito.books[i].name,
         unitPrice: datito.price[i],
-        quantity: datito.amountBooks[i]
-      })
+        quantity: datito.amountBooks[i],
+      });
     }
 
-    return <Table columns={columns} dataSource={data} pagination={false} style={{textTransform: 'capitalize'}} />;
+    return (
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        style={{ textTransform: "capitalize" }}
+      />
+    );
   };
+
+  const data2 = bills?.map((e) => ({
+    key: e._id,
+    id: e._id,
+    user: `${e.user.firstName} ${e.user.lastName}`,
+    email: e.user.email,
+    firstName: e.user.firstName,
+    lastName: e.user.lastName,
+    totalPrice: e.total,
+    date: e.date,
+    //status: e.status,
+  }));
 
   const columns = [
     {
       title: "User",
       dataIndex: "user",
       key: "user",
-      filters: bills?.map(e=> ({
+      filters: bills?.map((e) => ({
         text: `${e.user.firstName} ${e.user.lastName}`,
-        value: `${e.user.firstName} ${e.user.lastName}`
+        value: `${e.user.firstName} ${e.user.lastName}`,
       })),
       filterSearch: true,
       onFilter: (name, userObject) => userObject.user.includes(name),
@@ -102,9 +148,28 @@ const BillsTable = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      filters: [
+        {
+          text: "Approved",
+          value: "Approved",
+        },
+        {
+          text: "Cancelled",
+          value: "Cancelled",
+        },
+      ],
+      filterSearch: true,
       render: () => (
         <span>
-          <Badge status="success" /> Finished
+          {data2.status === "approved" ? (
+            <>
+              <Badge status="success" /> Approved
+            </>
+          ) : (
+            <>
+              <Badge status="error" /> Cancelled
+            </>
+          )}
         </span>
       ),
     },
@@ -114,7 +179,7 @@ const BillsTable = () => {
       key: "action",
       render: () => (
         <Space size="middle">
-          <Dropdown overlay={menu}>
+          <Dropdown overlay={menu} autoFocus={true}>
             <a>
               Set Status <DownOutlined />
             </a>
@@ -124,18 +189,6 @@ const BillsTable = () => {
     },
   ];
 
-  const data2 = bills?.map((e) => ({
-    key: e._id,
-    id: e._id,
-    user: `${e.user.firstName} ${e.user.lastName}`,
-    email: e.user.email,
-    firstName: e.user.firstName,
-    lastName: e.user.lastName,
-    totalPrice: e.total,
-    date: e.date
-  }));
-  //console.log(data2);
-  // `$ ${e.total}`
   return (
     <>
       <Table
@@ -143,7 +196,7 @@ const BillsTable = () => {
         expandedRowRender={expandedRowRender}
         dataSource={data2}
         size="small"
-        style={{textTransform: 'capitalize'}}
+        style={{ textTransform: "capitalize" }}
       />
     </>
   );

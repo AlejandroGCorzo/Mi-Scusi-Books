@@ -267,7 +267,7 @@ export default function TestUsers() {
   const [showEmail, setShowEmail] = React.useState();
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { users } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
@@ -453,7 +453,7 @@ export default function TestUsers() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25]}
           component="div"
           count={users.length}
           rowsPerPage={rowsPerPage}
@@ -464,7 +464,7 @@ export default function TestUsers() {
           sx={{
             ".MuiTablePagination-selectLabel": {
               fontSize: "1rem",
-              marginTop: "12px",
+              marginTop: "15px",
               lineHeight: 1.5
             },
             "	.MuiTablePagination-displayedRows": {
