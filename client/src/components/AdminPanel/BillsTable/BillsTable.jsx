@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import 'antd/dist/antd.css';
 //import 'antd/dist/antd.less';
 import "./index.css";
 import { DownOutlined } from "@ant-design/icons";
-import { Badge, Dropdown, Menu, Space, Table } from "antd";
+import { Popconfirm, Button, Badge, Dropdown, Menu, Space, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllBills } from "../../../redux/StoreUsers/usersActions";
+import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
 // const handleMenuClick = (e) => {
 //   console.log('click', e);
@@ -27,23 +29,40 @@ import { useDispatch, useSelector } from "react-redux";
 // );
 
 const BillsTable = () => {
-
   const accessToken =
-  window.localStorage.getItem("token") ||
-  window.sessionStorage.getItem("token");
-  const dispatch = useDispatch()
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+  const dispatch = useDispatch();
   const { bills } = useSelector((state) => state.users);
-  const [render, setRender] = useState(true)
+  const [render, setRender] = useState(true);
 
-  console.log(render);
-  const handleMenuClick = (e) => {
-    console.log('click', e);
-    setRender(render === true ? false : true)
+  const handleMenuClick = (id , status) => {
+    //console.log("click", e.key);
+    console.log("record", id);
+    console.log("a -> c", status, '->', status === 'approved' ? 'cancelled' : 'approved' );
+
+    status = status === 'approved' ? 'cancelled' : 'approved'
+
+    console.log("status", status);
+    dispatch(setBillStatus(id, status, accessToken))
+    setRender(render === true ? false : true);
   };
-  
-const menu = (
+
+  const data2 = bills?.map((e) => ({
+    key: e._id,
+    id: e._id,
+    user: `${e.user.firstName} ${e.user.lastName}`,
+    email: e.user.email,
+    firstName: e.user.firstName,
+    lastName: e.user.lastName,
+    totalPrice: e.total,
+    date: e.date,
+    status: e.status,
+  }));
+
+  const menu = (key) => (
     <Menu
-      onClick={(e)=>handleMenuClick(e)}
+      onClick={(e) => handleMenuClick(e, key)}
       items={[
         {
           key: "cancelled",
@@ -55,6 +74,7 @@ const menu = (
         },
       ]}
     />
+
   );
 
   const expandedRowRender = (row) => {
@@ -104,17 +124,17 @@ const menu = (
     );
   };
 
-  const data2 = bills?.map((e) => ({
-    key: e._id,
-    id: e._id,
-    user: `${e.user.firstName} ${e.user.lastName}`,
-    email: e.user.email,
-    firstName: e.user.firstName,
-    lastName: e.user.lastName,
-    totalPrice: e.total,
-    date: e.date,
-    //status: e.status,
-  }));
+  // const data2 = bills?.map((e) => ({
+  //   key: e._id,
+  //   id: e._id,
+  //   user: `${e.user.firstName} ${e.user.lastName}`,
+  //   email: e.user.email,
+  //   firstName: e.user.firstName,
+  //   lastName: e.user.lastName,
+  //   totalPrice: e.total,
+  //   date: e.date,
+  //   //status: e.status,
+  // }));
 
   const columns = [
     {
@@ -159,9 +179,9 @@ const menu = (
         },
       ],
       filterSearch: true,
-      render: () => (
+      render: (_, record) => (
         <span>
-          {data2.status === "approved" ? (
+          {record.status === "approved" ? (
             <>
               <Badge status="success" /> Approved
             </>
@@ -174,20 +194,50 @@ const menu = (
       ),
     },
     {
-      title: "Action",
+      title: data2[0].id,
       dataIndex: "action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <Space size="middle">
-          <Dropdown overlay={menu} autoFocus={true}>
-            <a>
-              Set Status <DownOutlined />
-            </a>
-          </Dropdown>
+          {record.status === 'approved' ? 
+           <Popconfirm
+           title="Sure to set status to Cancelled?"
+           onConfirm={(e) => handleMenuClick(record.key, record.status)}
+           >
+            <a>Set status Cancelled</a>
+           </Popconfirm>
+           :            
+           <Popconfirm
+           title="Sure to set status to Approved?"
+           onConfirm={(e) => handleMenuClick(record.key,record.status)}
+           >
+            <a>Set status Approved</a>
+           </Popconfirm>}
+
         </Space>
+        //   <Popconfirm
+        //   title="Sure to delete?"
+        //   onConfirm={(e) => handleMenuClick(e,record.key)}
+        // >
+        //   <a>Delete</a>
+        // </Popconfirm>
+        // <Space size="middle">
+        //   <Dropdown
+        //     //onClick={(e) => handleMenuClick(e, record.key)}
+        //     overlay={menu(record.key)}
+        //   >
+        //     <a>
+        //       Set Status <DownOutlined />
+        //     </a>
+        //   </Dropdown>
+        // </Space>
       ),
     },
   ];
+
+  useEffect(() => {
+    dispatch(getAllBills(accessToken));
+  }, [dispatch]);
 
   return (
     <>
