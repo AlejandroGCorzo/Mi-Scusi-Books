@@ -194,7 +194,7 @@ const BillsTable = () => {
       ),
     },
     {
-      title: data2[0].id,
+      title: 'Change Status',
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
