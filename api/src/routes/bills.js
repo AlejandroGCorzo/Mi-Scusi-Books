@@ -40,7 +40,7 @@ billsRouter.post("/", protect, async (req, res) => {
       total: total,
       date: date,
       user: user,
-      status: "Finished",
+      status: "Approved",
     });
     if (send) {
       await transporter.sendMail({
@@ -91,7 +91,7 @@ billsRouter.get("/", protect, async (req, res) => {
           email: b.user.email,
           phone: b.user.phone,
         },
-        status: b.status || 'no status',
+        status: b.status || 'approved',
       };
     });
     res.send(allBills);
