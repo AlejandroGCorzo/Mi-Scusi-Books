@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../sourceImg/logo3.png";
 import "./About.css"
 
 export default function About() {
+
+  window.scrollTo(0, 0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <div className="containerDescription">

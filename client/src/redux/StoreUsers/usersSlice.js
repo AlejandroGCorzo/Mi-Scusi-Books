@@ -82,6 +82,11 @@ export const usersSlice = createSlice({
     },
     changePassword: (state, action) => {
       state.newPassword = action.payload
+    },
+    changeBillStatus: (state, action) =>{
+      const newStatus = state.bills.find((b) => b._id === action.payload.id);
+      newStatus.status = action.payload.status
+      state.bills = [...state.bills.filter((e) => e._id !== newStatus._id), newStatus]
     }
   },
 });
@@ -103,6 +108,7 @@ export const {
   paymentCompleted,
   allBills,
   forgotPassword,
-  changePassword
+  changePassword,
+  changeBillStatus
 } = usersSlice.actions;
 export default usersSlice.reducer;
