@@ -13,7 +13,8 @@ import {
   paymentCompleted,
   allBills,
   forgotPassword,
-  changePassword
+  changePassword,
+  changeBillStatus
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
