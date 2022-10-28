@@ -1,14 +1,18 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
+import ImgSelectorUser from "../ImgSelectorUser/ImgSelectorUser";
 
 export default function Profile({
   profile,
   edit,
   changes,
+  setChanges,
   handleTextChange,
   handleClick,
   errors,
   submitProfileChanges,
+  imgSelected,
+  setImgSelected,
 }) {
   return (
     <>
@@ -19,8 +23,19 @@ export default function Profile({
         autoComplete="off"
       >
         <div className="userImage">
-          <img src={profile.image} referrerPolicy="no-referrer" />
+          <img
+            src={edit ? changes.image : profile.image}
+            referrerPolicy="no-referrer"
+          />
         </div>
+        {edit ? (
+          <ImgSelectorUser
+            imgSelected={imgSelected}
+            setImgSelected={setImgSelected}
+            changes={changes}
+            setChanges={setChanges}
+          />
+        ) : null}
         <div className="userInfoContainer">
           <TextField
             className="userDetailsNames"
