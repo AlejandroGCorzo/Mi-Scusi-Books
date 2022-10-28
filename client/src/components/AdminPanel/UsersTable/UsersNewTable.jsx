@@ -209,7 +209,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={(e) => handleChange(e)}
               autoWidth
               label="Change Rol"
-              style={{ width: "130px" }}
+              style={{ width: "130px"}}
             >
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="normal">Normal</MenuItem>
@@ -461,6 +461,16 @@ export default function TestUsers() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage="Users per page:"
+          sx={{
+            ".MuiTablePagination-selectLabel": {
+              fontSize: "1rem",
+              marginTop: "12px",
+              lineHeight: 1.5
+            },
+            "	.MuiTablePagination-displayedRows": {
+              marginTop: "12px"
+            }
+          }}
         />
       </Paper>
     </Box>

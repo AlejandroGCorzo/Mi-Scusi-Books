@@ -19,6 +19,10 @@
   width: 100%;
 }
 
+.filterMenu{
+  margin: 1em 0 1em 0;
+}
+
 .divLinkCategories {
   display: flex;
   align-items: center;
@@ -111,6 +115,7 @@
   width: 100%;
   padding: 5px 0px;
   color: #287ccb;
+  margin: 1em 0 1em 0;
 }
 
 .divFilters {

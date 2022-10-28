@@ -76,7 +76,7 @@ export default function CreateBook() {
     <div className="userOuterDiv">
       <div className="contentCreateBook">
         <div className="titleFormx">
-          <p style={{ color: "#34495e"}}>Create Book</p>
+          <p className="infoTitle">Create Book</p>
         </div>
 
         <div className="contentBookDiv">
@@ -299,7 +299,7 @@ export default function CreateBook() {
 
       <div className="contentCreateBook">
         <div className="titleFormx">
-          <p style={{ color: "#34495e"}}>Book Information</p>
+          <p className="infoTitle" >Book Information</p>
         </div>
 
         <div className="contentBookDiv">

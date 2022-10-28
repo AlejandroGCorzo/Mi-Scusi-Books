@@ -12,13 +12,13 @@
   box-sizing: revert;
 }
 
-body {
+/* body {
   color: #34495e;
-}
+} */
 
 .ant-table-expand-icon-col {
   width: 0px;
 }
 
 
-/* @import "~antd/dist/antd.css"; */
+@import "~antd/dist/antd.css";
