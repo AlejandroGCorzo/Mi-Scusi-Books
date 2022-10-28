@@ -24,6 +24,7 @@ export default function UserDetails(props) {
   const [edit, setEdit] = useState(false);
   const [changes, setChanges] = useState({});
   const [errors, setErrors] = useState({});
+  const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
   const handleTab = (e, newValue) => {
     setTab(newValue);
   };
@@ -135,18 +136,20 @@ export default function UserDetails(props) {
   }
   function submitProfileChanges(e) {
     e.preventDefault();
-    changes.phone
-      ? axios
-          .get(
-            `https://api.apilayer.com/number_verification/validate?number=${changes.phone}&apikey=${process.env.REACT_APP_NUMBER_VERIFICATION_KEY}`
-          )
-          .then((el) => {
-            if (el.data.valid) {
-              console.log(el.data);
-            } else
-              setErrors({ ...errors, phone: "Must be a valid phone number." });
-          })
-      : console.log(changes);
+    console.log(profile);
+    console.log(changes);
+    // changes.phone
+    //   ? axios
+    //       .get(
+    //         `https://api.apilayer.com/number_verification/validate?number=${changes.phone}&apikey=${process.env.REACT_APP_PHONE_NUMBER_VERIFICATION_KEY}`
+    //       )
+    //       .then((el) => {
+    //         if (el.data.valid) {
+    //           console.log(el.data);
+    //         } else
+    //           setErrors({ ...errors, phone: "Must be a valid phone number." });
+    //       })
+    //   : console.log(changes);
   }
   return (
     <>
@@ -167,10 +170,13 @@ export default function UserDetails(props) {
               profile={profile}
               edit={edit}
               changes={changes}
+              setChanges={setChanges}
               handleTextChange={handleTextChange}
               handleClick={handleClick}
               errors={errors}
               submitProfileChanges={submitProfileChanges}
+              imgSelected={imgSelected}
+              setImgSelected={setImgSelected}
             />
           </TabPanel>
           <TabPanel value="2">Item Two</TabPanel>
@@ -178,70 +184,4 @@ export default function UserDetails(props) {
       </Box>
     </>
   );
-
-  // return (
-  //   <>
-  //     {profile._id ? (
-  //       <div className="userOuterDiv">
-  //         <div className="contentCategoryx">
-  //           <div className="titleFormx">
-  //             <p>Profile</p>
-  //             <button className="pencilButtonx">✎</button>
-  //           </div>
-
-  //           <div className="contentCategoryDivx">
-  //             <div className="categoryDivx">
-  //               <div className="userImage">
-  //                 <img src={profile.image} referrerPolicy="no-referrer" />
-  //               </div>
-
-  //               <div className="userInfoContainer">
-  //                 <span>Username: {profile.username}</span>
-  //                 <span>Name: {profile.firstName}</span>
-  //                 <span>Last Name: {profile.lastName}</span>
-  //                 <span>E-mail: {profile.email}</span>
-  //                 <span>DNI: {profile.dni}</span>
-  //                 <span>Phone: {profile.phone}</span>
-  //                 <span>
-  //                   Address: {profile.address.street} {profile.address.number},{" "}
-  //                   {profile.address.floor}
-  //                 </span>
-  //                 {/* <span>Street: {loggedUser.address.street}</span>
-  //                   <span>Number: {loggedUser.address.number}</span>
-  //                   <span>Floor: {loggedUser.address.floor}</span> */}
-  //                 <span>Birthday: {profile.birthdate}</span>
-  //                 {/* <span>Verify: {loggedUser.state}</span> */}
-  //                 <span>Loyalty points: {profile.loyaltyPoint}</span>
-  //               </div>
-  //             </div>
-  //           </div>
-
-  //           <div className="formBackx">
-  //             <Link to="/" style={{ textDecoration: "none" }}>
-  //               <button className="buttonBackx">Save</button>
-  //             </Link>
-  //           </div>
-  //         </div>
-
-  //         <div className="contentCategoryx">
-  //           <div className="titleFormx">
-  //             <p>Shopping</p>
-  //           </div>
-
-  //           <div className="contentCategoryDivx">
-  //             <div className="categoryDivx"></div>
-  //           </div>
-
-  //           <div className="formBackx">
-  //             <Link to="/" style={{ textDecoration: "none" }}>
-  //               <button className="buttonBackx">View All</button>
-  //             </Link>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ) : (
-  //       <></>
-  //     )}
-  //   </>
-  // );
 }
