@@ -4,20 +4,21 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import axios from "axios";
 
-export default function ImgSelector({
+export default function ImgSelectorUser({
   imgSelected,
   setImgSelected,
-  newBook,
-  setNewBook,
+  changes,
+  setChanges,
 }) {
   // // // // //
   function uploadImage(e) {
     e.preventDefault(e);
+    console.log(process.env.REACT_APP_CLOUDINARY_USER_PROFILE);
     const formImgData = new FormData();
     formImgData.append("file", imgSelected.file);
     formImgData.append(
       "upload_preset",
-      process.env.REACT_APP_CLOUDINARY_BOOK_COVER_PRESET
+      process.env.REACT_APP_CLOUDINARY_USER_PROFILE
     );
     axios
       .post(
@@ -30,7 +31,7 @@ export default function ImgSelector({
           ...imgSelected,
           url: response.data.secure_url,
         });
-        setNewBook({ ...newBook, image: response.data.secure_url });
+        setChanges({ ...changes, image: response.data.secure_url });
       });
   }
   // // // // //
@@ -58,7 +59,7 @@ export default function ImgSelector({
         component="label"
         disabled={!imgSelected.file.name}
       >
-        Upload cover
+        Upload Profile Pic
         <input hidden accept="image/*" onClick={uploadImage} />
       </Button>
     </>
