@@ -51,7 +51,7 @@ export default function PersistentDrawerLeft({theme, category, subcategory, cate
             edge="start"
             sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
-            Filters <MenuIcon />
+          <MenuIcon /> <span style={{fontSize: "18px"}}>Filters</span>
         </IconButton>
         
         <Drawer
