@@ -11,8 +11,9 @@ export const usersSlice = createSlice({
     favorites: [],
     bills: [],
     forgotPassword : '',
-    newPassword : '',
+    changePassword : '',
     votedReviews: [],
+    waitingForgot: false
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -81,7 +82,7 @@ export const usersSlice = createSlice({
       state.forgotPassword = action.payload
     },
     changePassword: (state, action) => {
-      state.newPassword = action.payload
+      state.changePassword = action.payload
     },
     changeBillStatus: (state, action) =>{
       const newStatus = state.bills.find((b) => b._id === action.payload.id);

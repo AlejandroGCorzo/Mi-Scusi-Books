@@ -5,38 +5,41 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { putNewPassword } from "../../redux/StoreUsers/usersActions";
-import { TextField, Button, Snackbar, IconButton } from "@mui/material";
+import { TextField, Button, Snackbar, IconButton, CircularProgress } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { validations } from "../AccountCreate/Functions/validations";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function NewPassword() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { changePassword } = useSelector((state) => state.users);
-  const msg = changePassword
-  useEffect(() => {
-    if (changePassword) {
-      history.push("/login");
-    };
-    return () => {
-      dispatch(putNewPassword(""));
-    };
-  }, [dispatch]);
+  const msg = changePassword;
 
   const querystring = window.location.search;
-
   // usando el querystring, creamos un objeto del tipo URLSearchParams
   const params = new URLSearchParams(querystring);
   const token = params.get("reset");
 
   const [input, setInput] = useState({
     newPassword: "",
+    confirmNewPassword: ""
   });
   const [error, setError] = useState({
     newPassword: "",
   });
+  const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false);
-
+  const [show, setShow] = useState({
+    password: false,
+    confirmPass: false,
+  });
   const handleInput = (e) => {
     setInput({
       ...input,
@@ -67,14 +70,24 @@ export default function NewPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(putNewPassword(input.newPassword, token));
-    setTimeout(()=>setOpen(true),500)
-    setTimeout(()=>history.push('/login'),2500)
+    setLoading(true)
+    setTimeout(()=>dispatch(putNewPassword(input.newPassword, token)), 1000)
+    setTimeout(() => setOpen(true), 2000);
+    setTimeout(() => history.push("/login"), 4000);
   };
 
   function handleClose() {
     setOpen(false);
   }
+
+  const handleClickShowPassword = (name) => {
+    console.log(name);
+    setShow({
+      ...show,
+      [name]: !show[name],
+    });
+  };
+
   const action = (
     <React.Fragment>
       <IconButton
@@ -88,44 +101,96 @@ export default function NewPassword() {
       </IconButton>
     </React.Fragment>
   );
+
+  useEffect(() => {
+    return () => {
+      dispatch(putNewPassword(""));
+    };
+  }, [dispatch]);
   return (
     <div className="containerNewPassword">
       <div className="boxNewPassword">
         <div className="tittleNewPassword">
           <h3>Change your password</h3>
         </div>
-        <div className="textFieldNewPassword">
-          <TextField
-            sx={{ m: 0.5 }}
-            label="New password*"
-            autoComplete="off"
-            name="newPassword"
-            className="newPassword"
-            type="text"
-            placeholder="New password"
-            inputProps={{ maxLength: 40 }}
+        <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            error={error.newPassword ? true : false}
+          >
+            New Password*
+          </InputLabel>
+          <OutlinedInput
+            id="passwordInput"
+            label="New Password*"
+            type={show.password ? "text" : "password"}
             value={input.newPassword}
-            onChange={(e) => handleInput(e)}
+            placeholder="New Password"
+            name="newPassword"
+            onChange={handleInput}
+            autoComplete={false}
+            error={error.newPassword ? true : false}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  sx={{
+                    bgcolor: "white",
+                    ":hover": { bgcolor: "#287ccb" },
+                  }}
+                  aria-label="toggle password visibility"
+                  onClick={() => handleClickShowPassword("password")}
+                  edge="end"
+                >
+                  {show.password ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
-          {/* {error.newPassword?.length > 0 ? <p>{error.newPassword}</p> : <></>} */}
-        </div>
-        <div className="textFieldNewPassword">
-          <TextField
-            sx={{ m: 0.5 }}
-            label="Confirm new password*"
-            autoComplete="off"
-            name="confirmNewPassword"
-            className="newPassword"
-            type="text"
-            placeholder="Confirm new password"
-            inputProps={{ maxLength: 40 }}
+          {error.newPassword ? (
+            <FormHelperText error>{error.newPassword}</FormHelperText>
+          ) : null}
+        </FormControl>
+        <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            error={error.newPassword ? true : false}
+          >
+            Confirm Password*
+          </InputLabel>
+          <OutlinedInput
+            id="passwordInput"
+            label="Confirm New Password*"
+            type={show.confirmPass ? "text" : "password"}
             value={input.confirmNewPassword}
-            onChange={(e) => handleInput(e)}
+            placeholder="Confirm Password"
+            name="confirmNewPassword"
+            onChange={handleInput}
+            autoComplete={false}
+            error={error.newPassword ? true : false}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  sx={{
+                    bgcolor: "white",
+                    ":hover": { bgcolor: "#287ccb" },
+                  }}
+                  aria-label="toggle password visibility"
+                  onClick={() => handleClickShowPassword("confirmPass")}
+                  edge="end"
+                >
+                  {show.confirmPass ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
-          {error.newPassword?.length > 0 ? <p>{error.newPassword}</p> : <></>}
-        </div>
-        {error.confirm?.length > 0 ? <p>{error.confirm}</p> : <></>}
+          {error.newPassword ? (
+            <FormHelperText error>{error.newPassword}</FormHelperText>
+          ) : null}
+        </FormControl>
+        {error.confirm?.length > 0 ? <p>{error.newPassword}</p> : <></>}
+        {loading? changePassword? <p style={{ color: "blue" }}>{changePassword}</p> : <CircularProgress/> : <></>}
         <div className="newPasswordButton">
+        {/* {changePassword? <p style={{ color: "blue" }}>{changePassword}</p> : <></>} */}
           <Button
             disabled={!input.newPassword || error.newPassword ? true : false}
             variant="outlined"
@@ -139,7 +204,7 @@ export default function NewPassword() {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message='Redirecting...'
+        message="Redirecting..."
         action={action}
       />
     </div>

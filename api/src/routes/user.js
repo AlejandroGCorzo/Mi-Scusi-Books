@@ -34,12 +34,11 @@ userRouter.put("/forgot_password", async (req, res) => {
     // user.resetToken = resetToken
     if (!user)
       return res
-        
         .send("Something goes wrong!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
     const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
-    await transporter.sendMail({
+    transporter.sendMail({
       from: `"Mi Scusi Books!" <${process.env.GMAIL_USER}>`,
       to: user.email,
       subject: "Change your password!",
