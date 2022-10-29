@@ -8,26 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllBills } from "../../../redux/StoreUsers/usersActions";
 import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
-// const handleMenuClick = (e) => {
-//   console.log('click', e);
-// };
-
-// const menu = (
-//   <Menu
-//     onClick={(e)=>handleMenuClick(e)}
-//     items={[
-//       {
-//         key: "cancelled",
-//         label: "Cancelled",
-//       },
-//       {
-//         key: "approved",
-//         label: "Approved",
-//       },
-//     ]}
-//   />
-// );
-
 const BillsTable = () => {
   const accessToken =
     window.localStorage.getItem("token") ||
@@ -124,18 +104,6 @@ const BillsTable = () => {
     );
   };
 
-  // const data2 = bills?.map((e) => ({
-  //   key: e._id,
-  //   id: e._id,
-  //   user: `${e.user.firstName} ${e.user.lastName}`,
-  //   email: e.user.email,
-  //   firstName: e.user.firstName,
-  //   lastName: e.user.lastName,
-  //   totalPrice: e.total,
-  //   date: e.date,
-  //   //status: e.status,
-  // }));
-
   const columns = [
     {
       title: "User",
@@ -215,22 +183,6 @@ const BillsTable = () => {
            </Popconfirm>}
 
         </Space>
-        //   <Popconfirm
-        //   title="Sure to delete?"
-        //   onConfirm={(e) => handleMenuClick(e,record.key)}
-        // >
-        //   <a>Delete</a>
-        // </Popconfirm>
-        // <Space size="middle">
-        //   <Dropdown
-        //     //onClick={(e) => handleMenuClick(e, record.key)}
-        //     overlay={menu(record.key)}
-        //   >
-        //     <a>
-        //       Set Status <DownOutlined />
-        //     </a>
-        //   </Dropdown>
-        // </Space>
       ),
     },
   ];
