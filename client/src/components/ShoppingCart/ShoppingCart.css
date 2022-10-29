@@ -37,7 +37,7 @@
   }
   
 .contentShoppingDetail p {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
 }
 
@@ -120,6 +120,7 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .buttonUpdate {
@@ -131,6 +132,7 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    font-size: 15px;
   }
 
 .amountContent{
@@ -139,6 +141,21 @@
     flex-direction: column;
     font-size: 20px;
     margin-top: 80px;
+}
+
+.amountContent input{
+    border: 2px solid #e7e7e7;
+    border-radius: 5px;
+}
+
+.amountContent input:focus{
+    border: 2px solid #aa0707;
+    border-radius: 5px;
+}
+
+.amountContent input:active{
+    border: 2px solid #aa0707;
+    border-radius: 5px;
 }
 
 @media (min-height: 0px){

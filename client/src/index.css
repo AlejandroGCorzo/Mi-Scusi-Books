@@ -11,6 +11,20 @@ body {
   font-size: 1em !important;
 
 }
+p{
+  margin-top: 0.8em !important;
+  margin-bottom: 0.8em !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0.6em !important;
+  margin-bottom: 0.6em !important;
+}
+
+input, select, optgroup, textarea {
+  font-size: initial !important;
+  line-height: normal !important;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

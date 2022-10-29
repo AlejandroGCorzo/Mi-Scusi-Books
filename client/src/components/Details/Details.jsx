@@ -42,7 +42,7 @@ const Details = (props) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const { favorites } = useSelector((state) => state.users);
-  const { loggedUser, login, votedReviews } = useSelector((state) => state.users);
+  const { loggedUser, login, votedReviews, votedBooks } = useSelector((state) => state.users);
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -51,11 +51,13 @@ const Details = (props) => {
   const [renderUp, setRenderUp] = useState(false);
   const [render, setRender] = useState(false);
   const [msg, setMsg] = useState("");
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [valueText, setValueText] = useState("");
   const { detail } = useSelector((state) => state.books);
 
   var rating =
     detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length;
+  let yaVotoLibro = votedBooks?.filter((e) => e === detail._id);
 
   useEffect(() => {
     if (accessToken) {
@@ -99,21 +101,33 @@ const Details = (props) => {
 ////////////////////////////////////////////
 
   function ocultar() {
-    var x = document.getElementById("idContentVentana");
+    var idContentVentana = document.getElementById("idContentVentana");
 
-    if (x.style.display == "none") {
-      x.style.display = "flex";
+    if (idContentVentana.style.display == "none") {
+      idContentVentana.style.display = "flex";
     } else {
-      x.style.display = "none";
+      idContentVentana.style.display = "none";
     }
   }
 
   function sendReview(libroID){
     if (accessToken) {
       dispatch(addReview(document.getElementById("texto").value, loggedUser.id, libroID, value));
+      var reviewsForm = document.getElementById("reviewsForm");
+      reviewsForm.style.display = "none"
     }
   }
+  
+  function udapteText(){
+    var textoReview = document.getElementById("texto").value;
+    console.log(textoReview.length);
+    if(textoReview.length > 0){
+      return setValueText(textoReview);
+    }
 
+    return setValueText("");
+  }
+  
   function sendVote(id, libroID, vote, tipo){
 
     if (!accessToken) {
@@ -169,19 +183,19 @@ const Details = (props) => {
   }
 
   function queDibujo(libroID) {
-    let asd = favorites.filter((e) => e.id === libroID);
-    if (asd.length > 0) {
+    let tieneFavorito = favorites.filter((e) => e.id === libroID);
+    if (tieneFavorito.length > 0) {
       return (
-        <div onClick={() => deleteFav(detail._id)}>
-          <button className="buttonFav" {...label}>
+        <div >
+          <button className="buttonFav" {...label} onClick={() => deleteFav(detail._id)}>
             <Favorite className="favColor" />
           </button>
         </div>
       );
     } else {
       return (
-        <div onClick={() => addFavorite(detail._id)}>
-          <button className="buttonFav" {...label}>
+        <div >
+          <button className="buttonFav" {...label} onClick={() => addFavorite(detail._id)}>
             <FavoriteBorder className="favColor" />
           </button>
         </div>
@@ -355,18 +369,7 @@ const Details = (props) => {
 
   return (
     <div className="contentCategory">
-      {/* <div className="reviews">
-        {" "}
-        Reviews
-        {detail.reviews?.map((el) => (
-          <div key={el.user}>
-            <span>{el.user}</span>
-            <span>{el.text}</span>
-            <span>{el.votes.upvotes}</span>
-            <span>{el.votes.downvotes}</span>
-          </div>
-        ))}
-      </div> */}
+      
       <div
         id="idContentVentana"
         className="contentVentana"
@@ -375,7 +378,7 @@ const Details = (props) => {
         <div className="ventana_flotante">
 
           <div className="contentRatingViews">
-            <h3>Product Reviews</h3>
+            <p>Product Reviews</p>
             <button className="contentX" onClick={() => ocultar()}>
               X
             </button>
@@ -386,14 +389,14 @@ const Details = (props) => {
 
               <div className="contentCalification">
                 <div>
-                  <p>{rating}</p>
+                  <p>{rating.toFixed(1)}</p>
                 </div>
                 
                 <div className="textCalification">
                   <div>
                     <Rating
                       name="text-feedback"
-                      value={rating}
+                      value={rating.toFixed(1)}
                       readOnly
                       precision={0.5}
                       emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
@@ -461,7 +464,10 @@ const Details = (props) => {
 
         <div className="categoryBookDetails">
           <div className="whiteBox">
-            <img src={detail.image} className="bookImage" />
+            <div className="bookImage">
+            <img src={detail.image}  />
+            </div>
+            
           </div>
 
           <div className="whiteBox">
@@ -554,37 +560,139 @@ const Details = (props) => {
           </div>
         </div>
 
-        <div>
-          <p className="synopsisTitle">Synopsis</p>
-          <span className="synopsisText">{detail.synopsis}</span>
+
+{/* //////////////////////////RATING DETAIL////////////////////////////// */}
+        <div className="contentSynopsisAndFormReviews">
+
+          <div className="contentSynopsis">
+            <p>Synopsis</p>
+            <div className="synopsisText">
+              <span>{detail.synopsis}</span>
+            </div>
+          </div>
+
+{/* ///////////// */}
+        <div className="contentReviewsDetail">
+          
+          <div className="contentRatingViewsNew">
+            <p>Product Reviews</p>
+          </div>
+
+          <div className="newRatingDetail">
+
+            <div className="calificationDetail">
+              <div className="contentCalification">
+                <div>
+                  <p>{rating.toFixed(1)}</p>
+                </div>
+                
+                <div className="textCalification">
+                  <div>
+                    <Rating
+                      name="text-feedback"
+                      value={rating.toFixed(1)}
+                      readOnly
+                      precision={0.5}
+                      emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
+                  </div>
+                  <div>
+                    <span>{contador} califitacions</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contentMeter">
+                {meterCount?.map((e, i) => {
+                  return(Stats(e, i))
+                })}
+              </div>
+            </div>
+
+          <div className="contentReviews">
+            {detail.reviews?.length > 0 ? (
+              detail.reviews?.map((e, i) => {
+                if(i < 3){
+                return (
+                  <div className="reviewText" key={e._id}>
+                    <Box
+                      sx={{
+                        width: 200,
+                        display: "flex",
+                        alignItems: "center",
+                        margin: "25px",
+                        color: "#287ccb",
+                      }}
+                    >
+                        {viewRating(detail.rating[i])}
+                    </Box>
+
+                    <p>{e.user ? e.user : "Some google user"}</p>
+                    <p>{e.text}</p>
+
+                    <div className="contentLike">
+                      {queLikeDibujo(e._id, detail._id)}
+                      {e.votes.upvotes}
+                      {queLikeDibujoB(e._id, detail._id)}
+                      {e.votes.downvotes}
+                    </div>
+
+                  </div>
+                )
+
+              }
+              })
+            ) : (
+              <div className="noReviews">
+                <h3>No reviews available, be the first one!</h3>
+              </div>
+            )}
+          </div>
         </div>
 
-        {accessToken ?
-          <div className="amountContent">
+        <div className="viewAllReviews">
+          {detail.reviews?.length > 0 ?<p style={{cursor: "pointer"}} onClick={() => ocultar()}>View all reviews...</p>
+          :""}
+        </div>
+
+      </div>
+{/* //////////////////////////////////////////////////////// */}
+
+          {accessToken && yaVotoLibro.length === 0 ?
+          <div id="reviewsForm" className="revieFromUserContent">
             <span>Review</span>
-            <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-              />
-            <div>
-              <textarea id={"texto"} rows="5" cols="50" placeholder="Review..." name="comentario"></textarea>
+
+            <div className="contentTextArea">
+              <div className="ratingStarsReviewUser">
+              <Rating
+                  name="simple-controlled"
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                />
+              </div>
+              <textarea id={"texto"} rows="5" cols="50" placeholder="Review..." name="comentario" onChange={() => udapteText()}></textarea>
             </div>
             
             <div>
-              {value !== 0 
+              {value !== 0 && valueText.length > 0
               ? <button className="buttonUdapte" onClick={() => sendReview(detail._id)}>Send!</button>
               : <button className="buttonUdapteDisable" disabled>Send!</button>}
             </div>
-         </div>
+
+            </div>
+
          : ""}
+
+        </div>
+
+
       </div>
 
       <div className="formBackDetails">
         <p>@Mi Scusi Books</p>
       </div>
+
       <Snackbar
         open={open}
         autoHideDuration={2000}
