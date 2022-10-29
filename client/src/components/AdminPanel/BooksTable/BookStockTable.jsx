@@ -291,7 +291,7 @@ export default function BooksStock() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, b._id, b.name)}
+                      //onClick={(event) => handleClick(event, b._id, b.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -333,6 +333,7 @@ export default function BooksStock() {
                           type="number"
                           name={b._id}
                           value={inputStock._id}
+                          onClick={(event) => handleClick(event, b._id, b.name)}
                         />
                       </TableCell>
                     </TableRow>

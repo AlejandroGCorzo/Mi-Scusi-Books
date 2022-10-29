@@ -1,133 +1,423 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import React, { useState, useEffect } from "react";
+//import 'antd/dist/antd.css';
+//import 'antd/dist/antd.less';
+import "./index.css";
+import { DownOutlined } from "@ant-design/icons";
+import { Popconfirm, Button, Badge, Dropdown, Menu, Space, Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBills } from "../../../redux/StoreUsers/usersActions";
+import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
+const BillsTable = () => {
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+  const dispatch = useDispatch();
+  const { bills } = useSelector((state) => state.users);
+  const { users } = useSelector((state) => state.users);
+  const [render, setRender] = useState(true);
+
+  const handleMenuClick = (id , status) => {
+    //console.log("click", e.key);
+    console.log("record", id);
+    console.log("a -> c", status, '->', status === 'approved' ? 'cancelled' : 'approved' );
+
+    status = status === 'approved' ? 'cancelled' : 'approved'
+
+    console.log("status", status);
+    dispatch(setBillStatus(id, status, accessToken))
+    setRender(render === true ? false : true);
   };
-}
 
-function Row(props) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const data2 = users?.map((e) => ({
+    key: e._id,
+    id: e._id,
+    user: `${e.firstName} ${e.lastName}`,
+    email: e.email,
+    firstName: e.firstName,
+    lastName: e.lastName,
+    dni: e.dni,
+    phone: e.phone,
+    rol: e.type,
+    state: e.state,
+  }));
+
+  const menu = (key) => (
+    <Menu
+      onClick={(e) => handleMenuClick(e, key)}
+      items={[
+        {
+          key: "cancelled",
+          label: "Cancelled",
+        },
+        {
+          key: "approved",
+          label: "Approved",
+        },
+      ]}
+    />
+
+  );
+
+  // const expandedRowRender = (row) => {
+  //   //console.log('row', row.id);
+
+  //   const columns = [
+  //     {
+  //       title: "Email",
+  //       dataIndex: "email",
+  //       key: "email",
+  //     },
+  //     {
+  //       title: "First Name",
+  //       dataIndex: "firstName",
+  //       key: "firstName",
+  //       //sorter: (obj1, obj2) => obj1.quantity - obj2.quantity,
+  //     },
+  //     {
+  //       title: "Last Name",
+  //       dataIndex: "lastName",
+  //       key: "lastName",
+  //       //sorter: (obj1, obj2) => obj1.unitPrice - obj2.unitPrice,
+  //     },
+  //   ];
+
+  //   const datito = bills.find((e) => e._id === row.id);
+  //   //console.log('datito', datito)
+
+  //   let data = [];
+  //   for (let i = 0; i < datito.books.length; i++) {
+  //     data.push({
+  //       key: datito._id,
+  //       id: datito._id,
+  //       book: datito.books[i].name,
+  //       unitPrice: datito.price[i],
+  //       quantity: datito.amountBooks[i],
+  //     });
+  //   }
+
+  //   return (
+  //     <Table
+  //       columns={columns}
+  //       dataSource={data}
+  //       pagination={false}
+  //       style={{ textTransform: "capitalize" }}
+  //     />
+  //   );
+  // };
+
+  const columns = [
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      // filters: bills?.map((e) => ({
+      //   text: `${e.user.firstName} ${e.user.lastName}`,
+      //   value: `${e.user.firstName} ${e.user.lastName}`,
+      // })),
+      // filterSearch: true,
+      // onFilter: (name, userObject) => userObject.user.includes(name),
+    },
+    {
+      title: "First Name",
+      dataIndex: "firstName",
+      key: "firstName",
+    },
+    {
+      title: "Last Name",
+      dataIndex: "lastName",
+      key: "lastName",
+      //sorter: (obj1, obj2) => obj1.totalPrice - obj2.totalPrice,
+    },
+    {
+      title: "DNI",
+      dataIndex: "dni",
+      key: "dni",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      key: "phone",
+      // filters: [
+      //   {
+      //     text: "Approved",
+      //     value: "Approved",
+      //   },
+      //   {
+      //     text: "Cancelled",
+      //     value: "Cancelled",
+      //   },
+      // ],
+      //filterSearch: true,
+      // render: (_, record) => (
+      //   <span>
+      //     {record.status === "approved" ? (
+      //       <>
+      //         <Badge status="success" /> Approved
+      //       </>
+      //     ) : (
+      //       <>
+      //         <Badge status="error" /> Cancelled
+      //       </>
+      //     )}
+      //   </span>
+      // ),
+    },
+    {
+      title: 'Rol',
+      dataIndex: "type",
+      key: "type",
+      // render: (_, record) => (
+      //   <Space size="middle">
+      //     {record.status === 'approved' ? 
+      //      <Popconfirm
+      //      title="Sure to set status to Cancelled?"
+      //      onConfirm={(e) => handleMenuClick(record.key, record.status)}
+      //      >
+      //       <a>Set status Cancelled</a>
+      //      </Popconfirm>
+      //      :            
+      //      <Popconfirm
+      //      title="Sure to set status to Approved?"
+      //      onConfirm={(e) => handleMenuClick(record.key,record.status)}
+      //      >
+      //       <a>Set status Approved</a>
+      //      </Popconfirm>}
+
+      //   </Space>
+      // ),
+    },
+    {
+      title: "Rol Actions",
+      dataIndex: "state",
+      key: "state",
+      render: (_, record) => (
+        <span>
+          {record.state === "normal" ? (
+            <>
+              <Badge status="success" /> Normal
+              <Badge status="success" /> Seller
+              <Badge status="error" /> Admin
+            </>
+          ) : (
+            <>
+              <Badge status="success" /> Normal
+              <Badge status="success" /> Seller
+              <Badge status="error" /> Admin
+            </>
+          )}
+        </span>
+      ),
+    },
+    {
+      title: "State",
+      dataIndex: "state",
+      key: "state",
+    },
+    {
+      title: "State Actions",
+      dataIndex: "state",
+      key: "state",
+      render: (_, record) => (
+        <span>
+          {record.state === "active" ? (
+            <>
+              <Badge status="success" /> Block
+              <Badge status="error" /> Delete
+            </>
+          ) : (
+            <>
+              <Badge status="success" /> Unblock
+              <Badge status="error" /> Delete
+            </>
+          )}
+        </span>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    dispatch(getAllBills(accessToken));
+  }, [dispatch]);
 
   return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
+    <>
+      <Table
+        columns={columns}
+        //expandedRowRender={expandedRowRender}
+        dataSource={users/* data2 */}
+        size="small"
+        style={{ textTransform: "capitalize" }}
+      />
+    </>
   );
-}
+};
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
+export default BillsTable;
 
-export default function BillTable3() {
-  return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
+// Radio checkboxs
+
+// import React, { useState } from 'react';
+// import 'antd/dist/antd.css';
+// import './index.css';
+// import { Divider, Radio, Table } from 'antd';
+
+// const columns = [
+//   {
+//     title: 'Name',
+//     dataIndex: 'name',
+//     render: (text) => <a>{text}</a>,
+//   },
+//   {
+//     title: 'Age',
+//     dataIndex: 'age',
+//   },
+//   {
+//     title: 'Address',
+//     dataIndex: 'address',
+//   },
+// ];
+// const data = [
+//   {
+//     key: '1',
+//     name: 'John Brown',
+//     age: 32,
+//     address: 'New York No. 1 Lake Park',
+//   },
+//   {
+//     key: '2',
+//     name: 'Jim Green',
+//     age: 42,
+//     address: 'London No. 1 Lake Park',
+//   },
+//   {
+//     key: '3',
+//     name: 'Joe Black',
+//     age: 32,
+//     address: 'Sidney No. 1 Lake Park',
+//   },
+//   {
+//     key: '4',
+//     name: 'Disabled User',
+//     age: 99,
+//     address: 'Sidney No. 1 Lake Park',
+//   },
+// ];
+
+// // rowSelection object indicates the need for row selection
+// const rowSelection = {
+//   onChange: (selectedRowKeys, selectedRows) => {
+//     console.log(
+//       `selectedRowKeys: ${selectedRowKeys}`,
+//       'selectedRows: ',
+//       selectedRows
+//     );
+//   },
+//   getCheckboxProps: (record) => ({
+//     disabled: record.name === 'Disabled User',
+//     // Column configuration not to be checked
+//     name: record.name,
+//   }),
+// };
+// const App = () => {
+//   //const [selectionType, setSelectionType] = useState('checkbox');
+//   return (
+//     <div>
+//       {/* <Radio.Group
+//         onChange={({ target: { value } }) => {
+//           setSelectionType(value);
+//         }}
+//         value={selectionType}
+//       >
+//         <Radio value="checkbox">Checkbox</Radio>
+//         <Radio value="radio">radio</Radio>
+//       </Radio.Group>
+
+//       <Divider /> */}
+
+//       <Table
+//         rowSelection={{
+//           type: 'radio',
+//           ...rowSelection,
+//         }}
+//         columns={columns}
+//         dataSource={data}
+//       />
+//     </div>
+//   );
+// };
+// export default App;
+
+// Header for selections
+
+// import React, { useState } from 'react';
+// import 'antd/dist/antd.css';
+// import './index.css';
+// import { Button, Table } from 'antd';
+
+// const columns = [
+//   {
+//     title: 'Name',
+//     dataIndex: 'name',
+//   },
+//   {
+//     title: 'Age',
+//     dataIndex: 'age',
+//   },
+//   {
+//     title: 'Address',
+//     dataIndex: 'address',
+//   },
+// ];
+// const data = [];
+// for (let i = 0; i < 46; i++) {
+//   data.push({
+//     key: i,
+//     name: `Edward King ${i}`,
+//     age: 32,
+//     address: `London, Park Lane no. ${i}`,
+//   });
+// }
+// const App = () => {
+//   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const start = () => {
+//     setLoading(true);
+//     // ajax request after empty completing
+//     setTimeout(() => {
+//       setSelectedRowKeys([]);
+//       setLoading(false);
+//     }, 1000);
+//   };
+//   const onSelectChange = (newSelectedRowKeys) => {
+//     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+//     setSelectedRowKeys(newSelectedRowKeys);
+//   };
+//   const rowSelection = {
+//     selectedRowKeys,
+//     onChange: onSelectChange,
+//   };
+//   const hasSelected = selectedRowKeys.length > 0;
+//   return (
+//     <div>
+//       <div
+//         style={{
+//           marginBottom: 16,
+//         }}
+//       >
+//         <Button type="primary" onClick={start} disabled={!hasSelected} loading={loading}>
+//           Reload
+//         </Button>
+//         <span
+//           style={{
+//             marginLeft: 8,
+//           }}
+//         >
+//           {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+//         </span>
+//       </div>
+//       <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+//     </div>
+//   );
+// };
+// export default App;
