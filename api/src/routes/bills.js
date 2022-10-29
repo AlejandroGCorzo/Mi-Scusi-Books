@@ -126,4 +126,15 @@ billsRouter.put("/status/:id", protect, async (req, res) => {
   }
 });
 
+billsRouter.get('/:id', async (req,res) => {
+  const {id} = req.params
+  try {
+    const bills = await billsSchema.find().where({user : id})
+    if(!bills) return res.status(400).send('User not found')
+    return res.send(bills)
+  } catch (error) {
+    res.status(400).send({ msg: "Algo fallo en put a bills", error });
+  }
+})
+
 module.exports = billsRouter;

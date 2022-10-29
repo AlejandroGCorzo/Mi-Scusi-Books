@@ -19,6 +19,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Box from "@mui/material/Box";
@@ -39,14 +41,7 @@ export default function UserLogin() {
   const [input, setInput] = useState(emptyInput);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
-  // // // // // // // // // // USEEFFECT
-  useEffect(() => {
-    if (
-      window.localStorage.getItem("token") ||
-      window.sessionStorage.getItem("token")
-    )
-      history.push("/");
-  }, [dispatch]);
+
   // // // // // // // // // // FUNCTIONS
   function handleInputChange(e) {
     e.preventDefault();
@@ -175,11 +170,12 @@ export default function UserLogin() {
 
   const handleForgotPasswordSubmit = (e) => {
     e.preventDefault();
-    dispatch(putForgotPassword(forgotPasswordInput));
-    // setVerifyEmail(true)
+    console.log(forgotPasswordInput);
+    setVerifyEmail(true)
+    setTimeout(()=>dispatch(putForgotPassword(forgotPasswordInput)),1000)
+    
     // setTimeout(()=>setOpenDIalog(false),2000)
-    setTimeout(()=>setVerifyEmail(true),1000)
-    setTimeout(()=>setOpenDIalog(false),10000)
+    // setTimeout(() => setVerifyEmail(true), 1500);
   };
 
   const handleClickOpenDialog = () => {
@@ -190,8 +186,16 @@ export default function UserLogin() {
     setOpenDIalog(false);
     setVerifyEmail(false);
     setForgotPasswordInput("");
+    dispatch(putForgotPassword(''))
   };
-
+  // // // // // // // // // // USEEFFECT
+  useEffect(() => {
+    if (
+      window.localStorage.getItem("token") ||
+      window.sessionStorage.getItem("token")
+    )
+      history.push("/");
+  }, [dispatch]);
   return (
     <div className="userLoginDiv">
       <div className="container" id="container">
@@ -289,6 +293,7 @@ export default function UserLogin() {
                     autoFocus
                     margin="dense"
                     id="name"
+                    autoComplete={false}
                     label="Email Address"
                     type="email"
                     fullWidth
@@ -310,13 +315,9 @@ export default function UserLogin() {
                   ) : (
                     <></>
                   )}
-                  {verifyEmail ? (
-                    <p style={{ color: "blue" }}>
-                      {forgotPassword}
-                    </p>
-                  ) : (
-                    <></>
-                  )}
+                  <div className="miPropioDiv">
+                  {verifyEmail? forgotPassword? <p style={{ color: "blue" }}>{forgotPassword}</p> : <CircularProgress/> : <></>}
+                  </div>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleCloseDialog}>Close</Button>

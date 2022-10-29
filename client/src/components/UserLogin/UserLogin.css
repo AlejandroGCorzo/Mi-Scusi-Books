@@ -287,6 +287,12 @@
   text-decoration: none;
 }
 
+.miPropioDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 914px) {
   .sign-in-container {
     width: 100%;
