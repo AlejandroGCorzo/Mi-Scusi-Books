@@ -11,29 +11,27 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookName, bookId, accessToken, setMsg, setOpen}) {
+export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, user, reviewId, rating, accessToken, setMsg, setOpen}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = React.useState(false)
-  const history = useHistory();
+  console.log('id', typeof reviewId, 'book', bookId, 'rating', rating)
 
   const handleConfirm = async() => {
     setLoading(true)
     try{
-      const deletedBook = await axios.put(`/books/delete/${bookId}`, {}, {
-        headers:{
-          authorization: `Bearer ${accessToken}`
-        }
+      const deletedReview = await axios.put(`/review/${reviewId}`, {bookId: bookId, rating: rating}, {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
       })
-      setMsg("Book deleted")
+      setMsg("Review deleted")
     } catch(e){
       setMsg("There was a problem. Try again later")
     }
     setLoading(false)
     setOpen(true)
     setOpenConfirm(false)
-    setTimeout(() => history.push("/"), 2000)
-    
   };
 
   const handleClose = () => {
@@ -54,7 +52,7 @@ export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookName, b
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`Are you sure you want to remove "${bookName?.toUpperCase()}" from the list of books ?`}
+            {`Are you sure you want to remove "${user}'s" review?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
