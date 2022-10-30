@@ -98,6 +98,13 @@
     color: black;
 }
 
+.directionBuy{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    color: black;
+}
+
 .contBuy span{
     margin-top: 6px;
     margin-left: 15px;
