@@ -30,6 +30,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import SelectDialog from "../ConfirmDialog/SelectDialog.jsx";
+import TextField from "@mui/material/TextField";
+import Search from '../../../sourceImg/search.svg'
+import SearchIcon from '@mui/icons-material/Search';
+import { useState } from "react";
+
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -197,7 +205,7 @@ const EnhancedTableToolbar = (props) => {
       emailSelectUser &&
       id !== loggedUser.id ? (
         <>
-          <FormControl sx={{ m: 1, minWidth: 80 }}>
+          <FormControl sx={{ m: 0, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Change Rol
             </InputLabel>
@@ -209,7 +217,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={(e) => handleChange(e)}
               autoWidth
               label="Change Rol"
-              style={{ width: "130px"}}
+              style={{ width: "120px"}}
             >
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="normal">Normal</MenuItem>
@@ -272,6 +280,22 @@ export default function TestUsers() {
   const { users } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
   //console.log(selected);
+
+  //////////////SearchBar Mail//////////////////
+  const [searchUser, setSearchUser] = useState('')
+
+  const handleSearchUser = (e) =>{
+    setSearchUser(e.target.value)
+    //console.log(e.target.value);
+  }
+
+  const handleDeleteEmail = (e)=>{
+    setSearchUser('')
+  }
+  
+  console.log(searchUser);
+  
+
 
   //////////////Make and remove admin//////////////////
   const dispatch = useDispatch();
@@ -348,6 +372,38 @@ export default function TestUsers() {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
+        {/* <TextField
+          id="outlined-basic"
+          label="Search Email"
+          variant="outlined"
+          sx={{ m: 0.8 }}
+          autoComplete="off"
+          type='email'
+          onChange={(e) => handleSearchUser(e)}
+        /> */}
+        <FormControl sx={{ m: 1, width: '28ch' }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Search Email</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type='email'
+            value={searchUser}
+            onChange={(e) => handleSearchUser(e)}
+            autoComplete="off"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={(e)=>handleDeleteEmail(e)}
+                  edge="end"
+                >
+                  <ClearIcon/>
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Search Email"
+          />
+        </FormControl>
+        
         <EnhancedTableToolbar
           emailSelectUser={showEmail /* .length */}
           openDelete={openDelete}
@@ -465,11 +521,11 @@ export default function TestUsers() {
             ".MuiTablePagination-selectLabel": {
               fontSize: "1rem",
               marginTop: "15px",
-              lineHeight: 1.5
+              lineHeight: 1.5,
             },
             "	.MuiTablePagination-displayedRows": {
-              marginTop: "12px"
-            }
+              marginTop: "12px",
+            },
           }}
         />
       </Paper>
