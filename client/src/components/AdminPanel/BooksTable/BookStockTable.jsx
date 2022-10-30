@@ -334,6 +334,7 @@ export default function BooksStock() {
                           name={b._id}
                           value={inputStock._id}
                           onClick={(event) => handleClick(event, b._id, b.name)}
+                          className='stockInput'
                         />
                       </TableCell>
                     </TableRow>
