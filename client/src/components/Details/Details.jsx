@@ -27,6 +27,8 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Details.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmDelete from "./ConfirmDelete/ConfirmDelete.jsx";
 
 const label = {};
 
@@ -54,7 +56,8 @@ const Details = (props) => {
   const [value, setValue] = useState(0);
   const [valueText, setValueText] = useState("");
   const { detail } = useSelector((state) => state.books);
-  
+  const [openConfirm, setOpenConfirm] = useState(false);
+
   var rating = detail.rating?.length > 0 ?
     detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length : 0;
   let yaVotoLibro = votedBooks?.filter((e) => e === detail._id);
@@ -366,6 +369,9 @@ const Details = (props) => {
     );
   };
 
+  function handleDelete(){
+    setOpenConfirm(true)
+  }
 
   return (
     <div className="contentCategory">
@@ -456,9 +462,23 @@ const Details = (props) => {
       </div>
       
       <div className="titleFormDetails">
-        <p>Book Information</p>
+        <p>Book Information </p>
+        {loggedUser.type === "admin" ? 
+        <div className="deleteIcon">
+          <DeleteIcon onClick={handleDelete}/>
+        </div>
+        : <></>
+        }
       </div>
-
+      <ConfirmDelete 
+        openConfirm={openConfirm} 
+        setOpenConfirm={setOpenConfirm}
+        bookName={detail.name}
+        bookId={detail._id}
+        accessToken={accessToken}
+        setOpen={setOpen}
+        setMsg={setMsg}
+      />
       <div className="contentBookDetailDiv">
         <div className="contentFav">{queDibujo(detail._id)}</div>
 
