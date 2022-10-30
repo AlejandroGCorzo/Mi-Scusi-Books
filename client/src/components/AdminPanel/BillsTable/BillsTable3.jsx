@@ -38,7 +38,7 @@ const BillsTable = () => {
     lastName: e.lastName,
     dni: e.dni,
     phone: e.phone,
-    rol: e.type,
+    type: e.type,
     state: e.state,
   }));
 
@@ -236,16 +236,37 @@ const BillsTable = () => {
     },
   ];
 
+  const [selectUser, setSelectUser] = useState('');
+  console.log(selectUser);
+
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      //if(selectedRows.length > 1) selectedRows.shift()
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectUser(selectedRows.length === 0 ? '' : selectedRows[0].email)
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.email === 'Disabled User',
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+
   useEffect(() => {
     dispatch(getAllBills(accessToken));
   }, [dispatch]);
 
   return (
     <>
+    <div>
+      <span>User selected: {selectUser}</span>
+    </div>
       <Table
         columns={columns}
         //expandedRowRender={expandedRowRender}
-        dataSource={users/* data2 */}
+        rowSelection={{type: 'radio', ...rowSelection, hideSelectAll: true}}
+        dataSource={/* users */ data2 }
         size="small"
         style={{ textTransform: "capitalize" }}
       />
