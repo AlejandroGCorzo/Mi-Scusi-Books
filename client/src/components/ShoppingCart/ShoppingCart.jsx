@@ -8,6 +8,8 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import StoreIcon from '@mui/icons-material/Store';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import { ThemeProvider } from "@mui/material/styles";
 import { Link, useHistory } from "react-router-dom";
@@ -16,6 +18,7 @@ import { fetchShoppingCart, fetchFavorites, keepLog, deleteFavorites, deleteCart
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal"
 import { IconButton, Snackbar } from "@mui/material";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   // console.log(children)
@@ -103,6 +106,14 @@ export default function ShoppingCart(props) {
 
   function deleteFav(libroID){
     dispatch(deleteFavorites(loggedUser.id, libroID, accessToken));
+  }
+
+  function addToCart(libroID) {
+    if (accessToken) {
+      dispatch(addCart(loggedUser.id, libroID, 1, accessToken));
+      setMsg("Book added to cart!");
+      setOpen(true);
+    }
   }
 
   function deleteCar(libroID){
@@ -252,10 +263,9 @@ export default function ShoppingCart(props) {
                               : el.price}
                             </span>
                           </div>
-                          <Link to={`/book_details/${el.id}`} style={{ textDecoration: "none" }}>
-                              <button className="buttonView">Buy</button>
-                          </Link>
-                          
+                          <div>
+                            <button className="buttonView" onClick={() => addToCart(el.id)}>Add to cart</button>
+                          </div>
                           <div>
                             <button className="buttonDelete" onClick={() => deleteFav(el.id)} >Delete</button>
                           </div>
@@ -273,7 +283,9 @@ export default function ShoppingCart(props) {
           
           <div className="contBuy">
             <div className="textBuy">
-                <span>Shipment: ${envio}</span>
+                <div className="directionBuy">
+                  <span>Shipment: ${envio}</span>
+                </div>
                 <span>Total with shipping: ${(totalShopping + envio).toFixed(2)}</span>
             </div>
             <div>

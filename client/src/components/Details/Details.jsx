@@ -5,7 +5,6 @@ import { getDetail, getBooks, addReview, addVote, removeVote } from "../../redux
 import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
@@ -51,7 +50,6 @@ const Details = (props) => {
   const [open, setOpen] = useState(false);
   const [renderDown, setRenderDown] = useState(false);
   const [renderUp, setRenderUp] = useState(false);
-  const [render, setRender] = useState(false);
   const [msg, setMsg] = useState("");
   const [value, setValue] = useState(0);
   const [valueText, setValueText] = useState("");
@@ -67,7 +65,6 @@ const Details = (props) => {
       dispatch(keepLog(accessToken));
       dispatch(fetchFavorites(loggedUser.id));
     }
-    setRender(true);
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
@@ -108,9 +105,12 @@ const Details = (props) => {
 
     if (idContentVentana.style.display == "none") {
       idContentVentana.style.display = "flex";
+      document.getElementsByTagName("html")[0].style.overflow = "hidden";
     } else {
       idContentVentana.style.display = "none";
+      document.getElementsByTagName("html")[0].style.overflow = "auto";
     }
+      
   }
 
   function sendReview(libroID){
@@ -133,54 +133,31 @@ const Details = (props) => {
   
   function sendVote(id, libroID, vote, tipo){
 
+    let viewReviews = votedReviews?.filter((e) => e.review === id);
+
+    if(viewReviews.length > 0 && tipo !== viewReviews.vote){
+      setMsg("You have already voted!");
+      return (setOpen(true));
+    }
+
     if (!accessToken) {
       setMsg("Please log in to add vote");
       setOpen(true);
     } else {
-
       dispatch(addVote(id, libroID, vote, accessToken));
-
-      if(tipo === "down"){
-
-        if(renderDown === false){
-          setRenderDown(true);
-        }else{
-          setRenderDown(false);
-        }
-
-      }else{
-        if(renderUp === false){
-          setRenderUp(true);
-        }else{
-          setRenderUp(false);
-        }
-      }
+      setRenderUp(true);
     }
     
   }
 
-  function sendRemoveVote(id, libroID, vote, tipo){
-    
+  function sendRemoveVote(id, libroID, vote){
+
     if (!accessToken) {
       setMsg("Please log in to add vote");
       setOpen(true);
     } else {
-      dispatch(removeVote(id, libroID, vote, accessToken));
-      if(tipo === "down"){
-        if(renderDown === false){
-          setRenderDown(true);
-        }else{
-          setRenderDown(false);
-        }
-      }else{
-        if(renderUp === false){
-          setRenderUp(true);
-        }else{
-          setRenderUp(false);
-        }
-      }
-      
-
+      dispatch(removeVote(id, libroID, vote, accessToken)); 
+      setRenderDown(true);
     }
     
   }
@@ -207,61 +184,62 @@ const Details = (props) => {
   }
 
   function queLikeDibujo(id, libroID) {
+
+    if(renderUp === true){
+      dispatch(keepLog(accessToken));
+      setRenderUp(false)
+    }
+
     let buttonUpvote = votedReviews?.filter((e) => (e.review === id && e.vote === "upvote"));
 
     if (buttonUpvote.length > 0) {
       return (
         <div >
-          {renderUp === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
+          <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "upvote")}>
             <ThumbUpAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
-            <ThumbUpOffAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }else{
       return (
         <div >
-          {renderUp === false ?
-           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "upvote")}>
             <ThumbUpOffAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
-            <ThumbUpAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }
   }
 
   function queLikeDibujoB(id, libroID) {
+
+    if(renderDown === true){
+      dispatch(keepLog(accessToken));
+      setRenderDown(false)
+    }
+
     let downButton = votedReviews?.filter((e) => (e.review === id && e.vote === "downvote"));
 
     if (downButton.length > 0) {
       return (
         <div >
-          {renderDown === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
+          <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "2", "downvote")}>
             <ThumbDownAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
-            <ThumbDownOffAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }else{
       return (
         <div >
-          {renderDown === false ?
-           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "2", "downvote")}>
             <ThumbDownOffAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
-            <ThumbDownAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }
 
   }
   
-
   function addFavorite(libroID) {
     if (!accessToken) {
       setMsg("Please log in to add favorites");
