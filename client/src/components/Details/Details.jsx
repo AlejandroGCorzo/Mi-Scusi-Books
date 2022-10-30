@@ -368,9 +368,12 @@ const Details = (props) => {
         </div>
     );
   };
+  const [reviewDel, setReviewDel] = useState({}) 
 
   function handleDelete(){
+    // console.log(reviewDel)
     setOpenConfirm(true)
+   
   }
 
   return (
@@ -463,14 +466,14 @@ const Details = (props) => {
       
       <div className="titleFormDetails">
         <p>Book Information </p>
-        {loggedUser.type === "admin" ? 
+        {/* {loggedUser.type === "admin" ? 
         <div className="deleteIcon">
           <DeleteIcon onClick={handleDelete}/>
         </div>
         : <></>
-        }
+        } */}
       </div>
-      <ConfirmDelete 
+      {/* <ConfirmDelete 
         openConfirm={openConfirm} 
         setOpenConfirm={setOpenConfirm}
         bookName={detail.name}
@@ -478,7 +481,7 @@ const Details = (props) => {
         accessToken={accessToken}
         setOpen={setOpen}
         setMsg={setMsg}
-      />
+      /> */}
       <div className="contentBookDetailDiv">
         <div className="contentFav">{queDibujo(detail._id)}</div>
 
@@ -639,13 +642,26 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
                         margin: "25px",
+                        width: "95%",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
+                        {/* */}
+                        <DeleteIcon onClick={() => {
+                          setReviewDel({
+                            reviewId: e._id,
+                            user: e.user,
+                            rating: e.rating,
+                            bookId: e.book
+                          })
+                          handleDelete()
+                        }} 
+                        />
+                        
                     </Box>
-
                     <p>{e.user ? e.user : "Some google user"}</p>
                     <p>{e.text}</p>
 
@@ -719,6 +735,17 @@ const Details = (props) => {
         onClose={handleClose}
         message={msg}
         action={action}
+      />
+      <ConfirmDelete 
+        openConfirm={openConfirm} 
+        setOpenConfirm={setOpenConfirm}
+        user={reviewDel.user}
+        reviewId={reviewDel.reviewId}
+        bookId={reviewDel.bookId}
+        rating={reviewDel.rating}
+        accessToken={accessToken}
+        setOpen={setOpen}
+        setMsg={setMsg}
       />
     </div>
   );
