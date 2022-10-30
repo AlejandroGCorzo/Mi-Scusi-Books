@@ -278,6 +278,7 @@ export default function TestUsers() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { users } = useSelector((state) => state.users);
+  const { searchUsers } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
   //console.log(selected);
 
@@ -286,7 +287,6 @@ export default function TestUsers() {
 
   const handleSearchUser = (e) =>{
     setSearchUser(e.target.value)
-    //console.log(e.target.value);
   }
 
   const handleDeleteEmail = (e)=>{
@@ -367,7 +367,7 @@ export default function TestUsers() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchUsers.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -381,6 +381,7 @@ export default function TestUsers() {
           type='email'
           onChange={(e) => handleSearchUser(e)}
         /> */}
+        <>
         <FormControl sx={{ m: 1, width: '28ch' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Search Email</InputLabel>
           <OutlinedInput
@@ -403,6 +404,7 @@ export default function TestUsers() {
             label="Search Email"
           />
         </FormControl>
+        </>
         
         <EnhancedTableToolbar
           emailSelectUser={showEmail /* .length */}
@@ -410,7 +412,7 @@ export default function TestUsers() {
           handleOpenDelete={handleOpenDelete}
           handleCloseDelete={handleCloseDelete}
           id={selected}
-          selectUser={users.find((u) => u._id === selected)}
+          selectUser={searchUsers.find((u) => u._id === selected)}
           loggedUser={loggedUser}
           handleMakeAdmin={handleMakeAdmin}
           handleRemoveAdmin={handleRemoveAdmin}
@@ -429,12 +431,12 @@ export default function TestUsers() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={users.length}
+              rowCount={searchUsers.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(searchUsers, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((u, index) => {
                   const isItemSelected = isSelected(u._id);
@@ -511,7 +513,7 @@ export default function TestUsers() {
         <TablePagination
           rowsPerPageOptions={[10, 25]}
           component="div"
-          count={users.length}
+          count={searchUsers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
