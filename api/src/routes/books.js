@@ -16,7 +16,7 @@ const filterTypeOne = [
 ];
 const filterTypeTwo = ["author", "category", "rating", "reviews"];
 
-//post book 
+//post book
 bookRouter.post("/", async (req, res) => {
   let book = {};
   try {
@@ -112,19 +112,19 @@ bookRouter.get("/", async (req, res) => {
 });
 
 //get top 10 best selling books
-bookRouter.get("/", async (req, res) => {
-  try {
-    let data = await bookSchema
-      .find()
-      .where({ deleted: false })
-      .sort({ unitSold: -1 })
-      .limit(10)
-      .select("-deleted");
-    res.json(data);
-  } catch (e) {
-    res.status(400).send({ msg: e.message });
-  }
-});
+// bookRouter.get("/", async (req, res) => {
+//   try {
+//     let data = await bookSchema
+//       .find()
+//       .where({ deleted: false })
+//       .sort({ unitSold: -1 })
+//       .limit(10)
+//       .select("-deleted");
+//     res.json(data);
+//   } catch (e) {
+//     res.status(400).send({ msg: e.message });
+//   }
+// });
 
 //get filter
 // valid filter type One  name || editorial || price || format || language || ISBN || rating || stock
@@ -243,7 +243,8 @@ bookRouter.get("/:id", async (req, res, next) => {
     const book = await bookSchema
       .findById(id)
       .where({ deleted: false })
-      .select("-deleted").populate("reviews");
+      .select("-deleted")
+      .populate("reviews");
     if (!book) res.status(404).json({ error: "Book doesn't exist" });
     // if (book.deleted) res.status(404).json();
     res.status(200).json(book);
@@ -285,84 +286,94 @@ bookRouter.delete("/destroy/:id", async (req, res) => {
   }
 });
 
-//soft-delete books
-bookRouter.put("/delete/:id", async (req, res) => {
+//soft-delete books -> protegida, solo admin y seller pueden borrar
+bookRouter.put("/delete/:id", protect, async (req, res) => {
   const { id } = req.params;
   if (!id) {
     return res.status(400).json({ msg: "An id is needed" });
   }
-  try {
-    const book = await bookSchema.findById(id);
-    if (!book) {
-      return res.status(400).json({ msg: "Book doesn't exist" });
-    }
-    const bookCategory = book.category;
-    let theme = await Category.find();
-    const themeId = theme[0]._id;
-    book.deleted = true;
+  if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
+    try {
+      const book = await bookSchema.findById(id);
+      if (!book) {
+        return res.status(400).json({ msg: "Book doesn't exist" });
+      }
+      const bookCategory = book.category;
+      let theme = await Category.find();
+      const themeId = theme[0]._id;
+      book.deleted = true;
 
-    if (bookCategory.length === 3) {
-      theme[0].theme[bookCategory[0]][bookCategory[1]][bookCategory[2]]--;
-    }
-    if (bookCategory.length === 2) {
-      theme[0].theme[bookCategory[0]][bookCategory[1]]--;
-    }
-    if (bookCategory.length === 1) {
-      theme[0].theme[bookCategory[0]]--;
-    }
+      if (bookCategory.length === 3) {
+        theme[0].theme[bookCategory[0]][bookCategory[1]][bookCategory[2]]--;
+      }
+      if (bookCategory.length === 2) {
+        theme[0].theme[bookCategory[0]][bookCategory[1]]--;
+      }
+      if (bookCategory.length === 1) {
+        theme[0].theme[bookCategory[0]]--;
+      }
 
-    await book.save();
-    await Category.where({ _id: themeId }).update({
-      $set: { theme: theme[0].theme },
-    });
+      await book.save();
+      await Category.where({ _id: themeId }).update({
+        $set: { theme: theme[0].theme },
+      });
 
-    return res.status(200).json({ msg: "Book deleted" });
-  } catch (e) {
-    return res.status(400).json({ msg: "Something went wrong" });
+      return res.status(200).json({ msg: "Book deleted" });
+    } catch (e) {
+      return res.status(400).json({ msg: "Something went wrong" });
+    }
+  } else {
+    res.status(400).json({ msg: "Not authorized" });
   }
 });
 
-//update book
-bookRouter.put("/:id", async (req, res, next) => {
+//update book -> protegida, solo admin y seller pueden modificar libro
+bookRouter.put("/:id", protect, async (req, res, next) => {
   const { id } = req.params;
   const data = req.body;
   const value = Object.values(data);
 
-  if (value.some((val) => val.length == 0))
-    res.json({ error: "they can't send empty comps" });
-  if (!id) return res.status(400).send({ error: "id is required" });
-  if (!data)
-    return res
-      .status(400)
-      .send({ error: "information per body required to update " });
+  if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
+    if (value.some((val) => val.length == 0))
+      res.json({ error: "they can't send empty comps" });
+    if (!id) return res.status(400).send({ error: "id is required" });
+    if (!data)
+      return res
+        .status(400)
+        .send({ error: "information per body required to update " });
 
-  try {
-    await bookSchema.updateOne({ _id: id }, { $set: data });
-    res.send("Books updated successfully!");
-  } catch (e) {
-    next(e);
+    try {
+      await bookSchema.updateOne({ _id: id }, { $set: data });
+      res.send("Books updated successfully!");
+    } catch (e) {
+      next(e);
+    }
+  } else {
+    res.status(400).json({ msg: "Not authorized" });
   }
 });
 
 bookRouter.put("/stock/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { amount } = req.body;
-  
-  if(req.user && (req.user.type === "admin" || req.user.type === "seller")){
-    try{  
+
+  if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
+    try {
       const book = await bookSchema.findById(id);
-      if(!book){
-        return res.status(400).json({msg: "Book not found"})
+      if (!book) {
+        return res.status(400).json({ msg: "Book not found" });
       }
 
-      const sumStock = book.stock + Number(amount)
-      const newStock = await bookSchema.findByIdAndUpdate(id, { $set: { stock: sumStock } });
-      return res.status(200).json({newStock});
-    } catch(e){
-      return res.status(400).send(e)
+      const sumStock = book.stock + Number(amount);
+      const newStock = await bookSchema.findByIdAndUpdate(id, {
+        $set: { stock: sumStock },
+      });
+      return res.status(200).json({ newStock });
+    } catch (e) {
+      return res.status(400).send(e);
     }
   }
-})
+});
 //midleware error handling
 bookRouter.use((error, req, res, next) => {
   if (error.name === "CastError")

@@ -143,20 +143,4 @@ reviewRouter.get("/:id", async (req, res) => {
   }
 });
 
-// reviewRouter.put("/esto", async(req, res) => {
-//   try{
-//     const users = await User.updateMany({}, [
-//       {
-//         '$addFields': {
-//           'votedReviews': []
-//         }
-//       }
-//     ])
-//     return res.json(users)
-
-//   } catch(e){
-//     return res.json(e)
-//   }
-// })
-
 module.exports = reviewRouter;
