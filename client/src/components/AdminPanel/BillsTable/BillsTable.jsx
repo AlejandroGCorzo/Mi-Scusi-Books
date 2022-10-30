@@ -203,6 +203,9 @@ const BillsTable = () => {
         dataSource={data2}
         size="small"
         style={{ textTransform: "capitalize" }}
+        pagination={{
+          position: ['bottomLeft'],
+        }}
       />
     </>
   );
