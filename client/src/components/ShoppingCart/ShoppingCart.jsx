@@ -206,8 +206,8 @@ export default function ShoppingCart(props) {
                           <div className="amountContent">
                             <div>
                               <span>Amount: </span>
-                              <input id={el.id} type="number" className="input"
-                                placeholder={el.amount} min={1} max={10}/>
+                              <input id={el.id} type="number" className="input" defaultValue={el.amount}
+                                 min={1} max={10}/>
                             </div>
                             <div>
                                 <button className="buttonUpdate" onClick={() => updateAmount(el)}>Update</button>

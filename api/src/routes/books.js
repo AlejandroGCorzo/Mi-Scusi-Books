@@ -353,6 +353,7 @@ bookRouter.put("/:id", protect, async (req, res, next) => {
   }
 });
 
+//update stock -> protegida, solo admin y seller pueden cambiar el stock
 bookRouter.put("/stock/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { amount } = req.body;
