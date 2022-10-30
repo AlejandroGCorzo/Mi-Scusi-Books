@@ -15,10 +15,12 @@ export const usersSlice = createSlice({
     votedReviews: [],
     votedBooks: [],
     waitingForgot: false,
+    searchUsers: [],
   },
   reducers: {
     getAllUsers: (state, action) => {
       state.users = action.payload;
+      state.searchUsers = state.users;
     },
     getLoggedUserData: (state, action) => {
       state.loggedUser = action.payload;
@@ -51,10 +53,14 @@ export const usersSlice = createSlice({
       state.login = !state.login;
     },
     filterDeleteUser: (state, action) => {
-      state.users =
-        action.payload.state === "limited"
-          ? state.users.filter((u) => u.type !== "inactive")
-          : state.users.filter((u) => u._id !== action.payload.id);
+      if(action.payload.state === 'limited' || action.payload.state === 'active'){
+        const newState = state.users.find((u) => u._id === action.payload.id);
+        newState.state = action.payload.state;
+        state.users = [...state.users.filter((e) => e._id !== newState._id), newState]
+      } else{
+        state.users = state.users.filter((u) => u.type !== "inactive")
+      }
+      state.searchUsers = state.users;
     },
     setChangeRol: (state, action) => {
       const newAdmin = state.users.find((u) => u._id === action.payload.id);
@@ -63,6 +69,7 @@ export const usersSlice = createSlice({
         ...state.users.filter((e) => e._id !== newAdmin._id),
         newAdmin,
       ];
+      state.searchUsers = state.users;
     },
     setEmptyUsers: (state) => {
       state.users = [];

@@ -14,7 +14,7 @@ import TestUsers from "./UsersTable/UsersNewTable.jsx";
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import BooksStock from "./BooksTable/BookStockTable.jsx";
 
-import { getUser } from "../../redux/StoreUsers/usersActions.js";
+import { clearAllBills, getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
 import { getAllBills } from "../../redux/StoreUsers/usersActions.js";
@@ -89,7 +89,10 @@ export default function BasicTabs() {
     dispatch(getUser(accessToken));
     dispatch(getBooks());
     dispatch(getAllBills(accessToken));
-    return (()=> dispatch(setEmptyUsers()))
+    return (()=> {
+      dispatch(setEmptyUsers());
+      dispatch(clearAllBills())
+    })
   }, [dispatch,loggedUser]);
 
   return (
