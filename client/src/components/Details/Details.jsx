@@ -54,9 +54,9 @@ const Details = (props) => {
   const [value, setValue] = useState(0);
   const [valueText, setValueText] = useState("");
   const { detail } = useSelector((state) => state.books);
-
-  var rating =
-    detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length;
+  
+  var rating = detail.rating?.length > 0 ?
+    detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length : 0;
   let yaVotoLibro = votedBooks?.filter((e) => e === detail._id);
 
   useEffect(() => {
@@ -511,9 +511,9 @@ const Details = (props) => {
               <span className="detailsSpan">
                 <b>ISBN: </b>&nbsp;{detail.ISBN}.
               </span>
-              <span className="detailsSpan">
+              {/* <span className="detailsSpan">
                 <b>Rating: </b>&nbsp;{detail.rating}.
-              </span>
+              </span> */}
               <span className="detailsSpan">
                 <b>Stock:</b>&nbsp;
                 {detail.stock === 1
