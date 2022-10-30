@@ -10,11 +10,11 @@ export const usersSlice = createSlice({
     shoppingCart: [],
     favorites: [],
     bills: [],
-    forgotPassword : '',
-    changePassword : '',
+    forgotPassword: "",
+    changePassword: "",
     votedReviews: [],
     votedBooks: [],
-    waitingForgot: false
+    waitingForgot: false,
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -82,17 +82,26 @@ export const usersSlice = createSlice({
     allBills: (state, action) => {
       state.bills = action.payload;
     },
+    userBills: (state, action) => {
+      state.bills = action.payload;
+    },
+    clearBills: (state, action) => {
+      state.bills = [];
+    },
     forgotPassword: (state, action) => {
-      state.forgotPassword = action.payload
+      state.forgotPassword = action.payload;
     },
     changePassword: (state, action) => {
-      state.changePassword = action.payload
+      state.changePassword = action.payload;
     },
-    changeBillStatus: (state, action) =>{
+    changeBillStatus: (state, action) => {
       const newStatus = state.bills.find((b) => b._id === action.payload.id);
-      newStatus.status = action.payload.status
-      state.bills = [...state.bills.filter((e) => e._id !== newStatus._id), newStatus]
-    }
+      newStatus.status = action.payload.status;
+      state.bills = [
+        ...state.bills.filter((e) => e._id !== newStatus._id),
+        newStatus,
+      ];
+    },
   },
 });
 
@@ -114,6 +123,8 @@ export const {
   allBills,
   forgotPassword,
   changePassword,
-  changeBillStatus
+  changeBillStatus,
+  userBills,
+  clearBills,
 } = usersSlice.actions;
 export default usersSlice.reducer;

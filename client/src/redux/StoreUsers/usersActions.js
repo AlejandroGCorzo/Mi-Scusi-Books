@@ -15,6 +15,8 @@ import {
   forgotPassword,
   changePassword,
   changeBillStatus,
+  userBills,
+  clearBills,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -213,6 +215,16 @@ export const getAllBills = (token) => {
     });
     return dispatch(allBills(json.data));
   };
+};
+
+export const getUserBills = (id, token) => (dispatch) => {
+  axios
+    .get(`/bills/${id}`, { headers: { authorization: `Bearer ${token}` } })
+    .then((el) => dispatch(userBills(el.data)));
+};
+
+export const clearAllBills = () => (dispatch) => {
+  dispatch(clearBills());
 };
 
 export const putForgotPassword = (email) => {

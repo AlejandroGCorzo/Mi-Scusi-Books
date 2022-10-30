@@ -1,15 +1,16 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
 import ImgSelectorUser from "../ImgSelectorUser/ImgSelectorUser";
+import handleTextChange from "../Functions/handleTextChange.js";
 
 export default function Profile({
   profile,
   edit,
   changes,
   setChanges,
-  handleTextChange,
   handleClick,
   errors,
+  setErrors,
   submitProfileChanges,
   imgSelected,
   setImgSelected,
@@ -44,7 +45,9 @@ export default function Profile({
             variant={edit ? "outlined" : "filled"}
             name="firstName"
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
             inputProps={{ maxLength: 33 }}
@@ -73,7 +76,9 @@ export default function Profile({
             }
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="phone"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
@@ -97,7 +102,9 @@ export default function Profile({
             value={edit ? changes.lastName : profile.lastName}
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="lastName"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
@@ -118,7 +125,9 @@ export default function Profile({
                 : profile.birthdate
             }
             variant={edit ? "outlined" : "filled"}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="birthdate"
             type="date"
             InputLabelProps={{ shrink: true }}
@@ -137,7 +146,9 @@ export default function Profile({
             }
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="dni"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
