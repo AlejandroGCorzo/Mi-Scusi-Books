@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { getUserDetails, loging } from "../../redux/StoreUsers/usersActions";
+import { useHistory } from "react-router-dom";
 import {
-  clearUserDetail,
-  userBills,
-  clearAllBills,
-} from "../../redux/StoreUsers/usersSlice";
+  getUserDetails,
+  getUserBills,
+} from "../../redux/StoreUsers/usersActions";
+import { clearUserDetail, clearBills } from "../../redux/StoreUsers/usersSlice";
 import "./UserDetails.css";
 import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Profile from "./Profile/Profile.jsx";
-import axios from "axios";
+import TransactionHistory from "./TransactionsHistory/TransactionsHistory";
 
 export default function UserDetails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile } = useSelector((store) => store.users);
+  const { profile, bills } = useSelector((store) => store.users);
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -34,10 +33,12 @@ export default function UserDetails(props) {
     if (!token || profile.msg) {
       history.push("/");
     } else {
+      dispatch(getUserBills(props.match.params.id, token));
       dispatch(getUserDetails(props.match.params.id, token));
     }
     return () => {
       dispatch(clearUserDetail());
+      dispatch(clearBills());
     };
   }, [dispatch]);
   // // // // // // // // // // // //
@@ -60,8 +61,8 @@ export default function UserDetails(props) {
               onChange={handleTab}
               aria-label="lab API tabs example"
             >
-              <Tab label="Profile" value="1" />
-              <Tab label="Purchase History" value="2" />
+              <Tab label="profile" value="1" />
+              <Tab label="transaction history" value="2" />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -80,7 +81,9 @@ export default function UserDetails(props) {
               setImgSelected={setImgSelected}
             />
           </TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
+          <TabPanel value="2">
+            <TransactionHistory bills={bills} />
+          </TabPanel>
         </TabContext>
       </Box>
     </>
