@@ -11,7 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, user, reviewId, rating, accessToken, setMsg, setOpen}) {
+export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, user, reviewId, rating, accessToken, setMsg, setOpen, userEmail}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = React.useState(false)
@@ -20,7 +20,7 @@ export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, use
   const handleConfirm = async() => {
     setLoading(true)
     try{
-      const deletedReview = await axios.put(`/review/${reviewId}`, {bookId: bookId, rating: rating}, {
+      const deletedReview = await axios.put(`/review/${reviewId}`, {bookId: bookId, rating: rating, userEmail: userEmail}, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },

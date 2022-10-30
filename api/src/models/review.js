@@ -12,6 +12,7 @@ const reviewSchema = mongoose.Schema({
   user: {
     type: String,
   },
+  userEmail: String,
   rating: Number,
   book: {
     type: mongoose.Schema.Types.ObjectId,
