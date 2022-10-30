@@ -433,11 +433,28 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "95%",
                         margin: "25px",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                     </Box>
 
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -649,18 +666,21 @@ const Details = (props) => {
                       }}
                     >
                         {viewRating(detail.rating[i])}
-                        {/* */}
-                        <DeleteIcon onClick={() => {
-                          setReviewDel({
-                            reviewId: e._id,
-                            user: e.user,
-                            rating: e.rating,
-                            bookId: e.book,
-                            userEmail: e.userEmail
-                          })
-                          handleDelete()
-                        }} 
-                        />
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                         
                     </Box>
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -694,7 +714,7 @@ const Details = (props) => {
       </div>
 {/* //////////////////////////////////////////////////////// */}
 
-          {accessToken && yaVotoLibro.length === 0 ?
+          {accessToken && yaVotoLibro.length === 0 && loggedUser.type === "normal" ?
           <div id="reviewsForm" className="revieFromUserContent">
             <span>Review</span>
 
