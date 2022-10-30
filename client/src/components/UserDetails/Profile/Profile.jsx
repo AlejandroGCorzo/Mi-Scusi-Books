@@ -1,14 +1,19 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
+import ImgSelectorUser from "../ImgSelectorUser/ImgSelectorUser";
+import handleTextChange from "../Functions/handleTextChange.js";
 
 export default function Profile({
   profile,
   edit,
   changes,
-  handleTextChange,
+  setChanges,
   handleClick,
   errors,
+  setErrors,
   submitProfileChanges,
+  imgSelected,
+  setImgSelected,
 }) {
   return (
     <>
@@ -19,8 +24,19 @@ export default function Profile({
         autoComplete="off"
       >
         <div className="userImage">
-          <img src={profile.image} referrerPolicy="no-referrer" />
+          <img
+            src={edit ? changes.image : profile.image}
+            referrerPolicy="no-referrer"
+          />
         </div>
+        {edit ? (
+          <ImgSelectorUser
+            imgSelected={imgSelected}
+            setImgSelected={setImgSelected}
+            changes={changes}
+            setChanges={setChanges}
+          />
+        ) : null}
         <div className="userInfoContainer">
           <TextField
             className="userDetailsNames"
@@ -29,7 +45,9 @@ export default function Profile({
             variant={edit ? "outlined" : "filled"}
             name="firstName"
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
             inputProps={{ maxLength: 33 }}
@@ -39,16 +57,11 @@ export default function Profile({
 
           <TextField
             label="Email"
-            value={edit ? changes.email : profile.email}
-            variant={edit ? "outlined" : "filled"}
-            onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            value={profile.email}
+            variant={"filled"}
             name="email"
             InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: !edit }}
-            inputProps={{ maxLength: 33 }}
-            error={errors.email ? true : false}
-            helperText={errors.email ? `${errors.email}` : null}
+            InputProps={{ readOnly: true }}
           />
           <TextField
             label="Phone number"
@@ -63,7 +76,9 @@ export default function Profile({
             }
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="phone"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
@@ -87,7 +102,9 @@ export default function Profile({
             value={edit ? changes.lastName : profile.lastName}
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="lastName"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
@@ -108,7 +125,9 @@ export default function Profile({
                 : profile.birthdate
             }
             variant={edit ? "outlined" : "filled"}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="birthdate"
             type="date"
             InputLabelProps={{ shrink: true }}
@@ -127,7 +146,9 @@ export default function Profile({
             }
             variant={edit ? "outlined" : "filled"}
             onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
             name="dni"
             InputLabelProps={{ shrink: true }}
             InputProps={{ readOnly: !edit }}
