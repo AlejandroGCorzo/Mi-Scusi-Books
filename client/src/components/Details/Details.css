@@ -192,6 +192,7 @@ justify-content: center;
 }
 
 .titleFormDetails{
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -201,7 +202,7 @@ justify-content: center;
   color: #287ccb;
   background-color: white;
   border-radius: 8px 8px 0px 0px;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
 }
 
@@ -391,7 +392,12 @@ justify-content: center;
   width: 100%;
 }
 
-
+.deleteIcon{
+  position: absolute;
+  top: 23px;
+  right: 40px;
+  cursor: pointer;
+}
 .calification{
   display: flex;
   flex-wrap: wrap;
