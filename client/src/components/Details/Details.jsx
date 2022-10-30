@@ -27,6 +27,8 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Details.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmDelete from "./ConfirmDelete/ConfirmDelete.jsx";
 
 const label = {};
 
@@ -54,9 +56,10 @@ const Details = (props) => {
   const [value, setValue] = useState(0);
   const [valueText, setValueText] = useState("");
   const { detail } = useSelector((state) => state.books);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
-  var rating =
-    detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length;
+  var rating = detail.rating?.length > 0 ?
+    detail.rating?.reduce((acc, curr) => acc + curr, 0) / detail.rating?.length : 0;
   let yaVotoLibro = votedBooks?.filter((e) => e === detail._id);
 
   useEffect(() => {
@@ -365,7 +368,13 @@ const Details = (props) => {
         </div>
     );
   };
+  const [reviewDel, setReviewDel] = useState({}) 
 
+  function handleDelete(){
+    // console.log(reviewDel)
+    setOpenConfirm(true)
+   
+  }
 
   return (
     <div className="contentCategory">
@@ -456,9 +465,23 @@ const Details = (props) => {
       </div>
       
       <div className="titleFormDetails">
-        <p>Book Information</p>
+        <p>Book Information </p>
+        {/* {loggedUser.type === "admin" ? 
+        <div className="deleteIcon">
+          <DeleteIcon onClick={handleDelete}/>
+        </div>
+        : <></>
+        } */}
       </div>
-
+      {/* <ConfirmDelete 
+        openConfirm={openConfirm} 
+        setOpenConfirm={setOpenConfirm}
+        bookName={detail.name}
+        bookId={detail._id}
+        accessToken={accessToken}
+        setOpen={setOpen}
+        setMsg={setMsg}
+      /> */}
       <div className="contentBookDetailDiv">
         <div className="contentFav">{queDibujo(detail._id)}</div>
 
@@ -511,9 +534,9 @@ const Details = (props) => {
               <span className="detailsSpan">
                 <b>ISBN: </b>&nbsp;{detail.ISBN}.
               </span>
-              <span className="detailsSpan">
+              {/* <span className="detailsSpan">
                 <b>Rating: </b>&nbsp;{detail.rating}.
-              </span>
+              </span> */}
               <span className="detailsSpan">
                 <b>Stock:</b>&nbsp;
                 {detail.stock === 1
@@ -619,13 +642,26 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
                         margin: "25px",
+                        width: "95%",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
+                        {/* */}
+                        <DeleteIcon onClick={() => {
+                          setReviewDel({
+                            reviewId: e._id,
+                            user: e.user,
+                            rating: e.rating,
+                            bookId: e.book
+                          })
+                          handleDelete()
+                        }} 
+                        />
+                        
                     </Box>
-
                     <p>{e.user ? e.user : "Some google user"}</p>
                     <p>{e.text}</p>
 
@@ -699,6 +735,17 @@ const Details = (props) => {
         onClose={handleClose}
         message={msg}
         action={action}
+      />
+      <ConfirmDelete 
+        openConfirm={openConfirm} 
+        setOpenConfirm={setOpenConfirm}
+        user={reviewDel.user}
+        reviewId={reviewDel.reviewId}
+        bookId={reviewDel.bookId}
+        rating={reviewDel.rating}
+        accessToken={accessToken}
+        setOpen={setOpen}
+        setMsg={setMsg}
       />
     </div>
   );
