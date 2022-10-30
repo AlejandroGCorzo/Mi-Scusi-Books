@@ -2,16 +2,19 @@ import React from "react";
 import { Box, TextField } from "@mui/material";
 import ImgSelectorUser from "../ImgSelectorUser/ImgSelectorUser";
 import handleTextChange from "../Functions/handleTextChange.js";
+import submitProfileChanges from "../Functions/submitProfileChanges.js";
 
 export default function Profile({
   profile,
   edit,
+  setEdit,
   changes,
   setChanges,
   handleClick,
   errors,
   setErrors,
-  submitProfileChanges,
+  dispatch,
+  token,
   imgSelected,
   setImgSelected,
 }) {
@@ -20,7 +23,18 @@ export default function Profile({
       <Box
         className="userOuterDiv"
         component="form"
-        onSubmit={submitProfileChanges}
+        onSubmit={(e) =>
+          submitProfileChanges({
+            e,
+            profile,
+            changes,
+            token,
+            dispatch,
+            errors,
+            setErrors,
+            setEdit,
+          })
+        }
         autoComplete="off"
       >
         <div className="userImage">

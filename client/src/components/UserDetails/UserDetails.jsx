@@ -21,8 +21,6 @@ export default function UserDetails(props) {
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   // // // // // // // // // // // // // //
-
-  // // // // // // // // // // // //
   const [tab, setTab] = useState("1");
   const [edit, setEdit] = useState(false);
   const [changes, setChanges] = useState({});
@@ -31,9 +29,7 @@ export default function UserDetails(props) {
   const handleTab = (e, newValue) => {
     setTab(newValue);
   };
-  // // // // // // // // // // // //
-
-  // // // // USE EFFECT // // // //
+  // // // // // USE EFFECT // // // // //
   useEffect(() => {
     if (!token || profile.msg) {
       history.push("/");
@@ -54,41 +50,6 @@ export default function UserDetails(props) {
       setErrors({});
     }
   }
-  function submitProfileChanges(e) {
-    e.preventDefault();
-    console.log(changes);
-    const newInfo = { ...changes, dni: changes.dni.replace(".", "") };
-    changes.phone !== profile.phone
-      ? axios
-          .get(
-            `https://api.apilayer.com/number_verification/validate?number=${changes.phone}&apikey=${process.env.REACT_APP_PHONE_NUMBER_VERIFICATION_KEY}`
-          )
-          .then((el) => {
-            if (el.data.valid) {
-              axios
-                .put(`user/update/${profile._id}`, changes, {
-                  headers: { authorization: `Bearer ${token}` },
-                })
-                .then(() => {
-                  dispatch(getUserDetails(props.match.params.id, token));
-                  dispatch(loging());
-                  setEdit(false);
-                })
-                .catch((e) => console.log(e));
-            } else
-              setErrors({ ...errors, phone: "Must be a valid phone number." });
-          })
-      : axios
-          .put(`user/update/${profile._id}`, changes, {
-            headers: { authorization: `Bearer ${token}` },
-          })
-          .then(() => {
-            dispatch(getUserDetails(props.match.params.id, token));
-            dispatch(loging());
-            setEdit(false);
-          })
-          .catch((e) => console.log(e));
-  }
   return (
     <>
       <Box sx={{ width: "100%", typography: "body1" }}>
@@ -107,12 +68,14 @@ export default function UserDetails(props) {
             <Profile
               profile={profile}
               edit={edit}
+              setEdit={setEdit}
               changes={changes}
               setChanges={setChanges}
               handleClick={handleClick}
               errors={errors}
               setErrors={setErrors}
-              submitProfileChanges={submitProfileChanges}
+              dispatch={dispatch}
+              token={token}
               imgSelected={imgSelected}
               setImgSelected={setImgSelected}
             />
