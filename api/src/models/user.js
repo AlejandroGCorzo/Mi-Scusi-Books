@@ -17,8 +17,8 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     dni: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "0",
     },
     phone: {
       type: Number,
@@ -40,28 +40,29 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "normal",
     },
-    votedBooks:{
+    votedBooks: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Books",
     },
-    votedReviews:[
+    votedReviews: [
       {
         review: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Review",
         },
-        vote: String
-      }
+        vote: String,
+      },
     ],
-    favorites:{
+    favorites: {
       type: Array,
     },
-    cart:{
-      type: Array
-    }, 
+    cart: {
+      type: Array,
+    },
     image: String,
-    resetToken: String
-  }, { timestamps: false }
+    resetToken: String,
+  },
+  { timestamps: false }
 );
 
 module.exports = mongoose.model("User", userSchema);

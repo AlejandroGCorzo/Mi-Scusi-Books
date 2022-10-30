@@ -273,11 +273,9 @@ userRouter.post("/signup", async (req, res) => {
       `,
     });
 
-    return res
-      .status(200)
-      .json({
-        msg: "Thank you for signing up with us. Please check your email",
-      });
+    return res.status(200).json({
+      msg: "Thank you for signing up with us. Please check your email",
+    });
   } catch (e) {
     return res
       .status(400)
@@ -529,15 +527,15 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
-  const {shipp, points} = req.body
+  const { shipp, points } = req.body;
   const reduceStock = async (id, amount) => {
     try {
-      const book = await bookSchema.findById(id)
-      const stock = book.stock - amount < 0 ? 0 : book.stock - amount
-      const unitSold = book.unitSold + amount
+      const book = await bookSchema.findById(id);
+      const stock = book.stock - amount < 0 ? 0 : book.stock - amount;
+      const unitSold = book.unitSold + amount;
       await book.updateOne({
-        $set : {stock, unitSold}
-      })
+        $set: { stock, unitSold },
+      });
       // const reduce = await bookSchema.findByIdAndUpdate(id, {
       //   $inc: {
       //     stock: -amount,
@@ -578,33 +576,32 @@ userRouter.put("/pay", protect, async (req, res) => {
 
       // // // // // // // // // // // // // //
       // Discount
-      if(points && user.loyaltyPoint < points) return res.status(400).send('Not enough points!')
+      if (points && user.loyaltyPoint < points)
+        return res.status(400).send("Not enough points!");
 
-      const discount = points ? points / 10000 : 0 //Pueden ser numeros tipo 0.1, 0.2, 0.3
-      
+      const discount = points ? points / 10000 : 0; //Pueden ser numeros tipo 0.1, 0.2, 0.3
+
       // // // // // // // // // // // // // //
-      // Loyalty Points 
-      const loyaltyPoint  = points? -points : Math.floor(total) * 10; //Para la factura (Puede ser negativo o positivo)
-      const newLoyaltyPoint = user.loyaltyPoint + loyaltyPoint //Para acutalizar el usuario
+      // Loyalty Points
+      const loyaltyPoint = points ? -points : Math.floor(total) * 10; //Para la factura (Puede ser negativo o positivo)
+      const newLoyaltyPoint = user.loyaltyPoint + loyaltyPoint; //Para acutalizar el usuario
 
-      total -= total*discount //Si no hay descuento se le resta 0
+      total -= total * discount; //Si no hay descuento se le resta 0
 
       const date = new Date().toDateString();
-
 
       const bill = await billsSchema.create({
         books: books,
         amountBooks: booksAmount,
         price: price,
-        total: shipp? total + Number(shipp) : total,
+        total: shipp ? total + Number(shipp) : total,
         date: date,
         user: user._id,
-        discount: discount*100,
+        discount: discount * 100,
         loyaltyPoint,
-        shipp
+        shipp,
       });
 
-      
       await user.updateOne({
         $set: { cart: [], loyaltyPoint: newLoyaltyPoint },
       });
@@ -619,7 +616,7 @@ userRouter.put("/pay", protect, async (req, res) => {
       <p>Books: ${booksNames}</p>
       <p>Amounts: ${booksAmount}</p>
       <p>Price p/u: $${price}</p>
-      <p>Discount: ${discount*100}%</p>
+      <p>Discount: ${discount * 100}%</p>
       <p>Loyalty Points: ${loyaltyPoint}</p>
       <p>Total: ${total}</p>
       <br>

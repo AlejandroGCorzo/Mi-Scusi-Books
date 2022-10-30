@@ -14,7 +14,7 @@ import {
   allBills,
   forgotPassword,
   changePassword,
-  changeBillStatus
+  changeBillStatus,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -251,17 +251,20 @@ export const activateAccount = (id) => {
     } catch (e) {
       return e;
     }
-  }
-
-}
+  };
+};
 
 export const setBillStatus = (id, status, token) => {
   return async (dispatch) => {
-    const json = await axios.put(`bills/status/${id}`, {status}, {
-      headers: {
-        authorization: `Bearer ${token}`
+    const json = await axios.put(
+      `bills/status/${id}`,
+      { status },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       }
-    })
-    return dispatch(changeBillStatus({id, status}))
-  }
-}
+    );
+    return dispatch(changeBillStatus({ id, status }));
+  };
+};

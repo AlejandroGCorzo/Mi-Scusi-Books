@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { getUserDetails } from "../../redux/StoreUsers/usersActions";
+import { getUserDetails, loging } from "../../redux/StoreUsers/usersActions";
 import { clearUserDetail } from "../../redux/StoreUsers/usersSlice";
 import "./UserDetails.css";
 import { Box, Tab, TextField } from "@mui/material";
@@ -13,7 +13,7 @@ import axios from "axios";
 export default function UserDetails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile } = useSelector((store) => store.users);
+  const { profile, login } = useSelector((store) => store.users);
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -44,11 +44,7 @@ export default function UserDetails(props) {
   }, [dispatch]);
   // // // // // // // // // // // //
   function handleTextChange(e) {
-    if (
-      e.target.name === "firstName" ||
-      e.target.name === "lastName" ||
-      e.target.name === "email"
-    ) {
+    if (e.target.name === "firstName" || e.target.name === "lastName") {
       setChanges({ ...changes, [e.target.name]: e.target.value.toLowerCase() });
       validations(
         e.target.name,
@@ -117,7 +113,8 @@ export default function UserDetails(props) {
           ? `+${e.target.value}`
           : e.target.value;
       setChanges({ ...changes, [e.target.name]: phone });
-      // validations(e.target.name, phone, errors, setErrors);
+      delete errors.phone;
+      setErrors({ ...errors });
       return;
     }
     setChanges({ ...changes, [e.target.name]: e.target.value });
@@ -136,20 +133,39 @@ export default function UserDetails(props) {
   }
   function submitProfileChanges(e) {
     e.preventDefault();
-    console.log(profile);
+    // console.log(profile);
     console.log(changes);
-    // changes.phone
-    //   ? axios
-    //       .get(
-    //         `https://api.apilayer.com/number_verification/validate?number=${changes.phone}&apikey=${process.env.REACT_APP_PHONE_NUMBER_VERIFICATION_KEY}`
-    //       )
-    //       .then((el) => {
-    //         if (el.data.valid) {
-    //           console.log(el.data);
-    //         } else
-    //           setErrors({ ...errors, phone: "Must be a valid phone number." });
-    //       })
-    //   : console.log(changes);
+    const newInfo = { ...changes, dni: changes.dni.replace(".", "") };
+    changes.phone !== profile.phone
+      ? axios
+          .get(
+            `https://api.apilayer.com/number_verification/validate?number=${changes.phone}&apikey=${process.env.REACT_APP_PHONE_NUMBER_VERIFICATION_KEY}`
+          )
+          .then((el) => {
+            if (el.data.valid) {
+              axios
+                .put(`user/update/${profile._id}`, changes, {
+                  headers: { authorization: `Bearer ${token}` },
+                })
+                .then(() => {
+                  dispatch(getUserDetails(props.match.params.id, token));
+                  dispatch(loging());
+                  setEdit(false);
+                })
+                .catch((e) => console.log(e));
+            } else
+              setErrors({ ...errors, phone: "Must be a valid phone number." });
+          })
+      : axios
+          .put(`user/update/${profile._id}`, changes, {
+            headers: { authorization: `Bearer ${token}` },
+          })
+          .then(() => {
+            dispatch(getUserDetails(props.match.params.id, token));
+            dispatch(loging());
+            setEdit(false);
+          })
+          .catch((e) => console.log(e));
   }
   return (
     <>

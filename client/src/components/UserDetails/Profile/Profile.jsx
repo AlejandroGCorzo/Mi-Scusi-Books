@@ -54,16 +54,11 @@ export default function Profile({
 
           <TextField
             label="Email"
-            value={edit ? changes.email : profile.email}
-            variant={edit ? "outlined" : "filled"}
-            onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={handleTextChange}
+            value={profile.email}
+            variant={"filled"}
             name="email"
             InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: !edit }}
-            inputProps={{ maxLength: 33 }}
-            error={errors.email ? true : false}
-            helperText={errors.email ? `${errors.email}` : null}
+            InputProps={{ readOnly: true }}
           />
           <TextField
             label="Phone number"
