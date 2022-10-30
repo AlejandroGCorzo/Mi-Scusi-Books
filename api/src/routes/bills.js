@@ -10,9 +10,12 @@ const { findByIdAndUpdate } = require("../models/bills");
 const billsRouter = Router();
 
 billsRouter.post("/", protect, async (req, res) => {
-  const { id, books, amountBooks, send, status } = req.body;
+  const { id, books, amountBooks, send, shipp= 0, points = 0 } = req.body;
   try {
     const user = await User.findById(id);
+
+    if(points && user.loyaltyPoint < points) return res.status(400).send('Not enough points!') 
+
     if (!user) return res.status(400).send({ msg: "User not found!" });
 
     const booksDB = [];
@@ -31,16 +34,29 @@ billsRouter.post("/", protect, async (req, res) => {
       total = total + price[i] * amountBooks[i];
     }
 
+    const loyaltyPoint = points ? -points : Math.floor(total * 10); //Calculamos los puntos de lealtad
+    const discount = points ? total * (points / 10000) : 0;
+
+    const userLoyaltyPoint = points //Actualizamos los puntos de lealtad
+      ? user.loyaltyPoint - loyaltyPoint //Si pasaron puntos es que los utilizo asique se los restamos
+      : user.loyaltyPoint + loyaltyPoint;  //Sino, le sumamos los puntos generados
+    await user.updateOne({
+      $set: { loyaltyPoint: userLoyaltyPoint },
+    });
+
     const date = new Date();
 
     const bill = await billsSchema.create({
       books: books,
       amountBooks: amountBooks,
       price: price,
-      total: total,
+      total: total + Number(shipp) - discount,
       date: date,
       user: user,
       status: "Approved",
+      loyaltyPoint,
+      discount,
+      shipp
     });
     if (send) {
       await transporter.sendMail({
@@ -53,8 +69,11 @@ billsRouter.post("/", protect, async (req, res) => {
             <p>Date: ${date}</p>
             <p>Books: ${books.map((b) => b.name)}</p>
             <p>Amounts: ${amountBooks}</p>
-            <p>Price p/u: ${price}</p>
-            <p>Total: ${total}</p>
+            <p>Price p/u: $${price}</p>
+            <p>Loyalty Points: ${loyaltyPoint}</p>
+            <p>Discount: ${discount*100}%</p>
+            <p>Shipp: ${shipp}%</p>
+            <p>Total: $${total}</p>
             <br>
             <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
             <br>
@@ -71,7 +90,6 @@ billsRouter.post("/", protect, async (req, res) => {
 billsRouter.get("/", protect, async (req, res) => {
   try {
     const bills = await billsSchema.find().populate("books").populate("user");
-    console.log(bills);
     const allBills = bills.map((b) => {
       return {
         _id: b._id,
@@ -83,6 +101,9 @@ billsRouter.get("/", protect, async (req, res) => {
         }),
         amountBooks: b.amountBooks,
         price: b.price,
+        loyaltyPoint : b.loyaltyPoint,
+        discount: b.discount,
+        shipp: b.shipp,
         total: b.total,
         date: b.date.toDateString(),
         user: {
@@ -91,7 +112,7 @@ billsRouter.get("/", protect, async (req, res) => {
           email: b.user.email,
           phone: b.user.phone,
         },
-        status: b.status || 'approved',
+        status: b.status || "approved",
       };
     });
     res.send(allBills);
@@ -105,8 +126,18 @@ billsRouter.put("/status/:id", protect, async (req, res) => {
   const { status } = req.body;
   try {
     const bill = await billsSchema.findByIdAndUpdate(id, { status });
-    // console.log(bill.user.valueOf());
-    const user = await User.findById(bill.user.valueOf())
+    // const bill = await billsSchema.findById(id)
+    const user = await User.findById(bill.user.valueOf());
+    if(status === 'Cancelled') { //si se cancela le quito al usuario los puntos de lealtad
+      user.updateOne({
+        $inc : {loyaltyPoint : -bill.loyaltyPoint }
+      })
+    }
+    else {
+      user.updateOne({ //Si se vuelve a aprobar, se los vuelvo a sumar
+        $inc : {loyaltyPoint : bill.loyaltyPoint }
+      })
+    }
     if (!bill) return res.status(404).send("Bill not found!");
     await transporter.sendMail({
       from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
@@ -126,15 +157,15 @@ billsRouter.put("/status/:id", protect, async (req, res) => {
   }
 });
 
-billsRouter.get('/:id', async (req,res) => {
-  const {id} = req.params
+billsRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const bills = await billsSchema.find().where({user : id})
-    if(!bills) return res.status(400).send('User not found')
-    return res.send(bills)
+    const bills = await billsSchema.find().where({ user: id });
+    if (!bills) return res.status(400).send("User not found");
+    return res.send(bills);
   } catch (error) {
     res.status(400).send({ msg: "Algo fallo en put a bills", error });
   }
-})
+});
 
 module.exports = billsRouter;

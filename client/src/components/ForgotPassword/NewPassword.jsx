@@ -128,7 +128,7 @@ export default function NewPassword() {
             placeholder="New Password"
             name="newPassword"
             onChange={handleInput}
-            autoComplete={false}
+            autoComplete="off"
             error={error.newPassword ? true : false}
             endAdornment={
               <InputAdornment position="end">
@@ -165,7 +165,7 @@ export default function NewPassword() {
             placeholder="Confirm Password"
             name="confirmNewPassword"
             onChange={handleInput}
-            autoComplete={false}
+            autoComplete="off"
             error={error.newPassword ? true : false}
             endAdornment={
               <InputAdornment position="end">
@@ -188,9 +188,10 @@ export default function NewPassword() {
           ) : null}
         </FormControl>
         {error.confirm?.length > 0 ? <p>{error.newPassword}</p> : <></>}
+        <div className="loadingNewPassword">
         {loading? changePassword? <p style={{ color: "blue" }}>{changePassword}</p> : <CircularProgress/> : <></>}
+        </div>
         <div className="newPasswordButton">
-        {/* {changePassword? <p style={{ color: "blue" }}>{changePassword}</p> : <></>} */}
           <Button
             disabled={!input.newPassword || error.newPassword ? true : false}
             variant="outlined"
