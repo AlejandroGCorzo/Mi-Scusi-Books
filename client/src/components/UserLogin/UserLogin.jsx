@@ -293,7 +293,7 @@ export default function UserLogin() {
                     autoFocus
                     margin="dense"
                     id="name"
-                    autoComplete={false}
+                    autoComplete="off"
                     label="Email Address"
                     type="email"
                     fullWidth

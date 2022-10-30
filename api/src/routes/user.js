@@ -32,9 +32,7 @@ userRouter.put("/forgot_password", async (req, res) => {
     // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
-    if (!user)
-      return res
-        .send("Something goes wrong!");
+    if (!user) return res.send("Something goes wrong!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
     const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
@@ -82,7 +80,7 @@ userRouter.put("/new_password", async (req, res) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    
+
     const formatUser = {
       id: user._id,
       type: user.type,
@@ -93,7 +91,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       cart: user.cart,
       votedBooks: user.votedBooks,
       votedReviews: user.votedReviews,
-      loyaltyPoint: user.loyaltyPoint
+      loyaltyPoint: user.loyaltyPoint,
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -108,10 +106,10 @@ userRouter.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    if(user.state === "pending"){
-      return res.status(200).json({msg: "Pleace validate your account"})
+    if (user.state === "pending") {
+      return res.status(200).json({ msg: "Pleace validate your account" });
     }
-    
+
     let formatUser;
     if (cart?.length > 0) {
       const extension = [];
@@ -178,7 +176,7 @@ userRouter.post("/login_google", async (req, res) => {
         if (newCart.some((b) => b.id === book.id)) continue;
         newCart.push(book);
       }
-      console.log(newCart)
+      console.log(newCart);
     }
     if (!user) {
       console.log(newCart);
@@ -215,21 +213,9 @@ userRouter.post("/login_google", async (req, res) => {
 
 //Registrar nueva cuenta -> publica
 userRouter.post("/signup", async (req, res) => {
-  const {
-    name,
-    lastName,
-    password,
-    email,
-    cart,
-    amounts,
-  } = req.body;
+  const { name, lastName, password, email, cart, amounts } = req.body;
 
-  if (
-    !name ||
-    !lastName ||
-    !password ||
-    !email
-  ) {
+  if (!name || !lastName || !password || !email) {
     return res.status(400).json({ msg: "All fields are required" });
   }
 
@@ -272,7 +258,7 @@ userRouter.post("/signup", async (req, res) => {
       resetToken: "",
     };
     const user = await User.create(newUser);
-        
+
     await transporter.sendMail({
       from: `"Miscusi Mail Verification" <${process.env.GMAIL_USER}>`,
       to: user.email,
@@ -287,7 +273,11 @@ userRouter.post("/signup", async (req, res) => {
       `,
     });
 
-    return res.status(200).json({msg: "Thank you for signing up with us. Please check your email"})
+    return res
+      .status(200)
+      .json({
+        msg: "Thank you for signing up with us. Please check your email",
+      });
   } catch (e) {
     return res
       .status(400)
@@ -296,23 +286,23 @@ userRouter.post("/signup", async (req, res) => {
 });
 
 //Validate user email -> publico
-userRouter.put("/activation-mail/:id", async(req, res) => {
+userRouter.put("/activation-mail/:id", async (req, res) => {
   const { id } = req.params;
 
-  try{
+  try {
     const user = await User.findByIdAndUpdate(id, {
-      $set:{
-        state: "active"
-      }
-    })
-  
-    if(user){
-      return res.status(200).json({msg:"Mail activated"})
+      $set: {
+        state: "active",
+      },
+    });
+
+    if (user) {
+      return res.status(200).json({ msg: "Mail activated" });
     }
-  } catch (e){
-    return res.status(400).json({msg: "Try again later"})
+  } catch (e) {
+    return res.status(400).json({ msg: "Try again later" });
   }
-})
+});
 
 //Conseguir todos los usuarios activos -> protegida
 userRouter.get("/", protect, async (req, res) => {
@@ -539,20 +529,25 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
-  console.log("entre a la ruta");
+  const {shipp, points} = req.body
   const reduceStock = async (id, amount) => {
     try {
-      const reduce = await bookSchema.findByIdAndUpdate(id, {
-        $inc: {
-          stock: -amount,
-        },
-      });
+      const book = await bookSchema.findById(id)
+      const stock = book.stock - amount < 0 ? 0 : book.stock - amount
+      const unitSold = book.unitSold + amount
+      await book.updateOne({
+        $set : {stock, unitSold}
+      })
+      // const reduce = await bookSchema.findByIdAndUpdate(id, {
+      //   $inc: {
+      //     stock: -amount,
+      //   },
+      // });
     } catch (e) {
-      console.log("error substracting stock");
+      res.status(400).send("error substracting stock");
     }
   };
 
-  console.log("inicio pay", req.user._id);
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
@@ -575,28 +570,44 @@ userRouter.put("/pay", protect, async (req, res) => {
       for (const book of user.cart) {
         price.push(book.price);
       }
-      console.log("antes del total", booksAmount, price);
       let total = 0;
       for (let i = 0; i < price.length; i++) {
         const subTotal = price[i] * booksAmount[i];
         total = total + subTotal;
       }
+
+      // // // // // // // // // // // // // //
+      // Discount
+      if(points && user.loyaltyPoint < points) return res.status(400).send('Not enough points!')
+
+      const discount = points ? points / 10000 : 0 //Pueden ser numeros tipo 0.1, 0.2, 0.3
+      
+      // // // // // // // // // // // // // //
+      // Loyalty Points 
+      const loyaltyPoint  = points? -points : Math.floor(total) * 10; //Para la factura (Puede ser negativo o positivo)
+      const newLoyaltyPoint = user.loyaltyPoint + loyaltyPoint //Para acutalizar el usuario
+
+      total -= total*discount //Si no hay descuento se le resta 0
+
       const date = new Date().toDateString();
-      console.log("antes de bill");
+
+
       const bill = await billsSchema.create({
         books: books,
         amountBooks: booksAmount,
         price: price,
-        total: total + 8,
+        total: shipp? total + Number(shipp) : total,
         date: date,
         user: user._id,
+        discount: discount*100,
+        loyaltyPoint,
+        shipp
       });
-      console.log("despues de bill");
-      await User.findByIdAndUpdate(user._id, {
-        $set: { cart: [] },
-      });
-      console.log("despues de user");
 
+      
+      await user.updateOne({
+        $set: { cart: [], loyaltyPoint: newLoyaltyPoint },
+      });
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
         to: user.email,
@@ -607,7 +618,9 @@ userRouter.put("/pay", protect, async (req, res) => {
       <p>Date: ${date}</p>
       <p>Books: ${booksNames}</p>
       <p>Amounts: ${booksAmount}</p>
-      <p>Price p/u: ${price}</p>
+      <p>Price p/u: $${price}</p>
+      <p>Discount: ${discount*100}%</p>
+      <p>Loyalty Points: ${loyaltyPoint}</p>
       <p>Total: ${total}</p>
       <br>
       <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
