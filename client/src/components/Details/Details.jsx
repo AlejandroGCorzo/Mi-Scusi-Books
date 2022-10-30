@@ -655,7 +655,8 @@ const Details = (props) => {
                             reviewId: e._id,
                             user: e.user,
                             rating: e.rating,
-                            bookId: e.book
+                            bookId: e.book,
+                            userEmail: e.userEmail
                           })
                           handleDelete()
                         }} 
@@ -742,6 +743,7 @@ const Details = (props) => {
         user={reviewDel.user}
         reviewId={reviewDel.reviewId}
         bookId={reviewDel.bookId}
+        userEmail={reviewDel.userEmail}
         rating={reviewDel.rating}
         accessToken={accessToken}
         setOpen={setOpen}

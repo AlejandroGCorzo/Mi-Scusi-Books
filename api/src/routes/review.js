@@ -17,7 +17,8 @@ reviewRouter.post("/", async (req, res) => {
         upvotes: 0,
         downvotes: 0,
       },
-      user: user.username? user.username : user.firstName,
+      user: `${user.firstName} ${user.lastName}`,
+      userEmail: user.email,
       book: idBook,
       rating : rating
     })
@@ -64,20 +65,23 @@ reviewRouter.get("/", async (req, res) => {
 
 //Elimina completamente una review -> protegida, solo admin o seller pueden eliminar reviews
 reviewRouter.put("/:id", protect, async (req, res) => {
-  console.log('entre')
   const { id } = req.params;
-  const { bookId, rating } = req.body;
-  console.log(bookId, rating, id)
+  const { bookId, rating, userEmail } = req.body;
+  
+
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const deleted = await Review.deleteOne({ _id: id });
       const book = await books.findById(bookId);
-
+      const user = await User.findOne().where({email: userEmail});
+    
+      user.votedBooks = user.votedBooks.filter(el => el.valueOf() !== bookId)
+      await user.save()
+   
       const idx = book.rating.indexOf(rating);
-      const newRating = [...book.rating.slice(0, idx), ...book.rating.slice(idx+1)]
-      const newReview = book.review.filter(el => el !== id)
-
-      await books.findByIdAndUpdate(bookId, {$set:{rating: newRating, review: newReview}})
+      book.rating = [...book.rating.slice(0, idx), ...book.rating.slice(idx+1)]
+      book.reviews = book.reviews.filter(el => el.valueOf() !== id)
+      await book.save()
 
       res.status(200).json({ msg: "Review deleted" });
     } catch (e) {
