@@ -104,15 +104,19 @@ const BillsTable = () => {
     );
   };
 
+  const duplicateFilter = bills?.map((e) => ({
+    text: `${e.user.firstName} ${e.user.lastName}`,
+    value: `${e.user.firstName} ${e.user.lastName}`,
+  }))
+  const uniqueFilter = [...new Map(duplicateFilter.map(item => [item.text, item])).values()]
+  console.log(uniqueFilter);
+
   const columns = [
     {
       title: "User",
       dataIndex: "user",
       key: "user",
-      filters: bills?.map((e) => ({
-        text: `${e.user.firstName} ${e.user.lastName}`,
-        value: `${e.user.firstName} ${e.user.lastName}`,
-      })),
+      filters: uniqueFilter,
       filterSearch: true,
       onFilter: (name, userObject) => userObject.user.includes(name),
     },
@@ -199,6 +203,9 @@ const BillsTable = () => {
         dataSource={data2}
         size="small"
         style={{ textTransform: "capitalize" }}
+        pagination={{
+          position: ['bottomLeft'],
+        }}
       />
     </>
   );
