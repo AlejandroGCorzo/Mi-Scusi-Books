@@ -17,6 +17,7 @@ import {
   changeBillStatus,
   userBills,
   clearBills,
+  searchEmail
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -278,5 +279,11 @@ export const setBillStatus = (id, status, token) => {
       }
     );
     return dispatch(changeBillStatus({ id, status }));
+  };
+};
+
+export const searchUserEmail = (email) => {
+  return (dispatch) => {
+    return dispatch(searchEmail(email));
   };
 };

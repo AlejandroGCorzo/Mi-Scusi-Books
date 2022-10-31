@@ -12,11 +12,13 @@ export const booksSlice = createSlice({
     bookByName: {},
     topTen: [],
     page: { currentPage: 0, rows: 25 },
+    searchBooks: []
   },
   reducers: {
     getAllBooks: (state, action) => {
       state.books = [...action.payload];
       // state.booksFilter = [...action.payload];
+      state.searchBooks = state.books
     },
     getBookById: (state, action) => {
       state.detail = action.payload;
@@ -97,6 +99,10 @@ export const booksSlice = createSlice({
       newStock.stock = newStock.stock + Number(action.payload.amount);
       state.books = [...state.books.filter((b) => b._id !== newStock._id),newStock];
     },
+    searchBookName: (state, action) => {
+      // let filterUsers = [...state.searchUsers]
+      state.searchBooks = state.books.filter(u => u.name.includes(action.payload))
+    },
   },
 });
 
@@ -115,7 +121,8 @@ export const {
   currentPage,
   filterDeleteBook,
   setStock,
-  setEmptyFilters
+  setEmptyFilters,
+  searchBookName
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

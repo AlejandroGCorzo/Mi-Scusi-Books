@@ -109,6 +109,10 @@ export const usersSlice = createSlice({
         newStatus,
       ];
     },
+    searchEmail: (state, action) => {
+      // let filterUsers = [...state.searchUsers]
+      state.searchUsers = state.users.filter(u => u.email.includes(action.payload))
+    },
   },
 });
 
@@ -133,5 +137,6 @@ export const {
   changeBillStatus,
   userBills,
   clearBills,
+  searchEmail
 } = usersSlice.actions;
 export default usersSlice.reducer;
