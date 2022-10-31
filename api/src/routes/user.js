@@ -41,14 +41,32 @@ userRouter.put("/forgot_password", async (req, res) => {
       to: user.email,
       subject: "Change your password!",
       html: `
-      <h4>Please click on the following link to reset your password!</h4>
-      <br>
-      <a href=${verificationLink}>Change your password!</a>
-      <br>
-      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
-      <br>
-      <p>Mi Scusi Books staff.</p>
+      <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+	<tr>
+		<td style="background-color: #ecf0f1">
+			<div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+				<h2 style="color: #287ccb; margin: 0 0 7px">Forgot your password?</h2>
+				<p style="margin: 2px; font-size: 15px">
+        Please click on the following link to reset your password!</p>
+        <br>
+				<div style="width: 100%; text-align: center">
+					<a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href=${verificationLink}>Click here</a>	
+				</div>
+				<p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Mi Scusi Books 2022</p>
+			</div>
+		</td>
+	</tr>
+</table>
       `,
+      // html: `
+      // <h4>Please click on the following link to reset your password!</h4>
+      // <br>
+      // <a href=${verificationLink}>Change your password!</a>
+      // <br>
+      // <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
+      // <br>
+      // <p>Mi Scusi Books staff.</p>
+      // `,
     });
     res.send(message);
   } catch (e) {
@@ -263,12 +281,22 @@ userRouter.post("/signup", async (req, res) => {
       to: user.email,
       subject: "Mail Verification",
       html: `
-      <h2>Welcome to Miscusi Books.</h2>
-      <p>Click the link below to verify your e-mail and start browsing our web !</p>
-      <br>
-      <a href=${process.env.FRONT_URL}/activation-mail/${user._id}> Verify e-mail </a>
-      <br>
-      <p>Mi Scusi Books staff.</p>
+      <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+      <tr>
+        <td style="background-color: #ecf0f1">
+          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+            <h2 style="color: #287ccb; margin: 0 0 7px">Welcome to Mi Scusi Books.</h2>
+            <p style="margin: 2px; font-size: 15px">
+            Click the link below to verify your e-mail and start browsing our web !</p>
+            <br>
+            <div style="width: 100%; text-align: center">
+              <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href=${process.env.FRONT_URL}/activation-mail/${user._id}>Verify e-mail</a>	
+            </div>
+            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Mi Scusi Books 2022</p>
+          </div>
+        </td>
+      </tr>
+      </table>
       `,
     });
 
@@ -373,7 +401,7 @@ userRouter.put("/delete/:id", protect, async (req, res) => {
 userRouter.put("/update/:id", protect, async (req, res) => {
   const { id } = req.params;
   const update = req.body;
-  console.log('ENTRREEEEE');
+  console.log("ENTRREEEEE");
   if (req.user && req.user.id === id) {
     if (!id) return res.status(400).send({ msg: "Not id found!" });
     try {
@@ -400,12 +428,22 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
         to: user.email,
         subject: "Status changed",
         html: `
-        <h2>Your user status has been changed.</h2>
-        <p>New status: ${state}</p>
-        <br>
-        <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
-        <br>
-        <p>Mi Scusi Books staff.</p>
+        <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+        <tr>
+        <td style="background-color: #ecf0f1">
+          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+            <h2 style="color: #287ccb; margin: 0 0 7px">Your user status has been changed!</h2>
+            <p style="margin: 2px; font-size: 15px">
+            New status: ${state}</p>
+            <br>
+            <div style="width: 100%; text-align: center">
+              <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href=${process.env.FRONT_URL}>Home</a>	
+            </div>
+            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Mi Scusi Books 2022</p>
+          </div>
+        </td>
+        </tr>
+        </table>
         `,
       });
       res.send({ msg: `State updated successfully to ${state} !` });
@@ -429,12 +467,22 @@ userRouter.put("/type/:id", protect, async (req, res) => {
         to: user.email,
         subject: "Rol changed",
         html: `
-        <h2>Your user rol has been changed.</h2>
-        <p>New rol: ${type}</p>
-        <br>
-        <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
-        <br>
-        <p>Mi Scusi Books staff.</p>
+        <table style="max-width: 600px; padding: 10px; margin:0 auto; border-collapse: collapse;">
+        <tr>
+        <td style="background-color: #ecf0f1">
+          <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
+            <h2 style="color: #287ccb; margin: 0 0 7px">Your user rol has been changed!</h2>
+            <p style="margin: 2px; font-size: 15px">
+            New rol: ${type}</p>
+            <br>
+            <div style="width: 100%; text-align: center">
+              <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href=${process.env.FRONT_URL}>Home</a>	
+            </div>
+            <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">Mi Scusi Books 2022</p>
+          </div>
+        </td>
+        </tr>
+        </table>
         `,
       });
       res.send({ msg: `Type updated successfully to ${type} !` });
@@ -545,10 +593,10 @@ userRouter.put("/pay", protect, async (req, res) => {
     try {
       const user = await User.findById(req.user._id);
       let points;
-      if(user.discount === 0) points = 0
-      else if(user.discount == 0.1) points = 1000
-      else if(user.discount == 0.2) points = 2000
-      else if(user.discount == 0.3) points = 3000
+      if (user.discount === 0) points = 0;
+      else if (user.discount == 0.1) points = 1000;
+      else if (user.discount == 0.2) points = 2000;
+      else if (user.discount == 0.3) points = 3000;
       const substractStock = [];
       for (let i = 0; i < user.cart.length; i++) {
         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
@@ -602,15 +650,19 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp,
       });
 
-      let newBuyedBooks = books.concat(user.buyedBooks)
-      const buyedBooks = []
-      for(const idBook of newBuyedBooks){
-        if(buyedBooks.some(id => id === idBook)) continue
-        buyedBooks.push(idBook)
+      let newBuyedBooks = books.concat(user.buyedBooks);
+      const buyedBooks = [];
+      for (const idBook of newBuyedBooks) {
+        if (buyedBooks.some((id) => id === idBook)) continue;
+        buyedBooks.push(idBook);
       }
 
       await user.updateOne({
-        $set: { buyedBooks : buyedBooks, cart: [], loyaltyPoint: newLoyaltyPoint },
+        $set: {
+          buyedBooks: buyedBooks,
+          cart: [],
+          loyaltyPoint: newLoyaltyPoint,
+        },
       });
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
@@ -707,17 +759,18 @@ userRouter.get("/favorites/:id", protect, async (req, res) => {
   }
 });
 
-userRouter.get("/buyedBooks/:idBook",protect, async (req,res) => {
-  const {idBook} = req.params;
+userRouter.get("/buyedBooks/:idBook", protect, async (req, res) => {
+  const { idBook } = req.params;
   if (req.user) {
     try {
-      const user = await User.findById(req.user._id)
+      const user = await User.findById(req.user._id);
       console.log(idBook);
       console.log(user.buyedBooks);
-      if(!user.buyedBooks.some(id => id.valueOf() === idBook)) return res.status(400).send('No lo tiene!')
-      const book = await bookSchema.findById(idBook)
-      if(!book) return res.status(400).send('Something goes wrong!')
-      res.send(book.url)
+      if (!user.buyedBooks.some((id) => id.valueOf() === idBook))
+        return res.status(400).send("No lo tiene!");
+      const book = await bookSchema.findById(idBook);
+      if (!book) return res.status(400).send("Something goes wrong!");
+      res.send(book.url);
     } catch (error) {
       res
         .status(400)
@@ -726,6 +779,6 @@ userRouter.get("/buyedBooks/:idBook",protect, async (req,res) => {
   } else {
     return res.status(400).json({ msg: "Not authorized to see buyed books" });
   }
-})
+});
 
 module.exports = userRouter;
