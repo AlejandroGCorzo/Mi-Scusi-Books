@@ -8,6 +8,8 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import StoreIcon from "@mui/icons-material/Store";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import { ThemeProvider } from "@mui/material/styles";
 import { Link, useHistory } from "react-router-dom";
@@ -150,10 +152,16 @@ export default function ShoppingCart(props) {
   });
 
   const handleClickBuy = async () => {
-    setMsg("Redirecting...");
-    setOpen(true);
-    const { data } = await CheckoutPayPal(loggedUser.id, discount);
-    window.location.href = data;
+    if(Object.entries(errors).length !== 0){
+      setMsg("Please complete the data!");
+      setOpen(true);
+    }else{
+      setMsg("Redirecting...");
+      setOpen(true);
+      const { data } = await CheckoutPayPal(loggedUser.id, discount);
+      window.location.href = data;
+    }
+
   };
 
   function deleteFav(libroID) {
@@ -458,6 +466,8 @@ export default function ShoppingCart(props) {
       setDirection={setDirection}
       errors={errors}
       setErrors={setErrors}
+      setMsg={setMsg}
+      setOpen={setOpen}
       />
     </div>
   );
