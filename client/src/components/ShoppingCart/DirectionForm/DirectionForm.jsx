@@ -14,7 +14,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   });
 
 
-export default function FormDialog({open, handleClose, direction, setDirection, errors, setErrors}) {
+export default function FormDialog({open, handleClose, direction, setDirection, errors, setErrors, setMsg, setOpen}) {
     
     function onInputChange(e) {
         e.preventDefault();
@@ -77,7 +77,8 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
 
     function validoDatos(){
         if(Object.entries(errors).length !== 0){
-            alert("Revisa los datos rey!");
+          setMsg("Please complete the data!");
+          setOpen(true);
         }else{
             handleClose();
         }
