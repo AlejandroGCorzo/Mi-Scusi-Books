@@ -11,6 +11,7 @@ const review = require("./review");
 const books = require("./books");
 const bills = require("./bills");
 const paypalRouter = require("./paypal");
+const report = require("./reports")
 
 const { application } = require("express");
 //middleware
@@ -48,5 +49,6 @@ router.use("/review", review);
 router.use("/books", books);
 router.use("/bills", bills);
 router.use("/payment", paypalRouter);
+router.use("/report", report);
 
 module.exports = router;
