@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 const url =
   "https://res.cloudinary.com/scusi-books/image/upload/v1667227678/booksCovers/d5oc5udi3qa3od06l97s.pdf";
 
-export default function Test() {
+export default function ReadPDF() {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);

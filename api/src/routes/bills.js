@@ -126,17 +126,19 @@ billsRouter.get("/", protect, async (req, res) => {
 billsRouter.put("/status/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
+  console.log(status);
   try {
     const bill = await billsSchema.findByIdAndUpdate(id, { status });
+    console.log(bill.loyaltyPoint);
     // const bill = await billsSchema.findById(id)
     const user = await User.findById(bill.user.valueOf());
-    if (status === "Cancelled") {
+    if (status === "cancelled") {
       //si se cancela le quito al usuario los puntos de lealtad
-      user.updateOne({
+      await user.updateOne({
         $inc: { loyaltyPoint: -bill.loyaltyPoint },
       });
     } else {
-      user.updateOne({
+      await user.updateOne({
         //Si se vuelve a aprobar, se los vuelvo a sumar
         $inc: { loyaltyPoint: bill.loyaltyPoint },
       });

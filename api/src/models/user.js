@@ -44,6 +44,10 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "normal",
     },
+    buyedBooks: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Books", 
+    },
     votedBooks: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Books",
