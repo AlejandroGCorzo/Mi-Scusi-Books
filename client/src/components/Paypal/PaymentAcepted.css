@@ -2,7 +2,7 @@
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(1.5px);
   position: absolute;
   top: 0;
   z-index: 100;
@@ -21,6 +21,7 @@
   align-items: center;
   padding: 3em 5em;
   border-radius: 0.5em;
+  margin-top: 2em;
 }
 
 .imgPaymentModal {
