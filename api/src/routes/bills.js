@@ -10,11 +10,12 @@ const { findByIdAndUpdate } = require("../models/bills");
 const billsRouter = Router();
 
 billsRouter.post("/", protect, async (req, res) => {
-  const { id, books, amountBooks, send, shipp= 0, points = 0 } = req.body;
+  const { id, books, amountBooks, send, shipp = 0, points = 0 } = req.body;
   try {
     const user = await User.findById(id);
 
-    if(points && user.loyaltyPoint < points) return res.status(400).send('Not enough points!') 
+    if (points && user.loyaltyPoint < points)
+      return res.status(400).send("Not enough points!");
 
     if (!user) return res.status(400).send({ msg: "User not found!" });
 
@@ -39,7 +40,7 @@ billsRouter.post("/", protect, async (req, res) => {
 
     const userLoyaltyPoint = points //Actualizamos los puntos de lealtad
       ? user.loyaltyPoint - loyaltyPoint //Si pasaron puntos es que los utilizo asique se los restamos
-      : user.loyaltyPoint + loyaltyPoint;  //Sino, le sumamos los puntos generados
+      : user.loyaltyPoint + loyaltyPoint; //Sino, le sumamos los puntos generados
     await user.updateOne({
       $set: { loyaltyPoint: userLoyaltyPoint },
     });
@@ -56,7 +57,7 @@ billsRouter.post("/", protect, async (req, res) => {
       status: "Approved",
       loyaltyPoint,
       discount,
-      shipp
+      shipp,
     });
     if (send) {
       await transporter.sendMail({
@@ -71,7 +72,7 @@ billsRouter.post("/", protect, async (req, res) => {
             <p>Amounts: ${amountBooks}</p>
             <p>Price p/u: $${price}</p>
             <p>Loyalty Points: ${loyaltyPoint}</p>
-            <p>Discount: ${discount*100}%</p>
+            <p>Discount: ${discount * 100}%</p>
             <p>Shipp: ${shipp}%</p>
             <p>Total: $${total}</p>
             <br>
@@ -101,7 +102,7 @@ billsRouter.get("/", protect, async (req, res) => {
         }),
         amountBooks: b.amountBooks,
         price: b.price,
-        loyaltyPoint : b.loyaltyPoint,
+        loyaltyPoint: b.loyaltyPoint,
         discount: b.discount,
         shipp: b.shipp,
         total: b.total,
@@ -128,15 +129,16 @@ billsRouter.put("/status/:id", protect, async (req, res) => {
     const bill = await billsSchema.findByIdAndUpdate(id, { status });
     // const bill = await billsSchema.findById(id)
     const user = await User.findById(bill.user.valueOf());
-    if(status === 'Cancelled') { //si se cancela le quito al usuario los puntos de lealtad
+    if (status === "Cancelled") {
+      //si se cancela le quito al usuario los puntos de lealtad
       user.updateOne({
-        $inc : {loyaltyPoint : -bill.loyaltyPoint }
-      })
-    }
-    else {
-      user.updateOne({ //Si se vuelve a aprobar, se los vuelvo a sumar
-        $inc : {loyaltyPoint : bill.loyaltyPoint }
-      })
+        $inc: { loyaltyPoint: -bill.loyaltyPoint },
+      });
+    } else {
+      user.updateOne({
+        //Si se vuelve a aprobar, se los vuelvo a sumar
+        $inc: { loyaltyPoint: bill.loyaltyPoint },
+      });
     }
     if (!bill) return res.status(404).send("Bill not found!");
     await transporter.sendMail({
@@ -160,9 +162,38 @@ billsRouter.put("/status/:id", protect, async (req, res) => {
 billsRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const bills = await billsSchema.find().where({ user: id });
+    const bills = await billsSchema
+      .find()
+      .where({ user: id })
+      .populate("books")
+      .populate("user");
     if (!bills) return res.status(400).send("User not found");
-    return res.send(bills);
+    const allBills = bills.map((b) => {
+      return {
+        _id: b._id,
+        books: b.books.map((book) => {
+          return {
+            name: book.name,
+            format: book.format,
+          };
+        }),
+        amountBooks: b.amountBooks,
+        price: b.price,
+        loyaltyPoint: b.loyaltyPoint,
+        discount: b.discount,
+        shipp: b.shipp,
+        total: b.total,
+        date: b.date.toDateString(),
+        user: {
+          firstName: b.user.firstName,
+          lastName: b.user.lastName,
+          email: b.user.email,
+          phone: b.user.phone,
+        },
+        status: b.status || "approved",
+      };
+    });
+    return res.send(allBills);
   } catch (error) {
     res.status(400).send({ msg: "Algo fallo en put a bills", error });
   }

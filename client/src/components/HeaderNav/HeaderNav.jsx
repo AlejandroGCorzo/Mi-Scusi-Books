@@ -23,7 +23,8 @@ import { Avatar } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
-import Badge from '@mui/material/Badge';
+import Badge from "@mui/material/Badge";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -40,7 +41,9 @@ export default function HeaderNav(onSearch) {
 
   // const [reload, setReload] = useState(false);
 
-  const { loggedUser, login, shoppingCart, favorites } = useSelector((state) => state.users);
+  const { loggedUser, login, shoppingCart, favorites } = useSelector(
+    (state) => state.users
+  );
   const dispatch = useDispatch();
   const history = useHistory();
   const accessToken =
@@ -107,6 +110,12 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
+            <p style={{ textTransform: "capitalize" }}>
+              {loggedUser.type === "admin" || loggedUser.type === "seller"
+                ? loggedUser.type
+                : null}
+            </p>
+            {/* <p>Loyalty Points : {loggedUser.loyaltyPoint}</p> */}
             <p className="noRomper">
               <Link to="/" style={{ textDecoration: "none" }}>
                 <HomeIcon style={{ color: "white" }} />
@@ -115,16 +124,25 @@ export default function HeaderNav(onSearch) {
             <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={shoppingCart.length} color="secondary">
-                <ShoppingCartIcon style={{ color: "white" }} />
+                  <ShoppingCartIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
             </p>
             <p className="noRomper">
               <Link to="/shopping/favorite" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={favorites.length} color="secondary">
-                <FavoriteIcon style={{ color: "white" }} />
+                  <FavoriteIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
+            </p>
+            <p className="noRomper" title="Loyalty Points" style={{cursor: 'default', userSelect: 'none'}}>
+              <Badge
+                badgeContent={loggedUser.loyaltyPoint}
+                color="secondary"
+                max={9999}
+              >
+                <LoyaltyIcon />
+              </Badge>
             </p>
 
             <Box
@@ -229,7 +247,7 @@ export default function HeaderNav(onSearch) {
             <p className="noRomper">
               <Link to="/shopping/cart" style={{ textDecoration: "none" }}>
                 <Badge badgeContent={shoppingCart.length} color="secondary">
-                <ShoppingCartIcon style={{ color: "white" }} />
+                  <ShoppingCartIcon style={{ color: "white" }} />
                 </Badge>
               </Link>
             </p>
@@ -238,7 +256,11 @@ export default function HeaderNav(onSearch) {
                 <FavoriteIcon style={{ color: "white" }} />
               </Link>
             </p> */}
-            <p className="noRomper" onClick={handleLoggin} style={{ cursor: "pointer" }}>
+            <p
+              className="noRomper"
+              onClick={handleLoggin}
+              style={{ cursor: "pointer" }}
+            >
               Log in
             </p>
 

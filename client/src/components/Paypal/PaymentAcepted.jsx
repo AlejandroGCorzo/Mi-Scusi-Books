@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { payAccepted } from "../../redux/StoreUsers/usersActions";
+import { payAccepted, loging } from "../../redux/StoreUsers/usersActions";
 import img from "../../sourceImg/logo3.png";
 import "./PaymentAcepted.css";
 
 export default function PaymentAcepted() {
   const dispatch = useDispatch();
   const history = useHistory();
+  //traer al cart
 
   useEffect(() => {
     const accessToken =
@@ -27,7 +28,10 @@ export default function PaymentAcepted() {
           <button
             className="btnHome"
             type="button"
-            onClick={() => history.push("/")}
+            onClick={() => {
+              dispatch(loging());
+              history.push("/");
+            }}
           >
             <b>GO HOME</b>
           </button>

@@ -134,6 +134,18 @@
   cursor: pointer;
 }
 
+.purchaseCards {
+  display: flex;
+  flex-direction: column;
+}
+
+.purchaseIndividualCard {
+  margin: 1vh 0;
+  display: flex;
+  /* flex: wrap; */
+  flex-direction: column;
+}
+
 @media (min-height: 0px) {
   .contentCategoryDivx {
     height: 480px;

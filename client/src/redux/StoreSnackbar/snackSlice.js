@@ -6,6 +6,7 @@ export const snackSlice = createSlice({
     userRol: false,
     userBlock: false,
     userDelete: false,
+    userActive : false,
     bookDelete: false,
     bookStock : false,
   },
@@ -25,6 +26,9 @@ export const snackSlice = createSlice({
     snackStockBook: (state, action) =>{
       state.bookStock = action.payload
     },
+    snackActiveUser: (state, action) =>{
+      state.userActive = action.payload
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   snackBlock,
   snackDeleteUser,
   snackDeleteBook,
-  snackStockBook
+  snackStockBook,
+  snackActiveUser
 } = snackSlice.actions;
 export default snackSlice.reducer;

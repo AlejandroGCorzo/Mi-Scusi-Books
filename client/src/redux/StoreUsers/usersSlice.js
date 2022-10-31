@@ -10,15 +10,17 @@ export const usersSlice = createSlice({
     shoppingCart: [],
     favorites: [],
     bills: [],
-    forgotPassword : '',
-    changePassword : '',
+    forgotPassword: "",
+    changePassword: "",
     votedReviews: [],
     votedBooks: [],
-    waitingForgot: false
+    waitingForgot: false,
+    searchUsers: [],
   },
   reducers: {
     getAllUsers: (state, action) => {
       state.users = action.payload;
+      state.searchUsers = state.users;
     },
     getLoggedUserData: (state, action) => {
       state.loggedUser = action.payload;
@@ -51,10 +53,14 @@ export const usersSlice = createSlice({
       state.login = !state.login;
     },
     filterDeleteUser: (state, action) => {
-      state.users =
-        action.payload.state === "limited"
-          ? state.users.filter((u) => u.type !== "inactive")
-          : state.users.filter((u) => u._id !== action.payload.id);
+      if(action.payload.state === 'limited' || action.payload.state === 'active'){
+        const newState = state.users.find((u) => u._id === action.payload.id);
+        newState.state = action.payload.state;
+        state.users = [...state.users.filter((e) => e._id !== newState._id), newState]
+      } else{
+        state.users = state.users.filter((u) => u.type !== "inactive")
+      }
+      state.searchUsers = state.users;
     },
     setChangeRol: (state, action) => {
       const newAdmin = state.users.find((u) => u._id === action.payload.id);
@@ -63,6 +69,7 @@ export const usersSlice = createSlice({
         ...state.users.filter((e) => e._id !== newAdmin._id),
         newAdmin,
       ];
+      state.searchUsers = state.users;
     },
     setEmptyUsers: (state) => {
       state.users = [];
@@ -82,17 +89,30 @@ export const usersSlice = createSlice({
     allBills: (state, action) => {
       state.bills = action.payload;
     },
+    userBills: (state, action) => {
+      state.bills = action.payload;
+    },
+    clearBills: (state, action) => {
+      state.bills = [];
+    },
     forgotPassword: (state, action) => {
-      state.forgotPassword = action.payload
+      state.forgotPassword = action.payload;
     },
     changePassword: (state, action) => {
-      state.changePassword = action.payload
+      state.changePassword = action.payload;
     },
-    changeBillStatus: (state, action) =>{
+    changeBillStatus: (state, action) => {
       const newStatus = state.bills.find((b) => b._id === action.payload.id);
-      newStatus.status = action.payload.status
-      state.bills = [...state.bills.filter((e) => e._id !== newStatus._id), newStatus]
-    }
+      newStatus.status = action.payload.status;
+      state.bills = [
+        ...state.bills.filter((e) => e._id !== newStatus._id),
+        newStatus,
+      ];
+    },
+    searchEmail: (state, action) => {
+      // let filterUsers = [...state.searchUsers]
+      state.searchUsers = state.users.filter(u => u.email.includes(action.payload))
+    },
   },
 });
 
@@ -114,6 +134,9 @@ export const {
   allBills,
   forgotPassword,
   changePassword,
-  changeBillStatus
+  changeBillStatus,
+  userBills,
+  clearBills,
+  searchEmail
 } = usersSlice.actions;
 export default usersSlice.reducer;

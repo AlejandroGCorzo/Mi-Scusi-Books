@@ -7,48 +7,45 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
 import { useDispatch } from "react-redux";
 import { setUserDelete } from "../../../redux/StoreUsers/usersActions";
-import { snackUserDelete } from "../../../redux/StoreSnackbar/snackActions";
+import { snackUserActive } from "../../../redux/StoreSnackbar/snackActions";
 
-export default function UsersDelete(props) {
+export default function UsersActive(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { emailSelectUser, openDialog, handleClose, id } = props;
+  const { emailSelectUser, openActive, handleCloseActive, id } = props;
+
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
 
-  //console.log(accessToken);
-  //console.log(id);
-
-  const handleDelete = (e) => {
-    dispatch(setUserDelete(id, "inactive", accessToken));
-    dispatch(handleClose);
-    dispatch(snackUserDelete(true))
+  const handleBlock = (e) => {
+    dispatch(setUserDelete(id, "active", accessToken));
+    dispatch(handleCloseActive);
+    dispatch(snackUserActive(true))
   };
 
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={openDialog}
-      onClose={handleClose}
+      open={openActive}
+      onClose={handleCloseActive}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">{"Delete User"}</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">{"Block User"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          If you want to delete user {emailSelectUser} please click CONFIRM,
+          If you want to active user {emailSelectUser} please click CONFIRM,
           otherwise click CANCEL.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={(e) => handleDelete(e)}>
+        <Button autoFocus onClick={(e) => handleBlock(e)}>
           CONFIRM
         </Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={handleCloseActive} autoFocus>
           CANCEL
         </Button>
       </DialogActions>

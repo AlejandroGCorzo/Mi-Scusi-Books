@@ -1,4 +1,8 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+///////////////Material UI//////////////////////////
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -16,10 +20,15 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
-import { useSelector } from "react-redux";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import ClearIcon from "@mui/icons-material/Clear";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+///////////////Material UI//////////////////////////
 
 import BooksDelete from "../ConfirmDialog/BooksDelete.jsx";
-import { Link } from "react-router-dom";
+import { searchBookByName } from "../../../redux/StoreBooks/booksActions.js";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -168,19 +177,20 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-          style={{ "text-transform": "capitalize" }}
-        >
-          {numSelected ? `Book: ${numSelected}` : null}
-        </Typography>
-      }
-      {loggedUser.type === 'admin' && numSelected ? (
-        <>
+      <div className="toolBarDivBooks">
+        {
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+            style={{ "text-transform": "capitalize" }}
+          >
+            {numSelected ? `Book: ${numSelected}` : null}
+          </Typography>
+        }
+        {loggedUser.type === "admin" && numSelected ? (
+          <>
             <IconButton onClick={handleOpenDelete} title="Delete">
               <DeleteIcon />
             </IconButton>
@@ -190,8 +200,9 @@ const EnhancedTableToolbar = (props) => {
               handleClose={handleCloseDelete}
               id={id}
             />
-        </>
-      ) : null}
+          </>
+        ) : null}
+      </div>
     </Toolbar>
   );
 };
@@ -207,8 +218,26 @@ export default function TestUsers() {
 
   //console.log(selected);
   const { books } = useSelector((state) => state.books);
+  const { searchBooks } = useSelector((state) => state.books);
   const { loggedUser } = useSelector((state) => state.users);
   const [openDelete, setOpenDelete] = React.useState(false);
+
+  //////////////SearchBar BookName//////////////////
+  const dispatch = useDispatch();
+
+  const [searchBook, setSearchBook] = React.useState("");
+
+  const handleSearchBook = (e) => {
+    setSearchBook(e.target.value);
+    dispatch(searchBookByName(e.target.value));
+  };
+
+  const handleDeleteBook = (e) => {
+    setSearchBook("");
+    dispatch(searchBookByName(""));
+  };
+
+  /////////////////////////////////////
 
   const handleOpenDelete = () => {
     setOpenDelete(true);
@@ -219,7 +248,6 @@ export default function TestUsers() {
     setSelected();
     setShowEmail();
   };
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -245,19 +273,53 @@ export default function TestUsers() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - books.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchBooks.length) : 0;
+
+  useEffect(() => {
+    setSearchBook("");
+    dispatch(searchBookByName(""));
+  }, [dispatch]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={showEmail /* .length */}
-          openDelete={openDelete}
-          handleOpenDelete={handleOpenDelete}
-          handleCloseDelete={handleCloseDelete}
-          id={selected}
-          loggedUser={loggedUser}
-        />
+        <div className="divSearchTables">
+          <FormControl sx={{ m: 1, width: "28ch" }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Search Book Name
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type="email"
+              value={searchBook}
+              onChange={(e) => handleSearchBook(e)}
+              autoComplete="off"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={(e) => handleDeleteBook(e)}
+                    edge="end"
+                    title="Clear"
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Search Book Name"
+            />
+          </FormControl>
+          <div style={{ width: "100%" }}>
+            <EnhancedTableToolbar
+              numSelected={showEmail /* .length */}
+              openDelete={openDelete}
+              handleOpenDelete={handleOpenDelete}
+              handleCloseDelete={handleCloseDelete}
+              id={selected}
+              loggedUser={loggedUser}
+            />
+          </div>
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -269,12 +331,12 @@ export default function TestUsers() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={books.length}
+              rowCount={searchBooks.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(books, getComparator(order, orderBy))
+              {stableSort(searchBooks, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((b, index) => {
                   const isItemSelected = isSelected(b._id);
@@ -341,21 +403,21 @@ export default function TestUsers() {
         <TablePagination
           rowsPerPageOptions={[10, 25]}
           component="div"
-          count={books.length}
+          count={searchBooks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage='Books per page:'
+          labelRowsPerPage="Books per page:"
           sx={{
             ".MuiTablePagination-selectLabel": {
               fontSize: "1rem",
               marginTop: "15px",
-              lineHeight: 1.5
+              lineHeight: 1.5,
             },
             "	.MuiTablePagination-displayedRows": {
-              marginTop: "12px"
-            }
+              marginTop: "12px",
+            },
           }}
         />
       </Paper>

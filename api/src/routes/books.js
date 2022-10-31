@@ -332,7 +332,7 @@ bookRouter.put("/:id", protect, async (req, res, next) => {
   const { id } = req.params;
   const data = req.body;
   const value = Object.values(data);
-
+  console.log('data', data)
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     if (value.some((val) => val.length == 0))
       res.json({ error: "they can't send empty comps" });

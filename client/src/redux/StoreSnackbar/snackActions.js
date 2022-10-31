@@ -4,6 +4,7 @@ import {
   snackDeleteUser,
   snackDeleteBook,
   snackStockBook,
+  snackActiveUser
 } from "./snackSlice.js";
 
 export const snackbarChange = (boolean) => {
@@ -29,5 +30,10 @@ export const snackBookDelete = (boolean) => {
 export const snackBookStock = (boolean) => {
   return (dispatch) => {
     return dispatch(snackStockBook(boolean));
+  };
+};
+export const snackUserActive = (boolean) => {
+  return (dispatch) => {
+    return dispatch(snackActiveUser(boolean));
   };
 };

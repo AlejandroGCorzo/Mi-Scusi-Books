@@ -5,7 +5,6 @@ import { getDetail, getBooks, addReview, addVote, removeVote } from "../../redux
 import { setEmptyDetail } from "../../redux/StoreBooks/booksSlice.js";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
@@ -42,6 +41,7 @@ function textRating(value) {
 
 const Details = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [count, setCount] = useState(1);
   const { favorites } = useSelector((state) => state.users);
   const { loggedUser, login, votedReviews, votedBooks } = useSelector((state) => state.users);
@@ -51,7 +51,6 @@ const Details = (props) => {
   const [open, setOpen] = useState(false);
   const [renderDown, setRenderDown] = useState(false);
   const [renderUp, setRenderUp] = useState(false);
-  const [render, setRender] = useState(false);
   const [msg, setMsg] = useState("");
   const [value, setValue] = useState(0);
   const [valueText, setValueText] = useState("");
@@ -67,7 +66,6 @@ const Details = (props) => {
       dispatch(keepLog(accessToken));
       dispatch(fetchFavorites(loggedUser.id));
     }
-    setRender(true);
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
     // dispatch(setEmptyDetail())
@@ -108,9 +106,12 @@ const Details = (props) => {
 
     if (idContentVentana.style.display == "none") {
       idContentVentana.style.display = "flex";
+      document.getElementsByTagName("html")[0].style.overflow = "hidden";
     } else {
       idContentVentana.style.display = "none";
+      document.getElementsByTagName("html")[0].style.overflow = "auto";
     }
+      
   }
 
   function sendReview(libroID){
@@ -133,54 +134,31 @@ const Details = (props) => {
   
   function sendVote(id, libroID, vote, tipo){
 
+    let viewReviews = votedReviews?.filter((e) => e.review === id);
+
+    if(viewReviews.length > 0 && tipo !== viewReviews.vote){
+      setMsg("You have already voted!");
+      return (setOpen(true));
+    }
+
     if (!accessToken) {
       setMsg("Please log in to add vote");
       setOpen(true);
     } else {
-
       dispatch(addVote(id, libroID, vote, accessToken));
-
-      if(tipo === "down"){
-
-        if(renderDown === false){
-          setRenderDown(true);
-        }else{
-          setRenderDown(false);
-        }
-
-      }else{
-        if(renderUp === false){
-          setRenderUp(true);
-        }else{
-          setRenderUp(false);
-        }
-      }
+      setRenderUp(true);
     }
     
   }
 
-  function sendRemoveVote(id, libroID, vote, tipo){
-    
+  function sendRemoveVote(id, libroID, vote){
+
     if (!accessToken) {
       setMsg("Please log in to add vote");
       setOpen(true);
     } else {
-      dispatch(removeVote(id, libroID, vote, accessToken));
-      if(tipo === "down"){
-        if(renderDown === false){
-          setRenderDown(true);
-        }else{
-          setRenderDown(false);
-        }
-      }else{
-        if(renderUp === false){
-          setRenderUp(true);
-        }else{
-          setRenderUp(false);
-        }
-      }
-      
-
+      dispatch(removeVote(id, libroID, vote, accessToken)); 
+      setRenderDown(true);
     }
     
   }
@@ -207,61 +185,62 @@ const Details = (props) => {
   }
 
   function queLikeDibujo(id, libroID) {
+
+    if(renderUp === true){
+      dispatch(keepLog(accessToken));
+      setRenderUp(false)
+    }
+
     let buttonUpvote = votedReviews?.filter((e) => (e.review === id && e.vote === "upvote"));
 
     if (buttonUpvote.length > 0) {
       return (
         <div >
-          {renderUp === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
+          <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "upvote")}>
             <ThumbUpAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
-            <ThumbUpOffAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }else{
       return (
         <div >
-          {renderUp === false ?
-           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "up")}>
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "1", "upvote")}>
             <ThumbUpOffAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "1", "up")}>
-            <ThumbUpAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }
   }
 
   function queLikeDibujoB(id, libroID) {
+
+    if(renderDown === true){
+      dispatch(keepLog(accessToken));
+      setRenderDown(false)
+    }
+
     let downButton = votedReviews?.filter((e) => (e.review === id && e.vote === "downvote"));
 
     if (downButton.length > 0) {
       return (
         <div >
-          {renderDown === false ? <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
+          <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "2", "downvote")}>
             <ThumbDownAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
-            <ThumbDownOffAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }else{
       return (
         <div >
-          {renderDown === false ?
-           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "777", "down")}>
+           <button className="buttonFav" {...label} onClick={() => sendVote(id, libroID, "2", "downvote")}>
             <ThumbDownOffAltIcon className="favColor" />
-          </button>: <button className="buttonFav" {...label} onClick={() => sendRemoveVote(id, libroID, "777", "down")}>
-            <ThumbDownAltIcon className="favColor" />
-          </button>}
+          </button>
         </div>
       );
     }
 
   }
   
-
   function addFavorite(libroID) {
     if (!accessToken) {
       setMsg("Please log in to add favorites");
@@ -376,6 +355,11 @@ const Details = (props) => {
    
   }
 
+  function handleEdit() {
+    window.sessionStorage.setItem('bookDetail', JSON.stringify(detail))
+    history.push(`/book/update/${detail._id}`)
+  }
+
   return (
     <div className="contentCategory">
       
@@ -433,11 +417,28 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "95%",
                         margin: "25px",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                     </Box>
 
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -466,12 +467,13 @@ const Details = (props) => {
       
       <div className="titleFormDetails">
         <p>Book Information </p>
-        {/* {loggedUser.type === "admin" ? 
+        {loggedUser.type === "admin" ? 
         <div className="deleteIcon">
-          <DeleteIcon onClick={handleDelete}/>
+          {/* <DeleteIcon onClick={handleDelete}/> */}
+          <span onClick={handleEdit}>EDIT</span>
         </div>
         : <></>
-        } */}
+        }
       </div>
       {/* <ConfirmDelete 
         openConfirm={openConfirm} 
@@ -649,17 +651,21 @@ const Details = (props) => {
                       }}
                     >
                         {viewRating(detail.rating[i])}
-                        {/* */}
-                        <DeleteIcon onClick={() => {
-                          setReviewDel({
-                            reviewId: e._id,
-                            user: e.user,
-                            rating: e.rating,
-                            bookId: e.book
-                          })
-                          handleDelete()
-                        }} 
-                        />
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                         
                     </Box>
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -693,7 +699,7 @@ const Details = (props) => {
       </div>
 {/* //////////////////////////////////////////////////////// */}
 
-          {accessToken && yaVotoLibro.length === 0 ?
+          {accessToken && yaVotoLibro.length === 0 && loggedUser.type === "normal" ?
           <div id="reviewsForm" className="revieFromUserContent">
             <span>Review</span>
 
@@ -742,6 +748,7 @@ const Details = (props) => {
         user={reviewDel.user}
         reviewId={reviewDel.reviewId}
         bookId={reviewDel.bookId}
+        userEmail={reviewDel.userEmail}
         rating={reviewDel.rating}
         accessToken={accessToken}
         setOpen={setOpen}

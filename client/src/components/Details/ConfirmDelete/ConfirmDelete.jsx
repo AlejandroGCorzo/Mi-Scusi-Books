@@ -10,22 +10,27 @@ import { useTheme } from '@mui/material/styles';
 import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { getDetail } from '../../../redux/StoreBooks/booksActions';
+import { useDispatch } from 'react-redux';
 
-export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, user, reviewId, rating, accessToken, setMsg, setOpen}) {
+export default function ConfirmDelete({ openConfirm, setOpenConfirm, bookId, user, reviewId, rating, accessToken, setMsg, setOpen, userEmail}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = React.useState(false)
+  const dispatch = useDispatch()
   console.log('id', typeof reviewId, 'book', bookId, 'rating', rating)
 
   const handleConfirm = async() => {
     setLoading(true)
     try{
-      const deletedReview = await axios.put(`/review/${reviewId}`, {bookId: bookId, rating: rating}, {
+      const deletedReview = await axios.put(`/review/${reviewId}`, {bookId: bookId, rating: rating, userEmail: userEmail}, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
       })
       setMsg("Review deleted")
+      dispatch(getDetail(bookId))
+      
     } catch(e){
       setMsg("There was a problem. Try again later")
     }

@@ -10,7 +10,8 @@ import {
   setOrderBooks,
   currentPage,
   filterDeleteBook,
-  setStock
+  setStock,
+  searchBookName
 } from "./booksSlice.js";
 
 export const getBooks = () => (dispatch) => {
@@ -122,5 +123,11 @@ export const removeVote = (id, idBook, vote, token) => {
     });
     console.log(asd.data);
     return dispatch(getDetail(idBook));
+  };
+};
+
+export const searchBookByName = (book) => {
+  return (dispatch) => {
+    return dispatch(searchBookName(book));
   };
 };

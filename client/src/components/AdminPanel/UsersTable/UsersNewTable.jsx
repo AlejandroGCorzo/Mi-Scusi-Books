@@ -1,5 +1,12 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+///////////////Material UI//////////////////////////
 import { alpha } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import ClearIcon from "@mui/icons-material/Clear";
+import PersonIcon from "@mui/icons-material/Person";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,18 +25,18 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
 import BlockIcon from "@mui/icons-material/Block";
-import { useSelector } from "react-redux";
-import Button from "@mui/material/Button";
-import UsersDelete from "../ConfirmDialog/UsersDelete";
-import UsersBlock from "../ConfirmDialog/UsersBlock";
-import { useDispatch } from "react-redux";
-import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
-
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+///////////////Material UI//////////////////////////
+
+import UsersDelete from "../ConfirmDialog/UsersDelete";
+import UsersBlock from "../ConfirmDialog/UsersBlock";
 import SelectDialog from "../ConfirmDialog/SelectDialog.jsx";
+import { setUserChangeRol } from "../../../redux/StoreUsers/usersActions";
+import { searchUserEmail } from "../../../redux/StoreUsers/usersActions";
+import UsersActive from "../ConfirmDialog/UsersActive";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -158,6 +165,9 @@ const EnhancedTableToolbar = (props) => {
     openBlock, // state para abrir o cerrar block dialog
     handleOpenBlock, // fn para abrir dialog
     handleCloseBlock, // fn para cerrar dialog
+    openActive, // state para abrir o cerrar active dialog
+    handleOpenActive, // fn para abrir dialog
+    handleCloseActive, // fn para cerrar dialog
   } = props;
 
   // const [age, setAge] = React.useState("");
@@ -196,8 +206,8 @@ const EnhancedTableToolbar = (props) => {
       {loggedUser.type === "admin" &&
       emailSelectUser &&
       id !== loggedUser.id ? (
-        <>
-          <FormControl sx={{ m: 1, minWidth: 80 }}>
+        <div className="toolBarDiv">
+          <FormControl sx={{ m: 0, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Change Rol
             </InputLabel>
@@ -209,7 +219,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={(e) => handleChange(e)}
               autoWidth
               label="Change Rol"
-              style={{ width: "130px"}}
+              style={{ width: "150px" }}
             >
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="normal">Normal</MenuItem>
@@ -232,29 +242,47 @@ const EnhancedTableToolbar = (props) => {
           >
             {emailSelectUser ? `User: ${emailSelectUser}` : null}
           </Typography>
-          <IconButton onClick={(e) => handleOpenDelete(e)} title="Delete">
-            <DeleteIcon />
-          </IconButton>
+
+          <Tooltip title="Delete User">
+            <IconButton onClick={(e) => handleOpenDelete(e)}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
           <UsersDelete
             emailSelectUser={emailSelectUser}
             openDialog={openDelete}
             handleClose={handleCloseDelete}
             id={id}
           />
-          <>
-            <IconButton onClick={(e) => handleOpenBlock(e)} title="Block">
+
+          <Tooltip title="Block User">
+            <IconButton onClick={(e) => handleOpenBlock(e)}>
               <BlockIcon />
             </IconButton>
-            <UsersBlock
-              emailSelectUser={emailSelectUser}
-              openBlock={openBlock}
-              handleCloseBlock={handleCloseBlock}
-              id={id}
-              //openDialog={openBlock}
-              //handleClose={handleCloseblock}
-            />
-          </>
-        </>
+          </Tooltip>
+          <UsersBlock
+            emailSelectUser={emailSelectUser}
+            openBlock={openBlock}
+            handleCloseBlock={handleCloseBlock}
+            id={id}
+            //openDialog={openBlock}
+            //handleClose={handleCloseblock}
+          />
+
+          <Tooltip title="Active User">
+            <IconButton onClick={(e) => handleOpenActive(e)}>
+              <PersonIcon />
+            </IconButton>
+          </Tooltip>
+          <UsersActive
+            emailSelectUser={emailSelectUser}
+            openActive={openActive}
+            handleCloseActive={handleCloseActive}
+            id={id}
+            //openDialog={openBlock}
+            //handleClose={handleCloseblock}
+          />
+        </div>
       ) : null}
     </Toolbar>
   );
@@ -270,6 +298,7 @@ export default function TestUsers() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { users } = useSelector((state) => state.users);
+  const { searchUsers } = useSelector((state) => state.users);
   const { loggedUser } = useSelector((state) => state.users);
   //console.log(selected);
 
@@ -315,6 +344,32 @@ export default function TestUsers() {
     setShowEmail();
   };
 
+  //////////////Open and close active confirm dialog//////////////////
+  const [openActive, setOpenActive] = React.useState(false);
+  const handleOpenActive = (e) => {
+    // e.stopPropagation()
+    setOpenActive(true);
+  };
+
+  const handleCloseActive = () => {
+    setOpenActive(false);
+    setSelected();
+    setShowEmail();
+  };
+
+  //////////////SearchBar Mail//////////////////
+  const [searchUser, setSearchUser] = useState("");
+
+  const handleSearchUser = (e) => {
+    setSearchUser(e.target.value);
+    dispatch(searchUserEmail(e.target.value));
+  };
+
+  const handleDeleteEmail = (e) => {
+    setSearchUser("");
+    dispatch(searchUserEmail(""));
+  };
+
   /////////////Pide la function de sort de mas arriba//////////////
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -343,25 +398,62 @@ export default function TestUsers() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchUsers.length) : 0;
+
+  useEffect(() => {
+    setSearchUser("");
+    dispatch(searchUserEmail(""));
+  }, [dispatch]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          emailSelectUser={showEmail /* .length */}
-          openDelete={openDelete}
-          handleOpenDelete={handleOpenDelete}
-          handleCloseDelete={handleCloseDelete}
-          id={selected}
-          selectUser={users.find((u) => u._id === selected)}
-          loggedUser={loggedUser}
-          handleMakeAdmin={handleMakeAdmin}
-          handleRemoveAdmin={handleRemoveAdmin}
-          openBlock={openBlock}
-          handleOpenBlock={handleOpenBlock}
-          handleCloseBlock={handleCloseBlock}
-        />
+        <div className="divSearchTables">
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Search Email
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type="email"
+              value={searchUser}
+              onChange={(e) => handleSearchUser(e)}
+              autoComplete="off"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={(e) => handleDeleteEmail(e)}
+                    edge="end"
+                    title="Clear"
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Search Email"
+            />
+          </FormControl>
+          <div style={{ width: "100%" }}>
+            <EnhancedTableToolbar
+              emailSelectUser={showEmail /* .length */}
+              openDelete={openDelete}
+              handleOpenDelete={handleOpenDelete}
+              handleCloseDelete={handleCloseDelete}
+              id={selected}
+              selectUser={searchUsers.find((u) => u._id === selected)}
+              loggedUser={loggedUser}
+              handleMakeAdmin={handleMakeAdmin}
+              handleRemoveAdmin={handleRemoveAdmin}
+              openBlock={openBlock}
+              handleOpenBlock={handleOpenBlock}
+              handleCloseBlock={handleCloseBlock}
+              openActive={openActive}
+              handleOpenActive={handleOpenActive}
+              handleCloseActive={handleCloseActive}
+            />
+          </div>
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -373,12 +465,12 @@ export default function TestUsers() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={users.length}
+              rowCount={searchUsers.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(searchUsers, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((u, index) => {
                   const isItemSelected = isSelected(u._id);
@@ -455,7 +547,7 @@ export default function TestUsers() {
         <TablePagination
           rowsPerPageOptions={[10, 25]}
           component="div"
-          count={users.length}
+          count={searchUsers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -465,11 +557,11 @@ export default function TestUsers() {
             ".MuiTablePagination-selectLabel": {
               fontSize: "1rem",
               marginTop: "15px",
-              lineHeight: 1.5
+              lineHeight: 1.5,
             },
             "	.MuiTablePagination-displayedRows": {
-              marginTop: "12px"
-            }
+              marginTop: "12px",
+            },
           }}
         />
       </Paper>

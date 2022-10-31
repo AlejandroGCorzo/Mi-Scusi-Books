@@ -1,32 +1,39 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+///////////////Material UI//////////////////////////
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import { ThemeProvider } from "@mui/material/styles";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import TestUsers from "./UsersTable/UsersNewTable.jsx";
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+///////////////Material UI//////////////////////////
 
+///////////////Tablas//////////////////////////
+import TestUsers from "./UsersTable/UsersNewTable.jsx";
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import BooksStock from "./BooksTable/BookStockTable.jsx";
+import BillsTable from "./BillsTable/BillsTable.jsx";
+///////////////Tablas//////////////////////////
 
-import { getUser } from "../../redux/StoreUsers/usersActions.js";
+///////////////Actions//////////////////////////
+import { getAllBills } from "../../redux/StoreUsers/usersActions.js";
+import { clearAllBills, getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
-import { getAllBills } from "../../redux/StoreUsers/usersActions.js";
-import BillsTable from "./BillsTable/BillsTable.jsx";
-import BillTable2 from "./BillsTable/BillsTable2"
-import BillTable3 from "./BillsTable/BillsTable3"
+///////////////Actions//////////////////////////
+
+///////////////SnackBars//////////////////////////
 import SnackRol from "./Snackbar/SnackRol.jsx";
 import SnackBlock from "./Snackbar/SnackBlock.jsx";
 import SnackDeleteUser from "./Snackbar/SnackDeleteUser.jsx";
 import SnackDeleteBook from "./Snackbar/SnackDeleteBook.jsx";
 import SnackStock from "./Snackbar/SnackStock.jsx";
-
+import SnackActive from "./Snackbar/SnackActiveUser.jsx";
+///////////////SnackBars//////////////////////////
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -89,7 +96,10 @@ export default function BasicTabs() {
     dispatch(getUser(accessToken));
     dispatch(getBooks());
     dispatch(getAllBills(accessToken));
-    return (()=> dispatch(setEmptyUsers()))
+    return (()=> {
+      dispatch(setEmptyUsers());
+      dispatch(clearAllBills())
+    })
   }, [dispatch,loggedUser]);
 
   return (
@@ -110,8 +120,6 @@ export default function BasicTabs() {
               <Tab label="Books Panel" {...a11yProps(1)} />
               <Tab label="Books Stock" {...a11yProps(2)} />
               <Tab label="Bills Panel" {...a11yProps(3)} />
-              <Tab label="Bills Panel 2" {...a11yProps(4)} />
-              <Tab label="Bills Panel 3" {...a11yProps(5)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -119,6 +127,7 @@ export default function BasicTabs() {
             <SnackRol/>
             <SnackBlock/>
             <SnackDeleteUser/>
+            <SnackActive/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <BookNewTable />
@@ -130,12 +139,6 @@ export default function BasicTabs() {
           </TabPanel>
           <TabPanel value={value} index={3}>
             <BillsTable/>
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <BillTable2/>
-          </TabPanel>
-          <TabPanel value={value} index={5}>
-            <BillTable3/>
           </TabPanel>
         </ThemeProvider>
       ) : null }
