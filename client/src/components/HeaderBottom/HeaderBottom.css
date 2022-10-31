@@ -1,7 +1,7 @@
 .headerBottom {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #287ccb;
   width: 100%;
@@ -14,7 +14,7 @@
 .loggedHeaderBottom {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   background-color: #287ccb;
   width: 100%;
@@ -31,7 +31,6 @@
 .aboutText{
   color: white;
   margin-top: 1em;
-  margin-right: 50em;
 }
 
 .reportText {
@@ -40,5 +39,6 @@
 }
 
 .headerBottom p {
-  margin-right: 0em;
+  margin-right: 25px;
+  margin-left: 25px;
 }
