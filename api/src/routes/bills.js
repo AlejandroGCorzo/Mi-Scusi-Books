@@ -116,6 +116,7 @@ billsRouter.get("/", protect, async (req, res) => {
         status: b.status || "approved",
       };
     });
+    console.log('llego al final');
     res.send(allBills);
   } catch (error) {
     res.status(400).send({ msg: "Algo fallo en get a bills", error });
