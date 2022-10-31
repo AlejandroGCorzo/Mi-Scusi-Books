@@ -17,6 +17,7 @@ import TestUsers from "./UsersTable/UsersNewTable.jsx";
 import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import BooksStock from "./BooksTable/BookStockTable.jsx";
 import BillsTable from "./BillsTable/BillsTable.jsx";
+import ReportsTable from "./ReportsTable/ReportsTable.jsx";
 ///////////////Tablas//////////////////////////
 
 ///////////////Actions//////////////////////////
@@ -120,6 +121,7 @@ export default function BasicTabs() {
               <Tab label="Books Panel" {...a11yProps(1)} />
               <Tab label="Books Stock" {...a11yProps(2)} />
               <Tab label="Bills Panel" {...a11yProps(3)} />
+              <Tab label="Reports Panel" {...a11yProps(4)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -139,6 +141,9 @@ export default function BasicTabs() {
           </TabPanel>
           <TabPanel value={value} index={3}>
             <BillsTable/>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <ReportsTable/>
           </TabPanel>
         </ThemeProvider>
       ) : null }
