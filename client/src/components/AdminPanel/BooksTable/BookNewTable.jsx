@@ -236,7 +236,7 @@ export default function TestUsers() {
     setSearchBook("");
     dispatch(searchBookByName(""));
   };
-  
+
   /////////////////////////////////////
 
   const handleOpenDelete = () => {
@@ -300,6 +300,7 @@ export default function TestUsers() {
                     aria-label="toggle password visibility"
                     onClick={(e) => handleDeleteBook(e)}
                     edge="end"
+                    title="Clear"
                   >
                     <ClearIcon />
                   </IconButton>

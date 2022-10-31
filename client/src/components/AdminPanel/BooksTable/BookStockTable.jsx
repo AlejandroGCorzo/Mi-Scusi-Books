@@ -296,6 +296,7 @@ export default function BooksStock() {
                     aria-label="toggle password visibility"
                     onClick={(e) => handleDeleteBook(e)}
                     edge="end"
+                    title="Clear"
                   >
                     <ClearIcon />
                   </IconButton>
