@@ -18,6 +18,7 @@ import {
   userBills,
   clearBills,
   searchEmail,
+  setShippingAddress
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -184,14 +185,14 @@ export const setNotLogedShoppingCart = (cart) => {
   };
 };
 
-export const payAccepted = (token) => {
+export const payAccepted = (token, address) => {
   console.log("entre al action", token);
   return async (dispatch) => {
     console.log("en el dispatch");
     try {
       const pay = await axios.put(
         "/user/pay",
-        {},
+        {address},
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -303,3 +304,9 @@ export const setUserDiscount = (id, discount, token) => {
     return dispatch(forgotPassword(''))   
   }
 };
+
+export const shippingAddress = (data) => {
+  return function(dispatch){
+    return dispatch(setShippingAddress(data))
+  }
+}

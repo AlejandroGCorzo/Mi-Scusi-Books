@@ -29,6 +29,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import FormDialog from "./DirectionForm/DirectionForm.jsx";
 import EditIcon from '@mui/icons-material/Edit';
 import { setUserDiscount } from "../../redux/StoreUsers/usersActions.js";
+import { clearShippingAddress } from "../../redux/StoreUsers/usersSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -399,6 +400,7 @@ export default function ShoppingCart(props) {
                             city: "",
                             province: "",
                           });
+                          dispatch(clearShippingAddress())
                           }else{
                             setOpenForm(true);
                           }
@@ -469,6 +471,7 @@ export default function ShoppingCart(props) {
       direction={direction}
       setDirection={setDirection}
       errors={errors}
+      setSelectOrder={setSelectOrder}
       setErrors={setErrors}
       setMsg={setMsg}
       setOpen={setOpen}
