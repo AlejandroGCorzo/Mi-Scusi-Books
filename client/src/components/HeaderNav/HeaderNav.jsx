@@ -107,6 +107,7 @@ export default function HeaderNav(onSearch) {
             <Link to="/userDetails">
               <p>Profile</p>
             </Link> */}
+            <p>Loyalty Points : {loggedUser.loyaltyPoint}</p>
             <p className="noRomper">
               <Link to="/" style={{ textDecoration: "none" }}>
                 <HomeIcon style={{ color: "white" }} />

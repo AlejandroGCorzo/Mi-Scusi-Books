@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 
 const createOrder = async (req, res) => {
-  const { id } = req.body
+  const { id, discount } = req.body
   
   try {
     const cart = await User.findById(id).select("cart");
@@ -12,6 +12,8 @@ const createOrder = async (req, res) => {
     }, 0)
 
     price = Math.round(price * 100) / 100
+    price = price - Math.round(price * discount* 100) / 100
+    console.log(price);
     const order = {
       intent: "CAPTURE",
       purchase_units: [
