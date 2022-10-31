@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { TextField } from "@mui/material";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./ProblemReport.css";
 
@@ -90,6 +91,7 @@ export default function ProblemReport() {
     <>
       <section className="sectionReport">
         <div className="divReport">
+          <button className="closeBtn" type="button" onClick={(e) => history.push("/")}>X</button>
           <h1 style={{ fontSize: "1.8em" }}>
             <b>Report a problem</b>
           </h1>
