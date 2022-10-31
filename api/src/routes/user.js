@@ -423,6 +423,7 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
+      const text = (state === "limited" || state === "inactive") ? "Your user status has been changed due to the violation of our ToS" : "Your user status has been changed"
       await transporter.sendMail({
         from: `"Status changed" <${process.env.GMAIL_USER}>`,
         to: user.email,
