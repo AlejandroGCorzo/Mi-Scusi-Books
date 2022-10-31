@@ -425,6 +425,7 @@ export default function TestUsers() {
                     aria-label="toggle password visibility"
                     onClick={(e) => handleDeleteEmail(e)}
                     edge="end"
+                    title="Clear"
                   >
                     <ClearIcon />
                   </IconButton>
