@@ -311,10 +311,12 @@ export default function CreateBook() {
 
         <div className="formBackx">
           {/* BUTTONS STACK RESET & CREATE */}
+         
           <SubmitButtonStack
             handleClickOpen={handleClickOpen}
             errorHandler={errorHandler}
             newBook={newBook}
+            edit={edit}
           />
           {/* CONFIRM WINDOWS */}
           <DialogAction
@@ -323,6 +325,9 @@ export default function CreateBook() {
             setNewBook={setNewBook}
             emptyBook={emptyBook}
             handleSubmit={handleSubmit}
+            bookId={detailBook?._id}
+            accessToken={accessToken}
+            handleUpdate={handleUpdate}
             setAuthor={setAuthor}
             setOptions={setOptions}
             defaultOptions={defaultOptions}
