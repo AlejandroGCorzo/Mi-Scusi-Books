@@ -20,6 +20,7 @@ import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
 import ChatBot from "./components/ChatBot/ChatBot"
 import ProblemReport from "./components/Reports/ProblemReport";
+import ReadPdf from "./components/ReadPDF/ReadPDF";
 
 function App() {
   return (
@@ -52,7 +53,9 @@ function App() {
         <Route path="/order-successfully" component={PaymentAcepted} />
         <Route path="/forgotPassword" component={ForgotPassword} />
         <Route path="/newPassword" component={NewPassword} />
+        <Route path="/readPDF" component={ReadPdf} />
         <Route exact path="/activation-mail/:id" component={ActivationMail} />
+        
       </React.Fragment>
     </div>
   );

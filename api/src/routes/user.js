@@ -374,6 +374,7 @@ userRouter.put("/delete/:id", protect, async (req, res) => {
 userRouter.put("/update/:id", protect, async (req, res) => {
   const { id } = req.params;
   const update = req.body;
+  console.log('ENTRREEEEE');
   if (req.user && req.user.id === id) {
     if (!id) return res.status(400).send({ msg: "Not id found!" });
     try {
@@ -527,7 +528,7 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
-  const { shipp, points } = req.body;
+  const { shipp } = req.body;
   const reduceStock = async (id, amount) => {
     try {
       const book = await bookSchema.findById(id);
@@ -549,6 +550,11 @@ userRouter.put("/pay", protect, async (req, res) => {
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
+      let points;
+      if(user.discount === 0) points = 0
+      else if(user.discount == 0.1) points = 1000
+      else if(user.discount == 0.2) points = 2000
+      else if(user.discount == 0.3) points = 3000
       const substractStock = [];
       for (let i = 0; i < user.cart.length; i++) {
         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
@@ -699,5 +705,6 @@ userRouter.get("/favorites/:id", protect, async (req, res) => {
     return res.status(400).json({ msg: "Not authorized to see favorites" });
   }
 });
+
 
 module.exports = userRouter;

@@ -32,6 +32,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    discount: {
+      type: Number,
+      default: 0
+    },
     state: {
       type: String,
       default: "pending",

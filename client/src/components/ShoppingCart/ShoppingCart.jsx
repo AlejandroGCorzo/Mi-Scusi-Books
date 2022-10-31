@@ -28,6 +28,7 @@ import CheckoutPayPal from "../../components/Paypal/PayPal";
 import { IconButton, Snackbar } from "@mui/material";
 import FormDialog from "./DirectionForm/DirectionForm.jsx";
 import EditIcon from '@mui/icons-material/Edit';
+import { setUserDiscount } from "../../redux/StoreUsers/usersActions.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -151,6 +152,8 @@ export default function ShoppingCart(props) {
     // if(e.format !== "digital") envio = 8;
   });
 
+  totalShopping -= totalShopping*discount
+
   const handleClickBuy = async () => {
     if(Object.entries(errors).length !== 0){
       setMsg("Please complete the data!");
@@ -158,6 +161,7 @@ export default function ShoppingCart(props) {
     }else{
       setMsg("Redirecting...");
       setOpen(true);
+      dispatch(setUserDiscount(loggedUser.id, discount, accessToken))
       const { data } = await CheckoutPayPal(loggedUser.id, discount);
       window.location.href = data;
     }
