@@ -21,8 +21,8 @@ export default function UsersDelete(props) {
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
 
-  // console.log(accessToken);
-  console.log(id);
+  //console.log(accessToken);
+  //console.log(id);
 
   const handleDelete = (e) => {
     dispatch(setUserDelete(id, "inactive", accessToken));

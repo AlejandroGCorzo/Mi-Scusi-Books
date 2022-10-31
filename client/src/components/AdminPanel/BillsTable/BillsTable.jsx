@@ -17,6 +17,7 @@ const BillsTable = () => {
   const [render, setRender] = useState(true);
 
   const handleMenuClick = (id, status) => {
+    status = status === "approved" ? "cancelled" : "approved";
     dispatch(setBillStatus(id, status, accessToken));
     setRender(render === true ? false : true);
   };
