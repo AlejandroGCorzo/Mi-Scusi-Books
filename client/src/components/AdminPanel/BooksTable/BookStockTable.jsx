@@ -316,7 +316,7 @@ export default function BooksStock() {
               handleCloseDelete={handleCloseDelete}
               id={selected}
               handleSetStock={handleSetStock}
-              stock={inputStock[selected] || 0}
+              stock={inputStock[selected]}
             />
           </div>
         </div>
