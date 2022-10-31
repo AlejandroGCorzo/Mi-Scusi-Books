@@ -407,6 +407,7 @@ export default function ShoppingCart(props) {
                       >
                       <option value="0">Pick up in person</option>
                       <option value="8">Shipping to address</option>
+                      
                     </select>
                     
                     {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
