@@ -41,7 +41,7 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
       )
       .then((response) => {
         // console.log(response);
-        setNewBook({ ...newBook, pdf: response.data.secure_url });
+        setNewBook({ ...newBook, url: response.data.secure_url });
       });
   }
   // // // // //
