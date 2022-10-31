@@ -28,3 +28,24 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.divSearchTables{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.toolBarDiv{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolBarDivBooks{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}

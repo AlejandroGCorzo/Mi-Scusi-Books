@@ -206,7 +206,7 @@ const EnhancedTableToolbar = (props) => {
       {loggedUser.type === "admin" &&
       emailSelectUser &&
       id !== loggedUser.id ? (
-        <>
+        <div className="toolBarDiv">
           <FormControl sx={{ m: 0, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Change Rol
@@ -219,7 +219,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={(e) => handleChange(e)}
               autoWidth
               label="Change Rol"
-              style={{ width: "120px" }}
+              style={{ width: "150px" }}
             >
               <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="normal">Normal</MenuItem>
@@ -282,7 +282,7 @@ const EnhancedTableToolbar = (props) => {
             //openDialog={openBlock}
             //handleClose={handleCloseblock}
           />
-        </>
+        </div>
       ) : null}
     </Toolbar>
   );
@@ -362,12 +362,12 @@ export default function TestUsers() {
 
   const handleSearchUser = (e) => {
     setSearchUser(e.target.value);
-    dispatch(searchUserEmail(e.target.value))
+    dispatch(searchUserEmail(e.target.value));
   };
 
   const handleDeleteEmail = (e) => {
-    setSearchUser('');
-    dispatch(searchUserEmail(''))
+    setSearchUser("");
+    dispatch(searchUserEmail(""));
   };
 
   /////////////Pide la function de sort de mas arriba//////////////
@@ -400,16 +400,16 @@ export default function TestUsers() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchUsers.length) : 0;
 
-  useEffect(()=>{
-    setSearchUser('');
-    dispatch(searchUserEmail(''))
-  },[dispatch])
+  useEffect(() => {
+    setSearchUser("");
+    dispatch(searchUserEmail(""));
+  }, [dispatch]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <>
-          <FormControl sx={{ m: 1, width: "28ch" }} variant="outlined">
+        <div className="divSearchTables">
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Search Email
             </InputLabel>
@@ -433,25 +433,26 @@ export default function TestUsers() {
               label="Search Email"
             />
           </FormControl>
-        </>
-
-        <EnhancedTableToolbar
-          emailSelectUser={showEmail /* .length */}
-          openDelete={openDelete}
-          handleOpenDelete={handleOpenDelete}
-          handleCloseDelete={handleCloseDelete}
-          id={selected}
-          selectUser={searchUsers.find((u) => u._id === selected)}
-          loggedUser={loggedUser}
-          handleMakeAdmin={handleMakeAdmin}
-          handleRemoveAdmin={handleRemoveAdmin}
-          openBlock={openBlock}
-          handleOpenBlock={handleOpenBlock}
-          handleCloseBlock={handleCloseBlock}
-          openActive={openActive}
-          handleOpenActive={handleOpenActive}
-          handleCloseActive={handleCloseActive}
-        />
+          <div style={{ width: "100%" }}>
+            <EnhancedTableToolbar
+              emailSelectUser={showEmail /* .length */}
+              openDelete={openDelete}
+              handleOpenDelete={handleOpenDelete}
+              handleCloseDelete={handleCloseDelete}
+              id={selected}
+              selectUser={searchUsers.find((u) => u._id === selected)}
+              loggedUser={loggedUser}
+              handleMakeAdmin={handleMakeAdmin}
+              handleRemoveAdmin={handleRemoveAdmin}
+              openBlock={openBlock}
+              handleOpenBlock={handleOpenBlock}
+              handleCloseBlock={handleCloseBlock}
+              openActive={openActive}
+              handleOpenActive={handleOpenActive}
+              handleCloseActive={handleCloseActive}
+            />
+          </div>
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

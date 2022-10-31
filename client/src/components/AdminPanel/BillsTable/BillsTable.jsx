@@ -16,15 +16,20 @@ const BillsTable = () => {
   const { bills } = useSelector((state) => state.users);
   const [render, setRender] = useState(true);
 
-  const handleMenuClick = (id , status) => {
+  const handleMenuClick = (id, status) => {
     //console.log("click", e.key);
     console.log("record", id);
-    console.log("a -> c", status, '->', status === 'approved' ? 'cancelled' : 'approved' );
+    console.log(
+      "a -> c",
+      status,
+      "->",
+      status === "approved" ? "cancelled" : "approved"
+    );
 
-    status = status === 'approved' ? 'cancelled' : 'approved'
+    status = status === "approved" ? "cancelled" : "approved";
 
     console.log("status", status);
-    dispatch(setBillStatus(id, status, accessToken))
+    dispatch(setBillStatus(id, status, accessToken));
     setRender(render === true ? false : true);
   };
 
@@ -64,7 +69,7 @@ const BillsTable = () => {
     ];
 
     const datito = bills.find((e) => e._id === row.id);
-    console.log('datito', datito)
+    console.log("datito", datito);
 
     let data = [];
     for (let i = 0; i < datito.books.length; i++) {
@@ -91,8 +96,10 @@ const BillsTable = () => {
   const duplicateFilter = bills?.map((e) => ({
     text: `${e.user.firstName} ${e.user.lastName}`,
     value: `${e.user.firstName} ${e.user.lastName}`,
-  }))
-  const uniqueFilter = [...new Map(duplicateFilter.map(item => [item.text, item])).values()]
+  }));
+  const uniqueFilter = [
+    ...new Map(duplicateFilter.map((item) => [item.text, item])).values(),
+  ];
   //console.log(uniqueFilter);
 
   const columns = [
@@ -150,26 +157,26 @@ const BillsTable = () => {
       ),
     },
     {
-      title: 'Change Status',
+      title: "Change Status",
       dataIndex: "action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          {record.status === 'approved' ? 
-           <Popconfirm
-           title="Sure to set status to Cancelled?"
-           onConfirm={(e) => handleMenuClick(record.key, record.status)}
-           >
-            <a>Set status Cancelled</a>
-           </Popconfirm>
-           :            
-           <Popconfirm
-           title="Sure to set status to Approved?"
-           onConfirm={(e) => handleMenuClick(record.key,record.status)}
-           >
-            <a>Set status Approved</a>
-           </Popconfirm>}
-
+          {record.status === "approved" ? (
+            <Popconfirm
+              title="Sure to set status to Cancelled?"
+              onConfirm={(e) => handleMenuClick(record.key, record.status)}
+            >
+              <a>Set status Cancelled</a>
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Sure to set status to Approved?"
+              onConfirm={(e) => handleMenuClick(record.key, record.status)}
+            >
+              <a>Set status Approved</a>
+            </Popconfirm>
+          )}
         </Space>
       ),
     },
@@ -188,7 +195,7 @@ const BillsTable = () => {
         size="small"
         style={{ textTransform: "capitalize" }}
         pagination={{
-          position: ['bottomLeft'],
+          position: ["bottomLeft"],
         }}
       />
     </>

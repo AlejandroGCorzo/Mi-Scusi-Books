@@ -177,30 +177,32 @@ const EnhancedTableToolbar = (props) => {
         }),
       }}
     >
-      {
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-          style={{ "text-transform": "capitalize" }}
-        >
-          {numSelected ? `Book: ${numSelected}` : null}
-        </Typography>
-      }
-      {loggedUser.type === "admin" && numSelected ? (
-        <>
-          <IconButton onClick={handleOpenDelete} title="Delete">
-            <DeleteIcon />
-          </IconButton>
-          <BooksDelete
-            numSelected={numSelected}
-            openDialog={openDelete}
-            handleClose={handleCloseDelete}
-            id={id}
-          />
-        </>
-      ) : null}
+      <div className="toolBarDivBooks">
+        {
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+            style={{ "text-transform": "capitalize" }}
+          >
+            {numSelected ? `Book: ${numSelected}` : null}
+          </Typography>
+        }
+        {loggedUser.type === "admin" && numSelected ? (
+          <>
+            <IconButton onClick={handleOpenDelete} title="Delete">
+              <DeleteIcon />
+            </IconButton>
+            <BooksDelete
+              numSelected={numSelected}
+              openDialog={openDelete}
+              handleClose={handleCloseDelete}
+              id={id}
+            />
+          </>
+        ) : null}
+      </div>
     </Toolbar>
   );
 };
@@ -219,21 +221,21 @@ export default function TestUsers() {
   const { searchBooks } = useSelector((state) => state.books);
   const { loggedUser } = useSelector((state) => state.users);
   const [openDelete, setOpenDelete] = React.useState(false);
-  
+
   //////////////SearchBar BookName//////////////////
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
   const [searchBook, setSearchBook] = React.useState("");
 
   const handleSearchBook = (e) => {
     setSearchBook(e.target.value);
     console.log(e.target.value);
-    dispatch(searchBookByName(e.target.value))
+    dispatch(searchBookByName(e.target.value));
   };
 
   const handleDeleteBook = (e) => {
-    setSearchBook('');
-    dispatch(searchBookByName(''))
+    setSearchBook("");
+    dispatch(searchBookByName(""));
   };
 
   console.log(searchBook);
@@ -275,15 +277,15 @@ export default function TestUsers() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchBooks.length) : 0;
 
-    useEffect(()=>{
-      setSearchBook('');
-    dispatch(searchBookByName(''))
-    },[dispatch])
+  useEffect(() => {
+    setSearchBook("");
+    dispatch(searchBookByName(""));
+  }, [dispatch]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <>
+        <div className="divSearchTables">
           <FormControl sx={{ m: 1, width: "28ch" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Search Book Name
@@ -308,15 +310,17 @@ export default function TestUsers() {
               label="Search Book Name"
             />
           </FormControl>
-        </>
-        <EnhancedTableToolbar
-          numSelected={showEmail /* .length */}
-          openDelete={openDelete}
-          handleOpenDelete={handleOpenDelete}
-          handleCloseDelete={handleCloseDelete}
-          id={selected}
-          loggedUser={loggedUser}
-        />
+          <div style={{ width: "100%" }}>
+            <EnhancedTableToolbar
+              numSelected={showEmail /* .length */}
+              openDelete={openDelete}
+              handleOpenDelete={handleOpenDelete}
+              handleCloseDelete={handleCloseDelete}
+              id={selected}
+              loggedUser={loggedUser}
+            />
+          </div>
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
