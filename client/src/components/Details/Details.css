@@ -29,7 +29,7 @@
   background-color: #eff0ef87;
   border: 1px solid #c7c7c7;
   min-height: 200px;
-  min-width: 336px;
+  min-width: 335px;
   height: 3em;
 }
 
@@ -585,4 +585,5 @@ justify-content: center;
   .whiteBox {
     width: 80%;
   }
+
 }

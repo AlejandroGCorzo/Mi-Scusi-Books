@@ -9,6 +9,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import EditIcon from '@mui/icons-material/Edit';
 import Checkbox from "@mui/material/Checkbox";
 import {
   fetchShoppingCart,
@@ -32,11 +33,12 @@ import ConfirmDelete from "./ConfirmDelete/ConfirmDelete.jsx";
 const label = {};
 
 function textRating(value) {
-  if (value <= 1) return "Useless";
+  if (value > 0 && value <= 1) return "Useless";
   if (value > 1 && value <= 2) return "Poor";
   if (value > 2 && value <= 3) return "Ok!";
   if (value > 3 && value <= 4.5) return "Good!";
   if (value > 4.5 && value <= 5) return "Excellent!";
+  return "";
 }
 
 const Details = (props) => {
@@ -426,7 +428,9 @@ const Details = (props) => {
                         {viewRating(detail.rating[i])}
                         {
                           (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
-                          <DeleteIcon onClick={() => {
+                        
+
+                          <DeleteIcon style={{cursor:"pointer"}} onClick={() => {
                             setReviewDel({
                               reviewId: e._id,
                               user: e.user,
@@ -434,6 +438,7 @@ const Details = (props) => {
                               bookId: e.book,
                               userEmail: e.userEmail
                             })
+
                             handleDelete()
                           }} 
                           /> : null
@@ -467,13 +472,6 @@ const Details = (props) => {
       
       <div className="titleFormDetails">
         <p>Book Information </p>
-        {loggedUser.type === "admin" ? 
-        <div className="deleteIcon">
-          {/* <DeleteIcon onClick={handleDelete}/> */}
-          <span onClick={handleEdit}>EDIT</span>
-        </div>
-        : <></>
-        }
       </div>
       {/* <ConfirmDelete 
         openConfirm={openConfirm} 
@@ -485,7 +483,15 @@ const Details = (props) => {
         setMsg={setMsg}
       /> */}
       <div className="contentBookDetailDiv">
-        <div className="contentFav">{queDibujo(detail._id)}</div>
+        <div className="contentFav">
+          {loggedUser.type === "admin" ? 
+            <button onClick={handleEdit} className="buttonFav">
+              <EditIcon className="favColor"/>
+            </button>
+            : null
+          }
+          {queDibujo(detail._id)}
+          </div>
 
         <div className="categoryBookDetails">
           <div className="whiteBox">
@@ -644,34 +650,34 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        justifyContent: "flex-start",
                         margin: "25px",
-                        width: "95%",
+                        width: "90%",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
-                        {
-                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
-                          <DeleteIcon onClick={() => {
-                            setReviewDel({
-                              reviewId: e._id,
-                              user: e.user,
-                              rating: e.rating,
-                              bookId: e.book,
-                              userEmail: e.userEmail
-                            })
-                            handleDelete()
-                          }} 
-                          /> : null
-                        }
-                       
-                        
+                                               
                     </Box>
                     <p>{e.user ? e.user : "Some google user"}</p>
                     <p>{e.text}</p>
 
                     <div className="contentLike">
+                      {(loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                        <button  className="buttonFav" onClick={() => {
+                          setReviewDel({
+                            reviewId: e._id,
+                            user: e.user,
+                            rating: e.rating,
+                            bookId: e.book,
+                            userEmail: e.userEmail
+                          })
+
+                          handleDelete()
+                        }}>
+                        <DeleteIcon className="favColor"/>
+                        </button> : null
+                        }
                       {queLikeDibujo(e._id, detail._id)}
                       {e.votes.upvotes}
                       {queLikeDibujoB(e._id, detail._id)}
