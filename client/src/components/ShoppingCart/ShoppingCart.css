@@ -94,15 +94,30 @@
 .textBuy{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 15px;
+    align-items: flex-start;
     flex-direction: column;
-    color: black;
+    color: #2c3e50;
+    font-weight: 500;
 }
 
 .directionBuy{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    color: black;
+    width: 100%;
+}
+
+.directionBuy span{
+    margin-right: 25px;
+}
+
+.directionBuy select{
+    margin-left: 5px;
+    border: 1px solid #2c3e50;
+    outline: none;
+    font-weight: 500;
 }
 
 .contBuy span{
@@ -165,6 +180,10 @@
     border-radius: 5px;
 }
 
+.contentEdit{
+    margin-right: -30px;
+}
+
 @media (min-height: 0px){
     .itemsShoppingDetail{
         height: 480px;
@@ -196,5 +215,14 @@
     .contBuy span{
         margin-left: -15px;
     }
+    .directionBuy{
+        justify-content: center;
+    }
+    .contentEdit{
+        margin-left: 25px;
+        margin-right: 5px;
+    }
 }
+
+
 
