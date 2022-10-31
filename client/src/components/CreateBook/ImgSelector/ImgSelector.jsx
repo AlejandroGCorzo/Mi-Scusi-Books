@@ -52,11 +52,19 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
         <input hidden accept="image/*" type="file" onChange={uploadImage} />
         <PhotoCamera />
       </IconButton>
-      <IconButton color="primary" aria-label="upload picture" component="label">
-        <input hidden accept=".pdf" type="file" onChange={uploadPdf} />
-        <PictureAsPdfIcon />
-      </IconButton>
-      <span style={{ color: "black" }}>{pdf.file?.name}</span>
+      {newBook.format === "digital" && (
+        <>
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <input hidden accept=".pdf" type="file" onChange={uploadPdf} />
+            <PictureAsPdfIcon />
+          </IconButton>
+          <span style={{ color: "black" }}>{pdf.file?.name}</span>
+        </>
+      )}
 
       {/* <Button
         // className="ImgSelectorStackButton"
