@@ -203,8 +203,11 @@ export default function BooksStock() {
   const dispatch = useDispatch();
 
   const [inputStock, setInputStock] = React.useState({
-    _id: 0,
+    _id: "",
   });
+
+  //console.log(inputStock);
+  //console.log(selected);
 
   const stockChange = (e) => {
     setInputStock({ [e.target.name]: e.target.value });
@@ -212,7 +215,7 @@ export default function BooksStock() {
 
   const handleSetStock = (e) => {
     dispatch(setBookStock(selected, inputStock[selected], accessToken));
-    setInputStock({ _id: 0 });
+    setInputStock({ _id: "" });
   };
 
   //////////////SearchBar BookName//////////////////
@@ -253,7 +256,7 @@ export default function BooksStock() {
   const handleClick = (event, id, name) => {
     id === selected ? setSelected() : setSelected(id);
     name === showEmail ? setShowEmail() : setShowEmail(name);
-    if (id !== selected) setInputStock({ _id: 0 });
+    if (id !== selected) setInputStock({ _id: "" });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -313,7 +316,7 @@ export default function BooksStock() {
               handleCloseDelete={handleCloseDelete}
               id={selected}
               handleSetStock={handleSetStock}
-              stock={inputStock[selected]}
+              stock={inputStock[selected] || 0}
             />
           </div>
         </div>
@@ -357,6 +360,7 @@ export default function BooksStock() {
                           inputProps={{
                             "aria-labelledby": labelId,
                           }}
+                          style={{ visibility: "hidden" }}
                         />
                       </TableCell>
                       <TableCell
@@ -386,6 +390,10 @@ export default function BooksStock() {
                           value={inputStock._id}
                           onClick={(event) => handleClick(event, b._id, b.name)}
                           className="stockInput"
+                          onBlur={() => {
+                            setInputStock({ _id: "" });
+                            setSelected();
+                          }}
                         />
                       </TableCell>
                     </TableRow>

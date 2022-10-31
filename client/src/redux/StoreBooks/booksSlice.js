@@ -98,6 +98,7 @@ export const booksSlice = createSlice({
       const newStock = state.books.find((b) => b._id === action.payload.id);
       newStock.stock = newStock.stock + Number(action.payload.amount);
       state.books = [...state.books.filter((b) => b._id !== newStock._id),newStock];
+      state.searchBooks = state.books
     },
     searchBookName: (state, action) => {
       // let filterUsers = [...state.searchUsers]
