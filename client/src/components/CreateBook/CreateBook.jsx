@@ -14,6 +14,7 @@ import {
   handleErrors,
   onChange,
   handleSubmit,
+  handleUpdate
 } from "./Functions/exporter.js";
 import "./CreateBook.css";
 
@@ -21,6 +22,8 @@ export default function CreateBook() {
   const history = useHistory();
   const dispatch = useDispatch();
   // // // // // //
+  const detailBook = JSON.parse(window.sessionStorage.getItem('bookDetail'))
+ 
   const emptyBook = {
     title: "",
     author: [],
@@ -35,6 +38,8 @@ export default function CreateBook() {
     stock: "",
     image: "",
   };
+  
+  
   const [newBook, setNewBook] = useState(emptyBook);
   const [errorHandler, setErrorHandler] = useState({
     edition: "",
@@ -47,6 +52,8 @@ export default function CreateBook() {
   const [author, setAuthor] = useState("");
   const [catSel, setCatSel] = useState("Select Theme");
   const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
+  const [id, setId] = useState("");
+  const [edit, setEdit] = useState(false)
   const defaultOptions = {
     format: "Select format",
     language: "Select language",
@@ -78,6 +85,25 @@ export default function CreateBook() {
     if (!accessToken) history.push("/");
     if (loggedUser?.type === "normal") history.push("/");
     if (!Object.keys(categories).length) dispatch(getCategories());
+    if(detailBook?._id){
+      setNewBook({
+        title: detailBook.name,
+        author: [...detailBook.author],
+        editorial: detailBook.editorial,
+        edition: `${detailBook.edition}`,
+        price: detailBook.price,
+        categories: [...detailBook.category],
+        synopsis: detailBook.synopsis,
+        format: detailBook.format,
+        language: detailBook.language,
+        ISBN: `${detailBook.ISBN}`,
+        image: detailBook.image,
+      });
+      setId(detailBook._id)
+      setEdit(true);
+    }
+
+    return () => window.sessionStorage.removeItem('bookDetail')
   }, [dispatch, loggedUser]);
   // // // // // //
   return (
@@ -86,7 +112,7 @@ export default function CreateBook() {
       <>
       <div className="contentCreateBook">
         <div className="titleFormx">
-          <p className="infoTitle">Create Book</p>
+          <p className="infoTitle">{detailBook?._id ? "Update Book" : "Create Book"}</p>
         </div>
 
         <div className="contentBookDiv">
@@ -285,10 +311,12 @@ export default function CreateBook() {
 
         <div className="formBackx">
           {/* BUTTONS STACK RESET & CREATE */}
+         
           <SubmitButtonStack
             handleClickOpen={handleClickOpen}
             errorHandler={errorHandler}
             newBook={newBook}
+            edit={edit}
           />
           {/* CONFIRM WINDOWS */}
           <DialogAction
@@ -297,6 +325,9 @@ export default function CreateBook() {
             setNewBook={setNewBook}
             emptyBook={emptyBook}
             handleSubmit={handleSubmit}
+            bookId={detailBook?._id}
+            accessToken={accessToken}
+            handleUpdate={handleUpdate}
             setAuthor={setAuthor}
             setOptions={setOptions}
             defaultOptions={defaultOptions}

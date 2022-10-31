@@ -41,6 +41,7 @@ function textRating(value) {
 
 const Details = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [count, setCount] = useState(1);
   const { favorites } = useSelector((state) => state.users);
   const { loggedUser, login, votedReviews, votedBooks } = useSelector((state) => state.users);
@@ -354,6 +355,11 @@ const Details = (props) => {
    
   }
 
+  function handleEdit() {
+    window.sessionStorage.setItem('bookDetail', JSON.stringify(detail))
+    history.push(`/book/update/${detail._id}`)
+  }
+
   return (
     <div className="contentCategory">
       
@@ -411,11 +417,28 @@ const Details = (props) => {
                         width: 200,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "95%",
                         margin: "25px",
                         color: "#287ccb",
                       }}
                     >
                         {viewRating(detail.rating[i])}
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                     </Box>
 
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -444,12 +467,13 @@ const Details = (props) => {
       
       <div className="titleFormDetails">
         <p>Book Information </p>
-        {/* {loggedUser.type === "admin" ? 
+        {loggedUser.type === "admin" ? 
         <div className="deleteIcon">
-          <DeleteIcon onClick={handleDelete}/>
+          {/* <DeleteIcon onClick={handleDelete}/> */}
+          <span onClick={handleEdit}>EDIT</span>
         </div>
         : <></>
-        } */}
+        }
       </div>
       {/* <ConfirmDelete 
         openConfirm={openConfirm} 
@@ -627,18 +651,21 @@ const Details = (props) => {
                       }}
                     >
                         {viewRating(detail.rating[i])}
-                        {/* */}
-                        <DeleteIcon onClick={() => {
-                          setReviewDel({
-                            reviewId: e._id,
-                            user: e.user,
-                            rating: e.rating,
-                            bookId: e.book,
-                            userEmail: e.userEmail
-                          })
-                          handleDelete()
-                        }} 
-                        />
+                        {
+                          (loggedUser.type === "admin" || loggedUser.type === "seller") ? 
+                          <DeleteIcon onClick={() => {
+                            setReviewDel({
+                              reviewId: e._id,
+                              user: e.user,
+                              rating: e.rating,
+                              bookId: e.book,
+                              userEmail: e.userEmail
+                            })
+                            handleDelete()
+                          }} 
+                          /> : null
+                        }
+                       
                         
                     </Box>
                     <p>{e.user ? e.user : "Some google user"}</p>
@@ -672,7 +699,7 @@ const Details = (props) => {
       </div>
 {/* //////////////////////////////////////////////////////// */}
 
-          {accessToken && yaVotoLibro.length === 0 ?
+          {accessToken && yaVotoLibro.length === 0 && loggedUser.type === "normal" ?
           <div id="reviewsForm" className="revieFromUserContent">
             <span>Review</span>
 

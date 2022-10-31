@@ -84,7 +84,7 @@ export default function SearchBar() {
       <div className="headerLow">
         {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? 
             <Link to="/create" style={{ textDecoration: "none" }}>
-                <p className="noRomper">Add Book</p>
+                <p className="noRomper" onClick={() => window.sessionStorage.removeItem('bookDetail')}>Add Book</p>
             </Link>
           : null}
             {/* <Link to="/books" style={{ textDecoration: "none" }}>
