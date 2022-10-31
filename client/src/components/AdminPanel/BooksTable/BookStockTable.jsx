@@ -1,5 +1,16 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+///////////////Material UI//////////////////////////
+import { Link } from "react-router-dom";
 import { alpha } from "@mui/material/styles";
+import { Button } from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import ClearIcon from "@mui/icons-material/Clear";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,12 +25,10 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
-import { useDispatch, useSelector } from "react-redux";
-
+///////////////Material UI//////////////////////////
 import UpdateStock from "../ConfirmDialog/UpdateStock.jsx";
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
 import { setBookStock } from "../../../redux/StoreBooks/booksActions.js";
+import { searchBookByName } from "../../../redux/StoreBooks/booksActions.js";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -212,6 +221,23 @@ export default function BooksStock() {
     dispatch(setBookStock(selected, inputStock[selected], accessToken));
     setInputStock({ _id: 0 })
   };
+
+  //////////////SearchBar BookName//////////////////  
+  const [searchBook, setSearchBook] = React.useState("");
+
+  const handleSearchBook = (e) => {
+    setSearchBook(e.target.value);
+    console.log(e.target.value);
+    dispatch(searchBookByName(e.target.value))
+  };
+
+  const handleDeleteBook = (e) => {
+    setSearchBook('');
+    dispatch(searchBookByName(''))
+  };
+
+  console.log(searchBook);
+
   //////////////////////////////////////////////////////////
   const [openDelete, setOpenDelete] = React.useState(false);
 
@@ -226,6 +252,7 @@ export default function BooksStock() {
   };
 
   const { books } = useSelector((state) => state.books);
+  const { searchBooks } = useSelector((state) => state.books);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -252,11 +279,42 @@ export default function BooksStock() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - books.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchBooks.length) : 0;
+
+    useEffect(()=>{
+      setSearchBook('');
+    dispatch(searchBookByName(''))
+    },[dispatch])
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
+      <>
+          <FormControl sx={{ m: 1, width: "28ch" }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Search Book Name
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type="email"
+              value={searchBook}
+              onChange={(e) => handleSearchBook(e)}
+              autoComplete="off"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={(e) => handleDeleteBook(e)}
+                    edge="end"
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Search Book Name"
+            />
+          </FormControl>
+        </>
         <EnhancedTableToolbar
           numSelected={showEmail /* .length */}
           openDelete={openDelete}
@@ -277,12 +335,12 @@ export default function BooksStock() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={books.length}
+              rowCount={searchBooks.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(books, getComparator(order, orderBy))
+              {stableSort(searchBooks, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((b, index) => {
                   const isItemSelected = isSelected(b._id);
@@ -355,7 +413,7 @@ export default function BooksStock() {
         <TablePagination
           rowsPerPageOptions={[10, 25]}
           component="div"
-          count={books.length}
+          count={searchBooks.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -67,13 +67,23 @@ export default function CreateBook() {
   const handleClose = () => {
     setOpen({});
   };
+
+  const { loggedUser } = useSelector((state) => state.users);
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+
   // // // // // //
   useEffect(() => {
+    if (!accessToken) history.push("/");
+    if (loggedUser?.type === "normal") history.push("/");
     if (!Object.keys(categories).length) dispatch(getCategories());
-  }, [dispatch]);
+  }, [dispatch, loggedUser]);
   // // // // // //
   return (
     <div className="userOuterDiv">
+    {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? (
+      <>
       <div className="contentCreateBook">
         <div className="titleFormx">
           <p className="infoTitle">Create Book</p>
@@ -299,7 +309,7 @@ export default function CreateBook() {
 
       <div className="contentCreateBook">
         <div className="titleFormx">
-          <p className="infoTitle" >Book Information</p>
+          <p className="infoTitle">Book Information</p>
         </div>
 
         <div className="contentBookDiv">
@@ -334,6 +344,8 @@ export default function CreateBook() {
           </div>
         </div>
       </div>
+      </>
+    ) : null }
     </div>
   );
 }
