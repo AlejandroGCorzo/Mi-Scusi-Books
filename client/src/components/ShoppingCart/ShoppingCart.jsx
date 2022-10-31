@@ -26,6 +26,8 @@ import {
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal";
 import { IconButton, Snackbar } from "@mui/material";
+import FormDialog from "./DirectionForm/DirectionForm.jsx";
+import EditIcon from '@mui/icons-material/Edit';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,8 +77,42 @@ export default function ShoppingCart(props) {
   const cartToken = window.sessionStorage.getItem("cart");
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState("");
+
+
+  //////////////////////////////DIRECTION FORM//////////////////////////////////////////////////
+  const [selectOrder, setSelectOrder] = useState("8");
+  const [direction, setDirection] = useState({
+    address: "",
+    postalCode: "",
+    city: "",
+    province: "",
+  });
+
+  const [errors, setErrors] = useState({
+    address: "",
+    postalCode: "",
+    city: "",
+    province: "",
+});
+
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleClickOpenForm = () => {
+    setOpenForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setOpenForm(false);
+  };
+
+  var totalShopping = 0;
+  var envio = parseInt(selectOrder);
+
+////////////////////////////////////////////////////////////////////////////////
+
   const [discount, setDiscount] = useState('');
 
+  
   const handleDiscount = (e) => {
     e.preventDefault();
     if(e.target.value === 'default') setDiscount(0)
@@ -116,10 +152,16 @@ export default function ShoppingCart(props) {
   });
 
   const handleClickBuy = async () => {
-    setMsg("Redirecting...");
-    setOpen(true);
-    const { data } = await CheckoutPayPal(loggedUser.id, discount);
-    window.location.href = data;
+    if(Object.entries(errors).length !== 0){
+      setMsg("Please complete the data!");
+      setOpen(true);
+    }else{
+      setMsg("Redirecting...");
+      setOpen(true);
+      const { data } = await CheckoutPayPal(loggedUser.id, discount);
+      window.location.href = data;
+    }
+
   };
 
   function deleteFav(libroID) {
@@ -342,14 +384,43 @@ export default function ShoppingCart(props) {
           {value === 0 ? (
             <div className="contBuy">
               <div className="textBuy">
-                <div className="directionBuy">
-                  <span>Shipment: ${envio}</span>
+                  <div className="directionBuy">
+                      <select
+                      value={selectOrder}
+                      onChange={(e) => {
+                          if(e.target.value === "0"){
+                          setDirection({
+                            address: "",
+                            postalCode: "",
+                            city: "",
+                            province: "",
+                          });
+                          }else{
+                            setOpenForm(true);
+                          }
+                        setSelectOrder(e.target.value);
+                      }}
+                      >
+                      <option value="8">Shipping to address</option>
+                      <option value="0">Pick up in person</option>
+                    </select>
+                    
+                    {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
+                    ?<div className="contentEdit"><span><EditIcon onClick={handleClickOpenForm} style={{cursor:"pointer"}}/></span></div>
+                    : null}
+
+                    {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
+                    ? <div>
+                    <span>{`${direction.address}, ${direction.postalCode}, ${direction.city}, ${direction.province}`}</span></div>
+                    : null}
+                  </div>
+                  <div className="directionBuy">
+                    <span>Shipping: ${selectOrder}</span> <span>Total: ${(totalShopping + envio).toFixed(2)}</span>
+                  </div>
                 </div>
-                <span>
-                  Total with shipping: ${(totalShopping - totalShopping*discount + envio).toFixed(2)}
-                </span>
-              </div>
+
               <div>
+
                 {loggedUser?.loyaltyPoint > 1000 ? (
                   <select onChange={(e)=>handleDiscount(e)}>
                     <option value={"default"}>Discount</option>
@@ -387,6 +458,16 @@ export default function ShoppingCart(props) {
         onClose={handleClose}
         message={msg}
         action={action}
+      />
+      <FormDialog
+      open={openForm}
+      handleClose={handleCloseForm}
+      direction={direction}
+      setDirection={setDirection}
+      errors={errors}
+      setErrors={setErrors}
+      setMsg={setMsg}
+      setOpen={setOpen}
       />
     </div>
   );
