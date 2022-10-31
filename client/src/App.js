@@ -31,6 +31,7 @@ function App() {
         <Route path="/login" component={UserLogin} />
         <Route path="/signup" component={AccountCreate} />
         <Route path="/create" component={CreateBook} />
+        <Route exact path="/book/update/:id" component={CreateBook} />
         <Route path="/about" component={About} />
         <Switch>
           <Route

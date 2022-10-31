@@ -1,7 +1,7 @@
 import React from "react";
 import noImgAvailable from "../../../sourceImg/no_image_available.png";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-export default function NewBookPreview({ newBook }) {
+export default function NewBookPreview({ newBook, edit }) {
   return (
     <div>
       <div className="">
@@ -92,14 +92,18 @@ export default function NewBookPreview({ newBook }) {
             </span>
           </span>
 
-          <span className="previewTitles">
-            Stock:{" "}
-            <span className="contentTitles">
-              {newBook.stock
-                ? `${newBook.stock} ${newBook.stock > 1 ? "units" : "unit"}`
-                : "<empty>"}
-            </span>
-          </span>
+          {
+            !edit ? 
+              <span className="previewTitles">
+                Stock:{" "}
+                <span className="contentTitles">
+                  {newBook.stock
+                    ? `${newBook.stock} ${newBook.stock > 1 ? "units" : "unit"}`
+                    : "<empty>"}
+                </span>
+              </span>
+            : null  
+          }      
         </div>
       </div>
     </div>
