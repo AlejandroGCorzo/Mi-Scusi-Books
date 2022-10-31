@@ -19,6 +19,7 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
 import ChatBot from "./components/ChatBot/ChatBot"
+import ProblemReport from "./components/Reports/ProblemReport";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/signup" component={AccountCreate} />
         <Route path="/create" component={CreateBook} />
         <Route path="/about" component={About} />
+        <Route path="/contact" component={ProblemReport}/>
         <Switch>
           <Route
             exact
