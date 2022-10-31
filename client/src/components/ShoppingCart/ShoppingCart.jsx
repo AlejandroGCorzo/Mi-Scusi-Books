@@ -163,7 +163,7 @@ export default function ShoppingCart(props) {
       setMsg("Redirecting...");
       setOpen(true);
       dispatch(setUserDiscount(loggedUser.id, discount, accessToken))
-      const { data } = await CheckoutPayPal(loggedUser.id, discount);
+      const { data } = await CheckoutPayPal(loggedUser.id, discount, selectOrder);
       window.location.href = data;
     }
 
