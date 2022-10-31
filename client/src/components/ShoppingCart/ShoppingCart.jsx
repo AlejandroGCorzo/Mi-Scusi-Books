@@ -80,7 +80,7 @@ export default function ShoppingCart(props) {
 
 
   //////////////////////////////DIRECTION FORM//////////////////////////////////////////////////
-  const [selectOrder, setSelectOrder] = useState("8");
+  const [selectOrder, setSelectOrder] = useState("0");
   const [direction, setDirection] = useState({
     address: "",
     postalCode: "",
@@ -106,7 +106,7 @@ export default function ShoppingCart(props) {
   };
 
   var totalShopping = 0;
-  var envio = parseInt(selectOrder);
+  // var envio = parseInt(selectOrder);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -123,7 +123,7 @@ export default function ShoppingCart(props) {
   ////////////////////////////////////////////////////////////////////////////////
 
   var totalShopping = 0;
-  var envio = 8;
+  // var envio = 8;
 
   useEffect(() => {
     dispatch(getBooks());
@@ -152,13 +152,13 @@ export default function ShoppingCart(props) {
   });
 
   const handleClickBuy = async () => {
-    if(Object.entries(errors).length !== 0){
+    if(selectOrder === "8" && Object.entries(errors).length !== 0){
       setMsg("Please complete the data!");
       setOpen(true);
     }else{
       setMsg("Redirecting...");
       setOpen(true);
-      const { data } = await CheckoutPayPal(loggedUser.id, discount);
+      const { data } = await CheckoutPayPal(loggedUser.id, discount, selectOrder);
       window.location.href = data;
     }
 
@@ -401,8 +401,8 @@ export default function ShoppingCart(props) {
                         setSelectOrder(e.target.value);
                       }}
                       >
-                      <option value="8">Shipping to address</option>
                       <option value="0">Pick up in person</option>
+                      <option value="8">Shipping to address</option>
                     </select>
                     
                     {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
@@ -415,7 +415,7 @@ export default function ShoppingCart(props) {
                     : null}
                   </div>
                   <div className="directionBuy">
-                    <span>Shipping: ${selectOrder}</span> <span>Total: ${(totalShopping + envio).toFixed(2)}</span>
+                    <span>Shipping: ${selectOrder}</span> <span>Total: ${(totalShopping + Number(selectOrder)).toFixed(2)}</span>
                   </div>
                 </div>
 
