@@ -220,7 +220,6 @@ export default function BooksStock() {
 
   const handleSearchBook = (e) => {
     setSearchBook(e.target.value);
-    console.log(e.target.value);
     dispatch(searchBookByName(e.target.value));
   };
 
@@ -228,8 +227,6 @@ export default function BooksStock() {
     setSearchBook("");
     dispatch(searchBookByName(""));
   };
-
-  console.log(searchBook);
 
   //////////////////////////////////////////////////////////
   const [openDelete, setOpenDelete] = React.useState(false);

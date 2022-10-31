@@ -229,7 +229,6 @@ export default function TestUsers() {
 
   const handleSearchBook = (e) => {
     setSearchBook(e.target.value);
-    console.log(e.target.value);
     dispatch(searchBookByName(e.target.value));
   };
 
@@ -237,8 +236,7 @@ export default function TestUsers() {
     setSearchBook("");
     dispatch(searchBookByName(""));
   };
-
-  console.log(searchBook);
+  
   /////////////////////////////////////
 
   const handleOpenDelete = () => {

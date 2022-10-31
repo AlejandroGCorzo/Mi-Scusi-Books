@@ -17,18 +17,6 @@ const BillsTable = () => {
   const [render, setRender] = useState(true);
 
   const handleMenuClick = (id, status) => {
-    //console.log("click", e.key);
-    console.log("record", id);
-    console.log(
-      "a -> c",
-      status,
-      "->",
-      status === "approved" ? "cancelled" : "approved"
-    );
-
-    status = status === "approved" ? "cancelled" : "approved";
-
-    console.log("status", status);
     dispatch(setBillStatus(id, status, accessToken));
     setRender(render === true ? false : true);
   };
@@ -69,7 +57,7 @@ const BillsTable = () => {
     ];
 
     const datito = bills.find((e) => e._id === row.id);
-    console.log("datito", datito);
+    //console.log("datito", datito);
 
     let data = [];
     for (let i = 0; i < datito.books.length; i++) {
@@ -81,7 +69,6 @@ const BillsTable = () => {
         quantity: datito.amountBooks[i],
       });
     }
-    console.log(data);
 
     return (
       <Table
