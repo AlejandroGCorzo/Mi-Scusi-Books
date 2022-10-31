@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const protect = async (req, res, next) => {
-  // console.log('headers', req.headers)
+//  console.log('headers', req.headers.authorization)
 
   let accessToken;
   if (

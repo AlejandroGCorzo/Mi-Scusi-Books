@@ -14,6 +14,7 @@ import {
   handleErrors,
   onChange,
   handleSubmit,
+  handleUpdate
 } from "./Functions/exporter.js";
 import "./CreateBook.css";
 
@@ -21,6 +22,9 @@ export default function CreateBook() {
   const history = useHistory();
   const dispatch = useDispatch();
   // // // // // //
+  const detailBook = JSON.parse(window.sessionStorage.getItem('bookDetail'))
+  const accessToken = window.localStorage.getItem('token') || window.sessionStorage.getItem('token')
+ 
   const emptyBook = {
     title: "",
     author: [],
@@ -35,6 +39,8 @@ export default function CreateBook() {
     stock: "",
     image: "",
   };
+  
+  
   const [newBook, setNewBook] = useState(emptyBook);
   const [errorHandler, setErrorHandler] = useState({
     edition: "",
@@ -47,6 +53,8 @@ export default function CreateBook() {
   const [author, setAuthor] = useState("");
   const [catSel, setCatSel] = useState("Select Theme");
   const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
+  const [id, setId] = useState("");
+  const [edit, setEdit] = useState(false)
   const defaultOptions = {
     format: "Select format",
     language: "Select language",
@@ -70,13 +78,32 @@ export default function CreateBook() {
   // // // // // //
   useEffect(() => {
     if (!Object.keys(categories).length) dispatch(getCategories());
+    if(detailBook?._id){
+      setNewBook({
+        title: detailBook.name,
+        author: [...detailBook.author],
+        editorial: detailBook.editorial,
+        edition: `${detailBook.edition}`,
+        price: detailBook.price,
+        categories: [...detailBook.category],
+        synopsis: detailBook.synopsis,
+        format: detailBook.format,
+        language: detailBook.language,
+        ISBN: `${detailBook.ISBN}`,
+        image: detailBook.image,
+      });
+      setId(detailBook._id)
+      setEdit(true);
+    }
+
+    return () => window.sessionStorage.removeItem('bookDetail')
   }, [dispatch]);
   // // // // // //
   return (
     <div className="userOuterDiv">
       <div className="contentCreateBook">
         <div className="titleFormx">
-          <p className="infoTitle">Create Book</p>
+          <p className="infoTitle">{detailBook?._id ? "Update Book" : "Create Book"}</p>
         </div>
 
         <div className="contentBookDiv">
@@ -243,19 +270,22 @@ export default function CreateBook() {
             </div>
 
             <span>{errorHandler.ISBN}</span>
-
-            <div className="divInputForm">
-              <span>Stock: </span>
-              <input
-                autoComplete="off"
-                maxLength={6}
-                type="text"
-                placeholder="Numbers only"
-                name="stock"
-                value={newBook.stock}
-                onChange={handleChange}
-              />
-            </div>
+            {
+              !edit ? 
+                <div className="divInputForm">
+                  <span>Stock: </span>
+                  <input
+                    autoComplete="off"
+                    maxLength={6}
+                    type="text"
+                    placeholder="Numbers only"
+                    name="stock"
+                    value={newBook.stock}
+                    onChange={handleChange}
+                  />
+                </div>
+              : null
+            }    
 
             <span>{errorHandler.stock}</span>
 
@@ -279,6 +309,7 @@ export default function CreateBook() {
             handleClickOpen={handleClickOpen}
             errorHandler={errorHandler}
             newBook={newBook}
+            edit={edit}
           />
           {/* CONFIRM WINDOWS */}
           <DialogAction
@@ -287,6 +318,9 @@ export default function CreateBook() {
             setNewBook={setNewBook}
             emptyBook={emptyBook}
             handleSubmit={handleSubmit}
+            handleUpdate={handleUpdate}
+            bookId={id}
+            accessToken={accessToken}
             setAuthor={setAuthor}
             setOptions={setOptions}
             defaultOptions={defaultOptions}
@@ -305,7 +339,7 @@ export default function CreateBook() {
         <div className="contentBookDiv">
           <div className="categoryBook">
             {/* NEW BOOK PREVIEW */}
-            <NewBookPreview newBook={newBook} />
+            <NewBookPreview newBook={newBook} edit={edit}/>
           </div>
         </div>
 

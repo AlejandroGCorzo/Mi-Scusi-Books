@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import handleUpdate from "../Functions/handleUpdate";
 
 export default function DialogAction({
   handleClose,
@@ -18,6 +19,8 @@ export default function DialogAction({
   setCatSel,
   open,
   history,
+  bookId,
+  accessToken
 }) {
   return (
     <React.Fragment>
@@ -81,6 +84,35 @@ export default function DialogAction({
         </DialogActions>
       </Dialog>
       {/*  */}
+      {/*  */}
+      {/*  */}
+      <Dialog
+        open={open.update ? true : false}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Confirm update
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Check that everything is OK and click Confirm. Else click Cancel.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={(e) => {
+              handleClose();
+              handleUpdate(e, newBook, history, bookId, accessToken);
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }
