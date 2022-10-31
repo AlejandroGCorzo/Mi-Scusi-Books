@@ -40,23 +40,6 @@ const BillsTable = () => {
     status: e.status,
   }));
 
-  const menu = (key) => (
-    <Menu
-      onClick={(e) => handleMenuClick(e, key)}
-      items={[
-        {
-          key: "cancelled",
-          label: "Cancelled",
-        },
-        {
-          key: "approved",
-          label: "Approved",
-        },
-      ]}
-    />
-
-  );
-
   const expandedRowRender = (row) => {
     //console.log('row', row.id);
 
@@ -81,7 +64,7 @@ const BillsTable = () => {
     ];
 
     const datito = bills.find((e) => e._id === row.id);
-    //console.log('datito', datito)
+    console.log('datito', datito)
 
     let data = [];
     for (let i = 0; i < datito.books.length; i++) {
@@ -93,6 +76,7 @@ const BillsTable = () => {
         quantity: datito.amountBooks[i],
       });
     }
+    console.log(data);
 
     return (
       <Table
@@ -109,7 +93,7 @@ const BillsTable = () => {
     value: `${e.user.firstName} ${e.user.lastName}`,
   }))
   const uniqueFilter = [...new Map(duplicateFilter.map(item => [item.text, item])).values()]
-  console.log(uniqueFilter);
+  //console.log(uniqueFilter);
 
   const columns = [
     {
