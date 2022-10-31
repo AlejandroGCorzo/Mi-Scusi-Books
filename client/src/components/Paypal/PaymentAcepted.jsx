@@ -8,13 +8,14 @@ import "./PaymentAcepted.css";
 export default function PaymentAcepted() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const address = useSelector(state => state.shippingAddress)
   //traer al cart
 
   useEffect(() => {
     const accessToken =
       window.localStorage.getItem("token") ||
       window.sessionStorage.getItem("token");
-    dispatch(payAccepted(accessToken));
+    dispatch(payAccepted(accessToken, address));
   }, []);
 
   return (
