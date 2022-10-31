@@ -16,6 +16,7 @@ export const usersSlice = createSlice({
     votedBooks: [],
     waitingForgot: false,
     searchUsers: [],
+    shippingAddress:{}
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -113,6 +114,12 @@ export const usersSlice = createSlice({
       // let filterUsers = [...state.searchUsers]
       state.searchUsers = state.users.filter(u => u.email.includes(action.payload))
     },
+    setShippingAddress: (state, action) => {
+      state.shippingAddress = action.payload;
+    },
+    clearShippingAddress: (state) => {
+      state.shippingAddress = {}
+    }
   },
 });
 
@@ -137,6 +144,8 @@ export const {
   changeBillStatus,
   userBills,
   clearBills,
-  searchEmail
+  searchEmail,
+  setShippingAddress,
+  clearShippingAddress
 } = usersSlice.actions;
 export default usersSlice.reducer;
