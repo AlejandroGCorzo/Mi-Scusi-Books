@@ -64,6 +64,9 @@ const booksSchema = mongoose.Schema({
   },
   deleted: {
     type: Boolean
+  },
+  url:{
+    type: String
   }
 })
 

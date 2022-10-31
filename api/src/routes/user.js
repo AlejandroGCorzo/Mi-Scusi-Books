@@ -130,7 +130,6 @@ userRouter.post("/login", async (req, res) => {
         if (newCart.some((b) => b.id === book.id)) continue;
         newCart.push(book);
       }
-      console.log("carro final: ", newCart);
       await user.updateOne({ cart: newCart });
     }
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -537,11 +536,6 @@ userRouter.put("/pay", protect, async (req, res) => {
       await book.updateOne({
         $set: { stock, unitSold },
       });
-      // const reduce = await bookSchema.findByIdAndUpdate(id, {
-      //   $inc: {
-      //     stock: -amount,
-      //   },
-      // });
     } catch (e) {
       res.status(400).send("error substracting stock");
     }
@@ -608,8 +602,15 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp,
       });
 
+      let newBuyedBooks = books.concat(user.buyedBooks)
+      const buyedBooks = []
+      for(const idBook of newBuyedBooks){
+        if(buyedBooks.some(id => id === idBook)) continue
+        buyedBooks.push(idBook)
+      }
+
       await user.updateOne({
-        $set: { cart: [], loyaltyPoint: newLoyaltyPoint },
+        $set: { buyedBooks : buyedBooks, cart: [], loyaltyPoint: newLoyaltyPoint },
       });
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
@@ -706,5 +707,25 @@ userRouter.get("/favorites/:id", protect, async (req, res) => {
   }
 });
 
+userRouter.get("/buyedBooks/:idBook",protect, async (req,res) => {
+  const {idBook} = req.params;
+  if (req.user) {
+    try {
+      const user = await User.findById(req.user._id)
+      console.log(idBook);
+      console.log(user.buyedBooks);
+      if(!user.buyedBooks.some(id => id.valueOf() === idBook)) return res.status(400).send('No lo tiene!')
+      const book = await bookSchema.findById(idBook)
+      if(!book) return res.status(400).send('Something goes wrong!')
+      res.send(book.url)
+    } catch (error) {
+      res
+        .status(400)
+        .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to see buyed books" });
+  }
+})
 
 module.exports = userRouter;
