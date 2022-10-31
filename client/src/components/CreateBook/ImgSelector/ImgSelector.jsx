@@ -51,12 +51,12 @@ export default function ImgSelector({
         />
         <PhotoCamera />
       </IconButton>
-      <span style={{ color: "black" }}>{imgSelected.file.name}</span>
+      <span style={{ color: "black" }}>{imgSelected.file?.name}</span>
       <Button
         // className="ImgSelectorStackButton"
         variant="contained"
         component="label"
-        disabled={!imgSelected.file.name}
+        disabled={!imgSelected.file?.name}
       >
         Upload cover
         <input hidden accept="image/*" onClick={uploadImage} />

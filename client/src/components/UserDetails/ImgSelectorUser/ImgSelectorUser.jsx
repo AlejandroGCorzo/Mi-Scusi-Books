@@ -52,12 +52,12 @@ export default function ImgSelectorUser({
         />
         <PhotoCamera />
       </IconButton>
-      <span style={{ color: "black" }}>{imgSelected.file.name}</span>
+      <span style={{ color: "black" }}>{imgSelected.file?.name}</span>
       <Button
         // className="ImgSelectorStackButton"
         variant="contained"
         component="label"
-        disabled={!imgSelected.file.name}
+        disabled={!imgSelected.file?.name}
       >
         Upload Profile Pic
         <input hidden accept="image/*" onClick={uploadImage} />
