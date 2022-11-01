@@ -54,6 +54,7 @@ export default function UserDetails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { profile, bills, loggedUser } = useSelector((store) => store.users);
+>>>>>>>>> Temporary merge branch 2
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
