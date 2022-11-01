@@ -205,7 +205,7 @@ const ReportsTable = () => {
     <>
       <Table
         columns={columns}
-        dataSource={reports2}
+        dataSource={reports2.reverse()}
         size="small"
         style={{ textTransform: "capitalize" }}
         pagination={{
