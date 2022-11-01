@@ -67,7 +67,8 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
             city: "",
             province: "",
         });
-        dispatch(clearShippingAddress())
+        // dispatch(clearShippingAddress())
+        window.sessionStorage.removeItem('shipping')
     }
 
     function cancelForm(){
@@ -77,7 +78,9 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
           city: "",
           province: "",
         });
+     
       setSelectOrder("0")
+      window.sessionStorage.removeItem('shipping')
       handleClose();
     }
 
@@ -86,7 +89,8 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
           setMsg("Please complete the data!");
           setOpen(true);
         }else{
-            dispatch(shippingAddress(direction))
+            // dispatch(shippingAddress(direction))
+            window.sessionStorage.setItem('shipping', JSON.stringify(direction))
             handleClose();
         }
     }

@@ -152,7 +152,6 @@ export default function ShoppingCart(props) {
     totalShopping += e.price * e.amount ;
     // if(e.format !== "digital") envio = 8;
   });
-
   totalShopping -= totalShopping*discount
 
   const handleClickBuy = async () => {
@@ -163,7 +162,7 @@ export default function ShoppingCart(props) {
       setMsg("Redirecting...");
       setOpen(true);
       dispatch(setUserDiscount(loggedUser.id, discount, accessToken))
-      const { data } = await CheckoutPayPal(loggedUser.id, discount);
+      const { data } = await CheckoutPayPal(loggedUser.id, discount, selectOrder);
       window.location.href = data;
     }
 
@@ -400,7 +399,8 @@ export default function ShoppingCart(props) {
                             city: "",
                             province: "",
                           });
-                          dispatch(clearShippingAddress())
+                          // dispatch(clearShippingAddress())
+                          window.sessionStorage.removeItem('shipping')
                           }else{
                             setOpenForm(true);
                           }
