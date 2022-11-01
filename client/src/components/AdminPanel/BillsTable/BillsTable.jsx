@@ -135,6 +135,7 @@ const BillsTable = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      sorter: (obj1, obj2) => obj1.date - obj2.date,
     },
     {
       title: "Status",
