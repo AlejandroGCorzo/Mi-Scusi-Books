@@ -25,6 +25,8 @@ import { getAllBills } from "../../redux/StoreUsers/usersActions.js";
 import { clearAllBills, getUser } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import { setEmptyUsers } from "../../redux/StoreUsers/usersSlice.js";
+import { getAllReports } from "../../redux/StoreUsers/usersActions.js";
+import { clearReports } from "../../redux/StoreUsers/usersSlice.js";
 ///////////////Actions//////////////////////////
 
 ///////////////SnackBars//////////////////////////
@@ -97,7 +99,9 @@ export default function BasicTabs() {
     dispatch(getUser(accessToken));
     dispatch(getBooks());
     dispatch(getAllBills(accessToken));
+    dispatch(getAllReports(accessToken))
     return (()=> {
+      dispatch(clearReports())
       dispatch(setEmptyUsers());
       dispatch(clearAllBills())
     })

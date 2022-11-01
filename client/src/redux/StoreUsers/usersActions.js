@@ -18,6 +18,7 @@ import {
   userBills,
   clearBills,
   searchEmail,
+  getReports,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -290,7 +291,7 @@ export const searchUserEmail = (email) => {
 
 export const setUserDiscount = (id, discount, token) => {
   return async (dispatch) => {
-    console.log('entre a la aciton');
+    console.log("entre a la aciton");
     await axios.put(
       `/user/update/${id}`,
       { discount },
@@ -300,6 +301,17 @@ export const setUserDiscount = (id, discount, token) => {
         },
       }
     );
-    return dispatch(forgotPassword(''))   
-  }
+    return dispatch(forgotPassword(""));
+  };
+};
+
+export const getAllReports = (token) => {
+  return async (dispatch) => {
+    const json = await axios.get("/report/", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getReports(json.data));
+  };
 };
