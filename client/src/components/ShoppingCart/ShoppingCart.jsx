@@ -29,7 +29,7 @@ import { IconButton, Snackbar } from "@mui/material";
 import FormDialog from "./AdressForm/AdressForm.jsx";
 import EditIcon from "@mui/icons-material/Edit";
 import { setUserDiscount } from "../../redux/StoreUsers/usersActions.js";
-import { clearShippingAddress } from "../../redux/StoreUsers/usersSlice";
+import { clearShippingAddress, clearShoppingCart } from "../../redux/StoreUsers/usersSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -129,8 +129,8 @@ export default function ShoppingCart(props) {
     dispatch(getBooks());
     if (accessToken) {
       // dispatch(keepLog(accessToken));
-      dispatch(fetchFavorites(loggedUser.id));
-      dispatch(fetchShoppingCart(loggedUser.id));
+      dispatch(fetchFavorites(accessToken));
+      dispatch(fetchShoppingCart(accessToken));
     }
     if (accessToken && cartToken && shoppingCart.length === 0) {
       dispatch(setNotLogedShoppingCart(cartToken));
@@ -144,7 +144,7 @@ export default function ShoppingCart(props) {
         window.sessionStorage.removeItem("cart");
       }
     };
-  }, [dispatch, login]);
+  }, [dispatch, login, accessToken]);
 
   shoppingCart?.forEach((e) => {
     totalShopping += e.price * e.amount;

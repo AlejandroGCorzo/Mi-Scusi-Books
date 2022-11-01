@@ -316,6 +316,24 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
+
+//Devuelve el carrito completo del usuario logueado -> PROTEGIDA, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
+userRouter.get("/cart", protect, async (req, res) => {
+  // const { id } = req.params;
+  if (req.user) {
+    try {
+      const user = await User.findById(req.user.id).populate("cart.books");
+      console.log('carrito', user.cart)
+      res.send(user.cart);
+    } catch (error) {
+      res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to see shopping cart" });
+  }
+});
+
+
 //Validate user email -> publico
 userRouter.put("/activation-mail/:id", async (req, res) => {
   const { id } = req.params;
@@ -332,6 +350,24 @@ userRouter.put("/activation-mail/:id", async (req, res) => {
     }
   } catch (e) {
     return res.status(400).json({ msg: "Try again later" });
+  }
+});
+
+userRouter.get("/favorites", protect, async (req, res) => {
+  
+  if (req.user) {
+    try {
+      // if (!id) return res.status(400).send("Missing data!");
+      const user = await User.findById(req.user.id);
+      if (!user) return res.status(404).send("User not found!");
+      return res.send(user.favorites);
+    } catch (error) {
+      res
+        .status(400)
+        .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
+    }
+  } else {
+    return res.status(400).json({ msg: "Not authorized to see favorites" });
   }
 });
 
@@ -570,21 +606,6 @@ userRouter.put("/cart/delete/:idUser", protect, async (req, res) => {
   }
 });
 
-//Devuelve el carrito completo del usuario logueado -> PROTEGIDA, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
-userRouter.get("/cart/:id", protect, async (req, res) => {
-  const { id } = req.params;
-  if (req.user && req.user.id === id) {
-    try {
-      const user = await User.findById(id).populate("cart.books");
-      res.send(user.cart);
-    } catch (error) {
-      res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
-    }
-  } else {
-    return res.status(400).json({ msg: "Not authorized to see shopping cart" });
-  }
-});
-
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
   const { address } = req.body;
@@ -805,23 +826,6 @@ userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
   }
 });
 
-userRouter.get("/favorites/:id", protect, async (req, res) => {
-  const { id } = req.params;
-  if (req.user && req.user.id === id) {
-    try {
-      if (!id) return res.status(400).send("Missing data!");
-      const user = await User.findById(id);
-      if (!user) return res.status(404).send("User not found!");
-      return res.send(user.favorites);
-    } catch (error) {
-      res
-        .status(400)
-        .send({ msg: error, otherMsg: "algo fallo en get a favorite" });
-    }
-  } else {
-    return res.status(400).json({ msg: "Not authorized to see favorites" });
-  }
-});
 
 userRouter.get("/buyedBooks/:idBook", protect, async (req, res) => {
   const { idBook } = req.params;
