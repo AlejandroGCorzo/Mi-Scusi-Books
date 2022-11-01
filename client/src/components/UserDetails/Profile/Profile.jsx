@@ -10,7 +10,6 @@ export default function Profile({
   setEdit,
   changes,
   setChanges,
-  handleClick,
   errors,
   setErrors,
   dispatch,
@@ -37,12 +36,15 @@ export default function Profile({
         }
         autoComplete="off"
       >
+
+      <div className="contentImageProfile">
+      
         <div className="userImage">
           <img
             src={edit ? changes.image : profile.image}
             referrerPolicy="no-referrer"
           />
-        </div>
+
         {edit ? (
           <ImgSelectorUser
             imgSelected={imgSelected}
@@ -51,8 +53,16 @@ export default function Profile({
             setChanges={setChanges}
           />
         ) : null}
+
+        </div>
+
+      </div>
+
+      <div className="contentInfoProfile">
+
         <div className="userInfoContainer">
           <TextField
+            sx={{ m: 0.8 }}
             className="userDetailsNames"
             label="First Name"
             value={edit ? changes.firstName : profile.firstName}
@@ -69,48 +79,8 @@ export default function Profile({
             helperText={errors.firstName ? `${errors.firstName}` : null}
           />
 
-          <TextField
-            label="Email"
-            value={profile.email}
-            variant={"filled"}
-            name="email"
-            InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: true }}
-          />
-          <TextField
-            label="Phone number"
-            value={
-              edit
-                ? changes.phone === 0
-                  ? "<empty>"
-                  : changes.phone
-                : profile.phone === 0
-                ? "<empty>"
-                : profile.phone
-            }
-            variant={edit ? "outlined" : "filled"}
-            onFocus={(e) => (edit ? e.target.select() : null)}
-            onChange={(e) =>
-              handleTextChange(e, changes, setChanges, errors, setErrors)
-            }
-            name="phone"
-            InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: !edit }}
-            inputProps={{ maxLength: 16 }}
-            error={errors.phone ? true : false}
-            helperText={errors.phone ? `${errors.phone}` : null}
-          />
-          <TextField
-            label="Loyalty points"
-            value={profile.loyaltyPoint}
-            variant={"filled"}
-            name="loyaltyPoint"
-            InputLabelProps={{ shrink: true }}
-            InputProps={{ readOnly: true }}
-          />
-        </div>
-        <div className="userInfoContainer">
-          <TextField
+            <TextField
+            sx={{ m: 0.8 }}
             className="userDetailsNames"
             label="Last Name"
             value={edit ? changes.lastName : profile.lastName}
@@ -128,6 +98,7 @@ export default function Profile({
           />
 
           <TextField
+            sx={{ m: 0.8 }}
             label="Birthdate"
             value={
               edit
@@ -148,6 +119,7 @@ export default function Profile({
             InputProps={{ readOnly: !edit }}
           />
           <TextField
+            sx={{ m: 0.8 }}
             label="DNI"
             value={
               edit
@@ -171,7 +143,53 @@ export default function Profile({
             helperText={errors.dni ? `${errors.dni}` : null}
           />
 
+            <TextField
+            sx={{ m: 0.8 }}
+            label="Phone number"
+            value={
+              edit
+                ? changes.phone === 0
+                  ? "<empty>"
+                  : changes.phone
+                : profile.phone === 0
+                ? "<empty>"
+                : profile.phone
+            }
+            variant={edit ? "outlined" : "filled"}
+            onFocus={(e) => (edit ? e.target.select() : null)}
+            onChange={(e) =>
+              handleTextChange(e, changes, setChanges, errors, setErrors)
+            }
+            name="phone"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ readOnly: !edit }}
+            inputProps={{ maxLength: 16 }}
+            error={errors.phone ? true : false}
+            helperText={errors.phone ? `${errors.phone}` : null}
+          />
+
           <TextField
+            sx={{ m: 0.8 }}
+            label="Email"
+            value={profile.email}
+            variant={"filled"}
+            name="email"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ readOnly: true }}
+          />
+
+          <TextField
+            sx={{ m: 0.8 }}
+            label="Loyalty points"
+            value={profile.loyaltyPoint}
+            variant={"filled"}
+            name="loyaltyPoint"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ readOnly: true }}
+          />
+
+          <TextField
+            sx={{ m: 0.8 }}
             label="Account status"
             value={profile.state}
             variant={"filled"}
@@ -180,17 +198,10 @@ export default function Profile({
             InputProps={{ readOnly: true }}
           />
         </div>
-        {edit ? (
-          <>
-            <button onClick={(e) => handleClick(e, false)}>cancel</button>
-            <button type="submit">save</button>
-          </>
-        ) : (
-          <>
-            <button onClick={(e) => handleClick(e, true)}>edit</button>
-          </>
-        )}
+      </div>
+
       </Box>
+
     </>
   );
 }
