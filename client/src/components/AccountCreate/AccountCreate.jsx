@@ -41,7 +41,6 @@ export default function AccountCreate() {
       amounts = [];
     if (localCart) {
       localCart = JSON.parse(localCart);
-      console.log(localCart);
       cart = localCart?.books.map((el) => el.id);
       amounts = localCart?.books.map((el) => el.amount);
     }
@@ -56,45 +55,42 @@ export default function AccountCreate() {
   function onInputChange(e) {
     e.preventDefault();
     //e.target.name === "username" ||
-    if ( e.target.name === "password") {
+    if (e.target.name === "password") {
       setUser({
         ...user,
         [e.target.name]: e.target.value,
       });
-      validations(
-        e.target.name,
-        e.target.value,
-        user,
+      validations({
+        name: e.target.name,
+        password: e.target.value,
         errors,
         setErrors,
-        confirmPass
-      );
+        confirmPass,
+      });
       return;
     }
     if (e.target.name === "confirmPass") {
       setConfirmPass(e.target.value);
-      validations(
-        e.target.name,
-        e.target.value,
-        user,
+      validations({
+        name: e.target.name,
+        password: user.password,
         errors,
         setErrors,
-        confirmPass
-      );
+        confirmPass: e.target.value,
+      });
       return;
     }
     setUser({
       ...user,
       [e.target.name]: e.target.value.toLowerCase(),
     });
-    validations(
-      e.target.name,
-      e.target.value.toLowerCase(),
-      user,
+    validations({
+      name: e.target.name,
+      value: e.target.value.toLowerCase(),
       errors,
       setErrors,
-      confirmPass
-    );
+      confirmPass,
+    });
   }
   // // // // // // // // //
   function handleClose() {
@@ -121,7 +117,6 @@ export default function AccountCreate() {
   });
 
   const handleClickShowPassword = (name) => {
-    console.log(name);
     setShow({
       ...show,
       [name]: !show[name],
@@ -305,10 +300,7 @@ export default function AccountCreate() {
                 Create Account!
               </button>
             </div>
-            <AlertDialogSlide 
-              open={open}
-              setOpen={setOpen}
-            />
+            <AlertDialogSlide open={open} setOpen={setOpen} />
             {/* <Snackbar
               open={open}
               autoHideDuration={6000}

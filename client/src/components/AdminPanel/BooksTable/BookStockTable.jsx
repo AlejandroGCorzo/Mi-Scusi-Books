@@ -390,11 +390,11 @@ export default function BooksStock() {
                           value={inputStock._id}
                           onClick={(event) => handleClick(event, b._id, b.name)}
                           className="stockInput"
-                          onBlur={() => {
-                            setInputStock({ _id: "" });
-                            setSelected();
-                            setShowEmail('');
-                          }}
+                          // onBlur={() => {
+                          //   setInputStock({ _id: "" });
+                          //   setSelected();
+                          //   setShowEmail('');
+                          // }}
                         />
                       </TableCell>
                     </TableRow>

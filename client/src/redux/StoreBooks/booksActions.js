@@ -77,9 +77,13 @@ export const setCurrentPage = (value) => (dispatch) => {
 //     .catch(() => alert("Libro no encontrado"));
 // };
 
-export const setBookDelete = (id) => {
+export const setBookDelete = (id, token) => {
   return async (dispatch) => {
-    let json = await axios.put(`/books/delete/${id}`);
+    let json = await axios.put(`/books/delete/${id}`, {} , {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
     return dispatch(filterDeleteBook(id));
   };
 };

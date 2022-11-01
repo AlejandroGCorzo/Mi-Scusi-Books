@@ -21,7 +21,6 @@ export default function UpdateStock(props) {
     window.sessionStorage.getItem("token");
 
   const handleUpdateStock = (e) => {
-    //dispatch(setUserChangeRol(id, newRol, accessToken));
     handleSetStock()
     handleClose();
     dispatch(snackBookStock(true))
