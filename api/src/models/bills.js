@@ -33,7 +33,8 @@ const billsSchema = mongoose.Schema({
   },
   shipp: {
     type: Number
-  }
+  },
+  address: Object
 });
 
 module.exports = mongoose.model("Bills", billsSchema);

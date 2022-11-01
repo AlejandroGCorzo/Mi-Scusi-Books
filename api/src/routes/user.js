@@ -423,6 +423,7 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
+      const text = (state === "limited" || state === "inactive") ? "Your user status has been changed due to the violation of our ToS" : "Your user status has been changed"
       await transporter.sendMail({
         from: `"Status changed" <${process.env.GMAIL_USER}>`,
         to: user.email,
@@ -575,7 +576,8 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
-  const { shipp } = req.body;
+  const { address } = req.body;
+  console.log('address', address);
   const reduceStock = async (id, amount) => {
     try {
       const book = await bookSchema.findById(id);
@@ -602,7 +604,7 @@ userRouter.put("/pay", protect, async (req, res) => {
         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
       }
       await Promise.all(substractStock);
-
+      console.log('hasta la 607')
       const books = [];
       const booksNames = [];
       const booksAmount = [];
@@ -621,7 +623,7 @@ userRouter.put("/pay", protect, async (req, res) => {
         const subTotal = price[i] * booksAmount[i];
         total = total + subTotal;
       }
-
+      console.log('hasta la 626')
       // // // // // // // // // // // // // //
       // Discount
       if (points && user.loyaltyPoint < points)
@@ -633,30 +635,32 @@ userRouter.put("/pay", protect, async (req, res) => {
       // Loyalty Points
       const loyaltyPoint = points ? -points : Math.floor(total) * 10; //Para la factura (Puede ser negativo o positivo)
       const newLoyaltyPoint = user.loyaltyPoint + loyaltyPoint; //Para acutalizar el usuario
-
+  
       total -= total * discount; //Si no hay descuento se le resta 0
-
+      total = address.city ? total + 8 : total;
+      console.log('hasta la 640', typeof total, total)
       const date = new Date().toDateString();
 
       const bill = await billsSchema.create({
         books: books,
         amountBooks: booksAmount,
         price: price,
-        total: shipp ? total + Number(shipp) : total,
+        total,
         date: date,
         user: user._id,
         discount: discount * 100,
         loyaltyPoint,
-        shipp,
+        shipp: address.city ? 8 : 0,
+        address
       });
-
+      console.log('hasta la 654')
       let newBuyedBooks = books.concat(user.buyedBooks);
       const buyedBooks = [];
       for (const idBook of newBuyedBooks) {
         if (buyedBooks.some((id) => id === idBook)) continue;
         buyedBooks.push(idBook);
       }
-
+      console.log('hasta la 661')
       await user.updateOne({
         $set: {
           buyedBooks: buyedBooks,
@@ -684,7 +688,7 @@ userRouter.put("/pay", protect, async (req, res) => {
       <p>Mi Scusi Books staff.</p>
       `,
       });
-
+      console.log('yastamos')
       res.send(bill);
     } catch (error) {
       res.status(400).send({ msg: error, otherMsg: "algo fallo en pay" });

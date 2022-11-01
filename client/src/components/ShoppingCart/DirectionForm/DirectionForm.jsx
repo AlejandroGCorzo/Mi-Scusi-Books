@@ -8,14 +8,18 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import MuiAlert from '@mui/material/Alert';
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { shippingAddress } from '../../../redux/StoreUsers/usersActions';
+import { clearShippingAddress } from '../../../redux/StoreUsers/usersSlice';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
 
-export default function FormDialog({open, handleClose, direction, setDirection, errors, setErrors, setMsg, setOpen}) {
-    
+export default function FormDialog({open, handleClose, direction, setDirection, setSelectOrder, errors, setErrors, setMsg, setOpen}) {
+    const dispatch = useDispatch()
+
     function onInputChange(e) {
         e.preventDefault();
         setDirection({
@@ -63,16 +67,21 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
             city: "",
             province: "",
         });
+        // dispatch(clearShippingAddress())
+        window.sessionStorage.removeItem('shipping')
     }
 
     function cancelForm(){
-        // setDirection({
-        //     address: "",
-        //     postalCode: "",
-        //     city: "",
-        //     province: "",
-        //   });
-          handleClose();
+      setDirection({
+          address: "",
+          postalCode: "",
+          city: "",
+          province: "",
+        });
+     
+      setSelectOrder("0")
+      window.sessionStorage.removeItem('shipping')
+      handleClose();
     }
 
     function validoDatos(){
@@ -80,6 +89,8 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
           setMsg("Please complete the data!");
           setOpen(true);
         }else{
+            // dispatch(shippingAddress(direction))
+            window.sessionStorage.setItem('shipping', JSON.stringify(direction))
             handleClose();
         }
     }
@@ -90,7 +101,7 @@ export default function FormDialog({open, handleClose, direction, setDirection, 
         <DialogTitle>Direction</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please complete and verify the fields so that we can make the shipment, thank you very much!.
+            Please complete and verify the fields so we can make the shipment, thank you very much!.
           </DialogContentText>
 
           <TextField
