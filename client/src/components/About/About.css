@@ -1,4 +1,5 @@
-::before{
+/* No se como pingo arreglarlo xd pero por acá es*/
+.containerMembers div::before{ 
 	content: "";
 }
 
