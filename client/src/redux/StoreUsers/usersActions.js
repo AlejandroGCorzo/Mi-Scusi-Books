@@ -18,10 +18,8 @@ import {
   userBills,
   clearBills,
   searchEmail,
-  setShippingAddress
-  getReports,
-  setShippingAddress
-  setShippingAddress
+  setShippingAddress,
+  getReports
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
