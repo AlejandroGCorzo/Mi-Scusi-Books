@@ -362,12 +362,28 @@ export default function ShoppingCart(props) {
                         </span>
                       </div>
                       <div>
-                        <button
+                        {
+                          el.stock > 0 ? <button
                           className="buttonView"
                           onClick={() => addToCart(el.id)}
+                          // disabled={!el.stock}
                         >
                           Add to cart
+                        </button> : <button
+                          className="buttonViewNoStock"
+                          onClick={() => addToCart(el.id)}
+                           disabled={!el.stock}
+                        >
+                          No stock!
                         </button>
+                        }
+                        {/* <button
+                          className="buttonView"
+                          onClick={() => addToCart(el.id)}
+                          // disabled={!el.stock}
+                        >
+                          Add to cart
+                        </button> */}
                       </div>
                       <div>
                         <button
