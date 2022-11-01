@@ -18,6 +18,8 @@ import {
   userBills,
   clearBills,
   searchEmail,
+  setShippingAddress,
+  getReports
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -184,14 +186,14 @@ export const setNotLogedShoppingCart = (cart) => {
   };
 };
 
-export const payAccepted = (token) => {
+export const payAccepted = (token, address) => {
   console.log("entre al action", token);
   return async (dispatch) => {
-    console.log("en el dispatch");
+    console.log("en el dispatch", address);
     try {
       const pay = await axios.put(
         "/user/pay",
-        {},
+        {address},
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -290,7 +292,7 @@ export const searchUserEmail = (email) => {
 
 export const setUserDiscount = (id, discount, token) => {
   return async (dispatch) => {
-    console.log('entre a la aciton');
+    console.log("entre a la aciton");
     await axios.put(
       `/user/update/${id}`,
       { discount },
@@ -300,6 +302,23 @@ export const setUserDiscount = (id, discount, token) => {
         },
       }
     );
-    return dispatch(forgotPassword(''))   
-  }
+    return dispatch(forgotPassword(""));
+  };
 };
+
+export const getAllReports = (token) => {
+  return async (dispatch) => {
+    const json = await axios.get("/report/", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return dispatch(getReports(json.data));
+  };
+};
+
+export const shippingAddress = (data) => {
+  return function(dispatch){
+    return dispatch(setShippingAddress(data))
+  }
+}

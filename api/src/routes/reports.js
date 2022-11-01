@@ -26,6 +26,7 @@ reportRouter.get('/', protect, async (req,res)=>{
             const reports = await Report.find().populate('user')
             const allReports = reports.map(r => {
                 return {
+                    _id: r._id,
                     user : `${r.user.firstName} ${r.user.lastName}` ,
                     email: r.user.email,
                     rol: r.user.type,
