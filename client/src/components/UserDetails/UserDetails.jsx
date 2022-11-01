@@ -9,17 +9,16 @@ import { clearUserDetail, clearBills } from "../../redux/StoreUsers/usersSlice";
 import "./UserDetails.css";
 import Profile from "./Profile/Profile.jsx";
 import TransactionHistory from "./TransactionsHistory/TransactionsHistory";
-import Box from '@mui/material/Box';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Box from "@mui/material/Box";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HistoryIcon from '@mui/icons-material/History';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HistoryIcon from "@mui/icons-material/History";
 import { ThemeProvider } from "@mui/material/styles";
 import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,7 +46,6 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-
 export default function UserDetails(props) {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
@@ -61,7 +59,6 @@ export default function UserDetails(props) {
   const [edit, setEdit] = useState(false);
   const [changes, setChanges] = useState({});
   const [errors, setErrors] = useState({});
-  const [imgSelected, setImgSelected] = useState({ file: {}, url: "" });
   const handleTab = (e, newValue) => {
     setTab(newValue);
   };
@@ -91,82 +88,60 @@ export default function UserDetails(props) {
   return (
     <div className="contentCategory">
       <Box sx={{ width: "100%" }}>
-
         <ThemeProvider theme={colorMiScusi}>
-
           <div className="titleFormShopping">
-
             <BottomNavigation
               showLabels
               value={value}
               className="bottomNavigation"
               onChange={(event, newValue) => {
                 setValue(newValue);
-              }}>
- 
-               <BottomNavigationAction
+              }}
+            >
+              <BottomNavigationAction
                 className="bottomNavigationActionx"
                 label="Profile"
                 icon={<AccountCircleIcon />}
               />
 
-                <BottomNavigationAction
-                  className="bottomNavigationActionx"
-                  label="Transaction History"
-                  icon={<HistoryIcon />}
-                />
-
+              <BottomNavigationAction
+                className="bottomNavigationActionx"
+                label="Transaction History"
+                icon={<HistoryIcon />}
+              />
             </BottomNavigation>
-
           </div>
-
         </ThemeProvider>
 
         <div className="contentShoppingDetail">
-
           <div className="itemsShoppingDetail">
             <TabPanel value={value} index={0} className="tabPanel">
               <Profile
-                  profile={profile}
-                  edit={edit}
-                  setEdit={setEdit}
-                  changes={changes}
-                  setChanges={setChanges}
-                  errors={errors}
-                  setErrors={setErrors}
-                  dispatch={dispatch}
-                  token={token}
-                  imgSelected={imgSelected}
-                  setImgSelected={setImgSelected}
-                />
+                profile={profile}
+                edit={edit}
+                setEdit={setEdit}
+                changes={changes}
+                setChanges={setChanges}
+                errors={errors}
+                setErrors={setErrors}
+                dispatch={dispatch}
+                token={token}
+                handleClick={handleClick}
+              />
             </TabPanel>
 
             <TabPanel value={value} index={1} className="tabPanel">
-		            <TransactionHistory bills={bills} />
+              <TransactionHistory bills={bills} />
             </TabPanel>
-
           </div>
-
         </div>
 
         <div className="formBackx">
           <Link to="/" style={{ textDecoration: "none" }}>
-              <button className="buttonBack">Back</button>
+            <button className="buttonBack">Back</button>
           </Link>
-          {edit ? (
-          <>
-            <button className="buttonBack" onClick={(e) => handleClick(e, false)}>Cancel</button>
-            <button className="buttonBack" type="submit">Save</button>
-          </>
-          ) : (
-            <>
-              <button className="buttonBack" onClick={(e) => handleClick(e, true)}>Edit</button>
-            </>
-          )}
         </div>
-
       </Box>
-
     </div>
   );
 }
