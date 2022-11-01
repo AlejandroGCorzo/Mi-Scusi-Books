@@ -22,14 +22,15 @@ import {
   deleteCart,
   setNotLogedShoppingCart,
   addCart,
+  setUserDiscount,
 } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal";
 import { IconButton, Snackbar } from "@mui/material";
 import FormDialog from "./AdressForm/AdressForm.jsx";
 import EditIcon from "@mui/icons-material/Edit";
-import { setUserDiscount } from "../../redux/StoreUsers/usersActions.js";
 import { clearShippingAddress } from "../../redux/StoreUsers/usersSlice";
+import emptyCache from "../../emptyCache";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -140,6 +141,7 @@ export default function ShoppingCart(props) {
     }
 
     return () => {
+      emptyCache();
       if (accessToken) {
         window.sessionStorage.removeItem("cart");
       }
@@ -362,21 +364,23 @@ export default function ShoppingCart(props) {
                         </span>
                       </div>
                       <div>
-                        {
-                          el.stock > 0 ? <button
-                          className="buttonView"
-                          onClick={() => addToCart(el.id)}
-                          // disabled={!el.stock}
-                        >
-                          Add to cart
-                        </button> : <button
-                          className="buttonViewNoStock"
-                          onClick={() => addToCart(el.id)}
-                           disabled={!el.stock}
-                        >
-                          No stock!
-                        </button>
-                        }
+                        {el.stock > 0 ? (
+                          <button
+                            className="buttonView"
+                            onClick={() => addToCart(el.id)}
+                            // disabled={!el.stock}
+                          >
+                            Add to cart
+                          </button>
+                        ) : (
+                          <button
+                            className="buttonViewNoStock"
+                            onClick={() => addToCart(el.id)}
+                            disabled={!el.stock}
+                          >
+                            No stock!
+                          </button>
+                        )}
                         {/* <button
                           className="buttonView"
                           onClick={() => addToCart(el.id)}
