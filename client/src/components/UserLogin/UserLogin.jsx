@@ -110,7 +110,7 @@ export default function UserLogin() {
           else window.sessionStorage.setItem("token", el.data.token);
           dispatch(loging());
           window.sessionStorage.removeItem("cart");
-          history.push("/");
+          history.push("/log-in-successfully");
         }
       })
       .catch((e) => {
@@ -142,7 +142,7 @@ export default function UserLogin() {
         window.localStorage.setItem("token", el.data.token);
         dispatch(loging());
         window.sessionStorage.removeItem("cart");
-        history.push("/");
+        history.push("/log-in-successfully");
       })
       .catch((e) => console.log(e));
   }
@@ -153,7 +153,7 @@ export default function UserLogin() {
   // // // // // // // // // // //
   // Funciones para forgot password
   // // // // // // // // // // //
-  const {forgotPassword} = useSelector((state)=>state.users)
+  const { forgotPassword } = useSelector((state) => state.users);
   const [openDialog, setOpenDIalog] = useState(false);
   const [errorForgot, setErrorForgot] = useState(
     "Please enter a valid email address"
@@ -171,9 +171,9 @@ export default function UserLogin() {
   const handleForgotPasswordSubmit = (e) => {
     e.preventDefault();
     console.log(forgotPasswordInput);
-    setVerifyEmail(true)
-    setTimeout(()=>dispatch(putForgotPassword(forgotPasswordInput)),1000)
-    
+    setVerifyEmail(true);
+    setTimeout(() => dispatch(putForgotPassword(forgotPasswordInput)), 1000);
+
     // setTimeout(()=>setOpenDIalog(false),2000)
     // setTimeout(() => setVerifyEmail(true), 1500);
   };
@@ -186,7 +186,7 @@ export default function UserLogin() {
     setOpenDIalog(false);
     setVerifyEmail(false);
     setForgotPasswordInput("");
-    dispatch(putForgotPassword(''))
+    dispatch(putForgotPassword(""));
   };
   // // // // // // // // // // USEEFFECT
   useEffect(() => {
@@ -316,7 +316,15 @@ export default function UserLogin() {
                     <></>
                   )}
                   <div className="miPropioDiv">
-                  {verifyEmail? forgotPassword? <p style={{ color: "blue" }}>{forgotPassword}</p> : <CircularProgress/> : <></>}
+                    {verifyEmail ? (
+                      forgotPassword ? (
+                        <p style={{ color: "blue" }}>{forgotPassword}</p>
+                      ) : (
+                        <CircularProgress />
+                      )
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </DialogContent>
                 <DialogActions>
@@ -361,7 +369,7 @@ export default function UserLogin() {
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-right">
-              <h1 style={{ color: "white"}}>Don't have an account?!</h1>
+              <h1 style={{ color: "white" }}>Don't have an account?!</h1>
               <p>Enter your personal information and join us</p>
               <Link to={"/signup"}>
                 <button className="ghost" id="signUp">

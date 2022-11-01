@@ -1,0 +1,46 @@
+.logInAcepted {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(1.5px);
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logInModal {
+  background-color: rgba(245, 245, 245, 0.921);
+  backdrop-filter: blur(3px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3em 5em;
+  border-radius: 0.5em;
+  margin-top: 2em;
+}
+
+.logInModal h1 {
+  text-transform: capitalize;
+}
+
+.imglogInModal {
+  width: 230px;
+  margin-bottom: 1em;
+}
+
+.btnloginHome {
+  margin-top: 2em;
+  background-color: #287ccb;
+  border: 1px solid #287ccb;
+  height: 40px;
+  width: 110px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+}

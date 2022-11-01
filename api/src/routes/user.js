@@ -98,9 +98,10 @@ userRouter.put("/new_password", async (req, res) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-
+    
     const formatUser = {
       id: user._id,
+      firstName: user.firstName,
       type: user.type,
       picture: user.image,
       userName: user.username,
@@ -110,7 +111,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       votedBooks: user.votedBooks,
       votedReviews: user.votedReviews,
       loyaltyPoint: user.loyaltyPoint,
-      buyedBooks: user.buyedBooks
+      buyedBooks: user.buyedBooks,
     };
     res.status(200).json(formatUser);
   } catch (e) {
@@ -424,7 +425,10 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
   if (req.user && (req.user.type === "admin" || req.user.type === "seller")) {
     try {
       const user = await User.findByIdAndUpdate(id, { $set: { state: state } });
-      const text = (state === "limited" || state === "inactive") ? "Your user status has been changed due to the violation of our ToS" : "Your user status has been changed"
+      const text =
+        state === "limited" || state === "inactive"
+          ? "Your user status has been changed due to the violation of our ToS"
+          : "Your user status has been changed";
       await transporter.sendMail({
         from: `"Status changed" <${process.env.GMAIL_USER}>`,
         to: user.email,
@@ -634,10 +638,10 @@ userRouter.put("/pay", protect, async (req, res) => {
       // Loyalty Points
       const loyaltyPoint = points ? -points : Math.floor(total) * 10; //Para la factura (Puede ser negativo o positivo)
       const newLoyaltyPoint = user.loyaltyPoint + loyaltyPoint; //Para acutalizar el usuario
-  
+
       total -= total * discount; //Si no hay descuento se le resta 0
       total = address.city ? total + 8 : total;
-      total = Math.round(total * 100) / 100
+      total = Math.round(total * 100) / 100;
       const date = new Date().toLocaleDateString("es-MX");
 
       const bill = await billsSchema.create({
@@ -650,7 +654,7 @@ userRouter.put("/pay", protect, async (req, res) => {
         discount: discount * 100,
         loyaltyPoint,
         shipp: address.city ? 8 : 0,
-        address
+        address,
       });
       let newBuyedBooks = books.concat(user.buyedBooks);
       const buyedBooks = [];
@@ -666,22 +670,24 @@ userRouter.put("/pay", protect, async (req, res) => {
         },
       });
 
-
       let tabla = [];
-      let firstColStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 70%; text-align: center; text-transform: capitalize;"'
-      let secondColRowStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center;"'
-      let importantCellStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center; font-weight: 600"'
-      for(let i = 0; i<booksNames.length; i++){
+      let firstColStyle =
+        'style= "border: 1px solid black; border-collapse: collapse; width: 70%; text-align: center; text-transform: capitalize;"';
+      let secondColRowStyle =
+        'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center;"';
+      let importantCellStyle =
+        'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center; font-weight: 600"';
+      for (let i = 0; i < booksNames.length; i++) {
         const body = `
         <tr>
           <td ${firstColStyle}>${booksNames[i]}</td>
           <td ${secondColRowStyle}>${booksAmount[i]}</td> 
           <td ${secondColRowStyle}>$ ${price[i]}</td>
         </tr>
-        `
-        tabla.push(body)
+        `;
+        tabla.push(body);
       }
-          
+
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
         to: user.email,
@@ -703,7 +709,9 @@ userRouter.put("/pay", protect, async (req, res) => {
           <th ${secondColRowStyle}>Amount</th>
           <th ${secondColRowStyle}>Price (unit)</th>
         </tr>
-        ${tabla.map(el => {return el})}
+        ${tabla.map((el) => {
+          return el;
+        })}
         <tr>
           <td></td>
           <td ${importantCellStyle}>Discount</td>

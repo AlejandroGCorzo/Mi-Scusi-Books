@@ -14,13 +14,14 @@ import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
-import About from "./components/About/About.jsx"
+import About from "./components/About/About.jsx";
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
 import ChatBot from "./components/ChatBot/ChatBot";
 import ProblemReport from "./components/Reports/ProblemReport";
 import ReadPdf from "./components/ReadPDF/ReadPDF";
 import ReportDone from "./components/Reports/ReportDone/ReportDone";
+import LogInSuccessfully from "./components/UserLogin/LogInSuccessfully/LogInSuccessfully";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
         <Route path="/order-successfully" component={PaymentAcepted} />
+        <Route path="/log-in-successfully" component={LogInSuccessfully} />
         <Route path="/newPassword" component={NewPassword} />
         <Route path="/readPDF" component={ReadPdf} />
         <Route exact path="/activation-mail/:id" component={ActivationMail} />
