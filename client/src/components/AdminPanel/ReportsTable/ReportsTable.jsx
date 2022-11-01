@@ -57,7 +57,7 @@ const ReportsTable = () => {
 
   //////////////Dialog Manager/////////////////////////////////////
 
-  const [openDialog, setOpenDialog] = React.useState('');
+  const [openDialog, setOpenDialog] = React.useState("");
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -66,6 +66,19 @@ const ReportsTable = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  ////////////////////////////////////////////////////////////////////
+
+//   const handleclickDialog = (desc, boolean, user) => {
+//     <DescriptionDialog
+//       description={desc}
+//       openDialog={boolean}
+//       //openDialog={openDialog}
+//       // handleOpenDialog={handleOpenDialog}
+//       // handleCloseDialog={handleCloseDialog}
+//       userName={user}
+//     />;
+//   };
+
   ////////////////////////////////////////////////////////////////////
 
   const columns = [
@@ -105,6 +118,7 @@ const ReportsTable = () => {
       render: (_, record) => (
         <>
           <Button
+            //onClick={(e) => handleclickDialog(record.description, true, record.user)}
             //onClick={(e) => setOpenDialog('click')}
             variant="outlined"
             style={{ "min-width": "140px" }}
@@ -113,7 +127,6 @@ const ReportsTable = () => {
           </Button>
           <DescriptionDialog
             description={record.description}
-
             setOpenDialog={setOpenDialog}
             openDialog={openDialog}
             //openDialog={openDialog}
@@ -199,16 +212,16 @@ const ReportsTable = () => {
           position: ["bottomLeft"],
         }}
         expandable={{
-            expandedRowRender: (record) => (
-              <p
-                style={{
-                  margin: 0,
-                }}
-              >
-                {record.description}
-              </p>
-            ),
-          }}
+          expandedRowRender: (record) => (
+            <p
+              style={{
+                margin: 0,
+              }}
+            >
+              {record.description}
+            </p>
+          ),
+        }}
       />
     </>
   );
