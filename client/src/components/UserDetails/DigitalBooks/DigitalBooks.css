@@ -1,0 +1,24 @@
+.digitalBookContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.digitalBookImage{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 20%;
+}
+
+.digitalBookName{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 50%;
+}
+
+.digitalBookButton{
+    width: 20%;
+}

@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import axios from "axios";
 import { getLoggedUserData } from "../../redux/StoreUsers/usersSlice";
 
-export default function ReadPDF() {
+export default function ReadPDF({id}) {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -28,7 +28,7 @@ export default function ReadPDF() {
   }
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
-  const { loggedUser } = useSelector((state) => state.users);
+  // const { loggedUser } = useSelector((state) => state.users);
   const [url, setUrl] = useState("");
 
   const accessToken =
@@ -36,10 +36,9 @@ export default function ReadPDF() {
     window.sessionStorage.getItem("token");
 
   const handleClick = async (e) => {
-    e.preventDefault();
     // setSelectBook(e.target.name);
     axios
-      .get(`http://localhost:9000/user/buyedBooks/${e.target.name}`, {
+      .get(`http://localhost:9000/user/buyedBooks/${id}`, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
@@ -48,11 +47,13 @@ export default function ReadPDF() {
       .catch((e) => console.log(e));
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    handleClick()
+  }, []);
 
   return (
     <>
-      <div>
+      {/* <div>
         {loggedUser?.buyedBooks?.map((b, i) => {
           return (
             <button  name={b} onClick={(e) => handleClick(e)}>
@@ -61,7 +62,8 @@ export default function ReadPDF() {
           );
         })}
         {console.log(url)}
-      </div>
+      </div> */}
+      
       <div className="main">
         <Document file={url ? url : ""} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} />
