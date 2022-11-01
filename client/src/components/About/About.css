@@ -1,10 +1,13 @@
-/* No se como pingo arreglarlo xd pero por acá es*/
-.containerMembers div::before{ 
+.component ::before { 
 	content: "";
 }
 
 body {
 	color: #34495e;
+}
+
+.mainAbout {
+	padding-bottom: 0.1em;
 }
 
 .containerMembers {

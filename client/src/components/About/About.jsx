@@ -16,12 +16,12 @@ export default function About() {
   }, []);
 
   return (
-    <>
+    <div className="mainAbout">
       <div className="containerDescription">
         <img src={logo} alt="" width="210px" style={{ padding: "1em" }} />
         <div className="scusiDescription">
           <span>
-            My Scusi Books is a book application designed to serve as a bridge
+            Mi Scusi Books is a book application designed to serve as a bridge
             between the trade and those interested in buying them, with the main
             objective to fully meet the needs of our customers, offering the
             largest assortment of textbooks, reading and digital innovation.
@@ -378,6 +378,6 @@ export default function About() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }
