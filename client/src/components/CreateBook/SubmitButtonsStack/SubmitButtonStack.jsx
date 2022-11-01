@@ -8,13 +8,23 @@ export default function SubmitButtonStack({
   handleClickOpen,
   errorHandler,
   newBook,
-  edit
+  edit,
+  categories,
 }) {
+  // console.log(categories[newBook.categories[0]][newBook.categories[1]]);
+  function ifCategories() {
+    return newBook.categories.length === 3
+      ? false
+      : newBook.categories.length === 2
+      ? typeof categories[newBook.categories[0]][newBook.categories[1]] ===
+        "object"
+      : true;
+  }
+
   return (
     <Stack className="CreateBookConfirmationStack" direction="row" spacing={2}>
-      {
-        !edit ? 
-          <>
+      {!edit ? (
+        <>
           <Button
             name="reset"
             variant="outlined"
@@ -24,7 +34,38 @@ export default function SubmitButtonStack({
             Reset fields
           </Button>
           <Button
-          name="create"
+            name="create"
+            variant="contained"
+            endIcon={<SendIcon />}
+            onClick={handleClickOpen}
+            disabled={
+              errorHandler.edition.length !== 0 ||
+              errorHandler.price.length !== 0 ||
+              errorHandler.synopsis.length !== 0 ||
+              errorHandler.ISBN.length !== 0 ||
+              errorHandler.stock.length !== 0 ||
+              !newBook.title ||
+              !newBook.title ||
+              !newBook.author.length ||
+              !newBook.editorial ||
+              !newBook.edition.length ||
+              !newBook.price ||
+              // newBook.categories.length < 2 ||
+              !newBook.synopsis ||
+              !newBook.format ||
+              !newBook.language ||
+              !newBook.ISBN ||
+              !newBook.stock ||
+              !newBook.image ||
+              ifCategories()
+            }
+          >
+            Create Book
+          </Button>
+        </>
+      ) : (
+        <Button
+          name="update"
           variant="contained"
           endIcon={<SendIcon />}
           onClick={handleClickOpen}
@@ -33,7 +74,6 @@ export default function SubmitButtonStack({
             errorHandler.price.length !== 0 ||
             errorHandler.synopsis.length !== 0 ||
             errorHandler.ISBN.length !== 0 ||
-            errorHandler.stock.length !== 0 ||
             !newBook.title ||
             !newBook.title ||
             !newBook.author.length ||
@@ -44,40 +84,12 @@ export default function SubmitButtonStack({
             !newBook.synopsis ||
             !newBook.format ||
             !newBook.language ||
-            !newBook.ISBN ||
-            !newBook.stock ||
-            !newBook.image
+            !newBook.ISBN
           }
         >
-          Create Book
+          Update Book
         </Button>
-        </>
-        : <Button
-        name="update"
-        variant="contained"
-        endIcon={<SendIcon />}
-        onClick={handleClickOpen}
-        disabled={
-          errorHandler.edition.length !== 0 ||
-          errorHandler.price.length !== 0 ||
-          errorHandler.synopsis.length !== 0 ||
-          errorHandler.ISBN.length !== 0 ||
-          !newBook.title ||
-          !newBook.title ||
-          !newBook.author.length ||
-          !newBook.editorial ||
-          !newBook.edition.length ||
-          !newBook.price ||
-          newBook.categories.length < 2 ||
-          !newBook.synopsis ||
-          !newBook.format ||
-          !newBook.language ||
-          !newBook.ISBN 
-        }
-      >
-        Update Book
-      </Button>
-      }
+      )}
     </Stack>
   );
 }
