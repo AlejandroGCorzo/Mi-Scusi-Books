@@ -18,6 +18,7 @@ import {
   userBills,
   clearBills,
   searchEmail,
+  setShippingAddress
   getReports,
   setShippingAddress
   setShippingAddress
