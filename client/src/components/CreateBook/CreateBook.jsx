@@ -325,6 +325,7 @@ export default function CreateBook() {
                 errorHandler={errorHandler}
                 newBook={newBook}
                 edit={edit}
+                categories={categories}
               />
               {/* CONFIRM WINDOWS */}
               <DialogAction
