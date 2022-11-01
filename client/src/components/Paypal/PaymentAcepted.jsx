@@ -16,6 +16,7 @@ export default function PaymentAcepted() {
       window.localStorage.getItem("token") ||
       window.sessionStorage.getItem("token");
     dispatch(payAccepted(accessToken, shipping));
+    window.sessionStorage.removeItem('shipping')
   }, []);
 
   return (
