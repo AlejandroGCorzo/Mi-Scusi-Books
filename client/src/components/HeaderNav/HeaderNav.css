@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Concert+One&family=Courgette&family=Dangrek&family=Fredoka+One&family=Itim&family=Neucha&family=Pangolin&family=Patrick+Hand&family=Sniglet&display=swap");
+
 .header {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: #287ccb;
   width: 100%;
@@ -12,12 +14,15 @@
 }
 
 .titleNav{
+  font-size: 1.5em;
   margin: 1em 0 1em 0;
-  font-weight: 400;
+  font-weight: 600;
+  font-family: 'Itim', cursive;
+  text-shadow: -1px 0 #34495e, 0 4px #34495e, 1px 0 #34495e, 0 -1px #34495e
 }
 
 .logo /* p */ {
-  margin-left: 1em;
+  margin-right: 15em;
   color: white;
 }
 
@@ -28,8 +33,7 @@
 }
 
 .iconsContainer /* p */ {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 15em;
   color: white;
 }
 
