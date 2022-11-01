@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema(
     },
     discount: {
       type: Number,
-      default: 0
+      default: 0,
     },
     state: {
       type: String,
@@ -45,8 +45,7 @@ const userSchema = mongoose.Schema(
       default: "normal",
     },
     buyedBooks: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Books", 
+      type: Array,
     },
     votedBooks: {
       type: [mongoose.Schema.Types.ObjectId],

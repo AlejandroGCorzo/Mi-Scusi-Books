@@ -141,6 +141,7 @@ userRouter.post("/login", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
+          format: book.format
         };
         extension.push(book);
       }
@@ -187,6 +188,7 @@ userRouter.post("/login_google", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
+          format: book.format
         };
         extension.push(book);
       }
@@ -256,6 +258,7 @@ userRouter.post("/signup", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
+          format: book.format
         };
         newCart.push(book);
       }
@@ -528,6 +531,7 @@ userRouter.put("/cart/:idUser", protect, async (req, res) => {
         price: book.price,
         image: book.image,
         amount: amount,
+        format: book.format
       };
       const newCart = [...user.cart, book];
       await user.updateOne({ cart: newCart });
@@ -612,10 +616,17 @@ userRouter.put("/pay", protect, async (req, res) => {
       const books = [];
       const booksNames = [];
       const booksAmount = [];
+      const formatBuyedBooks = []
       for (const book of user.cart) {
         books.push(book.id);
         booksNames.push(book.name);
         booksAmount.push(book.amount);
+        formatBuyedBooks.push({
+          id: book.id,
+          name: book.name,
+          image: book.image,
+          format: book.format
+        })
       }
 
       const price = [];
@@ -656,11 +667,12 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp: address.city ? 8 : 0,
         address,
       });
-      let newBuyedBooks = books.concat(user.buyedBooks);
+      console.log('hasta la 654')
+      let newBuyedBooks = formatBuyedBooks.concat(user.buyedBooks);
       const buyedBooks = [];
-      for (const idBook of newBuyedBooks) {
-        if (buyedBooks.some((id) => id === idBook)) continue;
-        buyedBooks.push(idBook);
+      for (const book of newBuyedBooks) {
+        if (buyedBooks.some((b) => b.id === book.id)) continue;
+        buyedBooks.push(book);
       }
       await user.updateOne({
         $set: {
@@ -814,9 +826,7 @@ userRouter.get("/buyedBooks/:idBook", protect, async (req, res) => {
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
-      console.log(idBook);
-      console.log(user.buyedBooks);
-      if (!user.buyedBooks.some((id) => id.valueOf() === idBook))
+      if (!user.buyedBooks.some((book) => book.id === idBook))
         return res.status(400).send("No lo tiene!");
       const book = await bookSchema.findById(idBook);
       if (!book) return res.status(400).send("Something goes wrong!");
