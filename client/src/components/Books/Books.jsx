@@ -73,7 +73,7 @@ export default function Books() {
     dispatch(getCategories());
     window.scrollTo(0, 0);
     return setSelectOrder("Select");
-  }, [dispatch, theme, category, subcategory, render]);
+  }, [dispatch, theme, category, subcategory]);
   // // // // // // // FUNCIONES
   function handleClick(e, type, value) {
     e.preventDefault();

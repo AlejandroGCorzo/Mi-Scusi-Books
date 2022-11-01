@@ -32,6 +32,7 @@ userRouter.put("/forgot_password", async (req, res) => {
     // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
+
     if (!user) return res.send("Something goes wrong!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
@@ -98,7 +99,7 @@ userRouter.put("/new_password", async (req, res) => {
 userRouter.get("/keepLog", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    
+
     const formatUser = {
       id: user._id,
       firstName: user.firstName,
