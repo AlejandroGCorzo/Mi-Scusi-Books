@@ -176,6 +176,7 @@ billsRouter.get("/:id", async (req, res) => {
         _id: b._id,
         books: b.books.map((book) => {
           return {
+            id: book._id.valueOf(),
             name: book.name,
             format: book.format,
           };
