@@ -11,9 +11,9 @@ const createOrder = async (req, res) => {
       return acc += el.price * el.amount
     }, 0)
 
-    price = Math.round(price * 100) / 100
     price = price + Number(shipping) - Math.round(price * discount* 100) / 100
-    console.log(price);
+    price = Math.round(price * 100) / 100
+    console.log('price', price);
     const order = {
       intent: "CAPTURE",
       purchase_units: [
