@@ -81,14 +81,27 @@ const BillsTable = () => {
     );
   };
 
+  /////////Eliminar Users Duplicados//////////////
   const duplicateFilter = bills?.map((e) => ({
     text: `${e.user.firstName} ${e.user.lastName}`,
     value: `${e.user.firstName} ${e.user.lastName}`,
   }));
+
   const uniqueFilter = [
     ...new Map(duplicateFilter.map((item) => [item.text, item])).values(),
   ];
-  //console.log(uniqueFilter);
+
+  /////////Eliminar Emails Duplicados//////////////
+  const duplicateEmails = bills?.map((e) => ({
+    text: e.user.email,
+    value: e.user.email,
+  }));
+
+  const EniqueEmails = [
+    ...new Map(duplicateEmails.map((item) => [item.text, item])).values(),
+  ];
+
+
 
   const columns = [
     {
@@ -98,6 +111,14 @@ const BillsTable = () => {
       filters: uniqueFilter,
       filterSearch: true,
       onFilter: (name, userObject) => userObject.user.includes(name),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      filters: EniqueEmails,
+      filterSearch: true,
+      onFilter: (email, userObject) => userObject.user.includes(email),
     },
     {
       title: "ID",
@@ -179,7 +200,7 @@ const BillsTable = () => {
       <Table
         columns={columns}
         expandedRowRender={expandedRowRender}
-        dataSource={data2}
+        dataSource={data2.reverse()}
         size="small"
         style={{ textTransform: "capitalize" }}
         pagination={{
