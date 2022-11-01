@@ -190,7 +190,7 @@ export const setNotLogedShoppingCart = (cart) => {
 export const payAccepted = (token, address) => {
   console.log("entre al action", token);
   return async (dispatch) => {
-    console.log("en el dispatch");
+    console.log("en el dispatch", address);
     try {
       const pay = await axios.put(
         "/user/pay",
