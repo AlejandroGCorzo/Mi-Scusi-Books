@@ -359,7 +359,7 @@ export default function UserLogin() {
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-right">
-              <h1>Don't have an account?!</h1>
+              <h1 style={{ color: "white"}}>Don't have an account?!</h1>
               <p>Enter your personal information and join us</p>
               <Link to={"/signup"}>
                 <button className="ghost" id="signUp">

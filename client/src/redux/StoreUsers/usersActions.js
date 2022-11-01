@@ -1,3 +1,4 @@
+import { Description, Subject } from "@mui/icons-material";
 import axios from "axios";
 import {
   getAllUsers,
@@ -19,7 +20,8 @@ import {
   clearBills,
   searchEmail,
   setShippingAddress,
-  getReports
+  getReports,
+  sendReport,
 } from "./usersSlice.js";
 
 export const getUser = (token) => {
@@ -193,7 +195,7 @@ export const payAccepted = (token, address) => {
     try {
       const pay = await axios.put(
         "/user/pay",
-        {address},
+        { address },
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -318,7 +320,22 @@ export const getAllReports = (token) => {
 };
 
 export const shippingAddress = (data) => {
-  return function(dispatch){
-    return dispatch(setShippingAddress(data))
-  }
-}
+  return function (dispatch) {
+    return dispatch(setShippingAddress(data));
+  };
+};
+
+export const addReport = (subject, description, token) => {
+  return async (dispatch) => {
+    const json = await axios.post(
+      "/report",
+      { subject, description },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return dispatch(sendReport(json.data));
+  };
+};

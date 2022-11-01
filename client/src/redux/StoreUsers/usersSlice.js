@@ -17,7 +17,8 @@ export const usersSlice = createSlice({
     waitingForgot: false,
     searchUsers: [],
     shippingAddress:{},
-    reports: []
+    reports: [],
+    report: {}
   },
   reducers: {
     getAllUsers: (state, action) => {
@@ -126,6 +127,9 @@ export const usersSlice = createSlice({
     },
     clearReports: (state) => {
       state.reports = []
+    },
+    sendReport: (state, action) => {
+      state.report = action.payload
     }
   },
 });
@@ -154,6 +158,7 @@ export const {
   searchEmail,
   getReports,
   clearReports,
+  sendReport,
   setShippingAddress,
   clearShippingAddress
 } = usersSlice.actions;

@@ -14,13 +14,14 @@ import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
-import About from "./components/About/About.jsx"
+import About from "./components/About/About.jsx";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
-import ChatBot from "./components/ChatBot/ChatBot"
+import ChatBot from "./components/ChatBot/ChatBot";
 import ProblemReport from "./components/Reports/ProblemReport";
 import ReadPdf from "./components/ReadPDF/ReadPDF";
+import ReportDone from "./components/Reports/ReportDone/ReportDone";
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
         <Route path="/create" component={CreateBook} />
         <Route exact path="/book/update/:id" component={CreateBook} />
         <Route path="/about" component={About} />
-        <Route path="/contact" component={ProblemReport}/>
+        <Route path="/contact" component={ProblemReport} />
+        <Route path="/report-successfully" component={ReportDone} />
         <Switch>
           <Route
             exact
@@ -55,7 +57,6 @@ function App() {
         <Route path="/newPassword" component={NewPassword} />
         <Route path="/readPDF" component={ReadPdf} />
         <Route exact path="/activation-mail/:id" component={ActivationMail} />
-        
       </React.Fragment>
     </div>
   );

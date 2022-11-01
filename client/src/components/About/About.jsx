@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import logo from "../../sourceImg/logo3.png";
 import barb from "../../sourceImg/barb.jpg";
+import agus from "../../sourceImg/agus.png";
+import ale from "../../sourceImg/ale.jpg";
+import jano from "../../sourceImg/jano.jpg";
+import juan1 from "../../sourceImg/juan1.jpg";
+import juan2 from "../../sourceImg/juan2.jpg";
 import "./About.css";
 
 export default function About() {
@@ -39,10 +44,10 @@ export default function About() {
                   <li>
                     <div class="coverDesign blue">
                       <img
-                        src={logo}
+                        src={agus}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white" }}
                       />
                       <p>AGUSTIN</p>
                       <p>QUIROGA</p>
@@ -54,11 +59,19 @@ export default function About() {
                 <ul class="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/agust%C3%ADn-quiroga-b8325922b/"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/Azthirk"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
@@ -88,10 +101,10 @@ export default function About() {
                   <li>
                     <div class="coverDesign blue">
                       <img
-                        src={logo}
+                        src={ale}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white" }}
                       />
                       <p>ALEJANDRO</p>
                       <p>CORZO</p>
@@ -103,11 +116,19 @@ export default function About() {
                 <ul className="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/alejandro-gabriel-corzo/"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/AlejandroGCorzo"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
@@ -140,7 +161,7 @@ export default function About() {
                         src={barb}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white" }}
                       />
                       <p>BARBARA</p>
                       <p>CASSIRAM</p>
@@ -152,11 +173,19 @@ export default function About() {
                 <ul class="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/barbara-cassiram"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/cassirambd"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
@@ -186,10 +215,10 @@ export default function About() {
                   <li>
                     <div class="coverDesign blue">
                       <img
-                        src={logo}
+                        src={jano}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white" }}
                       />
                       <p>JANO</p>
                       <p>NANZER</p>
@@ -201,11 +230,19 @@ export default function About() {
                 <ul className="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/jano-nanzer-4410951bb/"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/JanoNanzer"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
@@ -235,10 +272,10 @@ export default function About() {
                   <li>
                     <div class="coverDesign blue">
                       <img
-                        src={logo}
+                        src={juan1}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white" }}
                       />
                       <p>JUAN</p>
                       <p>RICAUD</p>
@@ -250,11 +287,19 @@ export default function About() {
                 <ul class="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/juanricaud/"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/jRicaud11"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
@@ -284,10 +329,10 @@ export default function About() {
                   <li>
                     <div class="coverDesign blue">
                       <img
-                        src={logo}
+                        src={juan2}
                         alt=""
                         width="120px"
-                        style={{ paddingTop: "10px" }}
+                        style={{ marginTop: "10px", border: "2px double white"}}
                       />
                       <p>JUAN</p>
                       <p>LEDESMA</p>
@@ -299,11 +344,19 @@ export default function About() {
                 <ul class="page">
                   <li></li>
                   <li>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://www.linkedin.com/in/juan-franco-ledesma/"
+                      target="_blank"
+                    >
                       LINKEDIN
                     </a>
                     <br></br>
-                    <a class="btn" href="#">
+                    <a
+                      class="btn"
+                      href="https://github.com/JuanFrancoLedesma"
+                      target="_blank"
+                    >
                       GITHUB
                     </a>
                   </li>
