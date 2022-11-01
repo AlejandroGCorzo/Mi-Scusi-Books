@@ -773,6 +773,7 @@ userRouter.put("/favorites/:idUser", protect, async (req, res) => {
       name: book.name,
       price: book.price,
       image: book.image,
+      stock: book.stock
     };
     const newFavorites = [...user.favorites, book];
     await user.updateOne({ favorites: newFavorites });
