@@ -675,7 +675,7 @@ userRouter.put("/pay", protect, async (req, res) => {
       total -= total * discount; //Si no hay descuento se le resta 0
       total = address.city ? total + 8 : total;
       total = Math.round(total * 100) / 100;
-      const date = new Date().toLocaleDateString("es-MX");
+      const date = new Date().toDateString();
 
       const bill = await billsSchema.create({
         books: books,
