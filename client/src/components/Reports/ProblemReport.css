@@ -33,8 +33,15 @@
   width: 80%;
 }
 
+.formReport p {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 6em;
+  font-weight: bold;
+}
+
 .divBtnReport {
-  margin: 1.5em;
+  margin: 1em;
 }
 
 .divReport button {

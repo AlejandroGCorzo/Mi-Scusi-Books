@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
+import { getUserDetails } from "../../redux/StoreUsers/usersActions";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./ProblemReport.css";
 
-export default function ProblemReport(email) {
+export default function ProblemReport() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [input, setInput] = useState({
@@ -17,9 +18,9 @@ export default function ProblemReport(email) {
     description: "",
   });
   const [errors, setErrors] = useState({});
-  const { loggedUser } = useSelector((state) => state.users);
+  const { loggedUser, profile } = useSelector((state) => state.users);
   console.log(loggedUser)
-  console.log("email", email)
+  console.log("email", profile)
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -39,6 +40,7 @@ export default function ProblemReport(email) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
   }
 
   function validations(name, value) {
@@ -85,9 +87,9 @@ export default function ProblemReport(email) {
     }
   }
 
-  // useEffect(() => {
-  //   if (Object.keys(loggedUser).length === 0) history.push("/");
-  // }, [loggedUser]);
+  useEffect(() => {
+    dispatch(getUserDetails(loggedUser.id, accessToken));
+  }, [dispatch]);
 
   return (
     <>
@@ -98,37 +100,41 @@ export default function ProblemReport(email) {
             <b>Report a problem</b>
           </h1>
           <form onSubmit={handleSubmit} className="formReport">
+            <p>Full name</p>
             <TextField
-              sx={{ m: 2 }}
+              sx={{ m: 0 }}
               className="inputReport"
-              label="Full name"
+              label=""
               autoComplete="off"
               onChange={handleChange}
               name="fullname"
               type="text"
-              value={input.name}
-              placeholder="Full name"
+              value={`${profile.firstName} ${profile.lastName}`}
+              placeholder={`${profile.firstName} ${profile.lastName}`}
               inputProps={{ maxLength: 40 }}
               error={errors.fullname ? true : false}
               helperText={errors.fullname ? `${errors.fullname}` : null}
+              disabled
             />
+            <p>E-mail</p>
             <TextField
-              sx={{ m: 2 }}
+              sx={{ m: 0 }}
               className="inputReport"
-              label="E-mail"
+              label=""
               autoComplete="off"
               onChange={handleChange}
               name="email"
               type="text"
-              value="hola"
-              placeholder="E-mail"
+              value={profile.email}
+              placeholder={profile.email}
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
               disabled
             />
+            <p>Subject</p>
             <TextField
-              sx={{ m: 2 }}
+              sx={{ m: 0 }}
               className="inputReport"
               label="Subject"
               autoComplete="off"
@@ -152,7 +158,7 @@ export default function ProblemReport(email) {
               onChange={handleChange}
               // error={errors.description ? true : false}
               // helperText={errors.description ? `${errors.description}` : null}
-              style={{ width: 500 }}
+              style={{ width: 500, marginTop: "2em" }}
             />
             <div className="divBtnReport">
               <button
