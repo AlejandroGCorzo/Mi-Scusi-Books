@@ -41,7 +41,6 @@ export default function AccountCreate() {
       amounts = [];
     if (localCart) {
       localCart = JSON.parse(localCart);
-      console.log(localCart);
       cart = localCart?.books.map((el) => el.id);
       amounts = localCart?.books.map((el) => el.amount);
     }
@@ -64,7 +63,6 @@ export default function AccountCreate() {
       validations({
         name: e.target.name,
         password: e.target.value,
-        user,
         errors,
         setErrors,
         confirmPass,
@@ -76,7 +74,6 @@ export default function AccountCreate() {
       validations({
         name: e.target.name,
         password: user.password,
-        user,
         errors,
         setErrors,
         confirmPass: e.target.value,
@@ -90,7 +87,6 @@ export default function AccountCreate() {
     validations({
       name: e.target.name,
       value: e.target.value.toLowerCase(),
-      user,
       errors,
       setErrors,
       confirmPass,
@@ -121,7 +117,6 @@ export default function AccountCreate() {
   });
 
   const handleClickShowPassword = (name) => {
-    console.log(name);
     setShow({
       ...show,
       [name]: !show[name],
