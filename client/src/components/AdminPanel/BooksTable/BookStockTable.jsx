@@ -393,6 +393,7 @@ export default function BooksStock() {
                           onBlur={() => {
                             setInputStock({ _id: "" });
                             setSelected();
+                            setShowEmail('');
                           }}
                         />
                       </TableCell>
