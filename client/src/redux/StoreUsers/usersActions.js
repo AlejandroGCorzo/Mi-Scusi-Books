@@ -106,10 +106,14 @@ export const setUserChangeRol = (id, type, token) => {
 };
 
 /////////////////FAVORITOS Y CARRITO//////////////////////////
-export const fetchShoppingCart = (id) => {
+export const fetchShoppingCart = (token) => {
   return async function (dispatch) {
-    const shoppingCart = await axios.get(`/user/cart/${id}`);
-    dispatch(getShoppingCart(shoppingCart.data));
+    const shoppingCart = await axios.get(`/user/cart`, {
+      headers:{
+        authorization: `Bearer ${token}`
+      }
+    });
+    return dispatch(getShoppingCart(shoppingCart.data));
   };
 };
 
@@ -124,7 +128,6 @@ export const addCart = (id, idBook, amount, token) => {
         },
       }
     );
-    console.log(shoppingCart.data);
     return dispatch(getShoppingCart(shoppingCart.data));
   };
 };
@@ -144,9 +147,13 @@ export const deleteCart = (id, idBook, token) => {
   };
 };
 
-export const fetchFavorites = (id) => {
+export const fetchFavorites = (token) => {
   return async function (dispatch) {
-    const favorites = await axios.get(`/user/favorites/${id}`);
+    const favorites = await axios.get(`/user/favorites`, {
+      headers:{
+        authorization: `Bearer ${token}`
+      }
+    });
     dispatch(getFavorites(favorites.data));
   };
 };
