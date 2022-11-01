@@ -78,9 +78,8 @@ export const setCurrentPage = (value) => (dispatch) => {
 // };
 
 export const setBookDelete = (id, token) => {
-  console.log(token);
   return async (dispatch) => {
-    let json = await axios.put(`/books/delete/${id}`, {
+    let json = await axios.put(`/books/delete/${id}`, {} , {
       headers: {
         authorization: `Bearer ${token}`,
       },
