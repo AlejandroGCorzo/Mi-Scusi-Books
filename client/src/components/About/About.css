@@ -1,6 +1,6 @@
-/* ::before, ::after{
+::before{
 	content: "";
-} */
+}
 
 body {
 	color: #34495e;
@@ -27,7 +27,7 @@ body {
 	margin-bottom: 3em;
 }
 
-.divTitles h1, h2 {
+.divTitles h2, h3 {
 	color: #34495e;
 }
 
