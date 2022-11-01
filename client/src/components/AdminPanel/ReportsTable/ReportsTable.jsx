@@ -3,42 +3,32 @@ import React, { useState, useEffect } from "react";
 //import 'antd/dist/antd.less';
 import "../BillsTable/index.css";
 import { DownOutlined } from "@ant-design/icons";
-import { Popconfirm, Button, Badge, Dropdown, Menu, Space, Table } from "antd";
+import { Popconfirm, Badge, Dropdown, Menu, Space, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBills } from "../../../redux/StoreUsers/usersActions";
-import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
+import DescriptionDialog from "./DescriptionDialog";
+import { Button } from "@mui/material";
 
 const ReportsTable = () => {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
-  const dispatch = useDispatch();
-  const { bills } = useSelector((state) => state.users);
-  const [render, setRender] = useState(true);
+  const { reports } = useSelector((state) => state.users);
 
-  const handleMenuClick = (id, status) => {
-    status = status === "approved" ? "cancelled" : "approved";
-    dispatch(setBillStatus(id, status, accessToken));
-    setRender(render === true ? false : true);
-  };
-
-  const data2 = bills?.map((e) => ({
+  //////////Reform Reports Data///////////////////
+  const reports2 = reports?.map((e) => ({
     key: e._id,
     id: e._id,
-    user: `${e.user.firstName} ${e.user.lastName}`,
-    email: e.user.email,
-    firstName: e.user.firstName,
-    lastName: e.user.lastName,
-    totalPrice: e.total,
-    date: e.date,
-    status: e.status,
+    user: e.user,
+    email: e.email,
+    rol: e.rol,
+    subject: e.subject,
+    description: e.description,
   }));
 
-
   /////////Eliminar Users Duplicados//////////////
-  const duplicateFilter = bills?.map((e) => ({
-    text: `${e.user.firstName} ${e.user.lastName}`,
-    value: `${e.user.firstName} ${e.user.lastName}`,
+  const duplicateFilter = reports?.map((e) => ({
+    text: e.user,
+    value: e.user,
   }));
 
   const uniqueFilter = [
@@ -46,14 +36,37 @@ const ReportsTable = () => {
   ];
 
   /////////Eliminar Emails Duplicados//////////////
-  const duplicateEmails = bills?.map((e) => ({
-    text: e.user.email,
-    value: e.user.email,
+  const duplicateEmails = reports?.map((e) => ({
+    text: e.email,
+    value: e.email,
   }));
 
   const EniqueEmails = [
     ...new Map(duplicateEmails.map((item) => [item.text, item])).values(),
   ];
+
+  /////////Eliminar Status Duplicados//////////////
+  const duplicateStatus = reports?.map((e) => ({
+    text: e.rol,
+    value: e.rol,
+  }));
+
+  const EniqueStatus = [
+    ...new Map(duplicateStatus.map((item) => [item.text, item])).values(),
+  ];
+
+  //////////////Dialog Manager/////////////////////////////////////
+
+  const [openDialog, setOpenDialog] = React.useState('');
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  ////////////////////////////////////////////////////////////////////
 
   const columns = [
     {
@@ -74,90 +87,128 @@ const ReportsTable = () => {
     },
     {
       title: "Rol",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "rol",
+      key: "rol",
+      filters: EniqueStatus,
+      filterSearch: true,
+      onFilter: (email, userObject) => userObject.user.includes(email),
     },
     {
       title: "Subject",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      sorter: (obj1, obj2) => obj1.totalPrice - obj2.totalPrice,
+      dataIndex: "subject",
+      key: "subject",
     },
     {
       title: "Description",
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        {
-          text: "Approved",
-          value: "Approved",
-        },
-        {
-          text: "Cancelled",
-          value: "Cancelled",
-        },
-      ],
-      filterSearch: true,
+      dataIndex: "description",
+      key: "description",
       render: (_, record) => (
-        <span>
-          {record.status === "approved" ? (
-            <>
-              <Badge status="success" /> Approved
-            </>
-          ) : (
-            <>
-              <Badge status="error" /> Cancelled
-            </>
-          )}
-        </span>
+        <>
+          <Button
+            //onClick={(e) => setOpenDialog('click')}
+            variant="outlined"
+            style={{ "min-width": "140px" }}
+          >
+            Description
+          </Button>
+          <DescriptionDialog
+            description={record.description}
+
+            setOpenDialog={setOpenDialog}
+            openDialog={openDialog}
+            //openDialog={openDialog}
+            // handleOpenDialog={handleOpenDialog}
+            // handleCloseDialog={handleCloseDialog}
+            userName={record.user}
+          />
+        </>
       ),
     },
     {
-      title: "Change Status",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          {record.status === "approved" ? (
-            <Popconfirm
-              title="Sure to set status to Cancelled?"
-              onConfirm={(e) => handleMenuClick(record.key, record.status)}
-            >
-              <a>Set status Cancelled</a>
-            </Popconfirm>
-          ) : (
-            <Popconfirm
-              title="Sure to set status to Approved?"
-              onConfirm={(e) => handleMenuClick(record.key, record.status)}
-            >
-              <a>Set status Approved</a>
-            </Popconfirm>
-          )}
-        </Space>
-      ),
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
     },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   filters: [
+    //     {
+    //       text: "Approved",
+    //       value: "Approved",
+    //     },
+    //     {
+    //       text: "Cancelled",
+    //       value: "Cancelled",
+    //     },
+    //   ],
+    //   filterSearch: true,
+    //   render: (_, record) => (
+    //     <span>
+    //       {record.status === "approved" ? (
+    //         <>
+    //           <Badge status="success" /> Approved
+    //         </>
+    //       ) : (
+    //         <>
+    //           <Badge status="error" /> Cancelled
+    //         </>
+    //       )}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: "Change Status",
+    //   dataIndex: "action",
+    //   key: "action",
+    //   render: (_, record) => (
+    //     <Space size="middle">
+    //       {record.status === "approved" ? (
+    //         <Popconfirm
+    //           title="Sure to set status to Cancelled?"
+    //           onConfirm={(e) => handleMenuClick(record.key, record.status)}
+    //         >
+    //           <a>Set status Cancelled</a>
+    //         </Popconfirm>
+    //       ) : (
+    //         <Popconfirm
+    //           title="Sure to set status to Approved?"
+    //           onConfirm={(e) => handleMenuClick(record.key, record.status)}
+    //         >
+    //           <a>Set status Approved</a>
+    //         </Popconfirm>
+    //       )}
+    //     </Space>
+    //   ),
+    // },
   ];
 
-  useEffect(() => {
-    dispatch(getAllBills(accessToken));
-  }, [dispatch]);
+  //   useEffect(() => {
+  //     dispatch(getAllBills(accessToken));
+  //   }, [dispatch]);
 
   return (
     <>
       <Table
         columns={columns}
-        //expandedRowRender={expandedRowRender}
-        dataSource={data2.reverse()}
+        dataSource={reports2}
         size="small"
         style={{ textTransform: "capitalize" }}
         pagination={{
           position: ["bottomLeft"],
         }}
+        expandable={{
+            expandedRowRender: (record) => (
+              <p
+                style={{
+                  margin: 0,
+                }}
+              >
+                {record.description}
+              </p>
+            ),
+          }}
       />
     </>
   );
