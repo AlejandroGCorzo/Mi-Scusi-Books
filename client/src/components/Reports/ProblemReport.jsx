@@ -7,7 +7,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./ProblemReport.css";
 
-export default function ProblemReport() {
+export default function ProblemReport(email) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [input, setInput] = useState({
@@ -18,6 +18,8 @@ export default function ProblemReport() {
   });
   const [errors, setErrors] = useState({});
   const { loggedUser } = useSelector((state) => state.users);
+  console.log(loggedUser)
+  console.log("email", email)
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -118,11 +120,12 @@ export default function ProblemReport() {
               onChange={handleChange}
               name="email"
               type="text"
-              value={input.email}
+              value="hola"
               placeholder="E-mail"
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
+              disabled
             />
             <TextField
               sx={{ m: 2 }}
