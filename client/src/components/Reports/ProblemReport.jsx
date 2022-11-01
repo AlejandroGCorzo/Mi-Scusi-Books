@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { getUserDetails } from "../../redux/StoreUsers/usersActions";
+import { getUserDetails, addReport } from "../../redux/StoreUsers/usersActions";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./ProblemReport.css";
 
 export default function ProblemReport() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { loggedUser, profile } = useSelector((state) => state.users);
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -18,9 +22,9 @@ export default function ProblemReport() {
     description: "",
   });
   const [errors, setErrors] = useState({});
-  const { loggedUser, profile } = useSelector((state) => state.users);
-  console.log(loggedUser)
-  console.log("email", profile)
+  const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState("");
+
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -38,10 +42,38 @@ export default function ProblemReport() {
     }
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
+    // if (accessToken) {
 
+    const subject = input.subject;
+    const description = input.description;
+    dispatch(addReport(subject, description, accessToken));
+    setInput({
+      subject: "",
+      description: "",
+    });
+    history.push("/report-successfully")
+    setMsg("Your report has been submitted!");
   }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{ width: "50px" }}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   function validations(name, value) {
     if (name === "fullname") {
@@ -88,14 +120,21 @@ export default function ProblemReport() {
   }
 
   useEffect(() => {
+    if (!Object.keys(loggedUser).length > 0) history.push("/"); 
     dispatch(getUserDetails(loggedUser.id, accessToken));
-  }, [dispatch]);
+  }, [dispatch, loggedUser]);
 
   return (
     <>
       <section className="sectionReport">
         <div className="divReport">
-          <button className="closeBtn" type="button" onClick={(e) => history.push("/")}>X</button>
+          <button
+            className="closeBtn"
+            type="button"
+            onClick={(e) => history.push("/")}
+          >
+            X
+          </button>
           <h1 style={{ fontSize: "1.8em" }}>
             <b>Report a problem</b>
           </h1>
@@ -114,7 +153,7 @@ export default function ProblemReport() {
               inputProps={{ maxLength: 40 }}
               error={errors.fullname ? true : false}
               helperText={errors.fullname ? `${errors.fullname}` : null}
-              disabled
+              disabled={true}
             />
             <p>E-mail</p>
             <TextField
@@ -130,7 +169,7 @@ export default function ProblemReport() {
               inputProps={{ maxLength: 40 }}
               error={errors.email ? true : false}
               helperText={errors.email ? `${errors.email}` : null}
-              disabled
+              disabled={true}
             />
             <p>Subject</p>
             <TextField
@@ -164,8 +203,8 @@ export default function ProblemReport() {
               <button
                 disabled={
                   JSON.stringify(errors) !== "{}" ||
-                  !input.fullname ||
-                  !input.email ||
+                  // !input.fullname ||
+                  // !input.email ||
                   !input.subject ||
                   !input.description
                 }
@@ -176,6 +215,13 @@ export default function ProblemReport() {
             </div>
           </form>
         </div>
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          onClose={handleClose}
+          message={msg}
+          action={action}
+        />
       </section>
     </>
   );
