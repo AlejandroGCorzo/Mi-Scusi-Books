@@ -53,8 +53,7 @@ export default function UserDetails(props) {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { profile, bills } = useSelector((store) => store.users);
-  const { loggedUser } = useSelector((state) => state.users);
+  const { profile, bills, loggedUser } = useSelector((store) => store.users);
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -146,7 +145,8 @@ export default function UserDetails(props) {
             </TabPanel>
 
             <TabPanel value={value} index={2} className="tabPanel">
-              <DigitalBooks bills={bills} />
+              {/* {console.log(bills)} */}
+              <DigitalBooks loggedUser={loggedUser} />
             </TabPanel>
           </div>
         </div>
