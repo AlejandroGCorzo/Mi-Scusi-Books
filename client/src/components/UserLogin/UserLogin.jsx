@@ -343,12 +343,14 @@ export default function UserLogin() {
             >
               Login
             </button>
-            <GoogleLogin
-              onSuccess={googleSuccessData}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <div className="googleLoginBottom">
+              <GoogleLogin
+                onSuccess={googleSuccessData}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </div>
             <div className="accountMobile">
               <Link to={"/signup"}>
                 <span>Don't have an account?!</span>
