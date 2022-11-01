@@ -7,7 +7,6 @@ export default function validations({
   password,
   confirmPass,
 }) {
-  console.log(password, confirmPass);
   if (name === "name" || name === "lastName") {
     if (!/^([a-z]+\s)*[a-z]+$/.test(value))
       return setErrors({
