@@ -19,6 +19,7 @@ export default function Home() {
     dispatch(getBooks());
     // dispatch(getUser());
     dispatch(fetchTopTen());
+    window.scrollTo(0, 0);
   }, [dispatch]);
 
   const _ = require("underscore");
