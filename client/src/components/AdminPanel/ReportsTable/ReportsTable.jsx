@@ -111,37 +111,37 @@ const ReportsTable = () => {
       dataIndex: "subject",
       key: "subject",
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (_, record) => (
-        <>
-          <Button
-            //onClick={(e) => handleclickDialog(record.description, true, record.user)}
-            //onClick={(e) => setOpenDialog('click')}
-            variant="outlined"
-            style={{ "min-width": "140px" }}
-          >
-            Description
-          </Button>
-          <DescriptionDialog
-            description={record.description}
-            setOpenDialog={setOpenDialog}
-            openDialog={openDialog}
-            //openDialog={openDialog}
-            // handleOpenDialog={handleOpenDialog}
-            // handleCloseDialog={handleCloseDialog}
-            userName={record.user}
-          />
-        </>
-      ),
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (_, record) => (
+    //     <>
+    //       <Button
+    //         //onClick={(e) => handleclickDialog(record.description, true, record.user)}
+    //         //onClick={(e) => setOpenDialog('click')}
+    //         variant="outlined"
+    //         style={{ "min-width": "140px" }}
+    //       >
+    //         Description
+    //       </Button>
+    //       <DescriptionDialog
+    //         description={record.description}
+    //         setOpenDialog={setOpenDialog}
+    //         openDialog={openDialog}
+    //         //openDialog={openDialog}
+    //         // handleOpenDialog={handleOpenDialog}
+    //         // handleCloseDialog={handleCloseDialog}
+    //         userName={record.user}
+    //       />
+    //     </>
+    //   ),
+    // },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    // },
     // {
     //   title: "Status",
     //   dataIndex: "status",
