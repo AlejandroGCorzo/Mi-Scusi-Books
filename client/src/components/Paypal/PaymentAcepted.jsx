@@ -9,13 +9,13 @@ export default function PaymentAcepted() {
   const dispatch = useDispatch();
   const history = useHistory();
   // const { shippingAddress } = useSelector(state => state.users)
-  const shipping = window.sessionStorage.getItem('shipping') || { }
+  const shipping = JSON.parse(window.sessionStorage.getItem('shipping')) || { }
   //traer al cart
   useEffect(() => {
     const accessToken =
       window.localStorage.getItem("token") ||
       window.sessionStorage.getItem("token");
-    dispatch(payAccepted(accessToken, JSON.parse(shipping)));
+    dispatch(payAccepted(accessToken, shipping));
   }, []);
 
   return (
