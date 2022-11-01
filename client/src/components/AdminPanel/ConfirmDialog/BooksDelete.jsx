@@ -16,11 +16,14 @@ export default function UsersDelete(props) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { numSelected, openDialog, handleClose, id } = props;
+  const accessToken =
+  window.localStorage.getItem("token") ||
+  window.sessionStorage.getItem("token");
 
   //console.log(id);
 
   const handleDelete = (e) => {
-    dispatch(setBookDelete(id));
+    dispatch(setBookDelete(id, accessToken));
     dispatch(handleClose);
     dispatch(snackBookDelete(true))
   };
