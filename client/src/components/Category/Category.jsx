@@ -5,12 +5,17 @@ import {
   getCategories,
   getResults,
 } from "../../redux/StoreBooks/booksActions.js";
+import ChatBot from "../ChatBot/ChatBot";
 import "./Category.css";
 
 export default function Category() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { categories } = useSelector((state) => state.books);
+  const { loggedUser } = useSelector((state) => state.users)
+  const accessToken =
+  window.localStorage.getItem("token") ||
+  window.sessionStorage.getItem("token");
 
   function onClickCategoryGeneral(e, theme) {
     e.preventDefault();
@@ -79,6 +84,7 @@ export default function Category() {
   function viewCategory(index) {
     return (
       <div>
+        {(!accessToken || loggedUser?.type === "normal") && <ChatBot />}
         {JSON.stringify(categories[index]) !== "{}" &&
           Object.keys(categories[index])
             .sort()

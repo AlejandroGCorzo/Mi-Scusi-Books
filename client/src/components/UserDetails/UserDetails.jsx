@@ -21,6 +21,7 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import DigitalBooks from "./DigitalBooks/DigitalBooks";
+import ChatBot from "../ChatBot/ChatBot";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,6 +54,7 @@ export default function UserDetails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { profile, bills } = useSelector((store) => store.users);
+  const { loggedUser } = useSelector((state) => state.users);
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -89,6 +91,7 @@ export default function UserDetails(props) {
   }
   return (
     <div className="contentCategory">
+      {(!token || loggedUser?.type === "normal") && <ChatBot />}
       <Box sx={{ width: "100%" }}>
         <ThemeProvider theme={colorMiScusi}>
           <div className="titleFormShopping">
