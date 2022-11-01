@@ -15,10 +15,10 @@ export default function FilterEditorial({
       </b>
       <div style={{ textTransform: "capitalize" }}>
         {storeFilters.editorial ? (
-          <React.Fragment>
+          <>
             <p>{storeFilters.editorial}</p>
             <button onClick={(e) => handleDel(e, "editorial")}>x</button>
-          </React.Fragment>
+          </>
         ) : (
           allEdit
             ?.filter((item, index) => allEdit.indexOf(item) === index)
