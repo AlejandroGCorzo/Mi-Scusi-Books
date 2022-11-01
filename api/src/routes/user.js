@@ -436,6 +436,7 @@ userRouter.put("/sanction/:id", protect, async (req, res) => {
           <div style="color: #34495e; margin: 4% 10% 2%; text-align: justify;font-family: sans-serif">
             <h2 style="color: #287ccb; margin: 0 0 7px">Your user status has been changed!</h2>
             <p style="margin: 2px; font-size: 15px">
+            ${text}
             New status: ${state}</p>
             <br>
             <div style="width: 100%; text-align: center">
@@ -578,7 +579,6 @@ userRouter.get("/cart/:id", protect, async (req, res) => {
 //Registra el pago de la compra -> PORTEGIDA, SOLO USUSARIO LOGUEADO PUEDE PAGAR
 userRouter.put("/pay", protect, async (req, res) => {
   const { address } = req.body;
-  console.log('address', address);
   const reduceStock = async (id, amount) => {
     try {
       const book = await bookSchema.findById(id);
@@ -605,7 +605,6 @@ userRouter.put("/pay", protect, async (req, res) => {
         substractStock.push(reduceStock(user.cart[i].id, user.cart[i].amount));
       }
       await Promise.all(substractStock);
-      console.log('hasta la 607')
       const books = [];
       const booksNames = [];
       const booksAmount = [];
@@ -624,7 +623,6 @@ userRouter.put("/pay", protect, async (req, res) => {
         const subTotal = price[i] * booksAmount[i];
         total = total + subTotal;
       }
-      console.log('hasta la 626')
       // // // // // // // // // // // // // //
       // Discount
       if (points && user.loyaltyPoint < points)
@@ -639,8 +637,8 @@ userRouter.put("/pay", protect, async (req, res) => {
   
       total -= total * discount; //Si no hay descuento se le resta 0
       total = address.city ? total + 8 : total;
-      console.log('hasta la 640', typeof total, total)
-      const date = new Date().toDateString();
+      total = Math.round(total * 100) / 100
+      const date = new Date().toLocaleDateString("es-MX");
 
       const bill = await billsSchema.create({
         books: books,
@@ -654,14 +652,12 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp: address.city ? 8 : 0,
         address
       });
-      console.log('hasta la 654')
       let newBuyedBooks = books.concat(user.buyedBooks);
       const buyedBooks = [];
       for (const idBook of newBuyedBooks) {
         if (buyedBooks.some((id) => id === idBook)) continue;
         buyedBooks.push(idBook);
       }
-      console.log('hasta la 661')
       await user.updateOne({
         $set: {
           buyedBooks: buyedBooks,
@@ -669,27 +665,68 @@ userRouter.put("/pay", protect, async (req, res) => {
           loyaltyPoint: newLoyaltyPoint,
         },
       });
+
+
+      let tabla = [];
+      let firstColStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 70%; text-align: center; text-transform: capitalize;"'
+      let secondColRowStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center;"'
+      let importantCellStyle = 'style= "border: 1px solid black; border-collapse: collapse; width: 15%; text-align: center; font-weight: 600"'
+      for(let i = 0; i<booksNames.length; i++){
+        const body = `
+        <tr>
+          <td ${firstColStyle}>${booksNames[i]}</td>
+          <td ${secondColRowStyle}>${booksAmount[i]}</td> 
+          <td ${secondColRowStyle}>$ ${price[i]}</td>
+        </tr>
+        `
+        tabla.push(body)
+      }
+          
       await transporter.sendMail({
         from: `"Mi Scusi Books" <${process.env.GMAIL_USER}>`,
         to: user.email,
         subject: "Thanks for shopping!",
         html: `
       <h2>Thanks for buying</h2>
+      <table style="border: 1px solid black; width: 100%; border-collapse: collapse">
+        <tr>
+          <th ${firstColStyle}>Name: ${user.firstName} ${user.lastName}</th>
+          <th>Date: ${date}</th>
+        </tr>
+        <tr>
+          <td style="height: 10px; border: 1px solid black; border-right: 0px"></td>
+          <td style="height: 10px; border: 1px solid black; border-right: 0px; border-left: 0px"></td>
+          <td style="height: 10px; border: 1px solid black; border-left: 0px"></td>
+        </tr>
+        <tr>
+          <th ${firstColStyle}}>Title</th>
+          <th ${secondColRowStyle}>Amount</th>
+          <th ${secondColRowStyle}>Price (unit)</th>
+        </tr>
+        ${tabla.map(el => {return el})}
+        <tr>
+          <td></td>
+          <td ${importantCellStyle}>Discount</td>
+          <td  ${secondColRowStyle}>${discount * 100}%</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td ${importantCellStyle}>Shipment Cost</td>
+          <td  ${secondColRowStyle}>$ ${address.city ? 8 : 0}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td ${importantCellStyle}>Total</td>
+          <td  ${secondColRowStyle}>$ ${total}</td>
+        </tr>
+      </table>
+    
       <br>
-      <p>Date: ${date}</p>
-      <p>Books: ${booksNames}</p>
-      <p>Amounts: ${booksAmount}</p>
-      <p>Price p/u: $${price}</p>
-      <p>Discount: ${discount * 100}%</p>
-      <p>Loyalty Points: ${loyaltyPoint}</p>
-      <p>Total: ${total}</p>
+      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' style="width: 10%; height: 15%"/>
+      <span>Mi Scusi Books staff.</span>
       <br>
-      <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' />
-      <br>
-      <p>Mi Scusi Books staff.</p>
       `,
       });
-      console.log('yastamos')
       res.send(bill);
     } catch (error) {
       res.status(400).send({ msg: error, otherMsg: "algo fallo en pay" });
