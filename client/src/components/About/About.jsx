@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import logo from "../../sourceImg/logo3.png";
 import barb from "../../sourceImg/barb.jpg";
 import agus from "../../sourceImg/agus.png";
@@ -6,9 +7,15 @@ import ale from "../../sourceImg/ale.jpg";
 import jano from "../../sourceImg/jano.jpg";
 import juan1 from "../../sourceImg/juan1.jpg";
 import juan2 from "../../sourceImg/juan2.jpg";
+import ChatBot from "../ChatBot/ChatBot";
 import "./About.css";
 
 export default function About() {
+  const { loggedUser } = useSelector((state) => state.users);
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+
   window.scrollTo(0, 0);
 
   useEffect(() => {
@@ -16,12 +23,13 @@ export default function About() {
   }, []);
 
   return (
-    <>
+    <div className="mainAbout">
+      {(!accessToken || loggedUser?.type === "normal") && <ChatBot />}
       <div className="containerDescription">
         <img src={logo} alt="" width="210px" style={{ padding: "1em" }} />
         <div className="scusiDescription">
           <span>
-            My Scusi Books is a book application designed to serve as a bridge
+            Mi Scusi Books is a book application designed to serve as a bridge
             between the trade and those interested in buying them, with the main
             objective to fully meet the needs of our customers, offering the
             largest assortment of textbooks, reading and digital innovation.
@@ -47,7 +55,10 @@ export default function About() {
                         src={agus}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white" }}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>AGUSTIN</p>
                       <p>QUIROGA</p>
@@ -104,7 +115,10 @@ export default function About() {
                         src={ale}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white" }}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>ALEJANDRO</p>
                       <p>CORZO</p>
@@ -161,7 +175,10 @@ export default function About() {
                         src={barb}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white" }}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>BARBARA</p>
                       <p>CASSIRAM</p>
@@ -218,7 +235,10 @@ export default function About() {
                         src={jano}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white" }}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>JANO</p>
                       <p>NANZER</p>
@@ -275,7 +295,10 @@ export default function About() {
                         src={juan1}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white" }}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>JUAN</p>
                       <p>RICAUD</p>
@@ -332,7 +355,10 @@ export default function About() {
                         src={juan2}
                         alt=""
                         width="120px"
-                        style={{ marginTop: "10px", border: "2px double white"}}
+                        style={{
+                          marginTop: "10px",
+                          border: "2px double white",
+                        }}
                       />
                       <p>JUAN</p>
                       <p>LEDESMA</p>
@@ -378,6 +404,6 @@ export default function About() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -17,7 +17,6 @@ import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
 import About from "./components/About/About.jsx";
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
-import ChatBot from "./components/ChatBot/ChatBot";
 import ProblemReport from "./components/Reports/ProblemReport";
 import ReadPdf from "./components/ReadPDF/ReadPDF";
 import ReportDone from "./components/Reports/ReportDone/ReportDone";
@@ -28,7 +27,6 @@ function App() {
     <div className="App">
       <React.Fragment>
         <Nav onSearch="" />
-        <ChatBot />
         <Route exact path="/" component={Home} />
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />
