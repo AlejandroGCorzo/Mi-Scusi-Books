@@ -56,12 +56,13 @@ export const usersSlice = createSlice({
       state.login = !state.login;
     },
     filterDeleteUser: (state, action) => {
+      console.log(action.payload.state);
       if(action.payload.state === 'limited' || action.payload.state === 'active'){
         const newState = state.users.find((u) => u._id === action.payload.id);
         newState.state = action.payload.state;
         state.users = [...state.users.filter((e) => e._id !== newState._id), newState]
       } else{
-        state.users = state.users.filter((u) => u.type !== "inactive")
+        state.users = state.users.filter((u) => u._id !== action.payload.id)
       }
       state.searchUsers = state.users;
     },

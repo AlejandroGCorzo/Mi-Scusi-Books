@@ -92,7 +92,9 @@ export const booksSlice = createSlice({
       state.page = action.payload;
     },
     filterDeleteBook: (state, action) => {
+      console.log(action.payload);
       state.books = state.books.filter((b) => b._id !== action.payload);
+      state.searchBooks = state.books
     },
     setStock: (state, action) => {
       const newStock = state.books.find((b) => b._id === action.payload.id);
