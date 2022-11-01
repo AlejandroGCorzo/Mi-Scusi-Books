@@ -33,7 +33,9 @@ bookRouter.post("/", async (req, res) => {
       ISBN,
       stock,
       image,
+      url
     } = req.body;
+    console.log(req.body);
     let theme = await Category.find();
     const id = theme[0]._id;
     // console.log(id);
@@ -80,6 +82,7 @@ bookRouter.post("/", async (req, res) => {
         image,
         unitSold: 0,
         deleted: false,
+        url
       };
     } else
       return res

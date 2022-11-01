@@ -1,42 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Document, Page, pdfjs } from "react-pdf";
-
-
-const url =
-  "https://res.cloudinary.com/scusi-books/image/upload/v1667227678/booksCovers/d5oc5udi3qa3od06l97s.pdf";
+import axios from "axios";
+import { getLoggedUserData } from "../../redux/StoreUsers/usersSlice";
 
 export default function ReadPDF() {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
   /*To Prevent right click on screen*/
   document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
   });
-
   /*When document gets loaded successfully*/
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
   }
-
   function changePage(offset) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
-
   function previousPage() {
     changePage(-2);
   }
-
   function nextPage() {
     changePage(2);
   }
+  // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+  const { loggedUser } = useSelector((state) => state.users);
+  const [url, setUrl] = useState("");
+
+  const accessToken =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    // setSelectBook(e.target.name);
+    axios
+      .get(`http://localhost:9000/user/buyedBooks/${e.target.name}`, {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((r) => setUrl(r.data))
+      .catch((e) => console.log(e));
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <>
+      <div>
+        {loggedUser?.buyedBooks?.map((b, i) => {
+          return (
+            <button  name={b} onClick={(e) => handleClick(e)}>
+              {b}
+            </button>
+          );
+        })}
+        {console.log(url)}
+      </div>
       <div className="main">
-        <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
+        <Document file={url ? url : ""} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} />
           <Page pageNumber={pageNumber + 1} />
         </Document>
@@ -66,4 +93,3 @@ export default function ReadPDF() {
     </>
   );
 }
-

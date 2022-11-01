@@ -14,8 +14,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel.jsx";
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart.jsx";
 import PaymentAcepted from "./components/Paypal/PaymentAcepted.jsx";
 import AccountCreate from "./components/AccountCreate/AccountCreate.jsx";
-import About from "./components/About/About.jsx";
-import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import About from "./components/About/About.jsx"
 import NewPassword from "./components/ForgotPassword/NewPassword";
 import ActivationMail from "./components/ActivationMail/ActivationMail";
 import ChatBot from "./components/ChatBot/ChatBot";
@@ -53,7 +52,6 @@ function App() {
         <Route path="/admin_panel" component={AdminPanel} />
         <Route path="/shopping/:type" component={ShoppingCart} />
         <Route path="/order-successfully" component={PaymentAcepted} />
-        <Route path="/forgotPassword" component={ForgotPassword} />
         <Route path="/newPassword" component={NewPassword} />
         <Route path="/readPDF" component={ReadPdf} />
         <Route exact path="/activation-mail/:id" component={ActivationMail} />

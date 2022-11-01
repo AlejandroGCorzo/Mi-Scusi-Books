@@ -110,6 +110,7 @@ userRouter.get("/keepLog", protect, async (req, res) => {
       votedBooks: user.votedBooks,
       votedReviews: user.votedReviews,
       loyaltyPoint: user.loyaltyPoint,
+      buyedBooks: user.buyedBooks
     };
     res.status(200).json(formatUser);
   } catch (e) {
