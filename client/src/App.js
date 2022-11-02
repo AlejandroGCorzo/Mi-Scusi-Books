@@ -21,12 +21,14 @@ import ProblemReport from "./components/Reports/ProblemReport";
 import ReadPdf from "./components/ReadPDF/ReadPDF";
 import ReportDone from "./components/Reports/ReportDone/ReportDone";
 import LogInSuccessfully from "./components/UserLogin/LogInSuccessfully/LogInSuccessfully";
+import ChatBot from "./components/ChatBot/ChatBot"
 
 function App() {
   return (
     <div className="App">
       <React.Fragment>
         <Nav onSearch="" />
+        <ChatBot />
         <Route exact path="/" component={Home} />
         <Route path="/book_details/:id" component={Details} />
         <Route path="/login" component={UserLogin} />

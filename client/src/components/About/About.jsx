@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import logo from "../../sourceImg/logo3.png";
 import barb from "../../sourceImg/barb.jpg";
 import agus from "../../sourceImg/agus.png";
@@ -7,15 +6,9 @@ import ale from "../../sourceImg/ale.jpg";
 import jano from "../../sourceImg/jano.jpg";
 import juan1 from "../../sourceImg/juan1.jpg";
 import juan2 from "../../sourceImg/juan2.jpg";
-import ChatBot from "../ChatBot/ChatBot";
 import "./About.css";
 
 export default function About() {
-  const { loggedUser } = useSelector((state) => state.users);
-  const accessToken =
-    window.localStorage.getItem("token") ||
-    window.sessionStorage.getItem("token");
-
   window.scrollTo(0, 0);
 
   useEffect(() => {
@@ -24,7 +17,6 @@ export default function About() {
 
   return (
     <div className="mainAbout">
-      {(!accessToken || loggedUser?.type === "normal") && <ChatBot />}
       <div className="containerDescription">
         <img src={logo} alt="" width="210px" style={{ padding: "1em" }} />
         <div className="scusiDescription">
