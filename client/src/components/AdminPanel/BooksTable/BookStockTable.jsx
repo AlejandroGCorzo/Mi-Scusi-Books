@@ -216,6 +216,7 @@ export default function BooksStock() {
   const handleSetStock = (e) => {
     dispatch(setBookStock(selected, inputStock[selected], accessToken));
     setInputStock({ _id: "" });
+    setSearchBook("");
   };
 
   //////////////SearchBar BookName//////////////////
