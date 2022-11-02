@@ -115,12 +115,30 @@
   padding: 5px 0px;
   color: #287ccb;
   margin: 1em 0 1em 0;
+  font-size: 1em !important;
 }
 
 .divFilters {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.smallContainer{
+  max-height: 45vh;
+  overflow: scroll;
+  text-transform: capitalize;
+  line-height: 1em;
+}
+
+.smallContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.smallContainer::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: #287ccb;
+  border-radius: 15px;
 }
 
 .divFilters p {
