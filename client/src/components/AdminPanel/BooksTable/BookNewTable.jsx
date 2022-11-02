@@ -377,7 +377,7 @@ export default function TestUsers() {
                           {b.name}
                         </Link>
                       </TableCell>
-                      <TableCell align="left">{b.author}</TableCell>
+                      <TableCell align="left">{b.author.join(" & ")}</TableCell>
                       <TableCell align="left">{b.format}</TableCell>
                       <TableCell align="left">{b.edition}</TableCell>
                       <TableCell align="left">{b.language}</TableCell>
