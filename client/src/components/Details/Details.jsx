@@ -547,9 +547,9 @@ const Details = (props) => {
               </span> */}
               <span className="detailsSpan">
                 <b>Stock:</b>&nbsp;
-                {detail.stock === 1
-                  ? `${detail.stock} unit`
-                  : `${detail.stock} units`}
+                {detail.stock > 0
+                  ? 'Available stock!'
+                  : 'No stock!'}
                 .
               </span>
               <span className="price">
