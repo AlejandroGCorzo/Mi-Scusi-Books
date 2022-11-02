@@ -1,7 +1,7 @@
 import React from "react";
+import BillsTable from "../../AdminPanel/BillsTable/BillsTable";
 
 function TransactionCard(props) {
-  console.log(props);
   return (
     <div className="purchaseIndividualCard">
       <div>
@@ -45,28 +45,31 @@ function TransactionCard(props) {
   );
 }
 
-export default function TransactionHistory({ bills }) {
+export default function TransactionHistory({ bills, userId }) {
+  
+  console.log('userId', userId);
   return (
-    <div className="purchaseCards">
-      {bills.length !== 0 &&
-        bills.map((el) => (
-          <TransactionCard
-            id={el._id}
-            books={el.books.map((book, index) => {
-              return {
-                name: book.name,
-                format: book.format,
-                amount: el.amountBooks[index],
-                price: el.price[index],
-              };
-            })}
-            loyaltyPoint={el.loyaltyPoint}
-            discount={el.discount}
-            total={el.total}
-            date={el.date}
-            status={el.status}
-          />
-        ))}
-    </div>
+    <BillsTable userId={userId} />
+    // <div className="purchaseCards">
+    //   {bills.length &&
+    //     bills.map((el) => (
+    //       <TransactionCard
+    //         id={el._id}
+    //         books={el.books.map((book, index) => {
+    //           return {
+    //             name: book.name,
+    //             format: book.format,
+    //             amount: el.amountBooks[index],
+    //             price: el.price[index],
+    //           };
+    //         })}
+    //         loyaltyPoint={el.loyaltyPoint}
+    //         discount={el.discount}
+    //         total={el.total}
+    //         date={el.date}
+    //         status={el.status}
+    //       />
+    //     ))}
+    // </div>
   );
 }

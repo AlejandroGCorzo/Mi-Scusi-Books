@@ -138,7 +138,7 @@ export default function UserDetails(props) {
             </TabPanel>
 
             <TabPanel value={value} index={1} className="tabPanel">
-              <TransactionHistory bills={bills} />
+              <TransactionHistory bills={bills} userId={props.match.params.id} />
             </TabPanel>
 
             <TabPanel value={value} index={2} className="tabPanel">
