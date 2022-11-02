@@ -1,4 +1,4 @@
-.userOuterDiv {
+.userOuterDivProfile {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -9,6 +9,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  
+}
+
+.react-pdf__Document{
+  display: flex;
   
 }
 

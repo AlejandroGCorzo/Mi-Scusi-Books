@@ -183,6 +183,7 @@ option {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: center;
 }
 
 .contentBookDiv::-webkit-scrollbar {
@@ -200,7 +201,7 @@ option {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 95%;
+  width: 100%;
   min-width: 336px;
   transform: scale(1);
 }
@@ -229,7 +230,7 @@ option {
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
-  width: 336px;
+  width: 330px;
   margin-top: 15px;
   text-align: left;
 }
