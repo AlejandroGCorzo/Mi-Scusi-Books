@@ -6,6 +6,10 @@ export default function FilterAuthor({
   storeFilters,
   handleDel,
 }) {
+  const authors = booksFilter
+    .map((el) => el.author)
+    .flat(Infinity)
+    .filter((el, index, arr) => index === arr.indexOf(el));
   function Authors() {
     return storeFilters.author &&
       JSON.stringify(storeFilters.author) !== "[]" ? (
@@ -14,32 +18,16 @@ export default function FilterAuthor({
         <button onClick={(e) => handleDel(e, "author")}>x</button>
       </>
     ) : (
-      booksFilter?.map((el) =>
-        el.author.length > 1 ? (
-          <>
-            <p
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleClick(e, "author", el.author[0])}
-            >
-              {el.author[0]}
-            </p>
-            <p
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleClick(e, "author", el.author[1])}
-            >
-              {el.author[1]}
-            </p>
-          </>
-        ) : (
+      authors.map((el) => (
+        <>
           <p
-            key={el.author[0]}
             style={{ cursor: "pointer" }}
-            onClick={(e) => handleClick(e, "author", el.author[0])}
+            onClick={(e) => handleClick(e, "author", el)}
           >
-            {el.author[0]}
+            {el}
           </p>
-        )
-      )
+        </>
+      ))
     );
   }
 
