@@ -25,7 +25,9 @@ const BillsTable = () => {
   const data2 = bills?.map((e) => ({
     key: e._id,
     id: e._id,
-    user: `${e.user.firstName} ${e.user.lastName}`,
+    user: `${
+      e.user.firstName.charAt(0).toUpperCase() + e.user.firstName.slice(1)
+    } ${e.user.lastName.charAt(0).toUpperCase() + e.user.lastName.slice(1)}`,
     email: e.user.email,
     firstName: e.user.firstName,
     lastName: e.user.lastName,
@@ -83,7 +85,9 @@ const BillsTable = () => {
 
   /////////Eliminar Users Duplicados//////////////
   const duplicateFilter = bills?.map((e) => ({
-    text: `${e.user.firstName} ${e.user.lastName}`,
+    text: `${
+      e.user.firstName.charAt(0).toUpperCase() + e.user.firstName.slice(1)
+    } ${e.user.lastName.charAt(0).toUpperCase() + e.user.lastName.slice(1)}`,
     value: `${e.user.firstName} ${e.user.lastName}`,
   }));
 
@@ -101,8 +105,6 @@ const BillsTable = () => {
     ...new Map(duplicateEmails.map((item) => [item.text, item])).values(),
   ];
 
-
-
   const columns = [
     {
       title: "User",
@@ -118,7 +120,7 @@ const BillsTable = () => {
       key: "email",
       filters: EniqueEmails,
       filterSearch: true,
-      onFilter: (email, userObject) => userObject.user.includes(email),
+      onFilter: (email, userObject) => userObject.email.includes(email),
     },
     {
       title: "ID",
@@ -144,14 +146,15 @@ const BillsTable = () => {
       filters: [
         {
           text: "Approved",
-          value: "Approved",
+          value: "approved",
         },
         {
           text: "Cancelled",
-          value: "Cancelled",
+          value: "cancelled",
         },
       ],
       filterSearch: true,
+      onFilter: (state, userObject) => userObject.status.includes(state),
       render: (_, record) => (
         <span>
           {record.status === "approved" ? (
@@ -203,7 +206,7 @@ const BillsTable = () => {
         expandedRowRender={expandedRowRender}
         dataSource={data2.reverse()}
         size="small"
-        style={{ textTransform: "capitalize" }}
+        //style={{ textTransform: "capitalize" }}
         pagination={{
           position: ["bottomLeft"],
         }}
