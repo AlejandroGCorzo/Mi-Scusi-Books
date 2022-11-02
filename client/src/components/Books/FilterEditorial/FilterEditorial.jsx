@@ -13,7 +13,7 @@ export default function FilterEditorial({
       <b>
         <p className="titlesFilters">Editorial</p>
       </b>
-      <div style={{ textTransform: "capitalize" }}>
+      <div className="smallContainer">
         {storeFilters.editorial ? (
           <>
             <p>{storeFilters.editorial}</p>

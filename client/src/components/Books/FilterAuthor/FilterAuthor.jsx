@@ -48,7 +48,7 @@ export default function FilterAuthor({
       <b>
         <p className="titlesFilters">Author</p>
       </b>
-      <div style={{ textTransform: "capitalize" }}>
+      <div className="smallContainer">
         <Authors />
       </div>
     </div>
