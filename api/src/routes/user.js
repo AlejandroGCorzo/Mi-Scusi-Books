@@ -32,8 +32,8 @@ userRouter.put("/forgot_password", async (req, res) => {
     // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
-
     if (!user) return res.send("Something goes wrong!");
+    if(!user.password) return res.send("This is not your login method!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
     const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
@@ -209,6 +209,7 @@ userRouter.post("/login_google", async (req, res) => {
         state: "active",
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
         cart: newCart,
+        loginMethod: 'google'
       };
       const googleUser = await User.create(newUser);
       const formatUser = {
@@ -279,6 +280,7 @@ userRouter.post("/signup", async (req, res) => {
       cart: newCart,
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
       resetToken: "",
+      loginMethod: 'miScusi'
     };
     const user = await User.create(newUser);
 
