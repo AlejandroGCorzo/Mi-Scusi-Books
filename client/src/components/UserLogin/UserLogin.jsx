@@ -76,7 +76,7 @@ export default function UserLogin() {
       }
     }
     if (name === "password") {
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value))
+      if (!/^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)[a-zA-ZñÑ\d]{8,}$/.test(value))
         return setErrors({
           ...errors,
           [name]:
