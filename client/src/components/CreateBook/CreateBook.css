@@ -12,6 +12,7 @@
   margin: 1em 0 1em  0;
 }
 
+
 .titleFormx{
   background-color: #fff;
   box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
@@ -183,6 +184,17 @@ option {
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+.contentBookDiv::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contentBookDiv::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: #287ccb;
+  border-radius: 15px;
+}
+
 
 .contentCreateBook {
   display: flex;
