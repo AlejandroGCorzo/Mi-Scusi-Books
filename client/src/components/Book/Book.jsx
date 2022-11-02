@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Book.css";
 
-export default function Book({ _id, image, name, editorial, author, price }) {
+export default function Book({ _id, image, name, author, price }) {
   return (
     // <div className="containerBook" key={_id}>
     <div className="contentCard">

@@ -29,8 +29,12 @@ import CheckoutPayPal from "../../components/Paypal/PayPal";
 import { IconButton, Snackbar } from "@mui/material";
 import FormDialog from "./AdressForm/AdressForm.jsx";
 import EditIcon from "@mui/icons-material/Edit";
-import { clearShippingAddress, clearShoppingCart } from "../../redux/StoreUsers/usersSlice";
+import {
+  clearShippingAddress,
+  clearShoppingCart,
+} from "../../redux/StoreUsers/usersSlice";
 import emptyCache from "../../emptyCache";
+import Loader from "../Loader/Loader";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -80,6 +84,7 @@ export default function ShoppingCart(props) {
   const cartToken = window.sessionStorage.getItem("cart");
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const [loader, setLoader] = useState(false);
 
   //////////////////////////////DIRECTION FORM//////////////////////////////////////////////////
   const [selectOrder, setSelectOrder] = useState("0");
@@ -159,8 +164,9 @@ export default function ShoppingCart(props) {
       setMsg("Please complete the data!");
       setOpen(true);
     } else {
-      setMsg("Redirecting...");
-      setOpen(true);
+      // setMsg("Redirecting...");
+      // setOpen(true);
+      setLoader(true);
       dispatch(setUserDiscount(loggedUser.id, discount, accessToken));
       const { data } = await CheckoutPayPal(
         loggedUser.id,
@@ -254,6 +260,11 @@ export default function ShoppingCart(props) {
 
   return (
     <div className="contentCategory">
+      {loader && (
+        <div>
+          <Loader />
+        </div>
+      )}
       <Box sx={{ width: "100%" }}>
         <ThemeProvider theme={colorMiScusi}>
           <div className="titleFormShopping">

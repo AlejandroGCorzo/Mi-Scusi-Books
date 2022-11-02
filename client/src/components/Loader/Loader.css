@@ -1,8 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Caveat&family=Concert+One&family=Courgette&family=Dangrek&family=Fredoka+One&family=Itim&family=Neucha&family=Pangolin&family=Patrick+Hand&family=Sniglet&display=swap");
 
 .loader {
-  position: relative;
-  margin-top: 10em;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #e7e7e7e8;
+  backdrop-filter: blur(1.5px);
+  padding-top: 8em;
+  z-index: 100;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 .loader span {
