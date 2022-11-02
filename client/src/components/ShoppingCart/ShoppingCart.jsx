@@ -421,47 +421,51 @@ export default function ShoppingCart(props) {
             <div className="contBuy">
               <div className="textBuy">
                 <div className="directionBuy">
-                  <select
-                    value={selectOrder}
-                    onChange={(e) => {
-                      if (e.target.value === "0") {
-                        setDirection({
-                          address: "",
-                          postalCode: "",
-                          city: "",
-                          province: "",
-                        });
-                        // dispatch(clearShippingAddress())
-                        window.sessionStorage.removeItem("shipping");
-                      } else {
-                        setOpenForm(true);
-                      }
-                      setSelectOrder(e.target.value);
-                    }}
-                  >
-                    <option value="0">Pick up in person</option>
-                    <option value="8">Shipping to address</option>
-                  </select>
+                  {loggedUser.id ? (
+                    <>
+                      <select
+                        value={selectOrder}
+                        onChange={(e) => {
+                          if (e.target.value === "0") {
+                            setDirection({
+                              address: "",
+                              postalCode: "",
+                              city: "",
+                              province: "",
+                            });
+                            // dispatch(clearShippingAddress())
+                            window.sessionStorage.removeItem("shipping");
+                          } else {
+                            setOpenForm(true);
+                          }
+                          setSelectOrder(e.target.value);
+                        }}
+                      >
+                        <option value="0">Pick up in person</option>
+                        <option value="8">Shipping to address</option>
+                      </select>
 
-                  {direction.address.length > 0 &&
-                  direction.postalCode.length > 0 &&
-                  direction.province.length > 0 ? (
-                    <div className="contentEdit">
-                      <span>
-                        <EditIcon
-                          onClick={handleClickOpenForm}
-                          style={{ cursor: "pointer" }}
-                        />
-                      </span>
-                    </div>
-                  ) : null}
+                      {direction.address.length > 0 &&
+                      direction.postalCode.length > 0 &&
+                      direction.province.length > 0 ? (
+                        <div className="contentEdit">
+                          <span>
+                            <EditIcon
+                              onClick={handleClickOpenForm}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </span>
+                        </div>
+                      ) : null}
 
-                  {direction.address.length > 0 &&
-                  direction.postalCode.length > 0 &&
-                  direction.province.length > 0 ? (
-                    <div>
-                      <span>{`${direction.address}, ${direction.postalCode}, ${direction.city}, ${direction.province}`}</span>
-                    </div>
+                      {direction.address.length > 0 &&
+                      direction.postalCode.length > 0 &&
+                      direction.province.length > 0 ? (
+                        <div>
+                          <span>{`${direction.address}, ${direction.postalCode}, ${direction.city}, ${direction.province}`}</span>
+                        </div>
+                      ) : null}
+                    </>
                   ) : null}
                 </div>
                 <div className="directionBuy">
