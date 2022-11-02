@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import axios from "axios";
 import { getLoggedUserData } from "../../redux/StoreUsers/usersSlice";
 
-export default function ReadPDF({id}) {
+export default function ReadPDF({ id }) {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -22,14 +22,14 @@ export default function ReadPDF({id}) {
   }
   function previousPage() {
     console.log(pageNumber);
-    if(pageNumber === numPages) changePage(-1)
+    if (pageNumber === numPages) changePage(-1);
     else changePage(-2);
   }
   function nextPage() {
-    if(pageNumber === numPages-1) changePage(1)
+    if (pageNumber === numPages - 1) changePage(1);
     else changePage(2);
-    console.log('actual ',pageNumber);
-    console.log('actual siguiente ',pageNumber+1);
+    console.log("actual ", pageNumber);
+    console.log("actual siguiente ", pageNumber + 1);
   }
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -43,7 +43,7 @@ export default function ReadPDF({id}) {
   const handleClick = async (e) => {
     // setSelectBook(e.target.name);
     axios
-      .get(`http://localhost:9000/user/buyedBooks/${id}`, {
+      .get(`/user/buyedBooks/${id}`, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
@@ -53,7 +53,7 @@ export default function ReadPDF({id}) {
   };
 
   useEffect(() => {
-    handleClick()
+    handleClick();
   }, []);
 
   return (
@@ -68,11 +68,15 @@ export default function ReadPDF({id}) {
         })}
         {console.log(url)}
       </div> */}
-      
+
       <div className="main">
         <Document file={url ? url : ""} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} />
-          {pageNumber === numPages? <></> : <Page pageNumber={pageNumber + 1} />}
+          {pageNumber === numPages ? (
+            <></>
+          ) : (
+            <Page pageNumber={pageNumber + 1} />
+          )}
           {/* <Page pageNumber={pageNumber + 1} /> */}
         </Document>
         <div>
