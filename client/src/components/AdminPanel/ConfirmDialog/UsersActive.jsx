@@ -34,7 +34,7 @@ export default function UsersActive(props) {
       onClose={handleCloseActive}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">{"Block User"}</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">{"Active User"}</DialogTitle>
       <DialogContent>
         <DialogContentText>
           If you want to active user {emailSelectUser} please click CONFIRM,
