@@ -195,6 +195,7 @@ export default function ProblemReport() {
                 error={errors.subject ? true : false}
                 helperText={errors.subject ? `${errors.subject}` : null}
               />
+              <p style={{ fontSize: "0.8em", justifyContent: "center", marginLeft: "0em" }}>Description must contain between 30 and 300 characters.</p>
               <TextareaAutosize
                 aria-label="minimum height"
                 minRows={5}
@@ -206,7 +207,7 @@ export default function ProblemReport() {
                 onChange={handleChange}
                 // error={errors.description ? true : false}
                 // helperText={errors.description ? `${errors.description}` : null}
-                style={{ width: 500, marginTop: "2em" }}
+                style={{ width: 500, marginTop: "0em" }}
               />
               <div className="divBtnReport">
                 <button

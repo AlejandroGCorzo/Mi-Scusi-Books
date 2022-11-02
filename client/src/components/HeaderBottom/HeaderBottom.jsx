@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./HeaderBottom.css";
 
 export default function HeaderBottom() {
+  const { loggedUser } = useSelector((state) => state.users);
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -12,7 +14,7 @@ export default function HeaderBottom() {
       <Link to="/about" style={{ textDecoration: "none" }}>
         <p className="aboutText">About</p>
       </Link>
-      {accessToken && (
+      {(loggedUser?.type === "normal" || loggedUser?.type === "seller") && (
         <Link to="/contact" style={{ textDecoration: "none" }}>
           <p className="reportText">Report a problem</p>
         </Link>
