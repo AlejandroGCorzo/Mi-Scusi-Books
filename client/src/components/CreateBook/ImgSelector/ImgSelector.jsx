@@ -17,7 +17,7 @@ export default function ImgSelector({
   // // // // //
   function uploadImage(e) {
     e.preventDefault(e);
-    setLoader({photo: true});
+    setLoader({ photo: true });
     const formImgData = new FormData();
     formImgData.append("file", e.target.files[0]);
     formImgData.append(
@@ -33,11 +33,11 @@ export default function ImgSelector({
         // console.log(response);
         setNewBook({ ...newBook, image: response.data.secure_url });
         setLoader({});
-      });
+      })
+      .catch(() => setLoader({}));
   }
   function uploadPdf(e) {
     e.preventDefault(e);
-    setLoader({pdf: true})
     const formPdfData = new FormData();
     setPdf({ file: e.target.files[0] });
     formPdfData.append("file", e.target.files[0]);
@@ -45,16 +45,17 @@ export default function ImgSelector({
       "upload_preset",
       process.env.REACT_APP_CLOUDINARY_PDF_UPLOAD
     );
+    setLoader({ pdf: true });
     axios
       .post(
         "https://api.cloudinary.com/v1_1/scusi-books/image/upload/",
         formPdfData
       )
       .then((response) => {
-        // console.log(response);
         setNewBook({ ...newBook, url: response.data.secure_url });
-        setLoader({})
-      });
+        setLoader({});
+      })
+      .catch(() => setLoader({}));
   }
   // // // // //
   return (
