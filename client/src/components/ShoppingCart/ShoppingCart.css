@@ -184,6 +184,17 @@
     margin-right: -30px;
 }
 
+.buttonViewNoStock {
+    background-color: #287ccbb9;
+    border: 1px solid #287ccbb9;
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
 @media (min-height: 0px){
     .itemsShoppingDetail{
         height: 480px;

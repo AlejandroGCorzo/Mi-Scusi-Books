@@ -22,14 +22,15 @@ import {
   deleteCart,
   setNotLogedShoppingCart,
   addCart,
+  setUserDiscount,
 } from "../../redux/StoreUsers/usersActions.js";
 import { getBooks } from "../../redux/StoreBooks/booksActions.js";
 import CheckoutPayPal from "../../components/Paypal/PayPal";
 import { IconButton, Snackbar } from "@mui/material";
-import FormDialog from "./DirectionForm/DirectionForm.jsx";
-import EditIcon from '@mui/icons-material/Edit';
-import { setUserDiscount } from "../../redux/StoreUsers/usersActions.js";
-import { clearShippingAddress } from "../../redux/StoreUsers/usersSlice";
+import FormDialog from "./AdressForm/AdressForm.jsx";
+import EditIcon from "@mui/icons-material/Edit";
+import { clearShippingAddress, clearShoppingCart } from "../../redux/StoreUsers/usersSlice";
+import emptyCache from "../../emptyCache";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -80,7 +81,6 @@ export default function ShoppingCart(props) {
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState("");
 
-
   //////////////////////////////DIRECTION FORM//////////////////////////////////////////////////
   const [selectOrder, setSelectOrder] = useState("0");
   const [direction, setDirection] = useState({
@@ -95,7 +95,7 @@ export default function ShoppingCart(props) {
     postalCode: "",
     city: "",
     province: "",
-});
+  });
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -110,17 +110,16 @@ export default function ShoppingCart(props) {
   var totalShopping = 0;
   // var envio = parseInt(selectOrder);
 
-////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
-  const [discount, setDiscount] = useState('');
+  const [discount, setDiscount] = useState("");
 
-  
   const handleDiscount = (e) => {
     e.preventDefault();
-    if(e.target.value === 'default') setDiscount(0)
-    else if(e.target.value === '10%') setDiscount(0.1);
-    else if(e.target.value === '20%') setDiscount(0.2);
-    else if(e.target.value === '30%') setDiscount(0.3);
+    if (e.target.value === "default") setDiscount(0);
+    else if (e.target.value === "10%") setDiscount(0.1);
+    else if (e.target.value === "20%") setDiscount(0.2);
+    else if (e.target.value === "30%") setDiscount(0.3);
   };
   ////////////////////////////////////////////////////////////////////////////////
 
@@ -131,8 +130,8 @@ export default function ShoppingCart(props) {
     dispatch(getBooks());
     if (accessToken) {
       // dispatch(keepLog(accessToken));
-      dispatch(fetchFavorites(loggedUser.id));
-      dispatch(fetchShoppingCart(loggedUser.id));
+      dispatch(fetchFavorites(accessToken));
+      dispatch(fetchShoppingCart(accessToken));
     }
     if (accessToken && cartToken && shoppingCart.length === 0) {
       dispatch(setNotLogedShoppingCart(cartToken));
@@ -142,30 +141,34 @@ export default function ShoppingCart(props) {
     }
 
     return () => {
+      emptyCache();
       if (accessToken) {
         window.sessionStorage.removeItem("cart");
       }
     };
-  }, [dispatch, login]);
+  }, [dispatch, login, accessToken]);
 
   shoppingCart?.forEach((e) => {
-    totalShopping += e.price * e.amount ;
+    totalShopping += e.price * e.amount;
     // if(e.format !== "digital") envio = 8;
   });
-  totalShopping -= totalShopping*discount
+  totalShopping -= totalShopping * discount;
 
   const handleClickBuy = async () => {
-    if(selectOrder === "8" && Object.entries(errors).length !== 0){
+    if (selectOrder === "8" && Object.entries(errors).length !== 0) {
       setMsg("Please complete the data!");
       setOpen(true);
-    }else{
+    } else {
       setMsg("Redirecting...");
       setOpen(true);
-      dispatch(setUserDiscount(loggedUser.id, discount, accessToken))
-      const { data } = await CheckoutPayPal(loggedUser.id, discount, selectOrder);
+      dispatch(setUserDiscount(loggedUser.id, discount, accessToken));
+      const { data } = await CheckoutPayPal(
+        loggedUser.id,
+        discount,
+        selectOrder
+      );
       window.location.href = data;
     }
-
   };
 
   function deleteFav(libroID) {
@@ -361,12 +364,30 @@ export default function ShoppingCart(props) {
                         </span>
                       </div>
                       <div>
-                        <button
+                        {el.stock > 0 ? (
+                          <button
+                            className="buttonView"
+                            onClick={() => addToCart(el.id)}
+                            // disabled={!el.stock}
+                          >
+                            Add to cart
+                          </button>
+                        ) : (
+                          <button
+                            className="buttonViewNoStock"
+                            onClick={() => addToCart(el.id)}
+                            disabled={!el.stock}
+                          >
+                            No stock!
+                          </button>
+                        )}
+                        {/* <button
                           className="buttonView"
                           onClick={() => addToCart(el.id)}
+                          // disabled={!el.stock}
                         >
                           Add to cart
-                        </button>
+                        </button> */}
                       </div>
                       <div>
                         <button
@@ -388,51 +409,77 @@ export default function ShoppingCart(props) {
           {value === 0 ? (
             <div className="contBuy">
               <div className="textBuy">
-                  <div className="directionBuy">
-                      <select
-                      value={selectOrder}
-                      onChange={(e) => {
-                          if(e.target.value === "0"){
-                          setDirection({
-                            address: "",
-                            postalCode: "",
-                            city: "",
-                            province: "",
-                          });
-                          // dispatch(clearShippingAddress())
-                          window.sessionStorage.removeItem('shipping')
-                          }else{
-                            setOpenForm(true);
-                          }
-                        setSelectOrder(e.target.value);
-                      }}
-                      >
-                      <option value="0">Pick up in person</option>
-                      <option value="8">Shipping to address</option>
-                    </select>
-                    
-                    {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
-                    ?<div className="contentEdit"><span><EditIcon onClick={handleClickOpenForm} style={{cursor:"pointer"}}/></span></div>
-                    : null}
+                <div className="directionBuy">
+                  <select
+                    value={selectOrder}
+                    onChange={(e) => {
+                      if (e.target.value === "0") {
+                        setDirection({
+                          address: "",
+                          postalCode: "",
+                          city: "",
+                          province: "",
+                        });
+                        // dispatch(clearShippingAddress())
+                        window.sessionStorage.removeItem("shipping");
+                      } else {
+                        setOpenForm(true);
+                      }
+                      setSelectOrder(e.target.value);
+                    }}
+                  >
+                    <option value="0">Pick up in person</option>
+                    <option value="8">Shipping to address</option>
+                  </select>
 
-                    {direction.address.length > 0 && direction.postalCode.length > 0 && direction.province.length > 0
-                    ? <div>
-                    <span>{`${direction.address}, ${direction.postalCode}, ${direction.city}, ${direction.province}`}</span></div>
-                    : null}
-                  </div>
-                  <div className="directionBuy">
-                    <span>Shipping: ${selectOrder}</span> <span>Total: ${(totalShopping + Number(selectOrder)).toFixed(2)}</span>
-                  </div>
+                  {direction.address.length > 0 &&
+                  direction.postalCode.length > 0 &&
+                  direction.province.length > 0 ? (
+                    <div className="contentEdit">
+                      <span>
+                        <EditIcon
+                          onClick={handleClickOpenForm}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </span>
+                    </div>
+                  ) : null}
+
+                  {direction.address.length > 0 &&
+                  direction.postalCode.length > 0 &&
+                  direction.province.length > 0 ? (
+                    <div>
+                      <span>{`${direction.address}, ${direction.postalCode}, ${direction.city}, ${direction.province}`}</span>
+                    </div>
+                  ) : null}
                 </div>
+                <div className="directionBuy">
+                  <span>Shipping: ${selectOrder}</span>{" "}
+                  <span>
+                    Total: ${(totalShopping + Number(selectOrder)).toFixed(2)}
+                  </span>
+                </div>
+              </div>
 
               <div>
-
                 {loggedUser?.loyaltyPoint > 1000 ? (
-                  <select onChange={(e)=>handleDiscount(e)}>
+                  <select onChange={(e) => handleDiscount(e)}>
                     <option value={"default"}>Discount</option>
-                    <option value={"10%"}color="red">10%</option>
-                    <option value={"20%"}disabled={loggedUser.loyaltyPoint<2000}>20%</option>
-                    <option value={"30%"}disabled={loggedUser.loyaltyPoint<3000}>30%</option>
+                    <option value={"10%"} color="red">
+                      10%
+                    </option>
+                    <option
+                      value={"20%"}
+                      disabled={loggedUser.loyaltyPoint < 2000}
+                    >
+                      20%
+                    </option>
+                    <option
+                      value={"30%"}
+                      disabled={loggedUser.loyaltyPoint < 3000}
+                    >
+                      30%
+                    </option>
                   </select>
                 ) : (
                   <></>
@@ -466,15 +513,15 @@ export default function ShoppingCart(props) {
         action={action}
       />
       <FormDialog
-      open={openForm}
-      handleClose={handleCloseForm}
-      direction={direction}
-      setDirection={setDirection}
-      errors={errors}
-      setSelectOrder={setSelectOrder}
-      setErrors={setErrors}
-      setMsg={setMsg}
-      setOpen={setOpen}
+        open={openForm}
+        handleClose={handleCloseForm}
+        direction={direction}
+        setDirection={setDirection}
+        errors={errors}
+        setSelectOrder={setSelectOrder}
+        setErrors={setErrors}
+        setMsg={setMsg}
+        setOpen={setOpen}
       />
     </div>
   );

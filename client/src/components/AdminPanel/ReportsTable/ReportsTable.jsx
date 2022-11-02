@@ -57,15 +57,16 @@ const ReportsTable = () => {
 
   //////////////Dialog Manager/////////////////////////////////////
 
-  const [openDialog, setOpenDialog] = React.useState("");
+  // const [openDialog, setOpenDialog] = React.useState("");
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
+  // const handleOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // };
+
   ////////////////////////////////////////////////////////////////////
 
 //   const handleclickDialog = (desc, boolean, user) => {
@@ -111,6 +112,7 @@ const ReportsTable = () => {
       dataIndex: "subject",
       key: "subject",
     },
+  ];
     // {
     //   title: "Description",
     //   dataIndex: "description",
@@ -195,7 +197,6 @@ const ReportsTable = () => {
     //     </Space>
     //   ),
     // },
-  ];
 
   //   useEffect(() => {
   //     dispatch(getAllBills(accessToken));
@@ -205,7 +206,7 @@ const ReportsTable = () => {
     <>
       <Table
         columns={columns}
-        dataSource={reports2}
+        dataSource={reports2.reverse()}
         size="small"
         style={{ textTransform: "capitalize" }}
         pagination={{
