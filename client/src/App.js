@@ -21,42 +21,52 @@ import ProblemReport from "./components/Reports/ProblemReport";
 import ReadPdf from "./components/ReadPDF/ReadPDF";
 import ReportDone from "./components/Reports/ReportDone/ReportDone";
 import LogInSuccessfully from "./components/UserLogin/LogInSuccessfully/LogInSuccessfully";
-import ChatBot from "./components/ChatBot/ChatBot"
+import ChatBot from "./components/ChatBot/ChatBot";
+import { Paper } from "@mui/material";
+import { ColorProvider } from "./components/Palettes/GreenColor";
 
 function App() {
   return (
     <div className="App">
       <React.Fragment>
-        <Nav onSearch="" />
-        <ChatBot />
-        <Route exact path="/" component={Home} />
-        <Route path="/book_details/:id" component={Details} />
-        <Route path="/login" component={UserLogin} />
-        <Route path="/signup" component={AccountCreate} />
-        <Route path="/create" component={CreateBook} />
-        <Route exact path="/book/update/:id" component={CreateBook} />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={ProblemReport} />
-        <Route path="/report-successfully" component={ReportDone} />
-        <Switch>
-          <Route
-            exact
-            path="/books/:theme/:category/:subcategory"
-            component={Books}
-          />
-          <Route exact path="/books/:theme/:category" component={Books} />
-          <Route exact path="/books/:theme" component={Books} />
-          <Route path="/books" component={Books} />
-        </Switch>
-        <Route path="/categories" component={Category} />
-        <Route path="/user_details/:id" component={UserDetails} />
-        <Route path="/admin_panel" component={AdminPanel} />
-        <Route path="/shopping/:type" component={ShoppingCart} />
-        <Route path="/order-successfully" component={PaymentAcepted} />
-        <Route path="/log-in-successfully" component={LogInSuccessfully} />
-        <Route path="/newPassword" component={NewPassword} />
-        <Route path="/readPDF" component={ReadPdf} />
-        <Route exact path="/activation-mail/:id" component={ActivationMail} />
+        <ColorProvider>
+          <Paper>
+            <Nav onSearch="" />
+            <ChatBot />
+            <Route exact path="/" component={Home} />
+            <Route path="/book_details/:id" component={Details} />
+            <Route path="/login" component={UserLogin} />
+            <Route path="/signup" component={AccountCreate} />
+            <Route path="/create" component={CreateBook} />
+            <Route exact path="/book/update/:id" component={CreateBook} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={ProblemReport} />
+            <Route path="/report-successfully" component={ReportDone} />
+            <Switch>
+              <Route
+                exact
+                path="/books/:theme/:category/:subcategory"
+                component={Books}
+              />
+              <Route exact path="/books/:theme/:category" component={Books} />
+              <Route exact path="/books/:theme" component={Books} />
+              <Route path="/books" component={Books} />
+            </Switch>
+            <Route path="/categories" component={Category} />
+            <Route path="/user_details/:id" component={UserDetails} />
+            <Route path="/admin_panel" component={AdminPanel} />
+            <Route path="/shopping/:type" component={ShoppingCart} />
+            <Route path="/order-successfully" component={PaymentAcepted} />
+            <Route path="/log-in-successfully" component={LogInSuccessfully} />
+            <Route path="/newPassword" component={NewPassword} />
+            <Route path="/readPDF" component={ReadPdf} />
+            <Route
+              exact
+              path="/activation-mail/:id"
+              component={ActivationMail}
+            />
+          </Paper>
+        </ColorProvider>
       </React.Fragment>
     </div>
   );
