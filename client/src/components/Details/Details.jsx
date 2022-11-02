@@ -627,7 +627,7 @@ const Details = (props) => {
                       emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}/>
                   </div>
                   <div>
-                    <span>{contador} califitacions</span>
+                    <span>{contador} rating</span>
                   </div>
                 </div>
               </div>
