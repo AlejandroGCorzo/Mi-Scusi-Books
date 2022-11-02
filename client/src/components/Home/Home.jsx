@@ -9,23 +9,16 @@ import protecte from "../../sourceImg/protected.svg";
 import stand from "../../sourceImg/stand.png";
 import Slider from "./Slider/Slider.jsx";
 import HeaderBottom from "../HeaderBottom/HeaderBottom.jsx";
-import ChatBot from "../ChatBot/ChatBot";
 import "./Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
   const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
-  const { loggedUser } = useSelector((state) => state.users)
-  const accessToken =
-  window.localStorage.getItem("token") ||
-  window.sessionStorage.getItem("token");
-
 
   useEffect(() => {
     dispatch(getBooks());
     // dispatch(getUser());
     dispatch(fetchTopTen());
-    window.scrollTo(0, 0);
   }, [dispatch]);
 
   const _ = require("underscore");
@@ -34,7 +27,6 @@ export default function Home() {
 
   return (
     <div className="homePage">
-      {(!accessToken || loggedUser?.type === "normal") && <ChatBot/>}
       <div className="promotions">
         <div className="textoPromotions">
           <h3 className="titleShell">Mi Scusi Books</h3>

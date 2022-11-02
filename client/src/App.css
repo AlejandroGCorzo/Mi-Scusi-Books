@@ -52,3 +52,7 @@ input {
     transform: rotate(360deg);
   }
 }
+
+.kommunicate-custom-iframe {
+  bottom: 9em !important;
+}
