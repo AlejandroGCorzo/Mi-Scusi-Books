@@ -144,11 +144,15 @@ export default function NewPassword() {
     };
   }, [dispatch]);
   return (
-    <div className="containerNewPassword">
-      <div className="boxNewPassword">
-        <div className="tittleNewPassword">
-          <h3>Change your password</h3>
-        </div>
+    <div className="userAccountContainer">
+      <div className="containerAccount">
+        <div className="sign-in-containerAccount">
+
+          <div className="contentTitleAccount">
+            <h2>Change your password</h2>
+          </div>
+
+      <div className="containerPasswordForgot">
         <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
           <InputLabel
             htmlFor="outlined-adornment-password"
@@ -224,6 +228,15 @@ export default function NewPassword() {
           ) : null}
         </FormControl>
         {error.confirm?.length > 0 ? <p>{error.newPassword}</p> : <></>}
+        <div className="newPasswordButton">
+          <Button
+            disabled={!input.newPassword || error.newPassword ? true : false}
+            variant="outlined"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit
+          </Button>
+        </div>
         <div className="loadingNewPassword">
           {loading ? (
             changePassword ? (
@@ -235,16 +248,9 @@ export default function NewPassword() {
             <></>
           )}
         </div>
-        <div className="newPasswordButton">
-          <Button
-            disabled={!input.newPassword || error.newPassword ? true : false}
-            variant="outlined"
-            onClick={(e) => handleSubmit(e)}
-          >
-            Submit
-          </Button>
-        </div>
       </div>
+      </div>
+    </div>
       <Snackbar
         open={open}
         autoHideDuration={6000}

@@ -4,23 +4,43 @@ function TransactionCard(props) {
   console.log(props);
   return (
     <div className="purchaseIndividualCard">
-      <span>Purchase id: {props.id}.</span>
-      <span>Date: {props.date}</span>
       <div>
-        <span>Items:</span>
+        <span style={{fontWeight:"600"}}>Purchase id: </span><span>{props.id}</span>
+        </div>
+      <div>
+        <span style={{fontWeight:"600"}}>Date: </span><span>{props.date}</span>
+      </div>
+
+      <div>
         {props.books.map((el) => (
-          <div>
-            <span>Name: {el.name}</span>
-            <span>Book format: {el.format}</span>
-            <span>Amount: {el.amount}</span>
-            <span>Unit price: {el.price}</span>
+          <div className="purchaseCards">
+            <div>
+              <span style={{fontWeight:"600"}}>Name: </span><span>{el.name}</span>
+            </div>
+            <div>
+              <span style={{fontWeight:"600"}}>Book format: </span><span>{el.format}</span>
+            </div>
+            <div>
+              <span style={{fontWeight:"600"}}>Amount: </span><span>{el.amount}</span>
+            </div>
+            <div>
+              <span style={{fontWeight:"600"}}>Unit price: </span><span>$ {el.price}</span>
+            </div>
           </div>
         ))}
       </div>
-      <span>Discount: {props.discount}</span>
-      <span>total: {props.total}</span>
-      <span>Loyalty Points earned: {props.loyaltyPoint}</span>
-      <span>Status: {props.status}</span>
+        <div>
+          <span style={{fontWeight:"600"}}>Discount: </span><span>{props.discount} %</span>
+        </div>
+        <div>
+          <span style={{fontWeight:"600"}}>Total: </span><span> ${props.total}</span>
+        </div>
+        <div>
+          <span style={{fontWeight:"600"}}>Loyalty Points earned: </span><span>{props.loyaltyPoint}</span>
+        </div>
+        <div>
+          <span style={{fontWeight:"600"}}>Status: </span><span>{props.status}</span>
+        </div>
     </div>
   );
 }

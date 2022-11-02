@@ -54,7 +54,7 @@ export default function UserDetails(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { profile, bills, loggedUser } = useSelector((store) => store.users);
-  
+
   const token =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
@@ -94,7 +94,8 @@ export default function UserDetails(props) {
       {(!token || loggedUser?.type === "normal") && <ChatBot />}
       <Box sx={{ width: "100%" }}>
         <ThemeProvider theme={colorMiScusi}>
-          <div className="titleFormShopping">
+          <div className="titleFormProfileDetail">
+            
             <BottomNavigation
               showLabels
               value={value}
@@ -104,19 +105,16 @@ export default function UserDetails(props) {
               }}
             >
               <BottomNavigationAction
-                className="bottomNavigationActionx"
                 label="Profile"
                 icon={<AccountCircleIcon />}
               />
 
               <BottomNavigationAction
-                className="bottomNavigationActionx"
                 label="Transaction History"
                 icon={<HistoryIcon />}
               />
 
               <BottomNavigationAction
-                className="bottomNavigationActionx"
                 label="My Digital Books"
                 icon={<MenuBookIcon />}
               />
