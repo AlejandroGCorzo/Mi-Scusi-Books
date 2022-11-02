@@ -8,7 +8,7 @@ export default function validations({
   confirmPass,
 }) {
   if (name === "name" || name === "lastName") {
-    if (!/^([a-z]+\s)*[a-z]+$/.test(value))
+    if (!/^([a-zñ]+\s)*[a-zñ]+$/.test(value))
       return setErrors({
         ...errors,
         [name]:
@@ -22,7 +22,7 @@ export default function validations({
 
   if (name === "password" || name === "confirmPass") {
     if (name === "password") {
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password))
+      if (!/^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)[a-zA-ZñÑ\d]{8,}$/.test(password))
         return setErrors({
           ...errors,
           [name]:
@@ -50,7 +50,9 @@ export default function validations({
           password: "Passwords must be the same.",
         });
       else delete errors[name];
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(confirmPass))
+      if (
+        !/^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)[a-zA-ZñÑ\d]{8,}$/.test(confirmPass)
+      )
         return setErrors({
           ...errors,
           password:

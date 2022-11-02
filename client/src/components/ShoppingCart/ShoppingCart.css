@@ -41,6 +41,16 @@
     font-weight: 400;
 }
 
+.contentShoppingDetail::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .contentShoppingDetail::-webkit-scrollbar-thumb {
+    width: 1px;
+    background-color: #287ccb;
+    border-radius: 15px;
+  }
+
 .itemsShoppingDetail {
     display: flex;
     flex-wrap: wrap;
@@ -184,6 +194,10 @@
     margin-right: -30px;
 }
 
+.buttonBack{
+    margin-left: 15px;
+}
+
 .buttonViewNoStock {
     background-color: #287ccbb9;
     border: 1px solid #287ccbb9;
@@ -203,7 +217,8 @@
 
 @media (min-height: 768px){
     .itemsShoppingDetail{
-        height: 768px;
+        /* height: 768px; */
+        height: 680px;
     }
 }
 

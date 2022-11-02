@@ -200,7 +200,7 @@ export default function Books() {
               <option value="Z">Title (Z-A)</option>
             </select>
           </div>
-
+          <div className="booksContainer">    
           {booksToShow.length > 0 ? (
             booksToShow.map((el) => {
               return (
@@ -219,7 +219,7 @@ export default function Books() {
           ) : (
             <p>No books found.</p>
           )}
-          
+          </div>
         </div>
       </div>
       <p></p>

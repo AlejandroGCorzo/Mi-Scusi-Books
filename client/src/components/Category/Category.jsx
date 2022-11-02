@@ -31,48 +31,48 @@ export default function Category() {
   }
 
   function numTotalGeneral(index) {
-    let asd = categories[index];
+    let theme = categories[index];
     let total = 0;
-    Object.keys(asd)
+    Object.keys(theme)
       .sort()
       .map((el) => {
-        if (typeof asd[el] !== "object" && asd[el] !== 0) {
-          total += asd[el];
+        if (typeof theme[el] !== "object" && theme[el] !== 0) {
+          total += theme[el];
         } else {
-          Object.keys(asd[el])
+          Object.keys(theme[el])
             .sort()
             .map((elx) => {
-              if (typeof asd[el][elx] !== "object" && asd[el][elx] !== 0) {
-                total += asd[el][elx];
+              if (typeof theme[el][elx] !== "object" && theme[el][elx] !== 0) {
+                total += theme[el][elx];
               }
             });
         }
       });
-    if (total !== 0) return `(${total})`;
+    return `(${total})`;
   }
 
   function numTotalCategory(index, ea) {
-    let asd = categories[index];
+    let category = categories[index];
     let total = 0;
 
-    if (typeof asd[ea] !== "object" && asd[ea] !== 0) {
-      return `(${asd[ea]})`;
+    if (typeof category[ea] !== "object" && category[ea] !== 0) {
+      return `(${category[ea]})`;
     } else {
-      Object.keys(asd[ea])
+      Object.keys(category[ea])
         .sort()
         .map((elx) => {
-          if (typeof asd[ea][elx] !== "object" && asd[ea][elx] !== 0) {
-            total += asd[ea][elx];
+          if (typeof category[ea][elx] !== "object" && category[ea][elx] !== 0) {
+            total += category[ea][elx];
           }
         });
     }
-    if (total !== 0) return `(${total})`;
+    return `(${total})`;
   }
 
   function numTotalSubCategory(index, ea, e) {
-    let asd = categories[index];
-    if (typeof asd[ea][e] !== "object" && asd[ea][e] !== 0) {
-      return `(${asd[ea][e]})`;
+    let subCategory = categories[index];
+    if (typeof subCategory[ea][e] !== "object") {
+      return `(${subCategory[ea][e]})`;
     }
   }
 
@@ -83,7 +83,9 @@ export default function Category() {
           Object.keys(categories[index])
             .sort()
             .map((el) => (
-              <div className="subCategoryDiv" key={el}>
+              numTotalCategory(index, el) !== "(0)" ? 
+
+                <div className="subCategoryDiv" key={el}>
                 <button
                   className="buttonCategory"
                   onClick={(e) =>
@@ -99,12 +101,13 @@ export default function Category() {
                     {numTotalCategory(index, el)}
                   </li>
                 </button>
-
+                
                 {JSON.stringify(categories[index][el]) !== "{}" &&
                   Object.keys(categories[index][el])
                     .sort()
                     .map((elx) => (
-                      <div className="subToCategoryDiv" key={elx}>
+                      numTotalSubCategory(index, el, elx) !== "(0)" ?
+                        <div className="subToCategoryDiv" key={elx}>
                         <button
                           className="buttonCategory"
                           onClick={(e) =>
@@ -122,8 +125,12 @@ export default function Category() {
                           </span>
                         </button>
                       </div>
+                      : null
+
                     ))}
-              </div>
+
+                </div>
+              : null
             ))}
       </div>
     );
@@ -144,20 +151,25 @@ export default function Category() {
           Object.keys(categories)
             .sort()
             .map((el) => (
-              <div className="categoryDiv" key={el}>
+              numTotalGeneral(el) !== "(0)" ? 
+                <div className="categoryDiv" key={el}>
                 <button
                   className="buttonCategory"
                   onClick={(e) =>
                     onClickCategoryGeneral(e, el.split(" ").join("_"))
                   }
                 >
+
                   <p className="categoryText">
                     {el[0].toLocaleUpperCase() + el.slice(1)}
-                    {numTotalGeneral(el)}
+                      {numTotalGeneral(el)}
                   </p>
+                
                 </button>
+      
                 {viewCategory(el)}
-              </div>
+                </div>
+                : null
             ))}
       </div>
 
@@ -166,6 +178,7 @@ export default function Category() {
           <button className="buttonBack">Back</button>
         </Link>
       </div>
+
     </div>
   );
 }

@@ -12,6 +12,7 @@
   margin: 1em 0 1em  0;
 }
 
+
 .titleFormx{
   background-color: #fff;
   box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
@@ -182,13 +183,25 @@ option {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: center;
 }
+
+.contentBookDiv::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contentBookDiv::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: #287ccb;
+  border-radius: 15px;
+}
+
 
 .contentCreateBook {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 95%;
+  width: 100%;
   min-width: 336px;
   transform: scale(1);
 }
@@ -217,7 +230,7 @@ option {
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
-  width: 336px;
+  width: 330px;
   margin-top: 15px;
   text-align: left;
 }
