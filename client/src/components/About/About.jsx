@@ -8,7 +8,6 @@ import jano from "../../sourceImg/jano.jpg";
 import juan1 from "../../sourceImg/juan1.jpg";
 import juan2 from "../../sourceImg/juan2.jpg";
 import ChatBot from "../ChatBot/ChatBot";
-import Loader from "../Loader/Loader"
 import "./About.css";
 
 export default function About() {
@@ -25,7 +24,6 @@ export default function About() {
 
   return (
     <div className="mainAbout">
-      <Loader />
       {(!accessToken || loggedUser?.type === "normal") && <ChatBot />}
       <div className="containerDescription">
         <img src={logo} alt="" width="210px" style={{ padding: "1em" }} />
