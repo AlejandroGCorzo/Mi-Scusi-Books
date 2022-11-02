@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import "./ProblemReport.css";
+import Loader from "../Loader/Loader";
 
 export default function ProblemReport() {
   const dispatch = useDispatch();
@@ -28,6 +29,12 @@ export default function ProblemReport() {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
+
+    window.scrollTo(0, 0);
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   function handleChange(e) {
     e.preventDefault();
@@ -53,7 +60,7 @@ export default function ProblemReport() {
       subject: "",
       description: "",
     });
-    history.push("/report-successfully")
+    history.push("/report-successfully");
     setMsg("Your report has been submitted!");
   }
 
@@ -118,111 +125,118 @@ export default function ProblemReport() {
       return setErrors({ ...errors });
     }
   }
+  console.log(profile);
 
   useEffect(() => {
-    if (!Object.keys(loggedUser).length > 0) history.push("/"); 
+    if (!Object.keys(loggedUser).length > 0) history.push("/");
     dispatch(getUserDetails(loggedUser.id, accessToken));
   }, [dispatch, loggedUser]);
 
   return (
     <>
-      <section className="sectionReport">
-        <div className="divReport">
-          <button
-            className="closeBtn"
-            type="button"
-            onClick={(e) => history.push("/")}
-          >
-            X
-          </button>
-          <h1 style={{ fontSize: "1.8em" }}>
-            <b>Report a problem</b>
-          </h1>
-          <form onSubmit={handleSubmit} className="formReport">
-            <p>Full name</p>
-            <TextField
-              sx={{ m: 0 }}
-              className="inputReport"
-              label=""
-              autoComplete="off"
-              onChange={handleChange}
-              name="fullname"
-              type="text"
-              value={`${profile.firstName} ${profile.lastName}`}
-              placeholder={`${profile.firstName} ${profile.lastName}`}
-              inputProps={{ maxLength: 40 }}
-              error={errors.fullname ? true : false}
-              helperText={errors.fullname ? `${errors.fullname}` : null}
-              disabled={true}
-            />
-            <p>E-mail</p>
-            <TextField
-              sx={{ m: 0 }}
-              className="inputReport"
-              label=""
-              autoComplete="off"
-              onChange={handleChange}
-              name="email"
-              type="text"
-              value={profile.email}
-              placeholder={profile.email}
-              inputProps={{ maxLength: 40 }}
-              error={errors.email ? true : false}
-              helperText={errors.email ? `${errors.email}` : null}
-              disabled={true}
-            />
-            <p>Subject</p>
-            <TextField
-              sx={{ m: 0 }}
-              className="inputReport"
-              label="Subject"
-              autoComplete="off"
-              onChange={handleChange}
-              name="subject"
-              type="text"
-              value={input.subject}
-              placeholder="Reason for reporting"
-              inputProps={{ maxLength: 50 }}
-              error={errors.subject ? true : false}
-              helperText={errors.subject ? `${errors.subject}` : null}
-            />
-            <TextareaAutosize
-              aria-label="minimum height"
-              minRows={5}
-              maxLength={300}
-              placeholder="Description..."
-              className="textareaAutosize"
-              name="description"
-              value={input.description}
-              onChange={handleChange}
-              // error={errors.description ? true : false}
-              // helperText={errors.description ? `${errors.description}` : null}
-              style={{ width: 500, marginTop: "2em" }}
-            />
-            <div className="divBtnReport">
-              <button
-                disabled={
-                  JSON.stringify(errors) !== "{}" ||
-                  // !input.fullname ||
-                  // !input.email ||
-                  !input.subject ||
-                  !input.description
-                }
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+      {Object.keys(profile).length > 0 ? (
+        <section className="sectionReport">
+          <div className="divReport">
+            <button
+              className="closeBtn"
+              type="button"
+              onClick={(e) => history.push("/")}
+            >
+              X
+            </button>
+            <h1 style={{ fontSize: "1.8em" }}>
+              <b>Report a problem</b>
+            </h1>
+            <form onSubmit={handleSubmit} className="formReport">
+              <p>Full name</p>
+              <TextField
+                sx={{ m: 0 }}
+                className="inputReport"
+                label=""
+                autoComplete="off"
+                onChange={handleChange}
+                name="fullname"
+                type="text"
+                value={`${profile.firstName} ${profile.lastName}`}
+                placeholder={`${profile.firstName} ${profile.lastName}`}
+                inputProps={{ maxLength: 40 }}
+                error={errors.fullname ? true : false}
+                helperText={errors.fullname ? `${errors.fullname}` : null}
+                disabled={true}
+              />
+              <p>E-mail</p>
+              <TextField
+                sx={{ m: 0 }}
+                className="inputReport"
+                label=""
+                autoComplete="off"
+                onChange={handleChange}
+                name="email"
+                type="text"
+                value={profile.email}
+                placeholder={profile.email}
+                inputProps={{ maxLength: 40 }}
+                error={errors.email ? true : false}
+                helperText={errors.email ? `${errors.email}` : null}
+                disabled={true}
+              />
+              <p>Subject</p>
+              <TextField
+                sx={{ m: 0 }}
+                className="inputReport"
+                label="Subject"
+                autoComplete="off"
+                onChange={handleChange}
+                name="subject"
+                type="text"
+                value={input.subject}
+                placeholder="Reason for reporting"
+                inputProps={{ maxLength: 50 }}
+                error={errors.subject ? true : false}
+                helperText={errors.subject ? `${errors.subject}` : null}
+              />
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={5}
+                maxLength={300}
+                placeholder="Description..."
+                className="textareaAutosize"
+                name="description"
+                value={input.description}
+                onChange={handleChange}
+                // error={errors.description ? true : false}
+                // helperText={errors.description ? `${errors.description}` : null}
+                style={{ width: 500, marginTop: "2em" }}
+              />
+              <div className="divBtnReport">
+                <button
+                  disabled={
+                    JSON.stringify(errors) !== "{}" ||
+                    // !input.fullname ||
+                    // !input.email ||
+                    !input.subject ||
+                    !input.description
+                  }
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            message={msg}
+            action={action}
+          />
+        </section>
+      ) : (
+        <div>
+          <Loader />
         </div>
-        <Snackbar
-          open={open}
-          autoHideDuration={2000}
-          onClose={handleClose}
-          message={msg}
-          action={action}
-        />
-      </section>
+      )}
     </>
   );
 }
