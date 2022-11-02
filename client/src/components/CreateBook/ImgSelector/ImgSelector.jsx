@@ -4,11 +4,20 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
-export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
+export default function ImgSelector({
+  pdf,
+  setPdf,
+  newBook,
+  setNewBook,
+  loader,
+  setLoader,
+}) {
   // // // // //
   function uploadImage(e) {
     e.preventDefault(e);
+    setLoader({photo: true});
     const formImgData = new FormData();
     formImgData.append("file", e.target.files[0]);
     formImgData.append(
@@ -23,10 +32,12 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
       .then((response) => {
         // console.log(response);
         setNewBook({ ...newBook, image: response.data.secure_url });
+        setLoader({});
       });
   }
   function uploadPdf(e) {
     e.preventDefault(e);
+    setLoader({pdf: true})
     const formPdfData = new FormData();
     setPdf({ file: e.target.files[0] });
     formPdfData.append("file", e.target.files[0]);
@@ -42,6 +53,7 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
       .then((response) => {
         // console.log(response);
         setNewBook({ ...newBook, url: response.data.secure_url });
+        setLoader({})
       });
   }
   // // // // //
@@ -50,7 +62,8 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
       <span>Select files: </span>
       <IconButton color="primary" aria-label="upload picture" component="label">
         <input hidden accept="image/*" type="file" onChange={uploadImage} />
-        <PhotoCamera />
+
+        {loader.photo ? <CircularProgress /> : <PhotoCamera />}
       </IconButton>
       {newBook.format === "digital" && (
         <>
@@ -60,7 +73,7 @@ export default function ImgSelector({ pdf, setPdf, newBook, setNewBook }) {
             component="label"
           >
             <input hidden accept=".pdf" type="file" onChange={uploadPdf} />
-            <PictureAsPdfIcon />
+            {loader.pdf ? <CircularProgress /> : <PictureAsPdfIcon />}
           </IconButton>
           <span style={{ color: "black" }}>{pdf.file?.name}</span>
         </>

@@ -49,6 +49,7 @@ export default function CreateBook() {
     stock: "",
   });
   const [open, setOpen] = useState({});
+  const [loader, setLoader] = useState({})
   const [author, setAuthor] = useState("");
   const [catSel, setCatSel] = useState("Select Theme");
   const [pdf, setPdf] = useState({ file: {}, url: "" });
@@ -305,6 +306,8 @@ export default function CreateBook() {
 
                 <div className="divInputForm">
                   <ImgSelector
+                    loader={loader}
+                    setLoader={setLoader}
                     pdf={pdf}
                     setPdf={setPdf}
                     newBook={newBook}

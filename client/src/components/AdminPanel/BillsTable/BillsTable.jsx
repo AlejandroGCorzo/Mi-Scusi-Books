@@ -33,6 +33,9 @@ const BillsTable = (props) => {
     totalPrice: e.total,
     date: e.date,
     status: e.status,
+    loyaltyPoint: e.loyaltyPoint,
+    discount: `${e.discount} %`,
+    shippment: e.shipp
   }));
 
   const expandedRowRender = (row) => {
@@ -45,11 +48,18 @@ const BillsTable = (props) => {
         key: "book",
       },
       {
+        title: "Format",
+        dataIndex: "format",
+        key: "format"
+        
+      },
+      {
         title: "Quantity",
         dataIndex: "quantity",
         key: "quantity",
         sorter: (obj1, obj2) => obj1.quantity - obj2.quantity,
       },
+     
       {
         title: "Unit Price",
         dataIndex: "unitPrice",
@@ -69,6 +79,7 @@ const BillsTable = (props) => {
         book: datito.books[i].name,
         unitPrice: datito.price[i],
         quantity: datito.amountBooks[i],
+        format: datito.books[i].format
       });
     }
 
@@ -115,6 +126,21 @@ const BillsTable = (props) => {
       dataIndex: "date",
       key: "date",
       sorter: (obj1, obj2) => obj1.date - obj2.date,
+    },
+    {
+      title: "Loyalty Points Earned",
+      dataIndex: "loyaltyPoint",
+      key: "loyaltyPoint"
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount"
+    },
+    {
+      title: "Shippment Cost",
+      dataIndex: "shippment",
+      key: "shippment"
     },
     {
       title: "Total Price",
@@ -172,7 +198,7 @@ const BillsTable = (props) => {
       onFilter: (email, userObject) => userObject.email.includes(email),
     },
     {
-      title: "ID",
+      title: "Bill ID",
       dataIndex: "id",
       key: "id",
     },

@@ -5,7 +5,7 @@ export default function NewBookPreview({ newBook, edit }) {
   return (
     <div>
       <div className="">
-        <div className="">
+        <div className="previewContainer">
           {newBook.image ? (
             <img className="imgPreview" src={newBook.image} />
           ) : (
