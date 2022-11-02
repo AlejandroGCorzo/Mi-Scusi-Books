@@ -66,6 +66,7 @@ export default function DigitalBooks({ loggedUser }) {
               </div>
               <div className='digitalBookButton'>
                 <button
+                  className="buttonRead"
                   disabled={open}
                   onClick={(e) => handleClick(e)}
                   name={`${b.id}`}

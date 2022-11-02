@@ -110,6 +110,9 @@
   .adminContainer{
     width: 336px;
   }
+  .userOuterDiv{
+    width: 336px;
+  }
 }
 
 .routesHeader {
