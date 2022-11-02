@@ -48,7 +48,7 @@ function TransactionCard(props) {
 export default function TransactionHistory({ bills }) {
   return (
     <div className="purchaseCards">
-      {bills.length &&
+      {bills.length !== 0 &&
         bills.map((el) => (
           <TransactionCard
             id={el._id}
