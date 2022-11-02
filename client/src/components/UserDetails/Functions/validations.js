@@ -1,6 +1,6 @@
 export default function validations(name, value, errors, setErrors) {
   if (name === "firstName" || name === "lastName") {
-    if (!/^([a-z]+\s)*[a-z]+$/.test(value))
+    if (!/^([a-zñ]+\s)*[a-zñ]+$/.test(value))
       return setErrors({
         ...errors,
         [name]:

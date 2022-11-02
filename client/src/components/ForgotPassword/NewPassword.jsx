@@ -60,7 +60,9 @@ export default function NewPassword() {
 
   function validate(name, newPassword, confirmNewPassword) {
     if (name === "newPassword") {
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(newPassword))
+      if (
+        !/^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)[a-zA-ZñÑ\d]{8,}$/.test(newPassword)
+      )
         return setError({
           ...error,
           [name]:
@@ -89,7 +91,7 @@ export default function NewPassword() {
         });
       else delete error[name];
       if (
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(
+        !/^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)[a-zA-ZñÑ\d]{8,}$/.test(
           confirmNewPassword
         )
       )
@@ -147,110 +149,121 @@ export default function NewPassword() {
     <div className="userAccountContainer">
       <div className="containerAccount">
         <div className="sign-in-containerAccount">
-
           <div className="contentTitleAccount">
             <h2>Change your password</h2>
           </div>
 
-      <div className="containerPasswordForgot">
-        <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
-          <InputLabel
-            htmlFor="outlined-adornment-password"
-            error={error.newPassword ? true : false}
-          >
-            New Password*
-          </InputLabel>
-          <OutlinedInput
-            id="passwordInput"
-            label="New Password*"
-            type={show.password ? "text" : "password"}
-            value={input.newPassword}
-            placeholder="New Password"
-            name="newPassword"
-            onChange={handleInput}
-            autoComplete="off"
-            error={error.newPassword ? true : false}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  sx={{
-                    bgcolor: "white",
-                    ":hover": { bgcolor: "#287ccb" },
-                  }}
-                  aria-label="toggle password visibility"
-                  onClick={() => handleClickShowPassword("password")}
-                  edge="end"
-                >
-                  {show.password ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          {error.newPassword ? (
-            <FormHelperText error>{error.newPassword}</FormHelperText>
-          ) : null}
-        </FormControl>
-        <FormControl sx={{ m: 0.5 }} variant="outlined" className="textfield">
-          <InputLabel
-            htmlFor="outlined-adornment-password"
-            error={error.confirmNewPassword ? true : false}
-          >
-            Confirm Password*
-          </InputLabel>
-          <OutlinedInput
-            id="passwordInput"
-            label="Confirm New Password*"
-            type={show.confirmPass ? "text" : "password"}
-            value={input.confirmNewPassword}
-            placeholder="Confirm Password"
-            name="confirmNewPassword"
-            onChange={handleInput}
-            autoComplete="off"
-            error={error.confirmNewPassword ? true : false}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  sx={{
-                    bgcolor: "white",
-                    ":hover": { bgcolor: "#287ccb" },
-                  }}
-                  aria-label="toggle password visibility"
-                  onClick={() => handleClickShowPassword("confirmPass")}
-                  edge="end"
-                >
-                  {show.confirmPass ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          {error.confirmNewPassword ? (
-            <FormHelperText error>{error.confirmNewPassword}</FormHelperText>
-          ) : null}
-        </FormControl>
-        {error.confirm?.length > 0 ? <p>{error.newPassword}</p> : <></>}
-        <div className="newPasswordButton">
-          <Button
-            disabled={!input.newPassword || error.newPassword ? true : false}
-            variant="outlined"
-            onClick={(e) => handleSubmit(e)}
-          >
-            Submit
-          </Button>
-        </div>
-        <div className="loadingNewPassword">
-          {loading ? (
-            changePassword ? (
-              <p style={{ color: "blue" }}>{changePassword}</p>
-            ) : (
-              <CircularProgress />
-            )
-          ) : (
-            <></>
-          )}
+          <div className="containerPasswordForgot">
+            <FormControl
+              sx={{ m: 0.5 }}
+              variant="outlined"
+              className="textfield"
+            >
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={error.newPassword ? true : false}
+              >
+                New Password*
+              </InputLabel>
+              <OutlinedInput
+                id="passwordInput"
+                label="New Password*"
+                type={show.password ? "text" : "password"}
+                value={input.newPassword}
+                placeholder="New Password"
+                name="newPassword"
+                onChange={handleInput}
+                autoComplete="off"
+                error={error.newPassword ? true : false}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      sx={{
+                        bgcolor: "white",
+                        ":hover": { bgcolor: "#287ccb" },
+                      }}
+                      aria-label="toggle password visibility"
+                      onClick={() => handleClickShowPassword("password")}
+                      edge="end"
+                    >
+                      {show.password ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {error.newPassword ? (
+                <FormHelperText error>{error.newPassword}</FormHelperText>
+              ) : null}
+            </FormControl>
+            <FormControl
+              sx={{ m: 0.5 }}
+              variant="outlined"
+              className="textfield"
+            >
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={error.confirmNewPassword ? true : false}
+              >
+                Confirm Password*
+              </InputLabel>
+              <OutlinedInput
+                id="passwordInput"
+                label="Confirm New Password*"
+                type={show.confirmPass ? "text" : "password"}
+                value={input.confirmNewPassword}
+                placeholder="Confirm Password"
+                name="confirmNewPassword"
+                onChange={handleInput}
+                autoComplete="off"
+                error={error.confirmNewPassword ? true : false}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      sx={{
+                        bgcolor: "white",
+                        ":hover": { bgcolor: "#287ccb" },
+                      }}
+                      aria-label="toggle password visibility"
+                      onClick={() => handleClickShowPassword("confirmPass")}
+                      edge="end"
+                    >
+                      {show.confirmPass ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {error.confirmNewPassword ? (
+                <FormHelperText error>
+                  {error.confirmNewPassword}
+                </FormHelperText>
+              ) : null}
+            </FormControl>
+            {error.confirm?.length > 0 ? <p>{error.newPassword}</p> : <></>}
+            <div className="newPasswordButton">
+              <Button
+                disabled={
+                  !input.newPassword || error.newPassword ? true : false
+                }
+                variant="outlined"
+                onClick={(e) => handleSubmit(e)}
+              >
+                Submit
+              </Button>
+            </div>
+            <div className="loadingNewPassword">
+              {loading ? (
+                changePassword ? (
+                  <p style={{ color: "blue" }}>{changePassword}</p>
+                ) : (
+                  <CircularProgress />
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      </div>
-    </div>
       <Snackbar
         open={open}
         autoHideDuration={6000}

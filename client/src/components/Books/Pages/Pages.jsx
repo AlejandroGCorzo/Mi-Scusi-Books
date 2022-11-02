@@ -11,6 +11,7 @@ export default function Pages({ count }) {
     dispatch(setCurrentPage({ ...page, currentPage: 0, rows: rows }));
   }
   function onPageChange(e, newPage) {
+    window.scrollTo(0, 0);
     dispatch(setCurrentPage({ ...page, currentPage: newPage }));
   }
   return (
@@ -21,17 +22,17 @@ export default function Pages({ count }) {
         onPageChange={onPageChange}
         rowsPerPageOptions={[25, 50, 100]}
         rowsPerPage={page.rows}
-        onRowsPerPageChange={onRowsChange} 
-        labelRowsPerPage={"Books per page"} 
+        onRowsPerPageChange={onRowsChange}
+        labelRowsPerPage={"Books per page"}
         sx={{
           ".MuiTablePagination-selectLabel": {
             fontSize: "1rem",
             marginTop: "12px",
-            lineHeight: 1.5
+            lineHeight: 1.5,
           },
           "	.MuiTablePagination-displayedRows": {
-            marginTop: "12px"
-          }
+            marginTop: "12px",
+          },
         }}
       />
     </Box>
