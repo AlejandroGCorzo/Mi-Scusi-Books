@@ -33,7 +33,7 @@ userRouter.put("/forgot_password", async (req, res) => {
     const user = await User.findOne().where({ email: email });
     // user.resetToken = resetToken
     if (!user) return res.send("Something goes wrong!");
-    if(!user.password) return res.send("This is not your login method!");
+    if (!user.password) return res.send("This is not your login method!");
     const resetToken = generateResetToken(email);
     await user.updateOne({ resetToken: resetToken });
     const verificationLink = `${process.env.FRONT_URL}/newPassword/?reset=${resetToken}`;
@@ -128,7 +128,10 @@ userRouter.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user.state === "pending") {
-      return res.status(200).json({ msg: "Pleace validate your account" });
+      return res.status(200).json({ msg: "Please validate your account" });
+    }
+    if (user.state === "inactive") {
+      return res.status(200).json({ msg: "Your account is disabled" });
     }
 
     let formatUser;
@@ -142,7 +145,7 @@ userRouter.post("/login", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
-          format: book.format
+          format: book.format,
         };
         extension.push(book);
       }
@@ -189,7 +192,7 @@ userRouter.post("/login_google", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
-          format: book.format
+          format: book.format,
         };
         extension.push(book);
       }
@@ -209,7 +212,7 @@ userRouter.post("/login_google", async (req, res) => {
         state: "active",
         image: tokenDecode.picture.slice(0, tokenDecode.picture.length - 6),
         cart: newCart,
-        loginMethod: 'google'
+        loginMethod: "google",
       };
       const googleUser = await User.create(newUser);
       const formatUser = {
@@ -260,7 +263,7 @@ userRouter.post("/signup", async (req, res) => {
           price: book.price,
           image: book.image,
           amount: amounts[cart.indexOf(idBook)],
-          format: book.format
+          format: book.format,
         };
         newCart.push(book);
       }
@@ -280,7 +283,7 @@ userRouter.post("/signup", async (req, res) => {
       cart: newCart,
       image: "http://cdn.onlinewebfonts.com/svg/img_568656.png",
       resetToken: "",
-      loginMethod: 'miScusi'
+      loginMethod: "miScusi",
     };
     const user = await User.create(newUser);
 
@@ -318,14 +321,13 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-
 //Devuelve el carrito completo del usuario logueado -> PROTEGIDA, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
 userRouter.get("/cart", protect, async (req, res) => {
   // const { id } = req.params;
   if (req.user) {
     try {
       const user = await User.findById(req.user.id).populate("cart.books");
-      console.log('carrito', user.cart)
+      console.log("carrito", user.cart);
       res.send(user.cart);
     } catch (error) {
       res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
@@ -334,7 +336,6 @@ userRouter.get("/cart", protect, async (req, res) => {
     return res.status(400).json({ msg: "Not authorized to see shopping cart" });
   }
 });
-
 
 //Validate user email -> publico
 userRouter.put("/activation-mail/:id", async (req, res) => {
@@ -356,7 +357,6 @@ userRouter.put("/activation-mail/:id", async (req, res) => {
 });
 
 userRouter.get("/favorites", protect, async (req, res) => {
-  
   if (req.user) {
     try {
       // if (!id) return res.status(400).send("Missing data!");
@@ -570,7 +570,7 @@ userRouter.put("/cart/:idUser", protect, async (req, res) => {
         price: book.price,
         image: book.image,
         amount: amount,
-        format: book.format
+        format: book.format,
       };
       const newCart = [...user.cart, book];
       await user.updateOne({ cart: newCart });
@@ -640,7 +640,7 @@ userRouter.put("/pay", protect, async (req, res) => {
       const books = [];
       const booksNames = [];
       const booksAmount = [];
-      const formatBuyedBooks = []
+      const formatBuyedBooks = [];
       for (const book of user.cart) {
         books.push(book.id);
         booksNames.push(book.name);
@@ -649,8 +649,8 @@ userRouter.put("/pay", protect, async (req, res) => {
           id: book.id,
           name: book.name,
           image: book.image,
-          format: book.format
-        })
+          format: book.format,
+        });
       }
 
       const price = [];
@@ -691,7 +691,7 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp: address.city ? 8 : 0,
         address,
       });
-      console.log('hasta la 654')
+      console.log("hasta la 654");
       let newBuyedBooks = formatBuyedBooks.concat(user.buyedBooks);
       const buyedBooks = [];
       for (const book of newBuyedBooks) {
@@ -796,7 +796,7 @@ userRouter.put("/favorites/:idUser", protect, async (req, res) => {
       name: book.name,
       price: book.price,
       image: book.image,
-      stock: book.stock
+      stock: book.stock,
     };
     const newFavorites = [...user.favorites, book];
     await user.updateOne({ favorites: newFavorites });
@@ -827,7 +827,6 @@ userRouter.put("/favorites/delete/:id", protect, async (req, res) => {
     return res.status(400).json({ msg: "Not authorized to delete a favorite" });
   }
 });
-
 
 userRouter.get("/buyedBooks/:idBook", protect, async (req, res) => {
   const { idBook } = req.params;

@@ -9,15 +9,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  
 }
 
-.react-pdf__Document{
+.react-pdf__Document {
   display: flex;
-  
 }
 
-.userImage img{
+.userImage img {
   border-radius: 1.5em;
   width: 75%;
 }
@@ -30,14 +28,14 @@
   width: 100%;
 }
 
-.contentInfoProfile{
+.contentInfoProfile {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 50%;
 }
 
-.contentImageProfile{
+.contentImageProfile {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -46,13 +44,13 @@
   margin-top: -110px;
 }
 
-.imageEditProfile{
+.imageEditProfile {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.userInfoContainer input{
+.userInfoContainer input {
   width: 100%;
 }
 
@@ -60,22 +58,21 @@
   text-transform: capitalize;
 }
 
-.containerProfileGeneral{
+.containerProfileGeneral {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
 }
 
-.buttonSaveAndCancel{
+.buttonSaveAndCancel {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   width: 100%;
-
 }
 
-.titleFormProfileDetail{
+.titleFormProfileDetail {
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-top: 25px;
@@ -149,20 +146,19 @@
 } */
 
 @media (max-width: 914px) {
-  .userOuterDiv{
+  .userOuterDiv {
     flex-direction: column;
   }
-  .contentInfoProfile{
+  .contentInfoProfile {
     width: 100%;
   }
-  .contentImageProfile{
+  .contentImageProfile {
     width: 100%;
   }
 
-  .contentImageProfile{
+  .contentImageProfile {
     margin-top: 0px;
   }
-  
 }
 
 .formBackx {
@@ -192,6 +188,11 @@
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
+}
+
+.delete {
+  background-color: red;
+  border: 1px solid red;
 }
 
 .buttonRead {

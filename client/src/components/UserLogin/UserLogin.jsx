@@ -378,7 +378,11 @@ export default function UserLogin() {
               </Link>
             </div>
           </div>
-          <AlertDialogSlide open={open} setOpen={setOpen} />
+          <AlertDialogSlide
+            open={open}
+            setOpen={setOpen}
+            text={"Your account is disabled"}
+          />
         </div>
       </div>
     </div>
