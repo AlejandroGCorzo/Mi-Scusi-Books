@@ -15,8 +15,8 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { ThemeProvider } from "@mui/material/styles";
-import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+// import { ThemeProvider } from "@mui/material/styles";
+// import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import DigitalBooks from "./DigitalBooks/DigitalBooks";
@@ -93,7 +93,7 @@ export default function UserDetails(props) {
   return (
     <div className="contentCategory">
       <Box sx={{ width: "100%" }}>
-        <ThemeProvider theme={colorMiScusi}>
+        {/* <ThemeProvider theme={colorMiScusi}> */}
           <div className="titleFormProfileDetail">
             <BottomNavigation
               showLabels
@@ -119,7 +119,7 @@ export default function UserDetails(props) {
               />
             </BottomNavigation>
           </div>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
 
         <div className="contentShoppingDetail">
           <div className="itemsShoppingDetail">

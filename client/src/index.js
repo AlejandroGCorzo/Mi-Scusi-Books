@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 // import { Auth0Provider } from "@auth0/auth0-react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
+import { ColorProvider } from "./components/Palettes/GreenColor";
 
 // console.log(process.env.REACT_APP_API);
 axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:9000";
@@ -16,13 +17,15 @@ axios.defaults.baseURL = process.env.REACT_APP_API || "http://localhost:9000";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <GoogleOAuthProvider
-        clientId={process.env.REACT_APP_GOOGLE_CLOUD_CLIENT_ID}
-      >
-        <App />
-      </GoogleOAuthProvider>
-    </BrowserRouter>
+    <ColorProvider>
+      <BrowserRouter>
+        <GoogleOAuthProvider
+          clientId={process.env.REACT_APP_GOOGLE_CLOUD_CLIENT_ID}
+        >
+          <App />
+        </GoogleOAuthProvider>
+      </BrowserRouter>
+    </ColorProvider>
   </Provider>
 );
 

@@ -6,8 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { ThemeProvider } from "@mui/material/styles";
-import colorMiScusi from "../../Palettes/GreenColor.jsx";
+// import { ThemeProvider } from "@mui/material/styles";
+// import colorMiScusi from "../../Palettes/GreenColor.jsx";
 import { useHistory } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -23,7 +23,7 @@ export default function SlideActivation() {
     history.push("/login")
   };
   return (
-    <ThemeProvider theme={colorMiScusi}>
+    //<ThemeProvider theme={colorMiScusi}>
     <div>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Slide in alert dialog
@@ -48,6 +48,6 @@ export default function SlideActivation() {
         </DialogActions>
       </Dialog>
     </div>
-   </ThemeProvider>
+   //</ThemeProvider>
   );
 }
