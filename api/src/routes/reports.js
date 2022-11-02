@@ -21,7 +21,7 @@ reportRouter.post('/', protect, async (req,res)=>{
 })
 
 reportRouter.get('/', protect, async (req,res)=>{
-    if(req.user && req.user.type === 'admin'){
+    if(req.user && (req.user.type === 'admin' || req.user.type === "seller")){
         try {
             const reports = await Report.find().populate('user')
             const allReports = reports.map(r => {

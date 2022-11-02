@@ -114,6 +114,15 @@
   text-align: left;
 }
 
+.contentCategoryDiv::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contentCategoryDiv::-webkit-scrollbar-thumb {
+  width: 1px;
+  background-color: #287ccb;
+  border-radius: 15px;
+}
 
 @media (min-height: 0px) {
   .contentCategoryDiv {
@@ -123,7 +132,8 @@
 
 @media (min-height: 768px) {
   .contentCategoryDiv {
-    min-height: 768px;
+    /* min-height: 768px; */
+    min-height: 710px;
   }
 }
 
