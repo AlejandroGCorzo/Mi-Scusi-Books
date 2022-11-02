@@ -21,10 +21,15 @@ export default function ReadPDF({id}) {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
   }
   function previousPage() {
-    changePage(-2);
+    console.log(pageNumber);
+    if(pageNumber === numPages) changePage(-1)
+    else changePage(-2);
   }
   function nextPage() {
-    changePage(2);
+    if(pageNumber === numPages-1) changePage(1)
+    else changePage(2);
+    console.log('actual ',pageNumber);
+    console.log('actual siguiente ',pageNumber+1);
   }
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
@@ -67,7 +72,8 @@ export default function ReadPDF({id}) {
       <div className="main">
         <Document file={url ? url : ""} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} />
-          <Page pageNumber={pageNumber + 1} />
+          {pageNumber === numPages? <></> : <Page pageNumber={pageNumber + 1} />}
+          {/* <Page pageNumber={pageNumber + 1} /> */}
         </Document>
         <div>
           <div className="pagec">
