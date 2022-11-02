@@ -89,11 +89,9 @@ export default function Category() {
           Object.keys(categories[index])
             .sort()
             .map((el) => (
-              <div className="subCategoryDiv" key={el}>
+              numTotalCategory(index, el) !== "(0)" ? 
 
-                {numTotalCategory(index, el) !== "(0)" ? 
-
-                <div>
+                <div className="subCategoryDiv" key={el}>
                 <button
                   className="buttonCategory"
                   onClick={(e) =>
@@ -114,10 +112,8 @@ export default function Category() {
                   Object.keys(categories[index][el])
                     .sort()
                     .map((elx) => (
-                      <div className="subToCategoryDiv" key={elx}>
-
-                        {numTotalSubCategory(index, el, elx) !== "(0)" ?
-                        <div>
+                      numTotalSubCategory(index, el, elx) !== "(0)" ?
+                        <div className="subToCategoryDiv" key={elx}>
                         <button
                           className="buttonCategory"
                           onClick={(e) =>
@@ -135,13 +131,12 @@ export default function Category() {
                           </span>
                         </button>
                       </div>
-                      : null}
-                      </div>
+                      : null
+
                     ))}
 
                 </div>
-              : null}
-              </div>
+              : null
             ))}
       </div>
     );
@@ -162,10 +157,8 @@ export default function Category() {
           Object.keys(categories)
             .sort()
             .map((el) => (
-              <div key={el}>
-
-                {numTotalGeneral(el) !== "(0)" ? 
-                <div className="categoryDiv">
+              numTotalGeneral(el) !== "(0)" ? 
+                <div className="categoryDiv" key={el}>
                 <button
                   className="buttonCategory"
                   onClick={(e) =>
@@ -182,9 +175,7 @@ export default function Category() {
       
                 {viewCategory(el)}
                 </div>
-                : null}
-              </div>
-
+                : null
             ))}
       </div>
 

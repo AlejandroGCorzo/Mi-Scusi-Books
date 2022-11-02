@@ -65,7 +65,7 @@ export default function Profile({
           )}
         </div>
 
-        <div className="userOuterDiv">
+        <div className="userOuterDivProfile">
 
           <div className="contentImageProfile">
 
