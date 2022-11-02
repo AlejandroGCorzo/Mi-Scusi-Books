@@ -12,7 +12,6 @@ import TransactionHistory from "./TransactionsHistory/TransactionsHistory";
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -21,10 +20,11 @@ import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verd
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import DigitalBooks from "./DigitalBooks/DigitalBooks";
+import ChatBot from "../ChatBot/ChatBot";
+import DialogConfirmEdit from "./DialogConfirmEdit/DialogConfirmEdit";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -62,6 +62,8 @@ export default function UserDetails(props) {
   const [edit, setEdit] = useState(false);
   const [changes, setChanges] = useState({});
   const [errors, setErrors] = useState({});
+  const [open, setOpen] = useState(false);
+
   const handleTab = (e, newValue) => {
     setTab(newValue);
   };
@@ -93,7 +95,6 @@ export default function UserDetails(props) {
       <Box sx={{ width: "100%" }}>
         <ThemeProvider theme={colorMiScusi}>
           <div className="titleFormProfileDetail">
-            
             <BottomNavigation
               showLabels
               value={value}
@@ -151,9 +152,28 @@ export default function UserDetails(props) {
         <div className="formBackx">
           <Link to="/" style={{ textDecoration: "none" }}>
             <button className="buttonBack">Back</button>
+            <button
+              className="buttonBack delete"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
+              Delete Account
+            </button>
           </Link>
         </div>
       </Box>
+
+      <DialogConfirmEdit
+        open={open}
+        setOpen={setOpen}
+        id={profile._id}
+        email={profile.email}
+        history={history}
+        token={token}
+        dispatch={dispatch}
+      />
     </div>
   );
 }
