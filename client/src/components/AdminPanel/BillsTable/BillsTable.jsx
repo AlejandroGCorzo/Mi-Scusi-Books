@@ -8,14 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllBills } from "../../../redux/StoreUsers/usersActions";
 import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
-const BillsTable = () => {
+const BillsTable = (props) => {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   const dispatch = useDispatch();
   const { bills } = useSelector((state) => state.users);
   const [render, setRender] = useState(true);
-
   const handleMenuClick = (id, status) => {
     status = status === "approved" ? "cancelled" : "approved";
     dispatch(setBillStatus(id, status, accessToken));
@@ -105,7 +104,57 @@ const BillsTable = () => {
     ...new Map(duplicateEmails.map((item) => [item.text, item])).values(),
   ];
 
-  const columns = [
+  const columnsUser = [
+    {
+      title: "Bill number",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      sorter: (obj1, obj2) => obj1.date - obj2.date,
+    },
+    {
+      title: "Total Price",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      sorter: (obj1, obj2) => obj1.totalPrice - obj2.totalPrice,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      filters: [
+        {
+          text: "Approved",
+          value: "approved",
+        },
+        {
+          text: "Cancelled",
+          value: "cancelled",
+        },
+      ],
+      filterSearch: true,
+      onFilter: (state, userObject) => userObject.status.includes(state),
+      render: (_, record) => (
+        <span>
+          {record.status === "approved" ? (
+            <>
+              <Badge status="success" /> Approved
+            </>
+          ) : (
+            <>
+              <Badge status="error" /> Cancelled
+            </>
+          )}
+        </span>
+      ),
+    },   
+  ]
+
+  const columnsAdmin = [
     {
       title: "User",
       dataIndex: "user",
@@ -195,8 +244,12 @@ const BillsTable = () => {
     },
   ];
 
+  const columns = props.userId ? columnsUser : columnsAdmin;
+
   useEffect(() => {
-    dispatch(getAllBills(accessToken));
+    if(!props.userId){
+      dispatch(getAllBills(accessToken));
+    } 
   }, [dispatch]);
 
   return (
