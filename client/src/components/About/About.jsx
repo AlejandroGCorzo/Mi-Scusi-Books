@@ -35,7 +35,7 @@ export default function About() {
           </h2>
           <h3>Meet the members behind Mi Scusi Books</h3>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">
@@ -95,7 +95,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">
@@ -155,7 +155,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">
@@ -215,7 +215,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">
@@ -275,7 +275,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">
@@ -335,7 +335,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="component">
+        <div class="componentBookAbout">
           <ul class="align">
             <li>
               <figure class="book">

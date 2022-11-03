@@ -1,4 +1,4 @@
-.component ::before { 
+.componentBookAbout ::before { 
 	content: "";
 }
 
@@ -22,7 +22,7 @@ body {
 	margin: 0em 10em 4em;
 }
 
-.component {
+.componentBookAbout {
 	width: 30%;
 }
 
