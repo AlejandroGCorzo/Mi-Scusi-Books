@@ -10,10 +10,6 @@ import { setEmptyLoggedUser } from "../../redux/StoreUsers/usersSlice.js";
 // import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
-import { useContext } from "react";
-import { ColorModeContext } from "../Palettes/GreenColor.jsx";
-import { Switch } from "@mui/material";
-
 ////////////Material UI/////////////////////
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -91,9 +87,6 @@ export default function HeaderNav(onSearch) {
     history.push("/");
   };
 
-  const { mode, toggleMode } = useContext(ColorModeContext);
-  console.log(mode);
-
   useEffect(() => {
     if (accessToken) {
       dispatch(keepLog(accessToken));
@@ -123,9 +116,6 @@ export default function HeaderNav(onSearch) {
                 : null}
             </p>
             {/* <p>Loyalty Points : {loggedUser.loyaltyPoint}</p> */}
-            <p>
-            <Switch onChange={toggleMode} checked={mode === "dark"} />
-            </p>
             <p className="noRomper">
               <Link to="/" style={{ textDecoration: "none" }}>
                 <HomeIcon style={{ color: "white" }} />
@@ -145,11 +135,7 @@ export default function HeaderNav(onSearch) {
                 </Badge>
               </Link>
             </p>
-            <p
-              className="noRomper"
-              title="Loyalty Points"
-              style={{ cursor: "default", userSelect: "none" }}
-            >
+            <p className="noRomper" title="Loyalty Points" style={{cursor: 'default', userSelect: 'none'}}>
               <Badge
                 badgeContent={loggedUser.loyaltyPoint}
                 color="secondary"
