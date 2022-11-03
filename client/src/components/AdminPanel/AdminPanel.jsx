@@ -8,8 +8,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-//import { ThemeProvider } from "@mui/material/styles";
-//import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 ///////////////Material UI//////////////////////////
 
 ///////////////Tablas//////////////////////////
@@ -111,8 +111,7 @@ export default function BasicTabs() {
     <div className="adminContainer">
       <Box sx={{ width: "100%" }}>
         {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? (
-          //<ThemeProvider theme={colorMiScusi}>
-          <>
+          <ThemeProvider theme={colorMiScusi}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
                 value={value}
@@ -150,9 +149,8 @@ export default function BasicTabs() {
             <TabPanel value={value} index={4}>
               <ReportsTable />
             </TabPanel>
-          </>
-        ) : //</ThemeProvider>
-        null}
+          </ThemeProvider>
+        ) : null}
       </Box>
     </div>
   );
