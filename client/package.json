@@ -32,7 +32,11 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "underscore": "^1.13.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-pageflip": "^2.0.3"
+  },
+  "devDependencies": {
+    "node-sass": "^7.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

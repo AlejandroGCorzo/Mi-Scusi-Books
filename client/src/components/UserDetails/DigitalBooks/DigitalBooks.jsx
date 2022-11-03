@@ -25,20 +25,36 @@ import './DigitalBooks.css'
 //   );
 // }
 
+
 export default function DigitalBooks({ loggedUser }) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState("");
+
+  function ocultar() {
+    var idContentVentana = document.getElementById("idContentVentana");
+
+    if (idContentVentana.style.display == "none") {
+      idContentVentana.style.display = "flex";
+      document.getElementsByTagName("html")[0].style.overflow = "hidden";
+    } else {
+      idContentVentana.style.display = "none";
+      document.getElementsByTagName("html")[0].style.overflow = "auto";
+    }
+      
+  }
 
   const handleClick = (e) => {
     e.preventDefault();
     setId(e.target.name);
     setOpen(true);
+    ocultar();
   };
 
   const handleClose = (e) => {
     e.preventDefault();
     setId("");
     setOpen(false);
+    ocultar();
   };
 
   function capitalizarPrimeraLetra(str) {
@@ -48,12 +64,12 @@ export default function DigitalBooks({ loggedUser }) {
   useEffect(() => {}, [id]);
 
   return (
-    <div>
+    <div >
       {!open && loggedUser &&
         loggedUser.buyedBooks
           ?.filter((b) => b.format === "digital")
           .map((b) => (
-            <div className='digitalBookContainer'>
+            <div className='digitalBookContainer' key={b}>
               <div className='digitalBookImage'>
                 <img
                   src={b.image}
@@ -76,10 +92,26 @@ export default function DigitalBooks({ loggedUser }) {
               </div>
             </div>
           ))}
-      <div>
-        {open && <button onClick={(e) => handleClose(e)}>X</button>}
-        {open && <ReadPDF id={id} />}
+
+        
+        <div
+        id="idContentVentana"
+        className="window-notice"
+        style={{ display: "none" }}
+      >
+        <div className="contentBokk">
+          <div className="contentClose">
+          {open && <button onClick={(e) => handleClose(e)}>X</button>}
+          </div>
+          <div>
+            {open && <ReadPDF id={id} />}
+          </div>
+        
+        </div>
+
       </div>
+
+
     </div>
   );
 }
