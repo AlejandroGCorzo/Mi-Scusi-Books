@@ -17,6 +17,7 @@ export default function About() {
 
   return (
     <div className="mainAbout">
+    <div className="contentMainAbout">
       <div className="containerDescription">
         <img src={logo} alt="" width="210px" style={{ padding: "1em" }} />
         <div className="scusiDescription">
@@ -28,14 +29,17 @@ export default function About() {
           </span>
         </div>
       </div>
+
       <div className="containerMembers">
+
         <div className="divTitles">
           <h2>
             <b>Scusi Team</b>
           </h2>
           <h3>Meet the members behind Mi Scusi Books</h3>
         </div>
-        <div class="componentBookAbout">
+      
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -59,10 +63,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  class="pageBookAbout
-                "
-                >
+                <ul class="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -98,7 +99,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="componentBookAbout">
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -122,10 +123,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  className="pageBookAbout
-                "
-                >
+                <ul className="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -161,7 +159,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="componentBookAbout">
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -185,10 +183,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  class="pageBookAbout
-                "
-                >
+                <ul class="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -224,7 +219,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="componentBookAbout">
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -248,10 +243,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  className="pageBookAbout
-                "
-                >
+                <ul className="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -287,7 +279,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="componentBookAbout">
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -311,10 +303,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  class="pageBookAbout
-                "
-                >
+                <ul class="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -350,7 +339,7 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <div class="componentBookAbout">
+        <div class="component">
           <ul class="align">
             <li>
               <figure class="book">
@@ -374,10 +363,7 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul
-                  class="pageBookAbout
-                "
-                >
+                <ul class="pageAbout">
                   <li></li>
                   <li>
                     <a
@@ -413,6 +399,7 @@ export default function About() {
             </li>
           </ul>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -62,7 +62,7 @@ export default function ReadPDF({id}) {
 
   const pageNumbers = [];
 
-  for (let i = 2; i <= numPages - 1; i++) {
+  for (let i = 2; i <= numPages; i++) {
       pageNumbers.push(i);
   }
   
@@ -103,7 +103,7 @@ export default function ReadPDF({id}) {
         maxShadowOpacity={0.8}
         showCover={true}
         >
-          <PageCover><Pagex number={1} width={618} height={880}></Pagex></PageCover>
+          <Pagex number={1} width={618} height={880}></Pagex>
           {pageNumbers?.map(e => {
             return(<Pagex key={e} number={e} width={618} height={880}></Pagex>)
           })}
@@ -116,9 +116,7 @@ export default function ReadPDF({id}) {
       maxShadowOpacity={0.8}
       showCover={true}
       >
-        <PageCover>
-          <Pagex number={1} width={412} height={580}/>
-        </PageCover>
+        <Pagex number={1} width={412} height={580}/>
         {pageNumbers?.map(e => {
           return(<Pagex key={e} number={e} width={412} height={580}></Pagex>)
         })}
@@ -132,14 +130,11 @@ export default function ReadPDF({id}) {
         maxShadowOpacity={0.8}
         showCover={true}
         >
-          <PageCover>
-            <Pagex number={1} width={360} height={500}/>
-          </PageCover>
-
+          <Pagex number={1} width={360} height={500}/>
           {pageNumbers?.map(e => {
             return(<Pagex key={e} number={e} width={360} height={500}></Pagex>)
           })}
-          <PageCover></PageCover>
+          <PageCover>The</PageCover>
         </HTMLFlipBook>
       )
     }
@@ -147,39 +142,10 @@ export default function ReadPDF({id}) {
 
   return (
     <>
-      
       <div className="main">
-
         <Document file={url ? url : ""} onLoadSuccess={onDocumentLoadSuccess}>
           {dibujoBookPorResolucion()}
         </Document>
-
-        {/* <Page pageNumber={pageNumber} />
-        {pageNumber === numPages? <></> : <Page pageNumber={pageNumber + 1} />} */}
-        {/* <Page pageNumber={pageNumber + 1} /> */}
-
-        {/* <div>
-          <div className="pagec">
-            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-          </div>
-           <div className="buttonc">
-            <button
-              type="button"
-              disabled={pageNumber <= 1}
-              onClick={previousPage}
-              className="Pre"
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              disabled={pageNumber >= numPages}
-              onClick={nextPage}
-            >
-              Next
-            </button>
-          </div> 
-        </div> */}
       </div>
     </>
   );
