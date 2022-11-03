@@ -224,6 +224,7 @@ option {
   border-top: 1px solid #e7e7e7;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
+  max-height: 680px;
 }
 
 .contentBookDiv p {
@@ -274,13 +275,13 @@ option {
 
 @media (min-height: 768px) {
   .contentBookDiv {
-    height: 768px;
+    height: 680px;
   }
 }
 
 @media (min-height: 1080px) {
   .contentBookDiv {
-    height: 768px;
+    height: 680px;
   }
 }
 
