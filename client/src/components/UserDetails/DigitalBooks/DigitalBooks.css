@@ -22,3 +22,41 @@
 .digitalBookButton{
     width: 20%;
 }
+
+.window-notice {
+    background: rgba(0, 0, 0, 0.85);
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+}
+
+.contentBokk{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.contentClose{
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed;
+    justify-content: flex-end;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+
+.testeo{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+}
