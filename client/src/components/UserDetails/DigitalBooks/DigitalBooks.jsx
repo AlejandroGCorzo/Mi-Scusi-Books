@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import ReadPDF from "../../ReadPDF/ReadPDF";
 import './DigitalBooks.css'
+import CancelIcon from '@mui/icons-material/Cancel';
 
 // function EachDigitalBook(props) {
 //   //   console.log(props);
@@ -100,8 +101,8 @@ export default function DigitalBooks({ loggedUser }) {
         style={{ display: "none" }}
       >
         <div className="contentBokk">
-          <div className="contentClose">
-          {open && <button onClick={(e) => handleClose(e)}>X</button>}
+        <div className="contentClose">
+          {open && <button className="buttonFavX" onClick={(e) => handleClose(e)}><CancelIcon className="favColor"/></button>}
           </div>
           <div>
             {open && <ReadPDF id={id} />}
