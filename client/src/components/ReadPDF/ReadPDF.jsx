@@ -45,7 +45,7 @@ export default function ReadPDF({id}) {
   const handleClick = async (e) => {
     // setSelectBook(e.target.name);
     axios
-      .get(`http://localhost:9000/user/buyedBooks/${id}`, {
+      .get(`/user/buyedBooks/${id}`, {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
