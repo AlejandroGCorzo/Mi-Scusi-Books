@@ -8,18 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllBills } from "../../../redux/StoreUsers/usersActions";
 import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
-const BillsTable = (props) => {
+const BillsTableSeller = (props) => {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   const dispatch = useDispatch();
   const { bills } = useSelector((state) => state.users);
   const [render, setRender] = useState(true);
-  const handleMenuClick = (id, status) => {
-    status = status === "approved" ? "cancelled" : "approved";
-    dispatch(setBillStatus(id, status, accessToken));
-    setRender(render === true ? false : true);
-  };
 
   const data2 = bills?.map((e) => ({
     key: e._id,
@@ -124,6 +119,7 @@ const BillsTable = (props) => {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      sorter: (obj1, obj2) => obj1.date - obj2.date,
     },
     {
       title: "Loyalty Points Earned",
@@ -210,7 +206,6 @@ const BillsTable = (props) => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      sorter: (obj1, obj2) => obj1.date - obj2.date,
     },
     {
       title: "Status",
@@ -242,30 +237,6 @@ const BillsTable = (props) => {
         </span>
       ),
     },
-    {
-      title: "Change Status",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          {record.status === "approved" ? (
-            <Popconfirm
-              title="Sure to set status to Cancelled?"
-              onConfirm={(e) => handleMenuClick(record.key, record.status)}
-            >
-              <a>Set status Cancelled</a>
-            </Popconfirm>
-          ) : (
-            <Popconfirm
-              title="Sure to set status to Approved?"
-              onConfirm={(e) => handleMenuClick(record.key, record.status)}
-            >
-              <a>Set status Approved</a>
-            </Popconfirm>
-          )}
-        </Space>
-      ),
-    },
   ];
 
   const columns = props.userId ? columnsUser : columnsAdmin;
@@ -292,4 +263,4 @@ const BillsTable = (props) => {
   );
 };
 
-export default BillsTable;
+export default BillsTableSeller;

@@ -18,6 +18,7 @@ import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import BooksStock from "./BooksTable/BookStockTable.jsx";
 import BillsTable from "./BillsTable/BillsTable.jsx";
 import ReportsTable from "./ReportsTable/ReportsTable.jsx";
+import BillsTableSeller from "./BillsTable/BillsTableSeller.jsx";
 ///////////////Tablas//////////////////////////
 
 ///////////////Actions//////////////////////////
@@ -95,63 +96,68 @@ export default function BasicTabs() {
   };
 
   useEffect(() => {
-    if (loggedUser?.type === "normal") history.push("/"); 
+    if (loggedUser?.type === "normal") history.push("/");
     dispatch(getUser(accessToken));
     dispatch(getBooks());
     dispatch(getAllBills(accessToken));
-    dispatch(getAllReports(accessToken))
-    return (()=> {
-      dispatch(clearReports())
+    dispatch(getAllReports(accessToken));
+    return () => {
+      dispatch(clearReports());
       dispatch(setEmptyUsers());
-      dispatch(clearAllBills())
-    })
-  }, [dispatch,loggedUser]);
+      dispatch(clearAllBills());
+    };
+  }, [dispatch, loggedUser]);
 
   return (
     <div className="adminContainer">
-    <Box sx={{ width: "100%" }}>
-      {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? (
-        <ThemeProvider theme={colorMiScusi}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-              textColor="primary"
-              indicatorColor="primary"
-              centered
-            >
-              <Tab label="Users Panel" {...a11yProps(0)} />
-              <Tab label="Books Panel" {...a11yProps(1)} />
-              <Tab label="Books Stock" {...a11yProps(2)} />
-              <Tab label="Bills Panel" {...a11yProps(3)} />
-              <Tab label="Reports Panel" {...a11yProps(4)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
-            <TestUsers />
-            <SnackRol/>
-            <SnackBlock/>
-            <SnackDeleteUser/>
-            <SnackActive/>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <BookNewTable />
-            <SnackDeleteBook/>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <BooksStock/>
-            <SnackStock/>
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <BillsTable/>
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <ReportsTable/>
-          </TabPanel>
-        </ThemeProvider>
-      ) : null }
-    </Box>
+      <Box sx={{ width: "100%" }}>
+        {loggedUser?.type === "admin" || loggedUser?.type === "seller" ? (
+          <ThemeProvider theme={colorMiScusi}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+                textColor="primary"
+                indicatorColor="primary"
+                centered
+              >
+                <Tab label="Users Panel" {...a11yProps(0)} />
+                <Tab label="Books Panel" {...a11yProps(1)} />
+                <Tab label="Books Stock" {...a11yProps(2)} />
+                <Tab label="Bills Panel" {...a11yProps(3)} />
+                <Tab label="Reports Panel" {...a11yProps(4)} />
+              </Tabs>
+            </Box>
+            <TabPanel value={value} index={0}>
+              <TestUsers />
+              <SnackRol />
+              <SnackBlock />
+              <SnackDeleteUser />
+              <SnackActive />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <BookNewTable />
+              <SnackDeleteBook />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <BooksStock />
+              <SnackStock />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              {loggedUser.type === "seller" ? (
+                <BillsTableSeller />
+              ) : (
+                <BillsTable />
+              )}
+              <BillsTable />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+              <ReportsTable />
+            </TabPanel>
+          </ThemeProvider>
+        ) : null}
+      </Box>
     </div>
   );
 }

@@ -48,6 +48,6 @@ export default function SlideActivation() {
         </DialogActions>
       </Dialog>
     </div>
-    </ThemeProvider>
+   </ThemeProvider>
   );
 }

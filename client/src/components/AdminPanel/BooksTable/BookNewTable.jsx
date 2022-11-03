@@ -228,6 +228,7 @@ export default function TestUsers() {
   const [searchBook, setSearchBook] = React.useState("");
 
   const handleSearchBook = (e) => {
+    setPage(0)
     setSearchBook(e.target.value);
     dispatch(searchBookByName(e.target.value));
   };
