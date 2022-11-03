@@ -288,7 +288,7 @@ export default function CreateBook() {
                 </div>
 
                 <span>{errorHandler.ISBN}</span>
-
+                { !edit && <>
                 <div className="divInputForm">
                   <span>Stock: </span>
                   <input
@@ -303,6 +303,7 @@ export default function CreateBook() {
                 </div>
 
                 <span>{errorHandler.stock}</span>
+                </> }
 
                 <div className="divInputForm">
                   <ImgSelector
@@ -358,7 +359,7 @@ export default function CreateBook() {
             <div className="contentBookDiv">
               <div className="categoryBook">
                 {/* NEW BOOK PREVIEW */}
-                <NewBookPreview newBook={newBook} />
+                <NewBookPreview newBook={newBook} edit={edit}/>
               </div>
             </div>
 
