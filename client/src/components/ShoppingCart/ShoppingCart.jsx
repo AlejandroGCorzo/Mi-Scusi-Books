@@ -10,8 +10,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StoreIcon from "@mui/icons-material/Store";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-// import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
-// import { ThemeProvider } from "@mui/material/styles";
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -266,7 +266,7 @@ export default function ShoppingCart(props) {
         </div>
       )}
       <Box sx={{ width: "100%" }}>
-        {/* <ThemeProvider theme={colorMiScusi}> */}
+        <ThemeProvider theme={colorMiScusi}>
           <div className="titleFormShopping">
             <BottomNavigation
               showLabels
@@ -292,7 +292,7 @@ export default function ShoppingCart(props) {
               ) : null}
             </BottomNavigation>
           </div>
-        {/* </ThemeProvider> */}
+        </ThemeProvider>
         <div className="contentShoppingDetail">
           <div className="itemsShoppingDetail">
             <TabPanel value={value} index={0} className="tabPanel">
