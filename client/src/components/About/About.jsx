@@ -59,7 +59,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul class="page">
+                <ul
+                  class="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
@@ -119,7 +122,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul className="page">
+                <ul
+                  className="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
@@ -179,7 +185,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul class="page">
+                <ul
+                  class="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
@@ -239,7 +248,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul className="page">
+                <ul
+                  className="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
@@ -299,7 +311,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul class="page">
+                <ul
+                  class="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
@@ -359,7 +374,10 @@ export default function About() {
                   <li></li>
                 </ul>
                 {/* Pages */}
-                <ul class="page">
+                <ul
+                  class="pageBookAbout
+                "
+                >
                   <li></li>
                   <li>
                     <a
