@@ -361,6 +361,7 @@ export default function TestUsers() {
   const [searchUser, setSearchUser] = useState("");
 
   const handleSearchUser = (e) => {
+    setPage(0)
     setSearchUser(e.target.value);
     dispatch(searchUserEmail(e.target.value));
   };

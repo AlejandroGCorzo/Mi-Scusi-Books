@@ -18,6 +18,7 @@ import BookNewTable from "./BooksTable/BookNewTable.jsx";
 import BooksStock from "./BooksTable/BookStockTable.jsx";
 import BillsTable from "./BillsTable/BillsTable.jsx";
 import ReportsTable from "./ReportsTable/ReportsTable.jsx";
+import BillsTableSeller from "./BillsTable/BillsTableSeller.jsx";
 ///////////////Tablas//////////////////////////
 
 ///////////////Actions//////////////////////////
@@ -144,6 +145,11 @@ export default function BasicTabs() {
               <SnackStock />
             </TabPanel>
             <TabPanel value={value} index={3}>
+              {loggedUser.type === "seller" ? (
+                <BillsTableSeller />
+              ) : (
+                <BillsTable />
+              )}
               <BillsTable />
             </TabPanel>
             <TabPanel value={value} index={4}>
