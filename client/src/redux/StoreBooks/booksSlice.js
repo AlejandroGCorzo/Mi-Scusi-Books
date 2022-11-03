@@ -12,13 +12,13 @@ export const booksSlice = createSlice({
     bookByName: {},
     topTen: [],
     page: { currentPage: 0, rows: 25 },
-    searchBooks: []
+    searchBooks: [],
   },
   reducers: {
     getAllBooks: (state, action) => {
       state.books = [...action.payload];
       // state.booksFilter = [...action.payload];
-      state.searchBooks = state.books
+      state.searchBooks = state.books;
     },
     getBookById: (state, action) => {
       state.detail = action.payload;
@@ -35,7 +35,7 @@ export const booksSlice = createSlice({
     },
     setEmptyFilters: (state) => {
       state.storeFilters = {};
-      state.booksFilter = [...state.books]
+      state.booksFilter = [...state.books];
     },
     setOrderBooks: (state, action) => {
       switch (action.payload) {
@@ -53,7 +53,11 @@ export const booksSlice = createSlice({
         }
         case "rating": {
           state.booksFilter = state.booksFilter.sort(
-            (a, b) => b.rating - a.rating
+            (a, b) =>
+              b.rating.reduce((acc, el) => el + acc, 0) /
+                (b.rating.length ? b.rating.length : 1) -
+              a.rating.reduce((acc, el) => el + acc, 0) /
+                (a.rating.length ? a.rating.length : 1)
           );
           break;
         }
@@ -93,17 +97,22 @@ export const booksSlice = createSlice({
     },
     filterDeleteBook: (state, action) => {
       state.books = state.books.filter((b) => b._id !== action.payload);
-      state.searchBooks = state.books
+      state.searchBooks = state.books;
     },
     setStock: (state, action) => {
       const newStock = state.books.find((b) => b._id === action.payload.id);
       newStock.stock = newStock.stock + Number(action.payload.amount);
-      state.books = [...state.books.filter((b) => b._id !== newStock._id),newStock];
-      state.searchBooks = state.books
+      state.books = [
+        ...state.books.filter((b) => b._id !== newStock._id),
+        newStock,
+      ];
+      state.searchBooks = state.books;
     },
     searchBookName: (state, action) => {
       // let filterUsers = [...state.searchUsers]
-      state.searchBooks = state.books.filter(u => u.name.includes(action.payload))
+      state.searchBooks = state.books.filter((u) =>
+        u.name.includes(action.payload)
+      );
     },
   },
 });
@@ -124,7 +133,7 @@ export const {
   filterDeleteBook,
   setStock,
   setEmptyFilters,
-  searchBookName
+  searchBookName,
 } = booksSlice.actions;
 
 export default booksSlice.reducer;

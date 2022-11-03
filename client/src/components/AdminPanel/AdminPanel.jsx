@@ -150,7 +150,6 @@ export default function BasicTabs() {
               ) : (
                 <BillsTable />
               )}
-              <BillsTable />
             </TabPanel>
             <TabPanel value={value} index={4}>
               <ReportsTable />
