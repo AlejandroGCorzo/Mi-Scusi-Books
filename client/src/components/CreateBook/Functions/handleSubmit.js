@@ -5,7 +5,7 @@ export default function handleSubmit(e, newBook, history) {
   newBook = { ...newBook, name: newBook.title };
   delete newBook.title;
   axios
-    .post("http://localhost:9000/books", newBook)
+    .post("/books", newBook)
     .then((response) => {
       history.push(`/book_details/${response.data._id}`);
     })
