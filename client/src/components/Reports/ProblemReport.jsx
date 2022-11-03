@@ -134,7 +134,7 @@ export default function ProblemReport() {
 
   return (<div className="mainAbout">
     <>
-      {Object.keys(profile).length > 0 ? (
+      
         <section className="sectionReport">
           <div className="divReport">
             <button
@@ -256,11 +256,7 @@ export default function ProblemReport() {
             action={action}
           />
         </section>
-      ) : (
-        <div>
-          <Loader />
-        </div>
-      )}
+      
     </>
     </div>
   );
