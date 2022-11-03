@@ -8,14 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllBills } from "../../../redux/StoreUsers/usersActions";
 import { setBillStatus } from "../../../redux/StoreUsers/usersActions";
 
-const BillsTable = () => {
+const BillsTable = (props) => {
   const accessToken =
     window.localStorage.getItem("token") ||
     window.sessionStorage.getItem("token");
   const dispatch = useDispatch();
   const { bills } = useSelector((state) => state.users);
   const [render, setRender] = useState(true);
-
   const handleMenuClick = (id, status) => {
     status = status === "approved" ? "cancelled" : "approved";
     dispatch(setBillStatus(id, status, accessToken));
@@ -59,6 +58,7 @@ const BillsTable = () => {
         key: "quantity",
         sorter: (obj1, obj2) => obj1.quantity - obj2.quantity,
       },
+
       {
         title: "Unit Price",
         dataIndex: "unitPrice",
@@ -197,7 +197,7 @@ const BillsTable = () => {
       onFilter: (email, userObject) => userObject.email.includes(email),
     },
     {
-      title: "ID",
+      title: "Bill ID",
       dataIndex: "id",
       key: "id",
     },
@@ -268,6 +268,8 @@ const BillsTable = () => {
       ),
     },
   ];
+
+  const columns = props.userId ? columnsUser : columnsAdmin;
 
   useEffect(() => {
     if (!props.userId) {
