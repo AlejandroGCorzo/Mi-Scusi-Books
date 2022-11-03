@@ -41,6 +41,7 @@ export default function UserLogin() {
   const [input, setInput] = useState(emptyInput);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
 
   // // // // // // // // // // FUNCTIONS
   function handleInputChange(e) {
@@ -105,6 +106,7 @@ export default function UserLogin() {
       .then((el) => {
         if (el.data.msg) {
           setOpen(true);
+          setText(el.data.msg);
         } else {
           if (rememberMe) window.localStorage.setItem("token", el.data.token);
           else window.sessionStorage.setItem("token", el.data.token);
@@ -378,11 +380,7 @@ export default function UserLogin() {
               </Link>
             </div>
           </div>
-          <AlertDialogSlide
-            open={open}
-            setOpen={setOpen}
-            text={"Your account is disabled"}
-          />
+          <AlertDialogSlide open={open} setOpen={setOpen} text={text} />
         </div>
       </div>
     </div>
