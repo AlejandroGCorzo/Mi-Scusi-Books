@@ -15,14 +15,11 @@ export default function Home() {
   const dispatch = useDispatch();
   const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
 
-  const mode = window.localStorage.getItem("ThemeMode")
-  console.log(mode);
-
   useEffect(() => {
     dispatch(getBooks());
     // dispatch(getUser());
     dispatch(fetchTopTen());
-  }, [dispatch, mode]);
+  }, [dispatch]);
 
   const _ = require("underscore");
   let images = books.map((b) => b.image);
