@@ -77,7 +77,7 @@ const Details = (props) => {
   useEffect(() => {
     if (accessToken) {
       dispatch(keepLog(accessToken));
-      dispatch(fetchFavorites(loggedUser.id));
+      dispatch(fetchFavorites(accessToken));
     }
     dispatch(getBooks());
     dispatch(getDetail(props.match.params.id));
