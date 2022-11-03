@@ -8,8 +8,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-//import { ThemeProvider } from "@mui/material/styles";
-//import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
+import { ThemeProvider } from "@mui/material/styles";
+import colorMiScusi from "../Palettes/GreenColor.jsx"; // Paleta para color verde
 ///////////////Material UI//////////////////////////
 
 ///////////////Tablas//////////////////////////
