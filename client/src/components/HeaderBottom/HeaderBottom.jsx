@@ -14,7 +14,7 @@ export default function HeaderBottom() {
       <Link to="/about" style={{ textDecoration: "none" }}>
         <p className="aboutText">About</p>
       </Link>
-      {(loggedUser?.type === "normal" || loggedUser?.type === "seller") && (
+      {accessToken && (
         <Link to="/contact" style={{ textDecoration: "none" }}>
           <p className="reportText">Report a problem</p>
         </Link>
