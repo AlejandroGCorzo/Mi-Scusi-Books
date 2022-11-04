@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Slider.css";
 import { Link } from "react-router-dom";
-export default function SliderImg({ books }) {
+export default function SliderImg({ books, title }) {
   const settings = {
     dots: true,
     infinite: true,
@@ -44,7 +44,7 @@ export default function SliderImg({ books }) {
     <div className="containerx">
       <div className="containerSlider">
         <div className="titleTop">
-          <h3>Top 10 Best Selling Books</h3>
+          <h3>{title}</h3>
         </div>
         <Slider {...settings}>
           {books.map((el) => (
