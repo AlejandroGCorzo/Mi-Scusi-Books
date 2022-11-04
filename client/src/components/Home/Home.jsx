@@ -69,7 +69,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Slider books={topTen} />
+      <Slider books={topTen} title={"Top 10 Best Selling Books"}/>
 
       <div className="advertisements">
         <div>
