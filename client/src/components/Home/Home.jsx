@@ -14,7 +14,7 @@ import "./Home.css";
 export default function Home() {
   const dispatch = useDispatch();
   const { topTen, books } = useSelector((state) => state.books); //Todos los libros -> faltan libros más vendidos, no se usa por ahora
-
+  const arrivals = books.slice(-10)
   useEffect(() => {
     dispatch(getBooks());
     // dispatch(getUser());
@@ -69,6 +69,7 @@ export default function Home() {
         </div>
       </div>
 
+      <Slider books={arrivals} title={"New Arrivals"}/>
       <Slider books={topTen} title={"Top 10 Best Selling Books"}/>
 
       <div className="advertisements">
