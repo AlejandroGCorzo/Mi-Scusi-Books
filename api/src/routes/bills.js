@@ -2,10 +2,8 @@ const { Router } = require("express");
 const User = require("../models/user");
 const Books = require("../models/books");
 const billsSchema = require("../models/bills");
-const axios = require("axios");
 const { transporter } = require("../mailer/mailer");
 const { protect } = require("../middleware/protect");
-const { findByIdAndUpdate } = require("../models/bills");
 
 const billsRouter = Router();
 
@@ -116,7 +114,6 @@ billsRouter.get("/", protect, async (req, res) => {
         status: b.status || "approved",
       };
     });
-    console.log('llego al final');
     res.send(allBills);
   } catch (error) {
     res.status(400).send({ msg: "Algo fallo en get a bills", error });
@@ -126,11 +123,8 @@ billsRouter.get("/", protect, async (req, res) => {
 billsRouter.put("/status/:id", protect, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
-  console.log(status);
   try {
     const bill = await billsSchema.findByIdAndUpdate(id, { status });
-    console.log(bill.loyaltyPoint);
-    // const bill = await billsSchema.findById(id)
     const user = await User.findById(bill.user.valueOf());
     if (status === "cancelled") {
       //si se cancela le quito al usuario los puntos de lealtad

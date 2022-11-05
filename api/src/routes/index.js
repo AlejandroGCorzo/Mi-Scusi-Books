@@ -17,20 +17,6 @@ const { application } = require("express");
 //middleware
 router.use(cors());
 
-// const verifyJwt = jwt({
-//   secret: jwks.expressJwtSecret({
-//     cache: true,
-//     rateLimit: true,
-//     jwksRequestsPerMinute: 5,
-//     jwksUri: "https://miscusibooks.us.auth0.com/.well-known/jwks.json",
-//   }),
-//   audience: "MiScusiBooks",
-//   issuer: "https://miscusibooks.us.auth0.com/",
-//   algorithms: ["RS256"],
-// }).unless({ path: ["/", "/user", "/books"] });
-
-// router.use(verifyJwt)
-
 router.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");

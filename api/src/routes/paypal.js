@@ -3,7 +3,6 @@ const { createOrder, captureOrder, cancelOrder } = require("../paypalcontrollers
 const paypalRouter = Router();
 
 paypalRouter.post("/create-order", createOrder);
-//cambiar a post cuando se le pasen los parametros de el front
 
 paypalRouter.get("/capture-order", captureOrder);
 
