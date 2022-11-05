@@ -29,9 +29,7 @@ userRouter.put("/forgot_password", async (req, res) => {
   const error = "Something goes wrong";
   const message = "Check your email for instructions!";
   try {
-    // const user = await User.findOneAndUpdate(query, {$set:{ resetToken: resetToken }} );
     const user = await User.findOne().where({ email: email });
-    // user.resetToken = resetToken
     if (!user) return res.send("Something goes wrong!");
     if (!user.password) return res.send("This is not your login method!");
     const resetToken = generateResetToken(email);
@@ -59,15 +57,6 @@ userRouter.put("/forgot_password", async (req, res) => {
 	</tr>
 </table>
       `,
-      // html: `
-      // <h4>Please click on the following link to reset your password!</h4>
-      // <br>
-      // <a href=${verificationLink}>Change your password!</a>
-      // <br>
-      // <img src='https://res.cloudinary.com/scusi-books/image/upload/v1666567325/zlxizult0udht9jweypx.png' alt='MiScusi.jpeg' width= '200px'/>
-      // <br>
-      // <p>Mi Scusi Books staff.</p>
-      // `,
     });
     res.send(message);
   } catch (e) {
@@ -90,7 +79,6 @@ userRouter.put("/new_password", async (req, res) => {
     await user.updateOne({ password: hashPassword, resetToken: "" });
     res.send("Password successfully changed!");
   } catch (e) {
-    console.log(e);
     res.status(400).send(error);
   }
 });
@@ -123,7 +111,6 @@ userRouter.get("/keepLog", protect, async (req, res) => {
 //Loguear usuario local -> publica
 userRouter.post("/login", async (req, res) => {
   const { email, password, cart, amounts } = req.body;
-  console.log(email, password);
   try {
     const user = await User.findOne({ email });
 
@@ -177,7 +164,6 @@ userRouter.post("/login_google", async (req, res) => {
   const accesToken = req.headers.authorization.split(" ")[1];
   const tokenDecode = jwt.decode(accesToken);
   const { cart, amounts } = req.body;
-  console.log("cart en back", cart);
   try {
     let user = await User.findOne({ email: tokenDecode.email });
 
@@ -201,10 +187,8 @@ userRouter.post("/login_google", async (req, res) => {
         if (newCart.some((b) => b.id === book.id)) continue;
         newCart.push(book);
       }
-      console.log(newCart);
     }
     if (!user) {
-      console.log(newCart);
       const newUser = {
         firstName: tokenDecode.given_name.toLowerCase(),
         lastName: tokenDecode.family_name.toLowerCase(),
@@ -323,11 +307,9 @@ userRouter.post("/signup", async (req, res) => {
 
 //Devuelve el carrito completo del usuario logueado -> PROTEGIDA, SOLO USUARIO LOGUEADO PUEDE PEDIR EL CARRITO
 userRouter.get("/cart", protect, async (req, res) => {
-  // const { id } = req.params;
   if (req.user) {
     try {
       const user = await User.findById(req.user.id).populate("cart.books");
-      console.log("carrito", user.cart);
       res.send(user.cart);
     } catch (error) {
       res.status(400).send({ msg: error, otherMsg: "algo fallo en cart" });
@@ -359,7 +341,6 @@ userRouter.put("/activation-mail/:id", async (req, res) => {
 userRouter.get("/favorites", protect, async (req, res) => {
   if (req.user) {
     try {
-      // if (!id) return res.status(400).send("Missing data!");
       const user = await User.findById(req.user.id);
       if (!user) return res.status(404).send("User not found!");
       return res.send(user.favorites);
@@ -445,7 +426,6 @@ userRouter.put("/delete/:id", protect, async (req, res) => {
 userRouter.put("/update/:id", protect, async (req, res) => {
   const { id } = req.params;
   const update = req.body;
-  console.log("ENTRREEEEE");
   if (req.user && req.user.id === id) {
     if (!id) return res.status(400).send({ msg: "Not id found!" });
     try {
@@ -555,7 +535,6 @@ userRouter.put("/cart/:idUser", protect, async (req, res) => {
       const user = await User.findById(idUser);
       const b = user.cart.find((b) => b.id === idBook);
       if (b) {
-        console.log(b);
         let book = b;
         book.amount = amount;
         const newCart = user.cart.filter((b) => b.id !== idBook);
@@ -691,7 +670,6 @@ userRouter.put("/pay", protect, async (req, res) => {
         shipp: address.city ? 8 : 0,
         address,
       });
-      console.log("hasta la 654");
       let newBuyedBooks = formatBuyedBooks.concat(user.buyedBooks);
       const buyedBooks = [];
       for (const book of newBuyedBooks) {

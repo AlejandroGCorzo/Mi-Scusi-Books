@@ -13,7 +13,6 @@ const createOrder = async (req, res) => {
 
     price = price + Number(shipping) - Math.round(price * discount* 100) / 100
     price = Math.round(price * 100) / 100
-    console.log('price', price);
     const order = {
       intent: "CAPTURE",
       purchase_units: [
@@ -37,7 +36,6 @@ const createOrder = async (req, res) => {
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
 
-    // console.log(params);
 
     // Generate an access token
     const {
@@ -82,11 +80,9 @@ const createOrder = async (req, res) => {
         },
       }
     );
-    // console.log(response.data);
 
     return res.json(response.data.links[1].href);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json("Something goes wrong");
   }
 };
@@ -106,11 +102,9 @@ const captureOrder = async (req, res) => {
       }
     );
 
-    console.log(response.data);
 
     res.redirect(`${process.env.FRONT_URL}/order-successfully`);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

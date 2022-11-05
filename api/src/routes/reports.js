@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const { protect } = require('../middleware/protect.js');
 const Report = require('../models/reports.js');
-const User = require('../models/user.js');
 
 const reportRouter = Router();
 

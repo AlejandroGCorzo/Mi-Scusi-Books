@@ -309,6 +309,7 @@ export default function ShoppingCart(props) {
                           id={el.id}
                           type="number"
                           className="input"
+                          onKeyDown={(e) => e.preventDefault()}
                           defaultValue={el.amount}
                           min={1}
                           max={10}
