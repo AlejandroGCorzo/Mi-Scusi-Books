@@ -136,36 +136,42 @@ export default function CreateBook() {
 
                 <div className="divInputForm">
                   <span>Author: </span>
-                  <input
-                    autoComplete="off"
-                    style={{ textTransform: "capitalize" }}
-                    maxLength={30}
-                    type="text"
-                    placeholder="Write here"
-                    name="author"
-                    value={author}
-                    onChange={(e) => {
-                      setAuthor(e.target.value.toLowerCase());
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.keyCode === 13 && e.target.name === "author")
-                        return onChange(
-                          e,
-                          newBook,
-                          setNewBook,
-                          author,
-                          setAuthor
-                        );
-                    }}
-                  />
-                  <button
-                    name="author"
-                    disabled={!author.length}
-                    onClick={handleChange}
-                    className="btnAdd"
-                  >
-                    Add
-                  </button>
+                  <div className="contentInputAndButtonCreateBook">
+                    <div className="inputDivCreateBook">
+                      <input
+                        autoComplete="off"
+                        style={{ textTransform: "capitalize" }}
+                        maxLength={30}
+                        type="text"
+                        placeholder="Write here"
+                        name="author"
+                        value={author}
+                        onChange={(e) => {
+                          setAuthor(e.target.value.toLowerCase());
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.keyCode === 13 && e.target.name === "author")
+                            return onChange(
+                              e,
+                              newBook,
+                              setNewBook,
+                              author,
+                              setAuthor
+                            );
+                        }}
+                      />
+                    </div>
+                    <div className="ButtonDivCreateBook">
+                      <button
+                        name="author"
+                        disabled={!author.length}
+                        onClick={handleChange}
+                        className="btnAdd"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="divInputForm">

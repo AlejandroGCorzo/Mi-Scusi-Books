@@ -1,0 +1,169 @@
+.cardNew{
+    width:100%;
+    max-width: 300px;
+    border-radius: 5px;
+    background-color: #f3f3f3;
+    max-width: 300px;
+    height: 460px;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px 10px 10px 10px;
+    transform: scale(0.95);
+    transition: box-shadow 0.5s, transform 0.5s;
+    &:hover{
+      transform: scale(1);
+      box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+    }
+    
+    .inside{
+      z-index:9;
+      background: #287ccb;
+      width:140px;
+      height:140px;
+      position: absolute;
+      top: -70px;
+      right: -70px;
+      border-radius: 0px 0px 200px 200px;
+      transition: all 0.5s, border-radius 2s, top 1s;
+      overflow: hidden;
+      .iconSlider{
+        position:absolute;
+        right:85px;
+        top:85px;
+        color:white;
+        opacity: 1;
+      }
+    }
+  }
+
+  .containerx {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .containerSlider {
+    width: 80%;
+    align-items: center;
+  }
+  
+  .slick-slide > div {
+    margin: 0 10px;
+  }
+  .slick-list {
+    margin: 0 -10px;
+  }
+  
+  .slick-prev {
+    margin-left: -10px;
+  }
+  
+  .slick-prev:before {
+    color: #287ccb;
+    font-size: 28px;
+  }
+  
+  .slick-next:before {
+    color: #287ccb;
+    font-size: 28px;
+  }
+  
+  .card {
+    /* cursor: pointer; */
+    border-radius: 5px;
+    background-color: #f3f3f3;
+    max-width: 300px;
+    font-size: 14px;
+  }
+  
+  .cardNew span {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .card-top > img {
+    width: 100%;
+    height: 385px;
+    border-radius: 5px 5px 0px 0px;
+  }
+  
+  .buyBook {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .buttonBuy {
+    background-color: #287ccb;
+    border: 1px solid #287ccb;
+    height: 35px;
+    width: 75px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    cursor: pointer;
+  }
+  
+  .buyBook p {
+    color: black;
+  }
+  
+  .titleTop h3 {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1.5rem;
+  }
+  
+  .favoriteSlider{
+    display: flex;
+    position: fixed;
+  }
+  
+  .buttonFavSlider{
+    border: none;
+    border-radius: 5px 0px 5px 0px;
+    background-color: #287ccb;
+    color: white;
+  }
+  
+  .contentDetailsSlider{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+  
+  .nameAndPrice{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+    margin-left: 8px;
+    border-right:1px solid #e7e7e7;
+  }
+  .addToCartSlider{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+  }
+  
+.priceSlider{
+  margin-top: -12px;
+}
+
+  @media (max-width: 375px) {
+    .slick-dots{
+      bottom: -50px;
+    }
+  }

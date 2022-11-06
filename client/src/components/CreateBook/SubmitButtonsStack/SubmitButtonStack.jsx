@@ -33,11 +33,13 @@ export default function SubmitButtonStack({
           >
             Reset fields
           </Button>
+          
           <Button
             name="create"
             variant="contained"
             endIcon={<SendIcon />}
             onClick={handleClickOpen}
+            style={{marginTop:"6px", marginBottom:"6px"}}
             disabled={
               errorHandler.edition.length !== 0 ||
               errorHandler.price.length !== 0 ||
@@ -69,6 +71,7 @@ export default function SubmitButtonStack({
           variant="contained"
           endIcon={<SendIcon />}
           onClick={handleClickOpen}
+          style={{marginTop:"6px", marginBottom:"6px"}}
           disabled={
             errorHandler.edition.length !== 0 ||
             errorHandler.price.length !== 0 ||

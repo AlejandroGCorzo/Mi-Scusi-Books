@@ -62,6 +62,7 @@
   font-size: 40px;
   display: flex;
   justify-self: center;
+  text-align: left;
   width: 100%;
   font-weight: 500;
 }

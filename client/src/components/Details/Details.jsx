@@ -44,7 +44,7 @@ function textRating(value) {
   if (value > 2 && value <= 3) return "Ok!";
   if (value > 3 && value <= 4.5) return "Good!";
   if (value > 4.5 && value <= 5) return "Excellent!";
-  return "";
+  return "Not Rated!";
 }
 
 const Details = (props) => {
@@ -348,7 +348,7 @@ const Details = (props) => {
     return (
       <Box
         style={{
-          width: 200,
+          width: 250,
           display: "flex",
           alignItems: "center",
           color: "#287ccb",
