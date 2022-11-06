@@ -105,12 +105,11 @@ option {
 }
 
 .btnAdd {
-  margin: 5px 0px 0px 77px;
   background-color: #287ccb;
   border: 1px solid #287ccb;
-  height: 28px;
-  width: 50px;
-  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  border-radius: 0px 5px 5px 0px;
   color: white;
   cursor: pointer;
 }
@@ -204,12 +203,11 @@ option {
   border-radius: 15px;
 }
 
-
 .contentCreateBook {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
+  width: 95%;
   min-width: 336px;
   transform: scale(1);
 }
@@ -263,6 +261,26 @@ option {
   flex-direction: row;
 }
 
+.contentInputAndButtonCreateBook{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+}
+
+.inputDivCreateBook{
+  width: 80%;
+}
+
+.inputDivCreateBook input{
+  border-radius: 5px 0px 0px 5px;
+  width: 95%;
+}
+
+.ButtonDivCreateBook{
+  width: 20%;
+}
 @media (min-height: 0px) {
   .contentBookDiv {
     height: 480px;
