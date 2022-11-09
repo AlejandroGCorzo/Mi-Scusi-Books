@@ -20,4 +20,16 @@ export default function validations(name, value, errors, setErrors) {
       return setErrors({ ...errors });
     }
   }
+
+  if (name === "birthdate") {
+    const actualYear = new Date().getFullYear();
+    const year = new Date(value).getFullYear();
+
+    if (year > actualYear || year < 1900) {
+      return setErrors({ ...errors, [name]: "Must be a valid year" });
+    } else {
+      delete errors[name];
+      return setErrors({ ...errors });
+    }
+  }
 }

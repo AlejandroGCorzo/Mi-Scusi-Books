@@ -21,6 +21,8 @@ export default function Profile({
   setImgSelected,
   handleClick,
 }) {
+  
+  const _ = require("underscore");
   return (
     <>
       <Box
@@ -50,8 +52,8 @@ export default function Profile({
               >
                 <CancelIcon className="favColor"/>
               </button>
-              <button className="buttonFav" type="submit">
-                <SaveAsRounded className="favColor"/>
+              <button className= { _.isEmpty(errors) ? "buttonFav" : "buttonFav noAction" } type="submit">
+                <SaveAsRounded className="favColor" />
               </button>
             </>
           ) : (
@@ -150,8 +152,11 @@ export default function Profile({
                 }
                 name="birthdate"
                 type="date"
+                error={errors.birthdate ? true : false}
                 InputLabelProps={{ shrink: true }}
                 InputProps={{ readOnly: !edit }}
+                helperText={errors.birthdate ? `${errors.birthdate}` : null}
+
               />
               <TextField
                 sx={{ m: 0.8 }}

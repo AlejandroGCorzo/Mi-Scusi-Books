@@ -72,6 +72,10 @@
   width: 100%;
 }
 
+.noAction {
+  pointer-events: none;
+}
+
 .titleFormProfileDetail {
   flex-wrap: wrap;
   justify-content: flex-start;
