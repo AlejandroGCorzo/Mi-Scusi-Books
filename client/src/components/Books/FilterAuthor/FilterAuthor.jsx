@@ -19,14 +19,16 @@ export default function FilterAuthor({
       </>
     ) : (
       authors.map((el) => (
-        <>
-          <p
-            style={{ cursor: "pointer" }}
-            onClick={(e) => handleClick(e, "author", el)}
-          >
-            {el}
-          </p>
-        </>
+        <div key={el}>
+          <>
+            <p
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleClick(e, "author", el)}
+            >
+              {el}
+            </p>
+          </>
+        </div>
       ))
     );
   }

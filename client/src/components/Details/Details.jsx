@@ -289,11 +289,15 @@ const Details = (props) => {
       setOpen(true);
     } else {
       dispatch(addFavorites(loggedUser.id, libroID, accessToken));
+      setMsg("Book added to favorites!");
+      setOpen(true);
     }
   }
 
   function deleteFav(libroID) {
     dispatch(deleteFavorites(loggedUser.id, libroID, accessToken));
+    setMsg("Book remove to favorites!");
+    setOpen(true);
   }
 
   function addToCart(libroID) {

@@ -15,16 +15,20 @@ import FilterAuthor from "./FilterAuthor/FilterAuthor.jsx";
 import FilterEditorial from "./FilterEditorial/FilterEditorial.jsx";
 import FilterLanguage from "./FilterLanguage/FilterLanguage.jsx";
 import FilterFormat from "./FilterFormat/FilterFormat.jsx";
-import MenuMobile from "./MenuMobile/MenuMobile.jsx"
+import MenuMobile from "./MenuMobile/MenuMobile.jsx";
 import "./Books.css";
 import FilterStock from "./FilterStock/FilterStock.jsx";
 import Pages from "./Pages/Pages.jsx";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Books() {
-
   // // // // // //
   const history = useHistory();
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState("");
   // // // // // // STORE
   const { booksFilter, categories, storeFilters, page } = useSelector(
     (state) => state.books
@@ -39,17 +43,16 @@ export default function Books() {
   subcategory = subcategory?.replace(/\_/g, " ");
 
   // // // // // // PAGINATO
-  
-  // const booksPerPage = 10;   
-  const lastIndex = (page.currentPage * page.rows) + page.rows;
+
+  // const booksPerPage = 10;
+  const lastIndex = page.currentPage * page.rows + page.rows;
   const firstIndex = lastIndex - page.rows;
   // const totalPages = Math.ceil(booksFilter.length / booksPerPage);
   let booksToShow = booksFilter.slice(firstIndex, lastIndex);
 
-
   // // // // // // USE EFFECT
   useEffect(() => {
-    dispatch(setCurrentPage({currentPage: 0, rows: 25}))
+    dispatch(setCurrentPage({ currentPage: 0, rows: 25 }));
     if (!theme && !category && !subcategory) {
       dispatch(bookFiltered(storeFilters));
     }
@@ -91,9 +94,26 @@ export default function Books() {
     setRender(!render);
   }
   // // // // // //
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+        style={{ width: "50px" }}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   return (
     <div className="contentResults">
-
       <div className="divLinkCategories">
         <div className="linkCategories">
           <UrlBreadcrumb
@@ -105,28 +125,27 @@ export default function Books() {
           />
         </div>
         <div className="divPagination">
-          <Pages count={booksFilter.length}/>
+          <Pages count={booksFilter.length} />
         </div>
       </div>
 
       <div className="menuMobile">
         <MenuMobile
-            theme={theme}
-            category={category}
-            subcategory={subcategory}
-            categories={categories}
-            history={history}
-            dispatch={dispatch}
-            setStoreFilters={setStoreFilters}
-            booksFilter={booksFilter}
-            handleClick={handleClick}
-            storeFilters={storeFilters}
-            handleDel={handleDel}
+          theme={theme}
+          category={category}
+          subcategory={subcategory}
+          categories={categories}
+          history={history}
+          dispatch={dispatch}
+          setStoreFilters={setStoreFilters}
+          booksFilter={booksFilter}
+          handleClick={handleClick}
+          storeFilters={storeFilters}
+          handleDel={handleDel}
         />
       </div>
 
       <div className="resultsMain">
-        
         <div className="filtersResults">
           <div className="titleResults">
             <p className="filterMenu">FILTERS</p>
@@ -178,7 +197,6 @@ export default function Books() {
         </div>
 
         <div className="sectionBooksResults">
-
           <div className="orderSelect">
             <p>Order by </p>
 
@@ -200,33 +218,41 @@ export default function Books() {
               <option value="Z">Title (Z-A)</option>
             </select>
           </div>
-          <div className="booksContainer">    
-          {booksToShow.length > 0 ? (
-            booksToShow.map((el) => {
-              return (
-                <div className="cardBookResults" key={el._id}>
-                  <Book
-                    image={el.image}
-                    name={el.name}
-                    editorial={el.editorial}
-                    author={el.author}
-                    price={el.price}
-                    _id={el._id}
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <p>No books found.</p>
-          )}
+          <div className="booksContainer">
+            {booksToShow.length > 0 ? (
+              booksToShow.map((el) => {
+                return (
+                  <div className="cardBookResults" key={el._id}>
+                    <Book
+                      image={el.image}
+                      name={el.name}
+                      editorial={el.editorial}
+                      price={el.price}
+                      _id={el._id}
+                      rating={el.rating}
+                      setOpen={setOpen}
+                      setMsg={setMsg}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <p>No books found.</p>
+            )}
           </div>
         </div>
       </div>
       <p></p>
       <div className="divPaginationBottom">
-        <Pages count={booksFilter.length}/>
+        <Pages count={booksFilter.length} />
       </div>
-      
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={msg}
+        action={action}
+      />
     </div>
   );
 }
