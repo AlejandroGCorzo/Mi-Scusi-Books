@@ -99,11 +99,15 @@ export default function SliderImg({ books, title }) {
       setOpen(true);
     } else {
       dispatch(addFavorites(loggedUser.id, libroID, accessToken));
+      setMsg("Book added to favorites!");
+      setOpen(true);
     }
   }
 
   function deleteFav(libroID) {
     dispatch(deleteFavorites(loggedUser.id, libroID, accessToken));
+    setMsg("Book remove to favorites!");
+    setOpen(true);
   }
 
   function queDibujo(libroID) {
@@ -177,7 +181,6 @@ export default function SliderImg({ books, title }) {
 
   function queDibujoCart(libro) {
     let tieneFavorito = shoppingCart.filter((e) => e.id === libro._id);
-    console.log(shoppingCart);
     if (tieneFavorito.length > 0) {
       return (
         <button className="buttonFav" onClick={() => deleteCar(libro._id)}>
@@ -283,7 +286,9 @@ export default function SliderImg({ books, title }) {
                         />
                       }
                     />
-                    <Box sx={{ ml: 1, fontSize: "14px" }}>{textRating(contRating(el.rating))}</Box>
+                    <Box sx={{ ml: 1, fontSize: "14px" }}>
+                      {textRating(contRating(el.rating))}
+                    </Box>
                   </Box>
 
                   <div className="priceSlider">
