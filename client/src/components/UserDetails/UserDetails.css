@@ -17,8 +17,10 @@
 
 .userImage img {
   border-radius: 1.5em;
-  width: 75%;
+  height: 384px;
+  width: 384px;
 }
+
 
 .userInfoContainer {
   display: flex;
@@ -162,6 +164,10 @@
 
   .contentImageProfile {
     margin-top: 0px;
+  }
+  .userImage img {
+    height: auto;
+    width: 75%;
   }
 }
 
