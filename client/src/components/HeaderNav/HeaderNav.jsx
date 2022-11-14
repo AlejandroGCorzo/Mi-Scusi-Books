@@ -19,12 +19,14 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
-import { Avatar } from "@mui/material";
+import { Avatar, Switch } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import Badge from "@mui/material/Badge";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
+
+import { createTheme } from "@mui/material/styles";
 /////////////////////////////////////////////
 
 export default function HeaderNav(onSearch) {
@@ -100,7 +102,7 @@ export default function HeaderNav(onSearch) {
           <p className="titleNav">Mi Scusi Books</p>
         </div>
       </Link>
-
+      <DarkMode/>
       <SearchBar onSearch={onSearch} />
 
       <div>
@@ -135,7 +137,11 @@ export default function HeaderNav(onSearch) {
                 </Badge>
               </Link>
             </p>
-            <p className="noRomper" title="Loyalty Points" style={{cursor: 'default', userSelect: 'none'}}>
+            <p
+              className="noRomper"
+              title="Loyalty Points"
+              style={{ cursor: "default", userSelect: "none" }}
+            >
               <Badge
                 badgeContent={loggedUser.loyaltyPoint}
                 color="secondary"
