@@ -248,7 +248,7 @@ export default function About() {
                   <li>
                     <a
                       class="btn"
-                      href="https://www.linkedin.com/in/jano-nanzer-4410951bb/"
+                      href="https://www.linkedin.com/in/janonanzer/"
                       target="_blank"
                     >
                       LINKEDIN
